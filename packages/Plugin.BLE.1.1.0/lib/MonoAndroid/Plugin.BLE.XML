@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Plugin.BLE</name>
+    </assembly>
+    <members>
+        <member name="T:Plugin.BLE.CrossBluetoothLE">
+            <summary>
+            Cross platform bluetooth LE implemenation.
+            </summary>
+        </member>
+        <member name="P:Plugin.BLE.CrossBluetoothLE.Current">
+            <summary>
+            Current bluetooth LE implementation.
+            </summary>
+        </member>
+        <member name="P:Plugin.BLE.Android.Adapter.ConnectedDeviceRegistry">
+            <summary>
+            Used to store all connected devices
+            </summary>
+        </member>
+        <member name="P:Plugin.BLE.Android.Adapter.DeviceOperationRegistry">
+            <summary>
+            Registry used to store device instances for pending operations : connect 
+            </summary>
+        </member>
+        <member name="F:Plugin.BLE.Android.Device._gatt">
+            <summary>
+            we have to keep a reference to this because Android's api is weird and requires
+            the GattServer in order to do nearly anything, including enumerating services
+            
+            TODO: consider wrapping the Gatt and Callback into a single object and passing that around instead.
+            </summary>
+        </member>
+        <member name="F:Plugin.BLE.Android.Device._gattCallback">
+            <summary>
+            we also track this because of gogole's weird API. the gatt callback is where
+            we'll get notified when services are enumerated
+            </summary>
+        </member>
+    </members>
+</doc>

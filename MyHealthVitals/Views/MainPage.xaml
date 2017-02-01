@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.MainPage">
+
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Log Out" Clicked="Handle_Clicked1"></ToolbarItem>
+	</ContentPage.ToolbarItems>
+
+	<ContentPage.Content>
+		<ScrollView>
+			<StackLayout Spacing="0">
+				<StackLayout Orientation="Horizontal">
+					<Image x:Name="imgProfile" Margin="15,15,0,0" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="120" WidthRequest="100">
+					</Image>
+					<StackLayout Orientation="Vertical" Margin="15">
+						<Label x:Name="lblName" Style="{DynamicResource styleLblNumeric}" Text=" " FontAttributes="Bold" />
+						<Label x:Name="lblEmail" Style="{DynamicResource styleLblNumeric}" Text=" " />
+						<Label Text="click photo for Profile Screen" Style="{DynamicResource styleLblNumeric}" />
+					</StackLayout>
+				</StackLayout>
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,5,0,0">
+				</BoxView>
+				<StackLayout IsVisible="false" BackgroundColor="Gray" Padding="10" x:Name="layoutLoading">
+					<Label Text="Loading..." />
+				</StackLayout>
+				
+				<StackLayout Orientation="Horizontal" Margin="15">
+					<StackLayout WidthRequest="72">
+						<Label Style="{DynamicResource styleLblNumeric}" Text="SYS" />
+						<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label x:Name="lblSys"  Style="{DynamicResource styleLblReading}" Text="-" />
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Style="{DynamicResource styleLblNumeric}" Text="DIA" />
+						<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Text=" " Style="{DynamicResource styleLblReading}" />
+						<Label x:Name="lblDia" Style="{DynamicResource styleLblReading}" Text="-" />
+					</StackLayout>
+				</StackLayout>
+				
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,5,0,0">
+				</BoxView>
+				
+				<StackLayout Orientation="Horizontal" Margin="15">
+					<StackLayout WidthRequest="72">
+						<Label Style="{DynamicResource styleLblNumeric}" Text="SpO2" />
+						<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label Style="{DynamicResource styleLblReading}" Text="-" />
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Style="{DynamicResource styleLblNumeric}" Text="PR" />
+						<Label Style="{DynamicResource styleLblNumeric}" Text="bpm" />
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label Style="{DynamicResource styleLblReading}" x:Name="lblBpm" Text="-" />
+					</StackLayout>
+				</StackLayout>
+				
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,5,0,0"></BoxView>
+				
+				<StackLayout Orientation="Horizontal" Margin="15">
+					<StackLayout WidthRequest="72">
+						<Label Style="{DynamicResource styleLblNumeric}" Text="PI" />
+						<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label Style="{DynamicResource styleLblReading}" Text="-" />
+					</StackLayout>
+					<StackLayout WidthRequest="90">
+
+						<Label Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
+						
+						<StackLayout Orientation="Horizontal" BackgroundColor="Blue" Padding="2">
+							<Button Clicked="btnFareinheitClicked" x:Name="btnFareinheit" TextColor="Black" Text="F" HeightRequest="40" WidthRequest="34" BorderRadius="0">
+							</Button>
+							<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" TextColor="Black" Text="C" HeightRequest="40" WidthRequest="40" HorizontalOptions="EndAndExpand" BackgroundColor="White" BorderRadius="0">
+							</Button>
+						</StackLayout>
+
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Text=" " Style="{DynamicResource styleLblReading}" />
+						<Label Style="{DynamicResource styleLblReading}" Text="-" />
+					</StackLayout>
+				</StackLayout>
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,5,0,0"></BoxView>
+				<StackLayout Orientation="Horizontal" Margin="15">
+					<StackLayout WidthRequest="72">
+						<Label Text="GLU" Style="{DynamicResource styleLblNumeric}" />
+						<Label Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Text=" " Style="{DynamicResource styleLblReading}" />
+						<Label Text="-" Style="{DynamicResource styleLblReading}" />
+					</StackLayout>
+					<StackLayout WidthRequest="78">
+						<Label Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />
+						<StackLayout Orientation="Horizontal" BackgroundColor="Blue" Padding="2">
+							<Button Clicked="btnLbsClicked" x:Name="btnLbs" TextColor="Black" Text="Lbs" HeightRequest="40" WidthRequest="34" BorderRadius="0">
+							</Button>
+							<Button Clicked="btnKgsClicked" x:Name="btnKgs" TextColor="Black" Text="Kgs" HeightRequest="30" WidthRequest="34" HorizontalOptions="EndAndExpand" BackgroundColor="White" BorderRadius="0">
+							</Button>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout WidthRequest="72">
+						<Label Text=" " Style="{DynamicResource styleLblReading}" />
+						<Label Text="-" Style="{DynamicResource styleLblReading}" />
+					</StackLayout>
+				</StackLayout>
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,5,0,0"></BoxView>
+				<StackLayout Margin="15" BackgroundColor="Gray" HeightRequest="140">
+				</StackLayout>
+				<StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+					<Button Clicked="Handle_Clicked" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="Blue">
+					</Button>
+					<Button Text="ECG Start" HorizontalOptions="FillAndExpand" BackgroundColor="Blue">
+					</Button>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</ContentPage.Content>
+</ContentPage>
