@@ -29,10 +29,19 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.StackLayout layoutLoading;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Label lblStatus;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Label lblPressure;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Label lblSys;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Label lblDia;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Label lblSpo2;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Label lblBpm;
@@ -56,8 +65,11 @@ namespace MyHealthVitals {
             lblName = this.FindByName <global::Xamarin.Forms.Label>("lblName");
             lblEmail = this.FindByName <global::Xamarin.Forms.Label>("lblEmail");
             layoutLoading = this.FindByName <global::Xamarin.Forms.StackLayout>("layoutLoading");
+            lblStatus = this.FindByName <global::Xamarin.Forms.Label>("lblStatus");
+            lblPressure = this.FindByName <global::Xamarin.Forms.Label>("lblPressure");
             lblSys = this.FindByName <global::Xamarin.Forms.Label>("lblSys");
             lblDia = this.FindByName <global::Xamarin.Forms.Label>("lblDia");
+            lblSpo2 = this.FindByName <global::Xamarin.Forms.Label>("lblSpo2");
             lblBpm = this.FindByName <global::Xamarin.Forms.Label>("lblBpm");
             btnFareinheit = this.FindByName <global::Xamarin.Forms.Button>("btnFareinheit");
             btnCelcious = this.FindByName <global::Xamarin.Forms.Button>("btnCelcious");

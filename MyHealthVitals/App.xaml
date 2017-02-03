@@ -5,14 +5,14 @@
 			<Color x:Key="colorBlackBg">#33302E</Color>
 			<Color x:Key="colorWhite">#FFFFFF</Color>
 			<Color x:Key="colorThemeText">#FFFFFF</Color>
-			<Color x:Key="colorBlue">#0000FF</Color>
+			<Color x:Key="colorThemeBlue">#0091FF</Color>
 
 			<Style x:Key="styleLblReading" TargetType="Label">
             	<Setter Property="TextColor" Value="{DynamicResource colorThemeText}" />
         	</Style>
 
 			<Style x:Key="styleLblNumeric" TargetType="Label">
-            	<Setter Property="TextColor" Value="{DynamicResource colorBlue}" />
+            	<Setter Property="TextColor" Value="{DynamicResource colorThemeBlue}" />
         	</Style>
 			
         </ResourceDictionary>

@@ -7,17 +7,11 @@ namespace MyHealthVitals
 {
     public class VitalsData
     {
-
-        public VitalsData()
-        {
-            
-        }
-
+        public VitalsData(){}
 
         public delegate void BpmUpdateEventHandler(int val);
         public event BpmUpdateEventHandler OnBmpChange;
 
-        
         public DateTime Date
         {
             get

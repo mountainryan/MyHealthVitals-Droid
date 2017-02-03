@@ -1,20 +1,19 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.LoginPage">
 	<ContentPage.Content>
 
-
 	<StackLayout Spacing="0">
-	
+		
 		<StackLayout Padding="0,50,0,0" Orientation="Vertical" VerticalOptions="Start">
 			<Image Source="icucarellc.png" > </Image>
 		</StackLayout>
 		<StackLayout Margin="20,35,20,20" VerticalOptions="Center" Orientation="Horizontal" >
 			<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical" >
-				<Entry x:Name="txtUsername" HeightRequest="36" HorizontalOptions="FillAndExpand" Text="rhiggs" Placeholder="username"></Entry>
-				<Entry x:Name="txtPassword" HeightRequest="36" HorizontalOptions="FillAndExpand" Text="0600" Placeholder="password" ></Entry>
+				<Entry x:Name="txtUsername" HeightRequest="40" HorizontalOptions="FillAndExpand" Text="rhiggs" Placeholder="username"></Entry>
+				<Entry x:Name="txtPassword" HeightRequest="40" HorizontalOptions="FillAndExpand" Text="0600" Placeholder="password" ></Entry>
 			</StackLayout>
 
-			<Button Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="Blue" WidthRequest="80" FontSize="17" Text="Login"></Button>
+			<Button Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="80" FontSize="17" Text="Login"></Button>
 			
 		</StackLayout>
 

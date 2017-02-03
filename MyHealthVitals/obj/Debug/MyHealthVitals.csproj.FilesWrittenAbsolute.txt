@@ -2,9 +2,11 @@
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.App.xaml
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.LoginPage.xaml
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.MainPage.xaml
+/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.TestPage.xaml
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.App.xaml.g.cs
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.LoginPage.xaml.g.cs
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.MainPage.xaml.g.cs
+/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.TestPage.xaml.g.cs
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/MyHealthVitals.dll.mdb
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/MyHealthVitals.dll
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.dll

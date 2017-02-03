@@ -13,8 +13,18 @@ namespace MyHealthVitals
 			InitializeComponent();
 		}
 
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+		}
+
 		public async void btnLoginClicked(object sender, System.EventArgs e)
 		{
+			//var newScreen = new TestPage();
+			//newScreen.Title = "Main Screeen";
+			//var nav = new NavigationPage(newScreen);
+			//this.Navigation.PushModalAsync(nav);
+
 			try
 			{
 				//credential = await Credential.Create("https://test.myemhr.com", 0, txtUsername.Text.Trim(), txtPassword.Text.Trim(), "Mobile");
@@ -27,6 +37,7 @@ namespace MyHealthVitals
 				{
 					Debug.WriteLine("Login succesfull.");
 
+					//var newScreen = new MainPage();
 					var newScreen = new MainPage();
 					newScreen.Title = "Main Screeen";
 
