@@ -24,7 +24,6 @@ namespace MyHealthVitals
 			{
 				lblStatus.Text = message;
 			});
-
 		}
 
 		public void updatingPressureMeanTime(int pressure) { 
@@ -66,6 +65,10 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 			this.layoutLoading.IsVisible = false;
+
+			bleManager = new BleManager();
+			bleManager.connect(this);
+			this.layoutLoading.IsVisible = true;
 		}
 
 		protected override void OnDisappearing()
@@ -79,8 +82,6 @@ namespace MyHealthVitals
 		protected async override void OnAppearing()
 		{
 			base.OnAppearing();
-
-			bleManager = new BleManager();
 
 			// calling async to get all demographics user details 
 			var isSuccess = await Demographics.sharedInstance.getDemographicFromApi();
@@ -125,8 +126,7 @@ namespace MyHealthVitals
 		}
 		void btnNIBPStartClicked(object sender, System.EventArgs e)
 		{
-			bleManager.connect(this);
-
+			
 			this.layoutLoading.IsVisible = true;
 		}
 

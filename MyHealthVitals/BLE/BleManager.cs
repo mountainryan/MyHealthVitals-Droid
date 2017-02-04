@@ -120,18 +120,22 @@ namespace MyHealthVitals
 			//this.disconnectDevice();
 			this.uiController.ShowMessageOnUI("we lost connection to the device please connect again to take reading." + e.Device.Name);
 
-			this.uiController.ShowMessageOnUI("we lost connection to the device please connect again to take reading");
+			//this.uiController.ShowMessageOnUI("we lost connection to the device please connect again to take reading");
 		}
 
 		private void Adapter_DeviceDisconnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
 			this.uiController.ShowMessageOnUI("Please turn on the device to reading: " + e.Device.Name);
 
-			this.uiController.ShowMessageOnUI("Please turn on the device to reading: " + e.Device.Name);
+			//this.uiController.ShowMessageOnUI("Please turn on the device to reading: " + e.Device.Name);
 		}
 
 		private async void Adapter_DeviceConnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
+
+			if (e.Device.Name == "PC_300SNT") {
+				this.uiController.ShowMessageOnUI("PC_300SNT Connected.");
+			}
 
 			var services = await e.Device.GetServicesAsync();
 
@@ -295,24 +299,24 @@ namespace MyHealthVitals
 			//	//vitalsData.Temp = 98;
 			//}
 
-			//List<int> values = new List<int>();
-			//foreach (var b in e.Characteristic.Value)
-			//{
-			//	values.Add(b);
-			//}
+			List<int> values = new List<int>();
+			foreach (var b in e.Characteristic.Value)
+			{
+				values.Add(b);
+			}
 
-			//int count = 0;
-			//var sb = new StringBuilder();
-			//foreach (var itm in values)
-			//{
-			//	//if (count >= values.Count - 3)
-			//	//{
-			//	sb.Append(itm).Append(",");
-			//	//}
-			//	count++;
-			//}
+			int count = 0;
+			var sb = new StringBuilder();
+			foreach (var itm in values)
+			{
+				//if (count >= values.Count - 3)
+				//{
+				sb.Append(itm).Append(",");
+				//}
+				count++;
+			}
 
-			//Debug.WriteLine(string.Format("UUID: {0}  ->{1}", e.Characteristic.Uuid, sb.ToString()));
+			Debug.WriteLine(string.Format("UUID: {0}  ->{1}", e.Characteristic.Uuid, sb.ToString()));
 		}
 
 		public delegate void DeviceConnectedEventHandler();

@@ -9,10 +9,12 @@
 
 			<Style x:Key="styleLblReading" TargetType="Label">
             	<Setter Property="TextColor" Value="{DynamicResource colorThemeText}" />
+				
         	</Style>
 
 			<Style x:Key="styleLblNumeric" TargetType="Label">
             	<Setter Property="TextColor" Value="{DynamicResource colorThemeBlue}" />
+				<Setter Property="FontSize" Value="14" />
         	</Style>
 			
         </ResourceDictionary>

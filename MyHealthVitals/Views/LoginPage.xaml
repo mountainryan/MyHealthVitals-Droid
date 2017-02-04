@@ -10,7 +10,7 @@
 		<StackLayout Margin="20,35,20,20" VerticalOptions="Center" Orientation="Horizontal" >
 			<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical" >
 				<Entry x:Name="txtUsername" HeightRequest="40" HorizontalOptions="FillAndExpand" Text="rhiggs" Placeholder="username"></Entry>
-				<Entry x:Name="txtPassword" HeightRequest="40" HorizontalOptions="FillAndExpand" Text="0600" Placeholder="password" ></Entry>
+				<Entry IsPassword="true" x:Name="txtPassword" HeightRequest="40" HorizontalOptions="FillAndExpand" Text="0600" Placeholder="password" ></Entry>
 			</StackLayout>
 
 			<Button Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="80" FontSize="17" Text="Login"></Button>
