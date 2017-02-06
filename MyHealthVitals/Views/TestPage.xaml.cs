@@ -10,8 +10,8 @@ namespace MyHealthVitals
 	{
 		void btnConectCLicked(object sender, System.EventArgs e)
 		{
-			bleManager = new BleManager();
-			bleManager.connect(this);
+			//bleManager = new BleManager();
+			//bleManager.connect(this);
 		}
 
 		void btnCancelThisPageClicked(object sender, System.EventArgs e)
@@ -41,7 +41,7 @@ namespace MyHealthVitals
 			Debug.WriteLine("update UI showoing readings");
 		}
 
-		private BleManager bleManager;
+		//private BleManager bleManager;
 
 		protected async override void OnAppearing()
 		{

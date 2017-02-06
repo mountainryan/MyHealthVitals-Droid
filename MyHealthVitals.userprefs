@@ -1,14 +1,22 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/BLE/BleManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="iOS/BLE/BluetoothCentralManager.cs">
     <Files>
-      <File FileName="MyHealthVitals/BLE/BleManager.cs" Line="279" Column="134" />
+      <File FileName="MyHealthVitals/BLE/ICBCentralManager.cs" Line="9" Column="2" />
+      <File FileName="MyHealthVitals/Views/MainPage.xaml" Line="129" Column="15" />
+      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="62" Column="3" />
+      <File FileName="MyHealthVitals/Views/TestPage.xaml.cs" Line="23" Column="4" />
+      <File FileName="MyHealthVitals/Views/LoginPage.xaml.cs" Line="47" Column="5" />
+      <File FileName="MyHealthVitals/Views/LoginPage.xaml" Line="1" Column="1" />
+      <File FileName="MyHealthVitals/Views/TestPage.xaml" Line="11" Column="1" />
+      <File FileName="iOS/BLE/BluetoothCentralManager.cs" Line="15" Column="37" />
+      <File FileName="iOS/BLE/BluetoothPeripheralDelegate.cs" Line="179" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_x86" />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.B4886213-77B1-4EF5-A55F-F2598BCDF747" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.5cb1f34b11eb6cec5176ff5ad3ebee1fde550339" />
 </Properties>

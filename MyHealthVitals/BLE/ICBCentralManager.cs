@@ -1,10 +1,9 @@
 ﻿using System;
 namespace MyHealthVitals
 {
-	public class ICBCentralManager
+	public interface ICBCentralManager
 	{
-		public ICBCentralManager()
-		{
-		}
+		void ConnectToDevice(Object uiController);
+		void startMeasuringBP();
 	}
 }

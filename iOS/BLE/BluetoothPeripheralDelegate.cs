@@ -6,22 +6,11 @@ using System.Timers;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SLxaml
+namespace MyHealthVitals.iOS
 {
-	interface BlueToothReadingUpdatable
-	{
-		void updateCaller(String message);
-	}
-
 	public class BluetoothPeripheralDelegate : CBPeripheralDelegate
 	{
 		public CBCharacteristic bmChar;
-
-		public void StartBloodPressure()
-		{
-			byte[] bytes = new byte[] { 0xaa, 0x55, 0x40, 0x02, 0x01, 0x29 };
-			BluetoothCentralManager.connectedPeripheral.WriteValue(NSData.FromArray(bytes), this.bmChar, CBCharacteristicWriteType.WithResponse);
-		}
 
 		public override void DiscoveredService(CBPeripheral peripheral, NSError error)
 		{
@@ -46,13 +35,13 @@ namespace SLxaml
 		public override void UpdatedCharacterteristicValue(CBPeripheral peripheral, CBCharacteristic ch, NSError error)
 		{
 
-			BlueToothReadingUpdatable uiController = (BlueToothReadingUpdatable)BluetoothCentralManager.uiController;
+			BluetoothCallBackUpdatable uiController = (BluetoothCallBackUpdatable)BluetoothCentralManager.uiController;
 
 			if ((int)ch.Value[2] > 63 && (int)ch.Value[2] < 68)
 			{
 				Debug.WriteLine("NIBP related token.");
 
-				uiController.updateCaller("Measuring the Blood pressure...");
+				uiController.ShowMessageOnUI("Measuring the Blood pressure...");
 
 				//vitalsData.Bpm = (int)ch.Value[9];
 				//vitalsData.BPSys = (int)ch.Value[6];
@@ -60,17 +49,13 @@ namespace SLxaml
 
 				if (ch.Value.Length > 21)
 				{
-					//uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
-					//uiController.ShowMessageOnUI("Boood pressure read succesfully.");
-					//uiController.updateCaller( (int)ch.Value[6]
-
-					Debug.WriteLine("BPsys: " + (int)ch.Value[6] + " " + " bpdia: " + (int)ch.Value[8] + " " + (int)ch.Value[9]);
+					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
+					uiController.ShowMessageOnUI("Boood pressure read succesfully.");
 				}
 
 				if (ch.Value.Length == 8)
 				{
-					//uiController.updatingPressureMeanTime((int)ch.Value[6]);
-					Debug.WriteLine("real time pressure: " + ((int)ch.Value[6]));
+					uiController.updatingPressureMeanTime((int)ch.Value[6]);
 				}
 			}
 
@@ -81,7 +66,7 @@ namespace SLxaml
 
 			if ((int)ch.Value[2] > 80 && (int)ch.Value[2] < 84)
 			{
-				Debug.WriteLine(" Spo2 related token");
+				//Debug.WriteLine(" Spo2 related token");
 
 				if (ch.Value.Length == 19)
 				{
@@ -89,22 +74,21 @@ namespace SLxaml
 					//vitalsData.SpO2 = (int)ch.Value[5];
 					//vitalsData.Bpm = (int)ch.Value[6];
 
-					//uiController.SPO2_readingCompleted((int)ch.Value[5], (int)ch.Value[6]);
+					uiController.SPO2_readingCompleted((int)ch.Value[5], (int)ch.Value[6], (int)ch.Value[8]);
 
-					Debug.WriteLine("Spo2: " + (int)ch.Value[5] + " " + "bpm: " + (int)ch.Value[6]);
-
+					//uiController.
 				}
 			}
 
-			//if (ch.Value.Length > 10 && ch.Value.Length < 22)
-			//{
-			//	//Debug.WriteLine("spo2: " + ch.Value[5] + " BPM: " + ch.Value[6]);
-			//}
+			if (ch.Value.Length > 10 && ch.Value.Length < 22)
+			{
+				//Debug.WriteLine("spo2: " + ch.Value[5] + " BPM: " + ch.Value[6]);
+			}
 
-			//if (ch.Value.Length == 19)
-			//{
-			//	//Debug.WriteLine("spo2: " + ch.Value[5] + " BPM: " + ch.Value[6]);
-			//}
+			if (ch.Value.Length == 19)
+			{
+				//Debug.WriteLine("spo2: " + ch.Value[5] + " BPM: " + ch.Value[6]);
+			}
 
 			if (ch.Value.Length == 14)
 			{
@@ -152,7 +136,7 @@ namespace SLxaml
 						break;
 				}
 
-				Debug.WriteLine(message);
+				uiController.ShowMessageOnUI(message);
 			}
 
 			//// sys , dia and bpm is available in spot check monitor
@@ -189,7 +173,6 @@ namespace SLxaml
 			}
 
 			Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.UUID, sb.ToString()));
-
 		}
 	}
 }

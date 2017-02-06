@@ -50,14 +50,13 @@
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BLE\BleManager.cs" />
-    <Compile Include="BLE\VitalsData.cs" />
     <Compile Include="Models\Credential.cs" />
     <Compile Include="Models\Demographic.cs" />
     <Compile Include="Models\HttpStatusException.cs" />
     <Compile Include="Views\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BLE\ICBCentralManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

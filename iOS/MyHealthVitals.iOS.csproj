@@ -132,6 +132,8 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="BLE\BluetoothCentralManager.cs" />
+    <Compile Include="BLE\BluetoothPeripheralDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\icucarellc.png" />

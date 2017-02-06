@@ -7,10 +7,10 @@ using System.IO;
 
 namespace MyHealthVitals
 {
-	interface BluetoothCallBackUpdatable
+	public interface BluetoothCallBackUpdatable
 	{
 		void ShowMessageOnUI(String message);
-		void SPO2_readingCompleted(int sp02, int bpm);
+		void SPO2_readingCompleted(int sp02, int bpm, int perfusionIndex);
 		void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm);
 		void updatingPressureMeanTime(int pressure);
 	}
@@ -26,21 +26,23 @@ namespace MyHealthVitals
 			});
 		}
 
-		public void updatingPressureMeanTime(int pressure) { 
+		public void updatingPressureMeanTime(int pressure)
+		{
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
 				lblPressure.Text = pressure.ToString() + " mmHg";
 			});
 		}
 
-		public void SPO2_readingCompleted(int sp02, int bpm)
+		public void SPO2_readingCompleted(int sp02, int bpm, int perfusionIndex)
 		{
-			Debug.WriteLine("sp02: " + sp02 + " bpm: " + bpm);
+			//Debug.WriteLine("sp02: " + sp02 + " bpm: " + bpm);
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
 				lblBpm.Text = bpm.ToString();
 				lblSpo2.Text = sp02.ToString();
+				lblPerfusionIndex.Text = perfusionIndex.ToString();
 			});
 		}
 
@@ -58,7 +60,7 @@ namespace MyHealthVitals
 			});
 		}
 
-		private BleManager bleManager;
+		//private BleManager bleManager;
 		//private VitalsData vitalsData;
 
 		public MainPage()
@@ -66,15 +68,18 @@ namespace MyHealthVitals
 			InitializeComponent();
 			this.layoutLoading.IsVisible = false;
 
-			bleManager = new BleManager();
-			bleManager.connect(this);
+			//bleManager = new BleManager();
+			//bleManager.connect(this);
+
+			DependencyService.Get<ICBCentralManager>().ConnectToDevice((BluetoothCallBackUpdatable)this);
 			this.layoutLoading.IsVisible = true;
 		}
 
 		protected override void OnDisappearing()
 		{
 			base.OnDisappearing();
-			this.bleManager.disconnectDevice();
+
+			//this.bleManager.disconnectDevice();
 			//this.bleManager.Adapter = null;
 			//this.bleManager.Adapter.DisconnectDeviceAsync(this.bleManager.Adapter.);
 		}
@@ -126,8 +131,7 @@ namespace MyHealthVitals
 		}
 		void btnNIBPStartClicked(object sender, System.EventArgs e)
 		{
-			
-			this.layoutLoading.IsVisible = true;
+			DependencyService.Get<ICBCentralManager>().startMeasuringBP();
 		}
 
 		void btnListClicked(object sender, System.EventArgs e)
