@@ -7,6 +7,7 @@
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>
 	<ContentPage.Content>
+		
 		<ScrollView>
 			<StackLayout Spacing="0">
 				<StackLayout Orientation="Horizontal" BackgroundColor="#2b2827">
@@ -20,7 +21,7 @@
 					</Button>
 				</StackLayout>
 				<StackLayout IsVisible="false" BackgroundColor="Gray" Padding="10" x:Name="layoutLoading">
-					<Label x:Name="lblStatus" Text="Connecting..." />
+					<Label x:Name="lblStatus" Text="Searching device..." />
 					<Label x:Name="lblPressure" Text="0" />
 				</StackLayout>
 				<StackLayout Orientation="Horizontal" Margin="10">
@@ -63,7 +64,7 @@
 				</StackLayout>
 				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,3,0,0">
 				</BoxView>
-				<StackLayout Orientation="Horizontal" Margin="10">
+				<StackLayout Orientation="Horizontal" Margin="10,10,10,0">
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="PI" />
 						<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
@@ -76,9 +77,9 @@
 						<Label Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
 						<StackLayout Orientation="Horizontal" Padding="2">
 							<StackLayout Orientation="Horizontal" Padding="2">
-								<Button Clicked="btnFareinheitClicked" x:Name="btnFareinheit" BackgroundColor="Gray" Text="F">
+								<Button Clicked="btnFareinheitClicked" x:Name="btnFareinheit" Text="°F">
 								</Button>
-								<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" BackgroundColor="Gray" Text="C">
+								<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" Text="°C">
 								</Button>
 							</StackLayout>
 						</StackLayout>
@@ -90,7 +91,7 @@
 				</StackLayout>
 				<BoxView HeightRequest="0.5" BackgroundColor="Gray" >
 				</BoxView>
-				<StackLayout Orientation="Horizontal" Margin="10">
+				<StackLayout Orientation="Horizontal" Margin="10,10,10,0">
 					<StackLayout WidthRequest="72">
 						<Label Text="GLU" Style="{DynamicResource styleLblNumeric}" />
 						<Label Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
@@ -102,9 +103,9 @@
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />
 						<StackLayout Orientation="Horizontal" Padding="2">
-							<Button Clicked="btnLbsClicked" BackgroundColor="Gray" x:Name="btnLbs" Text="Lbs">
+							<Button Clicked="btnLbsClicked" x:Name="btnLbs" Text="Lbs">
 							</Button>
-							<Button Clicked="btnKgsClicked" x:Name="btnKgs" BackgroundColor="Gray" Text="Kgs" >
+							<Button Clicked="btnKgsClicked" x:Name="btnKgs" Text="Kgs" >
 							</Button>
 						</StackLayout>
 					</StackLayout>

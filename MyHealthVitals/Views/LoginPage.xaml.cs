@@ -13,6 +13,12 @@ namespace MyHealthVitals
 			InitializeComponent();
 		}
 
+		protected override void OnDisappearing()
+		{
+			base.OnDisappearing();
+			this.layoutLoading.IsVisible = false;
+		}
+
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
@@ -24,6 +30,8 @@ namespace MyHealthVitals
 			//newScreen.Title = "Main Screeen";
 			//var nav = new NavigationPage(newScreen);
 			//this.Navigation.PushModalAsync(nav);
+
+			layoutLoading.IsVisible = true;
 
 			try
 			{
@@ -43,6 +51,8 @@ namespace MyHealthVitals
 
 					var nav = new NavigationPage(newScreen);
 					this.Navigation.PushModalAsync(nav);
+
+					//layoutLoading.IsVisible = false;
 				});
 			}
 
@@ -62,6 +72,7 @@ namespace MyHealthVitals
 			{
 				this.ShowAlertForLogin("An Error has occurred.");
 			}
+
 		}
 
 		public void ShowAlertForLogin(String message)

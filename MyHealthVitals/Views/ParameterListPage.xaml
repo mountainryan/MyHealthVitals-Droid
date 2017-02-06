@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.ParameterListPage">
+	<ContentPage.Content>
+		<RelativeLayout>
+			<StackLayout HeightRequest="450">
+				<Label Style="{DynamicResource styleLblNumeric}" FontSize="17" Margin="10" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Reading's">
+				</Label>
+				<ListView ItemTapped="Handle_ItemTapped" x:Name="parameterListView" BackgroundColor="{StaticResource colorBlackBg}">
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<ViewCell>
+								<StackLayout Padding="8" Orientation="Horizontal">
+									<Label VerticalOptions="Center" Margin="7,0,0,0" Text="{Binding Name}" TextColor="White" />
+									<Image VerticalOptions="Center" HorizontalOptions="EndAndExpand" HeightRequest="26" WidthRequest="26" Source="imgArrow.png">
+									</Image>
+								</StackLayout>
+							</ViewCell>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</StackLayout>
+			<AbsoluteLayout>
+				<StackLayout x:Name="layoutLoading" BackgroundColor="Black" Opacity="0.75" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+					<StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="Center">
+						<ActivityIndicator Color="White" Scale="1.6" IsVisible="true" IsRunning="true" />
+						<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Please wait...">
+						</Label>
+					</StackLayout>
+				</StackLayout>
+			</AbsoluteLayout>
+		</RelativeLayout>
+	</ContentPage.Content>
+</ContentPage>

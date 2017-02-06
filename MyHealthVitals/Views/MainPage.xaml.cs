@@ -22,7 +22,20 @@ namespace MyHealthVitals
 			//Debug.WriteLine(message);
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
+				layoutLoading.IsVisible = true;
 				lblStatus.Text = message;
+				//hideMessageWthDelay();
+			});
+		}
+
+		public void hideMessageWthDelay()
+		{
+			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(20000), () => {
+				Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+					{
+						layoutLoading.IsVisible = false;
+					});
+				return true;
 			});
 		}
 
@@ -136,7 +149,9 @@ namespace MyHealthVitals
 
 		void btnListClicked(object sender, System.EventArgs e)
 		{
-			Debug.WriteLine("show list of devices");
+			var newPage = new ParameterListPage();
+			newPage.Title = "Parameter List Screen";
+			this.Navigation.PushAsync(newPage);
 		}
 
 		void btnViewProfileClicked(object sender, System.EventArgs e)

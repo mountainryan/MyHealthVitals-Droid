@@ -1,15 +1,7 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="iOS/BLE/BluetoothCentralManager.cs">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="MyHealthVitals/BLE/ICBCentralManager.cs" Line="9" Column="2" />
-      <File FileName="MyHealthVitals/Views/MainPage.xaml" Line="129" Column="15" />
-      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="62" Column="3" />
-      <File FileName="MyHealthVitals/Views/TestPage.xaml.cs" Line="23" Column="4" />
-      <File FileName="MyHealthVitals/Views/LoginPage.xaml.cs" Line="47" Column="5" />
-      <File FileName="MyHealthVitals/Views/LoginPage.xaml" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Views/TestPage.xaml" Line="11" Column="1" />
-      <File FileName="iOS/BLE/BluetoothCentralManager.cs" Line="15" Column="37" />
-      <File FileName="iOS/BLE/BluetoothPeripheralDelegate.cs" Line="179" Column="1" />
+      <File FileName="MyHealthVitals/Views/ParameterListPage.xaml.cs" Line="27" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />

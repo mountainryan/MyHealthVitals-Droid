@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.MainPage">
-
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Log Out" Clicked="btnLogOutClicked"></ToolbarItem>
-		<ToolbarItem Clicked="btnListClicked" Text="List" ></ToolbarItem>
+		<ToolbarItem Text="Log Out" Clicked="btnLogOutClicked">
+		</ToolbarItem>
+		<ToolbarItem Clicked="btnListClicked" Text="List">
+		</ToolbarItem>
 	</ContentPage.ToolbarItems>
-
 	<ContentPage.Content>
+		
 		<ScrollView>
 			<StackLayout Spacing="0">
 				<StackLayout Orientation="Horizontal" BackgroundColor="#2b2827">
-					<Image x:Name="imgProfile" Margin="12" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="120" WidthRequest="100">
+					<Image x:Name="imgProfile" Margin="12" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
 					</Image>
 					<StackLayout Orientation="Vertical" VerticalOptions="Center">
-						<Label x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
-						<Label x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label FontSize="15" x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
+						<Label FontSize="14" x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
 					</StackLayout>
-					<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="36" WidthRequest="36" TextColor="{StaticResource colorThemeBlue}"></Button>
+					<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}">
+					</Button>
 				</StackLayout>
-
-				<StackLayout BackgroundColor="Gray" Padding="10" x:Name="layoutLoading">
-					<Label x:Name="lblStatus" Text="Connecting..." />
+				<StackLayout IsVisible="false" BackgroundColor="Gray" Padding="10" x:Name="layoutLoading">
+					<Label x:Name="lblStatus" Text="Searching device..." />
 					<Label x:Name="lblPressure" Text="0" />
 				</StackLayout>
-				
-				<StackLayout Orientation="Horizontal" Margin="15,15,15,15">
+				<StackLayout Orientation="Horizontal" Margin="10">
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="SYS" />
 						<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblReading}" Text=" " />
-						<Label x:Name="lblSys"  Style="{DynamicResource styleLblReading}" Text="-" />
+						<Label x:Name="lblSys" Style="{DynamicResource styleLblReading}" Text="-" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="DIA" />
@@ -42,11 +42,9 @@
 						<Label x:Name="lblDia" Style="{DynamicResource styleLblReading}" Text="-" />
 					</StackLayout>
 				</StackLayout>
-				
-				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,5,0,0">
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,3,0,0">
 				</BoxView>
-				
-				<StackLayout Orientation="Horizontal" Margin="15">
+				<StackLayout Orientation="Horizontal" Margin="10">
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="SpO2" />
 						<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
@@ -64,37 +62,36 @@
 						<Label Style="{DynamicResource styleLblReading}" x:Name="lblBpm" Text="-" />
 					</StackLayout>
 				</StackLayout>
-				
-				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,5,0,0"></BoxView>
-				
-				<StackLayout Orientation="Horizontal" Margin="15">
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,3,0,0">
+				</BoxView>
+				<StackLayout Orientation="Horizontal" Margin="10,10,10,0">
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="PI" />
 						<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblReading}" Text=" " />
-						<Label Style="{DynamicResource styleLblReading}" Text="-" />
+						<Label x:Name="lblPerfusionIndex" Style="{DynamicResource styleLblReading}" Text="-" />
 					</StackLayout>
-					<StackLayout WidthRequest="90">
-
+					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
-						
-						<StackLayout Orientation="Horizontal" BackgroundColor="{StaticResource colorThemeBlue}" Padding="2">
-							<Button Clicked="btnFareinheitClicked" x:Name="btnFareinheit" TextColor="Black" Text="F" HeightRequest="40" WidthRequest="40" BorderRadius="0">
-							</Button>
-							<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" TextColor="Black" Text="C" HeightRequest="40" WidthRequest="40" HorizontalOptions="EndAndExpand" BackgroundColor="White" BorderRadius="0">
-							</Button>
+						<StackLayout Orientation="Horizontal" Padding="2">
+							<StackLayout Orientation="Horizontal" Padding="2">
+								<Button Clicked="btnFareinheitClicked" x:Name="btnFareinheit" Text="°F">
+								</Button>
+								<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" Text="°C">
+								</Button>
+							</StackLayout>
 						</StackLayout>
-
 					</StackLayout>
 					<StackLayout WidthRequest="72">
 						<Label Text=" " Style="{DynamicResource styleLblReading}" />
 						<Label Style="{DynamicResource styleLblReading}" Margin="0,10,0,0" Text="-" />
 					</StackLayout>
 				</StackLayout>
-				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,5,0,0"></BoxView>
-				<StackLayout Orientation="Horizontal" Margin="15">
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" >
+				</BoxView>
+				<StackLayout Orientation="Horizontal" Margin="10,10,10,0">
 					<StackLayout WidthRequest="72">
 						<Label Text="GLU" Style="{DynamicResource styleLblNumeric}" />
 						<Label Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
@@ -103,12 +100,12 @@
 						<Label Text=" " Style="{DynamicResource styleLblReading}" />
 						<Label Text="-" Style="{DynamicResource styleLblReading}" />
 					</StackLayout>
-					<StackLayout WidthRequest="90">
+					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />
-						<StackLayout Orientation="Horizontal" BackgroundColor="{StaticResource colorThemeBlue}" Padding="2">
-							<Button Clicked="btnLbsClicked" x:Name="btnLbs" TextColor="Black" Text="Lbs" HeightRequest="40" WidthRequest="34" BorderRadius="0">
+						<StackLayout Orientation="Horizontal" Padding="2">
+							<Button Clicked="btnLbsClicked" x:Name="btnLbs" Text="Lbs">
 							</Button>
-							<Button Clicked="btnKgsClicked" x:Name="btnKgs" TextColor="Black" Text="Kgs" HeightRequest="40" WidthRequest="40" HorizontalOptions="EndAndExpand" BackgroundColor="White" BorderRadius="0">
+							<Button Clicked="btnKgsClicked" x:Name="btnKgs" Text="Kgs" >
 							</Button>
 						</StackLayout>
 					</StackLayout>
@@ -117,10 +114,11 @@
 						<Label Text="-" Margin="0,10,0,0" Style="{DynamicResource styleLblReading}" />
 					</StackLayout>
 				</StackLayout>
-				<BoxView HeightRequest="0.5" BackgroundColor="Gray" Margin="0,5,0,0"></BoxView>
-				<StackLayout Margin="15" BackgroundColor="Gray" HeightRequest="140">
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray">
+				</BoxView>
+				<StackLayout Margin="10" BackgroundColor="Gray" HeightRequest="100">
 				</StackLayout>
-				<StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+				<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
 					<Button Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
 					</Button>
 					<Button Text="ECG Start" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">

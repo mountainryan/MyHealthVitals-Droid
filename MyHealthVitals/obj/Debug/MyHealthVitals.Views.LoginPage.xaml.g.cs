@@ -26,11 +26,19 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.Button btnLogin;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.StackLayout layoutLoading;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Label lblLoadingMessage;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private void InitializeComponent() {
             this.LoadFromXaml(typeof(LoginPage));
             txtUsername = this.FindByName <global::Xamarin.Forms.Entry>("txtUsername");
             txtPassword = this.FindByName <global::Xamarin.Forms.Entry>("txtPassword");
             btnLogin = this.FindByName <global::Xamarin.Forms.Button>("btnLogin");
+            layoutLoading = this.FindByName <global::Xamarin.Forms.StackLayout>("layoutLoading");
+            lblLoadingMessage = this.FindByName <global::Xamarin.Forms.Label>("lblLoadingMessage");
         }
     }
 }

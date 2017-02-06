@@ -10,7 +10,7 @@ namespace MyHealthVitals
     public class Credential
     {
        	//public string Hostname { get; }
-		//public long Mrn { get; set; }
+		public long Mrn { get; set; }
 		public string Token { get; set; }
 		public string username { get; set; }
 
@@ -29,7 +29,7 @@ namespace MyHealthVitals
 			client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ':' + password)));
 
 			//issuer = Uri.EscapeUriString(issuer);
-			var response = await client.PostAsync($"Authorize?expiration=0?issuer=Mobile", null);
+			var response = await client.PostAsync($"Authorize?expiration={Credential.sharedInstance.Mrn}?issuer=Mobile", null);
 
 			//Debug.WriteLine("response: " + response.Content.ReadAsStringAsync());
 
