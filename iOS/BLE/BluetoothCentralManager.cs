@@ -29,20 +29,30 @@ namespace MyHealthVitals.iOS
 				initializeBluetooth();
 			}
 			else {
-				if (connectedPeripheral != null && connectedPeripheral.State == CBPeripheralState.Connected)
+
+				if (manager.IsScanning)
 				{
-					connectedPeripheral.Delegate = new BluetoothPeripheralDelegate();
-					connectedPeripheral.DiscoverServices();
+					System.Console.WriteLine("is searching...");
 				}
 				else {
-					scanPeriphealOnDifferentThread("Searching device...");
+					if (connectedPeripheral!=null && connectedPeripheral.State == CBPeripheralState.Connected)
+					{
+						discoverServicesOfConnectedPeripheral();
+					}
+					else { 
+						scanPeriphealOnDifferentThread();
+					}
 				}
 			}
 		}
 
+		public void discoverServicesOfConnectedPeripheral() { 
+			connectedPeripheral.Delegate = new BluetoothPeripheralDelegate();
+			connectedPeripheral.DiscoverServices();
+		}
+
 		public void checkIfScanningTimeOut()
 		{
-
 			Timer tmr = new Timer();
 			tmr.Interval = 10000; // 0.1 second
 			tmr.Elapsed += ScanningTimeElapsed; // We'll write it in a bit
@@ -54,14 +64,17 @@ namespace MyHealthVitals.iOS
 			if(connectedPeripheral == null)
 				((BluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Scanning time out. Please check if your device is turned on.");
 			((Timer)sender).Stop();
+
+			manager.StopScan();
+			Console.WriteLine("manager scanning: " + manager.IsScanning);
 		}
 
-		public void scanPeriphealOnDifferentThread(String messageUi) { 
+		public void scanPeriphealOnDifferentThread() { 
 			new System.Threading.Thread(new System.Threading.ThreadStart(() =>
 				{
 					CBUUID[] cbuuids = null;
 					manager.ScanForPeripherals(cbuuids); //Initiates async calls of DiscoveredPeripheral	
-				((BluetoothCallBackUpdatable)uiController).ShowMessageOnUI(messageUi);
+				((BluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Searching device...");
 				})).Start();
 
 			checkIfScanningTimeOut();
@@ -73,7 +86,7 @@ namespace MyHealthVitals.iOS
 
 			manager.UpdatedState += (sender, e) =>
 			{
-				scanPeriphealOnDifferentThread("Searching device...");
+				scanPeriphealOnDifferentThread();
 			};
 
 			manager.DiscoveredPeripheral += (sender, e) =>
@@ -88,7 +101,7 @@ namespace MyHealthVitals.iOS
 
 			manager.ConnectedPeripheral += (sender, e) =>
 			{
-				((BluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Spot check monitor connected.");
+				((BluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Connected.");
 				connectedPeripheral = e.Peripheral;
 				connectedPeripheral.Delegate = new BluetoothPeripheralDelegate();
 				connectedPeripheral.DiscoverServices();
@@ -97,12 +110,12 @@ namespace MyHealthVitals.iOS
 			//manager.
 			manager.FailedToConnectPeripheral += (sender, e) =>
 			{
-				((BluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Failed to connect Spot check monitor.");
+				((BluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Failed to connect..");
 			};
 
 			manager.DisconnectedPeripheral += (sender, e) =>
 			{
-				scanPeriphealOnDifferentThread("Lost connection. Searching device...");
+				((BluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Disconnected.");
 			};
 		}
 	}

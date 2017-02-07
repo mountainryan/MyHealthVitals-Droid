@@ -20,10 +20,16 @@
 					<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}">
 					</Button>
 				</StackLayout>
-				<StackLayout IsVisible="false" BackgroundColor="Gray" Padding="10" x:Name="layoutLoading">
-					<Label x:Name="lblStatus" Text="Searching device..." />
-					<Label x:Name="lblPressure" Text="0" />
-				</StackLayout>
+				<RelativeLayout BackgroundColor="White" VerticalOptions="Fill" IsVisible="true" x:Name="layoutLoading">
+					<StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Orientation="Horizontal" >
+						<StackLayout Padding="8" >
+							<Label x:Name="lblStatus" VerticalOptions="Center" FontSize="14" Text="Searching device..." />
+							<Label x:Name="lblPressure"  Text="" />
+						</StackLayout>
+						<Button IsEnabled="true" x:Name="btnBle" Clicked="btnBleClicked" Image="imgBleDisconnected.png" HeightRequest="30" WidthRequest="30" Margin="0,0,8,0" VerticalOptions="Center" HorizontalOptions="EndAndExpand" ></Button>
+		
+					</StackLayout>
+				</RelativeLayout>
 				<StackLayout Orientation="Horizontal" Margin="10">
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="SYS" />
@@ -116,9 +122,9 @@
 				</StackLayout>
 				<BoxView HeightRequest="0.5" BackgroundColor="Gray">
 				</BoxView>
-				<StackLayout Margin="10" BackgroundColor="Gray" HeightRequest="100">
+				<StackLayout Margin="10" BackgroundColor="White" HeightRequest="90">
 				</StackLayout>
-				<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
+				<StackLayout Orientation="Horizontal" Margin="10,0,10,10">
 					<Button Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
 					</Button>
 					<Button Text="ECG Start" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">

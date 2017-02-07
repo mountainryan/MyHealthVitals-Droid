@@ -2,7 +2,7 @@
 <ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.ParameterListPage">
 	<ContentPage.Content>
 		<RelativeLayout>
-			<StackLayout HeightRequest="450">
+			<StackLayout>
 				<Label Style="{DynamicResource styleLblNumeric}" FontSize="17" Margin="10" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Reading's">
 				</Label>
 				<ListView ItemTapped="Handle_ItemTapped" x:Name="parameterListView" BackgroundColor="{StaticResource colorBlackBg}">
@@ -19,15 +19,19 @@
 					</ListView.ItemTemplate>
 				</ListView>
 			</StackLayout>
-			<AbsoluteLayout>
-				<StackLayout x:Name="layoutLoading" BackgroundColor="Black" Opacity="0.75" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
-					<StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="Center">
-						<ActivityIndicator Color="White" Scale="1.6" IsVisible="true" IsRunning="true" />
-						<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Please wait...">
-						</Label>
-					</StackLayout>
-				</StackLayout>
-			</AbsoluteLayout>
+			<!--loading layout starts-->
+
+			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" 
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" 
+                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+                    <ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
+                    <Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Please wait...">
+                    </Label>
+                </StackLayout>
+            </RelativeLayout>
 		</RelativeLayout>
 	</ContentPage.Content>
 </ContentPage>

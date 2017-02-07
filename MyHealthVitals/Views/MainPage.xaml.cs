@@ -17,13 +17,31 @@ namespace MyHealthVitals
 
 	public partial class MainPage : ContentPage, BluetoothCallBackUpdatable
 	{
+		void btnBleClicked(Object sender, System.EventArgs e)
+		{
+			//Debug.WriteLine(sender.is);
+			if (this.btnBle.IsEnabled) { 
+				DependencyService.Get<ICBCentralManager>().ConnectToDevice((BluetoothCallBackUpdatable)this);
+			}
+		}
+
 		public void ShowMessageOnUI(string message)
 		{
 			//Debug.WriteLine(message);
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
-				layoutLoading.IsVisible = true;
+				//layoutLoading.IsVisible = true;
 				lblStatus.Text = message;
+
+				if (message == "Connected.")
+				{
+					this.btnBle.Image = "imgBluetooth.png";
+					this.btnBle.IsEnabled = false;
+				}
+				else {
+					this.btnBle.Image = "imgBleDisconnected.png";
+					this.btnBle.IsEnabled = true;
+				}
 				//hideMessageWthDelay();
 			});
 		}
@@ -33,7 +51,7 @@ namespace MyHealthVitals
 			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(20000), () => {
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 					{
-						layoutLoading.IsVisible = false;
+						//layoutLoading.IsVisible = false;
 					});
 				return true;
 			});
@@ -53,9 +71,29 @@ namespace MyHealthVitals
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
-				lblBpm.Text = bpm.ToString();
-				lblSpo2.Text = sp02.ToString();
-				lblPerfusionIndex.Text = perfusionIndex.ToString();
+				if (bpm == 0)
+				{
+					lblBpm.Text = "...";
+				}
+				else { 
+					lblBpm.Text = bpm.ToString();	
+				}
+
+				if (sp02 == 0)
+				{
+					lblSpo2.Text = "...";
+				}
+				else {
+					lblSpo2.Text = sp02.ToString();
+				}
+
+				if (perfusionIndex == 0)
+				{
+					lblPerfusionIndex.Text = "...";
+				}
+				else {
+					lblPerfusionIndex.Text = perfusionIndex.ToString();
+				}
 			});
 		}
 
@@ -65,11 +103,12 @@ namespace MyHealthVitals
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
+				
 				lblBpm.Text = bpm.ToString();
 				lblDia.Text = bpdia.ToString();
 				lblSys.Text = bpsys.ToString();
 
-				layoutLoading.IsVisible = false;
+				//layoutLoading.IsVisible = false;
 			});
 		}
 
@@ -79,13 +118,13 @@ namespace MyHealthVitals
 		public MainPage()
 		{
 			InitializeComponent();
-			this.layoutLoading.IsVisible = false;
+			//this.layoutLoading.IsVisible = false;
 
 			//bleManager = new BleManager();
 			//bleManager.connect(this);
 
 			DependencyService.Get<ICBCentralManager>().ConnectToDevice((BluetoothCallBackUpdatable)this);
-			this.layoutLoading.IsVisible = true;
+			//this.layoutLoading.IsVisible = true;
 		}
 
 		protected override void OnDisappearing()

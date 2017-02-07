@@ -26,7 +26,10 @@ namespace MyHealthVitals
 		public ParameterListPage()
 		{
 			InitializeComponent();
-			//this.layoutLoading.IsVisible = true;
+
+
+
+			this.layoutLoading.IsVisible = true;
 		}
 
 		protected async override void OnAppearing()
@@ -42,10 +45,14 @@ namespace MyHealthVitals
 			}
 			parameterListView.ItemsSource = categories;
 
-
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
-				//layoutLoading.IsVisible = false;
+				layoutLoading.IsVisible = false;
+
+				//var windowSize = this.Content.Bounds.Size.Height;
+
+				this.parameterListView.HeightRequest = this.Content.Bounds.Size.Height - this.lblLoadingMessage.Height - this.lblLoadingMessage.Margin.Top*2;
+
 			});
 		}
 
