@@ -1,12 +1,19 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/obj/Debug/MyHealthVitals.Views.MainPage.xaml.g.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/LoginPage.xaml.cs">
     <Files>
-      <File FileName="MyHealthVitals/Views/ParameterListPage.xaml.cs" Line="54" Column="146" />
-      <File FileName="MyHealthVitals/App.xaml" Line="24" Column="1" />
-      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="24" Column="98" />
-      <File FileName="iOS/BLE/BluetoothCentralManager.cs" Line="77" Column="6" />
-      <File FileName="iOS/BLE/BluetoothPeripheralDelegate.cs" Line="47" Column="43" />
-      <File FileName="MyHealthVitals/obj/Debug/MyHealthVitals.Views.MainPage.xaml.g.cs" Line="76" Column="79" />
+      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="16" Column="17" />
+      <File FileName="MyHealthVitals/Models/VitalsData.cs" Line="57" Column="1" />
+      <File FileName="MyHealthVitals/Models/Reading.cs" Line="29" Column="4" />
+      <File FileName="MyHealthVitals/Models/Demographic.cs" Line="105" Column="27" />
+      <File FileName="MyHealthVitals/Models/Category.cs" Line="1" Column="1" />
+      <File FileName="MyHealthVitals/Models/Credential.cs" Line="37" Column="4" />
+      <File FileName="MyHealthVitals/Views/LoginPage.xaml.cs" Line="26" Column="23" />
+      <File FileName="iOS/BLE/BluetoothPeripheralDelegate.cs" Line="23" Column="4" />
+      <File FileName="MyHealthVitals/Views/ParameterListPage.xaml.cs" Line="20" Column="35" />
+      <File FileName="MyHealthVitals/Views/ParameterItemDetail.xaml.cs" Line="1" Column="1" />
+      <File FileName="MyHealthVitals/Views/ParameterListPage.xaml" Line="19" Column="30" />
+      <File FileName="MyHealthVitals/Views/MainPage.xaml" Line="7" Column="17" />
+      <File FileName="MyHealthVitals/Views/LoginPage.xaml" Line="34" Column="74" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />

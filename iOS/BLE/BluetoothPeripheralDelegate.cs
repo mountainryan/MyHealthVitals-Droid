@@ -32,25 +32,49 @@ namespace MyHealthVitals.iOS
 			}
 		}
 
+		private void printUpdatedCharacteristics(CBCharacteristic ch) { 
+			List<int> values = new List<int>();
+			foreach (var b in ch.Value)
+			{
+				values.Add(b);
+			}
+
+			int count = 0;
+			var sb = new StringBuilder();
+			foreach (var itm in values)
+			{
+				//if (count >= values.Count - 3)
+				//{
+				sb.Append(itm).Append(",");
+				//}
+				count++;
+			}
+
+			Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.UUID, sb.ToString()));
+		}
+
+		int countMeasuringPressure = 0;
 		public override void UpdatedCharacterteristicValue(CBPeripheral peripheral, CBCharacteristic ch, NSError error)
 		{
 
-			BluetoothCallBackUpdatable uiController = (BluetoothCallBackUpdatable)BluetoothCentralManager.uiController;
+			IBluetoothCallBackUpdatable uiController = (IBluetoothCallBackUpdatable)BluetoothCentralManager.uiController;
 
+			// sys , dia and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 63 && (int)ch.Value[2] < 68)
 			{
 				Debug.WriteLine("NIBP related token.");
 
-				uiController.ShowMessageOnUI("Measuring the Blood pressure...");
-
-				//vitalsData.Bpm = (int)ch.Value[9];
-				//vitalsData.BPSys = (int)ch.Value[6];
-				//vitalsData.BPDia = (int)ch.Value[8];
+				if (countMeasuringPressure == 0)
+				{
+					uiController.ShowMessageOnUI("Measuring the Blood pressure...", false);
+					countMeasuringPressure++;
+				}
 
 				if (ch.Value.Length > 21)
 				{
 					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
-					uiController.ShowMessageOnUI("Boood pressure read succesfully.");
+					uiController.ShowMessageOnUI("Boood pressure read succesfully.",false);
+					countMeasuringPressure = 0;
 				}
 
 				if (ch.Value.Length == 8)
@@ -64,32 +88,16 @@ namespace MyHealthVitals.iOS
 			//	Debug.WriteLine("Temparature related token.");
 			//}
 
+			//// spo2 , PI and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 80 && (int)ch.Value[2] < 84)
 			{
-				//Debug.WriteLine(" Spo2 related token");
-
 				if (ch.Value.Length == 19)
 				{
-					//vitalsData.Bpm = (int)ch.Value[10];
-					//vitalsData.SpO2 = (int)ch.Value[5];
-					//vitalsData.Bpm = (int)ch.Value[6];
-
 					uiController.SPO2_readingCompleted((int)ch.Value[5], (int)ch.Value[6], (int)ch.Value[8]);
-
-					//uiController.
 				}
 			}
 
-			if (ch.Value.Length > 10 && ch.Value.Length < 22)
-			{
-				//Debug.WriteLine("spo2: " + ch.Value[5] + " BPM: " + ch.Value[6]);
-			}
-
-			if (ch.Value.Length == 19)
-			{
-				//Debug.WriteLine("spo2: " + ch.Value[5] + " BPM: " + ch.Value[6]);
-			}
-
+			// error in blood pressure reading
 			if (ch.Value.Length == 14)
 			{
 				String message = "";
@@ -136,43 +144,10 @@ namespace MyHealthVitals.iOS
 						break;
 				}
 
-				uiController.ShowMessageOnUI(message);
+				uiController.ShowMessageOnUI(message,true);
 			}
 
-			//// sys , dia and bpm is available in spot check monitor
-			//if (ch.Value.Length > 21)
-			//{
-			//	//vitalsData.Bpm = (int)ch.Value[9];
-			//	//vitalsData.BPSys = (int)ch.Value[6];
-			//	//vitalsData.BPDia = (int)ch.Value[8];
-			//	Debug.WriteLine("inside 22 byte: " + ch.Value[6]);
-			//	Debug.WriteLine("check content of error byete when there is no error: " + (27 & (int)ch.Value[5]));
-			//	uiController.SYS_DIA_BPM_updated();
-			//}
-
-			//if (ch.Value.Length == 9)
-			//{
-			//	//vitalsData.Temp = 98;
-			//}
-
-			List<int> values = new List<int>();
-			foreach (var b in ch.Value)
-			{
-				values.Add(b);
-			}
-
-			int count = 0;
-			var sb = new StringBuilder();
-			foreach (var itm in values)
-			{
-				//if (count >= values.Count - 3)
-				//{
-				sb.Append(itm).Append(",");
-				//}
-				count++;
-			}
-
-			Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.UUID, sb.ToString()));
+			//printUpdatedCharacteristics(ch);
 		}
 	}
 }

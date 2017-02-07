@@ -11,17 +11,20 @@ namespace MyHealthVitals
 		public LoginPage()
 		{
 			InitializeComponent();
+			// calculating the height of
 		}
 
 		protected override void OnDisappearing()
 		{
 			base.OnDisappearing();
 			this.layoutLoading.IsVisible = false;
+
 		}
 
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
+			scrollView.HeightRequest = this.Content.Bounds.Size.Height - layoutImgContainer.Height - layoutLoginContainer.Height-40;
 		}
 
 		public async void btnLoginClicked(object sender, System.EventArgs e)
@@ -71,6 +74,9 @@ namespace MyHealthVitals
 			catch (Exception)
 			{
 				this.ShowAlertForLogin("An Error has occurred.");
+			}
+			finally{
+				this.layoutLoading.IsVisible = false;
 			}
 
 		}

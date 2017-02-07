@@ -17,6 +17,12 @@ namespace MyHealthVitals {
     public partial class LoginPage : global::Xamarin.Forms.ContentPage {
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.StackLayout layoutImgContainer;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.StackLayout layoutLoginContainer;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Entry txtUsername;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
@@ -26,7 +32,10 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.Button btnLogin;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::Xamarin.Forms.StackLayout layoutLoading;
+        private global::Xamarin.Forms.ScrollView scrollView;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.RelativeLayout layoutLoading;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Label lblLoadingMessage;
@@ -34,10 +43,13 @@ namespace MyHealthVitals {
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private void InitializeComponent() {
             this.LoadFromXaml(typeof(LoginPage));
+            layoutImgContainer = this.FindByName <global::Xamarin.Forms.StackLayout>("layoutImgContainer");
+            layoutLoginContainer = this.FindByName <global::Xamarin.Forms.StackLayout>("layoutLoginContainer");
             txtUsername = this.FindByName <global::Xamarin.Forms.Entry>("txtUsername");
             txtPassword = this.FindByName <global::Xamarin.Forms.Entry>("txtPassword");
             btnLogin = this.FindByName <global::Xamarin.Forms.Button>("btnLogin");
-            layoutLoading = this.FindByName <global::Xamarin.Forms.StackLayout>("layoutLoading");
+            scrollView = this.FindByName <global::Xamarin.Forms.ScrollView>("scrollView");
+            layoutLoading = this.FindByName <global::Xamarin.Forms.RelativeLayout>("layoutLoading");
             lblLoadingMessage = this.FindByName <global::Xamarin.Forms.Label>("lblLoadingMessage");
         }
     }

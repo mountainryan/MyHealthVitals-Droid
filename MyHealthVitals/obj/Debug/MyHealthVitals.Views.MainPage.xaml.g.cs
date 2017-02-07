@@ -26,13 +26,16 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.Label lblEmail;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::Xamarin.Forms.StackLayout layoutLoading;
+        private global::Xamarin.Forms.RelativeLayout layoutLoading;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Label lblStatus;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Label lblPressure;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Button btnBle;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Label lblSys;
@@ -67,9 +70,10 @@ namespace MyHealthVitals {
             imgProfile = this.FindByName <global::Xamarin.Forms.Image>("imgProfile");
             lblName = this.FindByName <global::Xamarin.Forms.Label>("lblName");
             lblEmail = this.FindByName <global::Xamarin.Forms.Label>("lblEmail");
-            layoutLoading = this.FindByName <global::Xamarin.Forms.StackLayout>("layoutLoading");
+            layoutLoading = this.FindByName <global::Xamarin.Forms.RelativeLayout>("layoutLoading");
             lblStatus = this.FindByName <global::Xamarin.Forms.Label>("lblStatus");
             lblPressure = this.FindByName <global::Xamarin.Forms.Label>("lblPressure");
+            btnBle = this.FindByName <global::Xamarin.Forms.Button>("btnBle");
             lblSys = this.FindByName <global::Xamarin.Forms.Label>("lblSys");
             lblDia = this.FindByName <global::Xamarin.Forms.Label>("lblDia");
             lblSpo2 = this.FindByName <global::Xamarin.Forms.Label>("lblSpo2");

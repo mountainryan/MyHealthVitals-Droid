@@ -7,25 +7,24 @@ using System.IO;
 
 namespace MyHealthVitals
 {
-	public interface BluetoothCallBackUpdatable
+	public partial class MainPage : ContentPage, IBluetoothCallBackUpdatable
 	{
-		void ShowMessageOnUI(String message);
-		void SPO2_readingCompleted(int sp02, int bpm, int perfusionIndex);
-		void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm);
-		void updatingPressureMeanTime(int pressure);
-	}
+		private VitalsData vitalsData = new VitalsData();
 
-	public partial class MainPage : ContentPage, BluetoothCallBackUpdatable
-	{
+		void btnSaveClicked(object sender, System.EventArgs e)
+		{
+			vitalsData.save();
+		}
+
 		void btnBleClicked(Object sender, System.EventArgs e)
 		{
 			//Debug.WriteLine(sender.is);
 			if (this.btnBle.IsEnabled) { 
-				DependencyService.Get<ICBCentralManager>().ConnectToDevice((BluetoothCallBackUpdatable)this);
+				DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
 			}
 		}
 
-		public void ShowMessageOnUI(string message)
+		public void ShowMessageOnUI(string message, Boolean isConnected)
 		{
 			//Debug.WriteLine(message);
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -33,29 +32,29 @@ namespace MyHealthVitals
 				//layoutLoading.IsVisible = true;
 				lblStatus.Text = message;
 
-				if (message == "Connected.")
+				if (isConnected)
 				{
-					this.btnBle.Image = "imgBluetooth.png";
-					this.btnBle.IsEnabled = false;
+					btnBle.Image = "imgDevCon.png";
+					btnBle.IsEnabled = false;
 				}
-				else {
-					this.btnBle.Image = "imgBleDisconnected.png";
-					this.btnBle.IsEnabled = true;
+				else { 
+					btnBle.Image = "imgDevDiscon.png";
+					btnBle.IsEnabled = true;
 				}
 				//hideMessageWthDelay();
 			});
 		}
 
-		public void hideMessageWthDelay()
-		{
-			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(20000), () => {
-				Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-					{
-						//layoutLoading.IsVisible = false;
-					});
-				return true;
-			});
-		}
+		//public void hideMessageWthDelay()
+		//{
+		//	Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(20000), () => {
+		//		Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+		//			{
+		//				//layoutLoading.IsVisible = false;
+		//			});
+		//		return true;
+		//	});
+		//}
 
 		public void updatingPressureMeanTime(int pressure)
 		{
@@ -67,7 +66,9 @@ namespace MyHealthVitals
 
 		public void SPO2_readingCompleted(int sp02, int bpm, int perfusionIndex)
 		{
-			//Debug.WriteLine("sp02: " + sp02 + " bpm: " + bpm);
+			this.vitalsData.bpDia = new Reading("Oxygen", sp02,2);
+			this.vitalsData.bpSys = new Reading("Perfusion Index", perfusionIndex,2);
+			this.vitalsData.bpSys = new Reading("Hearth Rate", bpm,3);
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
@@ -99,7 +100,10 @@ namespace MyHealthVitals
 
 		public void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm)
 		{
-			Debug.WriteLine("sys: " + bpsys + " dia: " + bpdia + " bpm: " + bpm);
+
+			this.vitalsData.bpDia = new Reading("Diastolic", bpdia,1);
+			this.vitalsData.bpSys = new Reading("Systolic", bpsys,1);
+			this.vitalsData.bpSys = new Reading("Hearth Rate", bpm,3);
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
@@ -112,28 +116,11 @@ namespace MyHealthVitals
 			});
 		}
 
-		//private BleManager bleManager;
-		//private VitalsData vitalsData;
-
 		public MainPage()
 		{
 			InitializeComponent();
-			//this.layoutLoading.IsVisible = false;
-
-			//bleManager = new BleManager();
-			//bleManager.connect(this);
-
-			DependencyService.Get<ICBCentralManager>().ConnectToDevice((BluetoothCallBackUpdatable)this);
-			//this.layoutLoading.IsVisible = true;
-		}
-
-		protected override void OnDisappearing()
-		{
-			base.OnDisappearing();
-
-			//this.bleManager.disconnectDevice();
-			//this.bleManager.Adapter = null;
-			//this.bleManager.Adapter.DisconnectDeviceAsync(this.bleManager.Adapter.);
+			// calling to start connecting the device this this should be implemented differently in android because it is calling the native API
+			DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
 		}
 
 		protected async override void OnAppearing()
@@ -156,24 +143,6 @@ namespace MyHealthVitals
 					this.imgProfile.Source = Xamarin.Forms.ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(imageBase64)));
 				}
 			}
-
-			// bluetooth wor
-
-			//bleManager.OnDeviceConnected += BleManager_OnDeviceConnected;
-			//vitalsData = new VitalsData();
-			//vitalsData.OnBmpChange += Instance_OnBmpChange;
-			//vitalsData.OnSpO2Change += Instance_OnSpO2Change;
-			//vitalsData.OnBPSysChange += VitalsData_OnBPSysChange;
-			//vitalsData.OnBPDiaChange += VitalsData_OnBPDiaChange;
-			//vitalsData.OnTempChange += VitalsData_OnTempChange;
-
-		}
-
-		// 
-		void BleManager_OnDeviceConnected()
-		{
-			//if(this.bleManager.Adapter.up
-			Debug.WriteLine("custom on device connected");
 		}
 
 		void btnLogOutClicked(object sender, System.EventArgs e)
@@ -222,150 +191,5 @@ namespace MyHealthVitals
 			this.btnCelcious.BackgroundColor = Color.White;
 			this.btnFareinheit.BackgroundColor = Color.Blue;
 		}
-
-		//#region Update Vitals
-		//private void VitalsData_OnTempChange(int val)
-		//{
-
-		//	Debug.WriteLine(string.Format("BPDia was updated to: {0}", val));
-		//	//Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-		//	//{
-		//	//	lblSys.Text = val.ToString();
-		//	//	layoutLoading.IsVisible = false;
-		//	//});
-
-		//	//var reading = new Reading();
-		//	//reading.CategoryId = 4;
-		//	//reading.Date = vitalsData.Date;
-		//	//reading.Source = "Device";
-		//	//reading.EnglishValue = val;
-
-		//	//await reading.PostAsync(LoginViewController.credential);
-		//}
-
-		//private void VitalsData_OnBPDiaChange(int val)
-		//{
-		//	Debug.WriteLine(string.Format("BPDia was updated to: {0}", val));
-
-		//	Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-		//	{
-
-		//		Debug.WriteLine("in main tread");
-
-		//		lblDia.Text = val.ToString();
-		//		layoutLoading.IsVisible = false;
-		//		lblBpm.Text = this.vitalsData.Bpm.ToString();
-		//	});
-
-		//	//InvokeOnMainThread(() =>
-		//	//{
-		//	//	// manipulate UI controls
-		//	//	lblBPDia.Text = val.ToString();
-		//	//});
-
-		//	//this.ma
-
-		//	//var reading = new Reading();
-		//	//reading.CategoryId = 1;
-		//	//reading.Date = vitalsData.Date;
-		//	//reading.Source = "Device";
-		//	//reading.EnglishValue = val;
-		//	//reading.ValueType = "Diastolic";
-
-		//	//await reading.PostAsync(LoginViewController.credential);
-		//}
-
-		//private void VitalsData_OnBPSysChange(int val)
-		//{
-		//	Debug.WriteLine(string.Format("BPSys was updated to: {0}", val));
-
-		//	Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-		//	{
-		//		Debug.WriteLine("in main tread");
-
-		//		lblSys.Text = val.ToString();
-		//		layoutLoading.IsVisible = false;
-		//		lblBpm.Text = this.vitalsData.Bpm.ToString();
-		//	});
-
-		//	//InvokeOnMainThread(() =>
-		//	//{
-		//	//	// manipulate UI controls
-		//	//	lblBPSys.Text = val.ToString();
-		//	//});
-
-		//	//var reading = new Reading();
-		//	//reading.CategoryId = 1;
-		//	//reading.Date = vitalsData.Date;
-		//	//reading.Source = "Device";
-		//	//reading.EnglishValue = val;
-		//	//reading.ValueType = "Systolic";
-
-		//	//await reading.PostAsync(LoginViewController.credential);
-		//}
-
-		//private DateTime lastSpO2Reading = DateTime.MinValue;
-		//private void Instance_OnSpO2Change(int val)
-		//{
-		//	Debug.WriteLine(string.Format("SpO2 was updated to: {0}", val));
-		//	//InvokeOnMainThread(() =>
-		//	//{
-		//	//	// manipulate UI controls
-		//	//	lblSpO2.Text = val.ToString();
-		//	//});
-
-		//	//TimeSpan span = lastSpO2Reading.Subtract(DateTime.Now);
-		//	//if (span.Minutes < -1)
-		//	//{
-		//	//	lastSpO2Reading = DateTime.Now;
-		//	//	var reading = new Reading();
-		//	//	reading.CategoryId = 2;
-		//	//	reading.Date = vitalsData.Date;
-		//	//	reading.Source = "Device";
-		//	//	reading.EnglishValue = val;
-
-		//	//	//await reading.PostAsync(LoginViewController.credential);
-		//	//}
-
-
-		//}
-
-		//private DateTime lastBpReading = DateTime.MinValue;
-		//private void Instance_OnBmpChange(int val)
-		//{
-		//	Debug.WriteLine(string.Format("BPM was updated to: {0}", val));
-
-
-		//	Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-		//	{
-		//		//Debug.WriteLine("in main tread");
-
-		//		//lblSys.Text = val.ToString();
-		//		layoutLoading.IsVisible = false;
-		//		lblBpm.Text = val.ToString();
-		//	});
-
-		//	//InvokeOnMainThread(() =>
-		//	//{
-		//	//	// manipulate UI controls
-		//	//	lblBpm.Text = val.ToString();
-		//	//});
-
-		//	//TimeSpan span = lastBpReading.Subtract(DateTime.Now);
-		//	//if (span.Minutes < -1)
-		//	//{
-		//	//	lastBpReading = DateTime.Now;
-		//	//	var reading = new Reading();
-		//	//	reading.CategoryId = 3;
-		//	//	reading.Date = vitalsData.Date;
-		//	//	reading.Source = "Device";
-		//	//	reading.EnglishValue = val;
-
-		//	//	//await reading.PostAsync(LoginViewController.credential);
-		//	//}
-		//}
-
-
-		//#endregion
 	}
 }

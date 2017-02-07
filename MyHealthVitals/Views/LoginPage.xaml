@@ -4,11 +4,11 @@
 		<RelativeLayout>
 <!--login view starts-->
 			<StackLayout Spacing="0">
-				<StackLayout Padding="0,30,0,0" Orientation="Vertical" VerticalOptions="Start">
+				<StackLayout x:Name="layoutImgContainer" Padding="0,30,0,0" Orientation="Vertical" VerticalOptions="Start">
 					<Image Source="icucarellc.png">
 					</Image>
 				</StackLayout>
-				<StackLayout Margin="20,30,20,10" VerticalOptions="Center" Orientation="Horizontal" Spacing="0">
+				<StackLayout x:Name="layoutLoginContainer" Margin="20,30,20,10" VerticalOptions="Center" Orientation="Horizontal" Spacing="0">
 					<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical">
 						<Entry Margin="0" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="rhiggs" Placeholder="username">
 						</Entry>
@@ -18,8 +18,8 @@
 					<Button Margin="5,0,0,0" Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="80" FontSize="17" Text="Login">
 					</Button>
 				</StackLayout>
-				<ScrollView Margin="20">
-					<Label FontSize="14" TextColor="{StaticResource colorWhite}" Text="Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, &#xA;					written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.">
+				<ScrollView MinimumWidthRequest="200" x:Name="scrollView" Margin="20">
+					<Label FontSize="14" TextColor="{StaticResource colorWhite}" Text="User needs to establish their personal Normal PEF, FEV1 Values. This is accomplished by taking three valid readings in sequence. The system will use the highest readings of the three to determine your Normal Values. These values along with your gender, height and age will be used to calculate a reference value. This value will be shown in the form of a color bar chart on the Main Screen at the conclusion of each subsequent readings.">
 					</Label>
 				</ScrollView>
 			</StackLayout>

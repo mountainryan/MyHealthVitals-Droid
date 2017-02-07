@@ -41,6 +41,9 @@
     <EmbeddedResource Include="Views\ParameterListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\ParameterItemDetail.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -64,6 +67,12 @@
       <DependentUpon>ParameterListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\VitalsData.cs" />
+    <Compile Include="Models\IBluetoothCallBackUpdatable.cs" />
+    <Compile Include="Models\Reading.cs" />
+    <Compile Include="Views\ParameterItemDetail.xaml.cs">
+      <DependentUpon>ParameterItemDetail.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

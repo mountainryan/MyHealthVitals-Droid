@@ -7,7 +7,6 @@ using Xamarin.Forms;
 
 namespace MyHealthVitals
 {
-
 	public class Employee
 	{
 		public string DisplayName { get; set; }
@@ -19,6 +18,11 @@ namespace MyHealthVitals
 		{
 			Category category = (Category)e.Item;
 			Debug.WriteLine(category.Name);
+
+			var newPage = new ParameterItemDetail();
+			newPage.Title = "SpO2 Data List";
+
+			this.Navigation.PushAsync(newPage);
 		}
 
 		ObservableCollection<Category> categories = new ObservableCollection<Category>();
@@ -26,9 +30,6 @@ namespace MyHealthVitals
 		public ParameterListPage()
 		{
 			InitializeComponent();
-
-
-
 			this.layoutLoading.IsVisible = true;
 		}
 
@@ -48,11 +49,7 @@ namespace MyHealthVitals
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
 				layoutLoading.IsVisible = false;
-
-				//var windowSize = this.Content.Bounds.Size.Height;
-
 				this.parameterListView.HeightRequest = this.Content.Bounds.Size.Height - this.lblLoadingMessage.Height - this.lblLoadingMessage.Margin.Top*2;
-
 			});
 		}
 
