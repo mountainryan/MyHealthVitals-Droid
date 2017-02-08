@@ -82,9 +82,22 @@ namespace MyHealthVitals
 			//vitalsData.sendToServer_SPO2_PI_BPM();
 		}
 
-		public void updateTemperature(int temperature, String type) {
+		public void updateTemperature(decimal temperature, String type) {
+			//vitalsData.temperature = new Reading("Temperature", (decimal)97.8, 4);
+			vitalsData.temperature = new Reading("Temperature", temperature, 4);
+			vitalsData.sendToServerTemperature();
+
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() => {
-				lblTemperature.Text = temperature.ToString();
+
+				if (!isCelcious)
+				{
+					lblTemperature.Text = ConvertCelsiusToFahrenheit((double)this.vitalsData.temperature.EnglishValue).ToString();
+					btnFareinheit.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
+					btnCelcious.TextColor = Color.Gray;
+				}
+				else { 
+					lblTemperature.Text = temperature.ToString();
+				}
 			});
 		}
 
@@ -117,7 +130,7 @@ namespace MyHealthVitals
 			{
 				if (bpm == 0)
 				{
-					lblBpm.Text = "...";
+					lblBpm.Text = "."+lblBpm.Text;
 				}
 				else { 
 					lblBpm.Text = bpm.ToString();	
@@ -125,7 +138,7 @@ namespace MyHealthVitals
 
 				if (sp02 == 0)
 				{
-					lblSpo2.Text = "...";
+					lblSpo2.Text = lblSpo2.Text+".";
 				}
 				else {
 					lblSpo2.Text = sp02.ToString();
@@ -136,7 +149,7 @@ namespace MyHealthVitals
 					lblPerfusionIndex.Text = perfusionIndex.ToString();
 				}
 				else {
-					lblPerfusionIndex.Text = "...";
+					lblPerfusionIndex.Text = lblPerfusionIndex.Text +".";
 				}
 			});
 		}
@@ -157,6 +170,11 @@ namespace MyHealthVitals
 
 				//layoutLoading.IsVisible = false;
 			});
+		}
+
+		public static double ConvertCelsiusToFahrenheit(double c)
+		{
+			return ((9.0 / 5.0) * c) + 32;
 		}
 
 		void btnLogOutClicked(object sender, System.EventArgs e)
@@ -183,27 +201,47 @@ namespace MyHealthVitals
 
 		void btnFareinheitClicked(Object sender, System.EventArgs e)
 		{
-			Debug.WriteLine("F");
-			this.btnFareinheit.BackgroundColor = Color.White;
-			this.btnCelcious.BackgroundColor = (Color)App.Current.Resources["colorThemeBlue"];
-		}
+			btnFareinheit.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
+			btnCelcious.TextColor = Color.Gray;
+			isCelcious = false;
 
+			try
+			{
+				lblTemperature.Text = ConvertCelsiusToFahrenheit((double)this.vitalsData.temperature.EnglishValue).ToString();
+			}
+			catch (Exception){
+				Debug.WriteLine("exception nullpointer");
+			}
+		}
+		bool isCelcious = true;
 		void btnCelciusClicked(Object sender, System.EventArgs e)
 		{
-			this.btnCelcious.BackgroundColor = Color.White;
-			this.btnFareinheit.BackgroundColor = (Color)App.Current.Resources["colorThemeBlue"];
+			isCelcious = true;
+			btnFareinheit.TextColor = Color.Gray; 
+			btnCelcious.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
+
+			try
+			{
+				lblTemperature.Text = this.vitalsData.temperature.EnglishValue.ToString();
+			}
+			catch(Exception) {
+				Debug.WriteLine("conversion exception");
+			}
 		}
 
+		bool isKg = true;
 		void btnLbsClicked(Object sender, System.EventArgs e)
 		{
-			this.btnCelcious.BackgroundColor = Color.White;
-			this.btnFareinheit.BackgroundColor = Color.Blue;
+			isKg = false;
+			btnLbs.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
+			btnKgs.TextColor = Color.Gray;
 		}
 
 		void btnKgsClicked(Object sender, System.EventArgs e)
 		{
-			this.btnCelcious.BackgroundColor = Color.White;
-			this.btnFareinheit.BackgroundColor = Color.Blue;
+			isKg = true;
+			btnKgs.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
+			btnLbs.TextColor = Color.Gray;
 		}
 	}
 }

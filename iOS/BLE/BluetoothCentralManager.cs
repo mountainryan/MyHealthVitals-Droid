@@ -81,7 +81,7 @@ namespace MyHealthVitals.iOS
 			manager.ScanForPeripherals(cbuuids); //Initiates async calls of DiscoveredPeripheral	
 			((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Searching device...", false);
 
-			//checkIfScanningTimeOut();
+			checkIfScanningTimeOut();
 		}
 
 		public void initializeBluetooth()

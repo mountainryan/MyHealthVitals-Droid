@@ -110,10 +110,8 @@ namespace MyHealthVitals.iOS
 					// if this condition saisfies the reading is measured in celcious
 					if (data >= 200 && data <= 1301) {
 						uiController.ShowMessageOnUI("Temperature read successfully.",true);
-
-						int temperature = data / 100 + 30;
-
-						uiController.updateTemperature(temperature, "Celcious");
+						decimal temperatureInCelcious = data / 100 + 30;
+						uiController.updateTemperature(temperatureInCelcious, "Celcious");
 					}
 				}
 			}
@@ -128,7 +126,7 @@ namespace MyHealthVitals.iOS
 
 					int lastSpo2 = (int)ch.Value[5];
 					int  lastBPM = (int)ch.Value[6];
-					uiController.SPO2_readingCompleted(lastSpo2, lastBPM,(int)ch.Value[8]/100);
+					uiController.SPO2_readingCompleted(lastSpo2, lastBPM,(float)((int)ch.Value[8])/100);
 
 					//var D1_byte9th = ((int)ch.Value[9] & (1 << 1)) != 0;
 					//Debug.WriteLine("D0: " + D1_byte9th);

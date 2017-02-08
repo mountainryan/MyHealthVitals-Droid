@@ -48,11 +48,11 @@ namespace MyHealthVitals
 
 			// converting the this reading into string to send it to the service as application/json
 			var content = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
-			var serviceUri = Credential.BASE_URL_TEST + $"api/v1/Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
 
 			var response = await client.PostAsync(serviceUri,content);
 
-			if (response.IsSuccessStatusCode)
+			if (response.ReasonPhrase=="OK")
 			{
 				return true;
 			}
