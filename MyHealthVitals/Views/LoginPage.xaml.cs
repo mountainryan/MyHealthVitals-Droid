@@ -49,7 +49,8 @@ namespace MyHealthVitals
 					Debug.WriteLine("Login succesfull.");
 
 					//var newScreen = new MainPage();
-					var newScreen = new MainPage();
+					//var newScreen = new MainPage();
+					var newScreen = new RespHomePage();
 					newScreen.Title = "Main Screeen";
 
 					var nav = new NavigationPage(newScreen);
