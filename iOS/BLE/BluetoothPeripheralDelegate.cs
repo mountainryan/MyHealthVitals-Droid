@@ -110,8 +110,14 @@ namespace MyHealthVitals.iOS
 					// if this condition saisfies the reading is measured in celcious
 					if (data >= 200 && data <= 1301) {
 						uiController.ShowMessageOnUI("Temperature read successfully.",true);
-						decimal temperatureInCelcious = data / 100 + 30;
-						uiController.updateTemperature(temperatureInCelcious, "Celcious");
+						//decimal temperatureInCelcious = (decimal)((float)633 / 100 + 30);
+
+						//(9.0 / 5.0) * c) +32
+
+						var tempC = (double)data / 100 + 30.0;
+						double tempF =  Math.Round(((9.0 / 5.0) * tempC) + 32, 1);
+
+						uiController.updateTemperature((decimal)tempF, "Celcious");
 					}
 				}
 			}

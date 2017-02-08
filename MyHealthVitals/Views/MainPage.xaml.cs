@@ -16,6 +16,11 @@ namespace MyHealthVitals
 			// calling to start connecting the device this this should be implemented differently in android because it is calling the native API
 			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(250), () =>
 			{
+
+				btnFareinheit.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
+				btnCelcious.TextColor = Color.Gray;
+				isCelcious = false;
+
 				Debug.WriteLine("searcching decice...");
 				DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
 				return false;
@@ -83,19 +88,16 @@ namespace MyHealthVitals
 		}
 
 		public void updateTemperature(decimal temperature, String type) {
-			//vitalsData.temperature = new Reading("Temperature", (decimal)97.8, 4);
 			vitalsData.temperature = new Reading("Temperature", temperature, 4);
 			vitalsData.sendToServerTemperature();
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() => {
 
-				if (!isCelcious)
+				if (isCelcious)
 				{
-					lblTemperature.Text = ConvertCelsiusToFahrenheit((double)this.vitalsData.temperature.EnglishValue).ToString();
-					btnFareinheit.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
-					btnCelcious.TextColor = Color.Gray;
+					lblTemperature.Text = ConvertFahrenheitToCelsius((double)this.vitalsData.temperature.EnglishValue).ToString();
 				}
-				else { 
+				else {
 					lblTemperature.Text = temperature.ToString();
 				}
 			});
@@ -172,9 +174,14 @@ namespace MyHealthVitals
 			});
 		}
 
-		public static double ConvertCelsiusToFahrenheit(double c)
+		//public static double ConvertCelsiusToFahrenheit(double c)
+		//{
+		//	return ((9.0 / 5.0) * c) + 32;
+		//}
+
+		public static double ConvertFahrenheitToCelsius(double f)
 		{
-			return ((9.0 / 5.0) * c) + 32;
+			return Math.Round((5.0 / 9.0) * (f - 32),1);
 		}
 
 		void btnLogOutClicked(object sender, System.EventArgs e)
@@ -207,13 +214,13 @@ namespace MyHealthVitals
 
 			try
 			{
-				lblTemperature.Text = ConvertCelsiusToFahrenheit((double)this.vitalsData.temperature.EnglishValue).ToString();
+				lblTemperature.Text = this.vitalsData.temperature.EnglishValue.ToString();
 			}
 			catch (Exception){
 				Debug.WriteLine("exception nullpointer");
 			}
 		}
-		bool isCelcious = true;
+		bool isCelcious = false;
 		void btnCelciusClicked(Object sender, System.EventArgs e)
 		{
 			isCelcious = true;
@@ -222,7 +229,7 @@ namespace MyHealthVitals
 
 			try
 			{
-				lblTemperature.Text = this.vitalsData.temperature.EnglishValue.ToString();
+				lblTemperature.Text = ConvertFahrenheitToCelsius((double)this.vitalsData.temperature.EnglishValue).ToString();
 			}
 			catch(Exception) {
 				Debug.WriteLine("conversion exception");

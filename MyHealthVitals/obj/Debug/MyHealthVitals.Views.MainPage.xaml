@@ -85,7 +85,7 @@
 						<Label Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
 						<StackLayout Orientation="Horizontal" Padding="2">
 							<StackLayout Orientation="Horizontal" Padding="2">
-								<Button Clicked="btnFareinheitClicked" x:Name="btnFareinheit" Text="°F">
+								<Button TextColor="Gray" Clicked="btnFareinheitClicked" x:Name="btnFareinheit" Text="°F">
 								</Button>
 								<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" Text="°C">
 								</Button>
