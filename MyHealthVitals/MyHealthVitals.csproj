@@ -44,6 +44,9 @@
     <EmbeddedResource Include="Views\ParameterItemDetail.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\MyRespCheck\RespHomePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -73,6 +76,9 @@
     <Compile Include="Views\ParameterItemDetail.xaml.cs">
       <DependentUpon>ParameterItemDetail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MyRespCheck\RespHomePage.xaml.cs">
+      <DependentUpon>RespHomePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -93,14 +99,8 @@
     <Reference Include="System.Net.Http.Primitives">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.BLE.Abstractions">
-      <HintPath>..\packages\Plugin.BLE.1.1.0\lib\portable-net45+win8+wpa81+wp8\Plugin.BLE.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.BLE">
-      <HintPath>..\packages\Plugin.BLE.1.1.0\lib\portable-net45+win8+wpa81+wp8\Plugin.BLE.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -110,7 +110,9 @@
     <Folder Include="Views\" />
     <Folder Include="BLE\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\MyRespCheck\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
 </Project>

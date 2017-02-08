@@ -5,12 +5,14 @@
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.TestPage.xaml
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.ParameterListPage.xaml
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.ParameterItemDetail.xaml
+/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.MyRespCheck.RespHomePage.xaml
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.App.xaml.g.cs
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.LoginPage.xaml.g.cs
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.MainPage.xaml.g.cs
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.TestPage.xaml.g.cs
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.ParameterListPage.xaml.g.cs
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.ParameterItemDetail.xaml.g.cs
+/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.Views.MyRespCheck.RespHomePage.xaml.g.cs
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/MyHealthVitals.dll.mdb
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/MyHealthVitals.dll
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/obj/Debug/MyHealthVitals.dll
@@ -21,6 +23,4 @@
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/System.Net.Http.dll
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/System.Net.Http.Extensions.dll
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/System.Net.Http.Primitives.dll
-/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/Plugin.BLE.Abstractions.dll
-/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/Plugin.BLE.dll
 /Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/bin/Debug/Newtonsoft.Json.dll

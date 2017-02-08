@@ -54,6 +54,8 @@ namespace MyHealthVitals.iOS
 		}
 
 		int countMeasuringPressure = 0;
+		//int lastSpo2 = 0;
+		//int lastBPM = 0;
 		public override void UpdatedCharacterteristicValue(CBPeripheral peripheral, CBCharacteristic ch, NSError error)
 		{
 
@@ -66,14 +68,14 @@ namespace MyHealthVitals.iOS
 
 				if (countMeasuringPressure == 0)
 				{
-					uiController.ShowMessageOnUI("Measuring the Blood pressure...", false);
+					uiController.ShowMessageOnUI("Measuring the Blood pressure...", true);
 					countMeasuringPressure++;
 				}
 
 				if (ch.Value.Length > 21)
 				{
 					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
-					uiController.ShowMessageOnUI("Boood pressure read succesfully.",false);
+					uiController.ShowMessageOnUI("Boood pressure read succesfully.",true);
 					countMeasuringPressure = 0;
 				}
 
@@ -83,17 +85,59 @@ namespace MyHealthVitals.iOS
 				}
 			}
 
-			//if ((int)ch.Value[2] > 111 && (int)ch.Value[2] < 115)
-			//{
-			//	Debug.WriteLine("Temparature related token.");
-			//}
+			if ((int)ch.Value[2] > 111 && (int)ch.Value[2] < 115)
+			{
+				Debug.WriteLine("Temparature related token.");
+
+				// from document it is written that the 5 byte is status and D4 is temperature probe is connected
+				Byte temperatureStatus = ch.Value[5];
+				// bit 5
+				var D4 = (15 & (1 << 4)) != 0;
+
+				// if D4=0 means temperature reading is completed
+				if (!D4) {
+					// has the temperature reading
+					// combining byte 6 and byte 7 to read temperature
+					int data = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
+					if(data <= 3) {
+						uiController.ShowMessageOnUI("Failed to read temperature.",true);
+					}
+
+					if(data >= 1312){ 
+						uiController.ShowMessageOnUI("Too high temperature.", true);
+					}
+
+					// if this condition saisfies the reading is measured in celcious
+					if (data >= 200 && data <= 1301) {
+						uiController.ShowMessageOnUI("Temperature read successfully.",true);
+
+						int temperature = data / 100 + 30;
+
+						uiController.updateTemperature(temperature, "Celcious");
+					}
+				}
+			}
 
 			//// spo2 , PI and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 80 && (int)ch.Value[2] < 84)
 			{
 				if (ch.Value.Length == 19)
 				{
-					uiController.SPO2_readingCompleted((int)ch.Value[5], (int)ch.Value[6], (int)ch.Value[8]);
+					// reading byte 10th and bit 9
+					//var D0 = (ch.Value[9] & (1 << 9 - 1)) != 0;
+
+					int lastSpo2 = (int)ch.Value[5];
+					int  lastBPM = (int)ch.Value[6];
+					uiController.SPO2_readingCompleted(lastSpo2, lastBPM,(int)ch.Value[8]/100);
+
+					//var D1_byte9th = ((int)ch.Value[9] & (1 << 1)) != 0;
+					//Debug.WriteLine("D0: " + D1_byte9th);
+					//lastBPM = 
+
+				}
+				else if(ch.Value.Length==11) {
+					Debug.WriteLine("end of the spo2 reading.");
+					uiController.noticeEndOfReadingSpo2();
 				}
 			}
 
@@ -147,7 +191,7 @@ namespace MyHealthVitals.iOS
 				uiController.ShowMessageOnUI(message,true);
 			}
 
-			//printUpdatedCharacteristics(ch);
+			printUpdatedCharacteristics(ch);
 		}
 	}
 }

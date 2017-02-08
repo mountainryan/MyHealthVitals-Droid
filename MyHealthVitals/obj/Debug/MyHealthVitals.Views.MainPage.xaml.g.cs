@@ -59,6 +59,9 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.Button btnCelcious;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Label lblTemperature;
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Button btnLbs;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
@@ -81,6 +84,7 @@ namespace MyHealthVitals {
             lblPerfusionIndex = this.FindByName <global::Xamarin.Forms.Label>("lblPerfusionIndex");
             btnFareinheit = this.FindByName <global::Xamarin.Forms.Button>("btnFareinheit");
             btnCelcious = this.FindByName <global::Xamarin.Forms.Button>("btnCelcious");
+            lblTemperature = this.FindByName <global::Xamarin.Forms.Label>("lblTemperature");
             btnLbs = this.FindByName <global::Xamarin.Forms.Button>("btnLbs");
             btnKgs = this.FindByName <global::Xamarin.Forms.Button>("btnKgs");
         }

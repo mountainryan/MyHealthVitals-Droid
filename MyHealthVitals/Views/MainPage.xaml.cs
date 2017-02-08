@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Xamarin.Forms;
 using System.Diagnostics;
 using System.IO;
@@ -11,10 +10,44 @@ namespace MyHealthVitals
 	{
 		private VitalsData vitalsData = new VitalsData();
 
-		void btnSaveClicked(object sender, System.EventArgs e)
+		public MainPage()
 		{
-			vitalsData.save();
+			InitializeComponent();
+			// calling to start connecting the device this this should be implemented differently in android because it is calling the native API
+			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(250), () =>
+			{
+				Debug.WriteLine("searcching decice...");
+				DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
+				return false;
+			});
 		}
+
+		protected async override void OnAppearing()
+		{
+			base.OnAppearing();
+
+			// calling async to get all demographics user details 
+			var isSuccess = await Demographics.sharedInstance.getDemographicFromApi();
+
+			if (isSuccess)
+			{
+				this.lblName.Text = Demographics.sharedInstance.getFullName();
+				this.lblEmail.Text = Demographics.sharedInstance.Email;
+
+				// calling async to download the image and setting in to the image
+				String imageBase64 = await Demographics.sharedInstance.downloadProfilePic();
+
+				if (imageBase64 != null)
+				{
+					this.imgProfile.Source = Xamarin.Forms.ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(imageBase64)));
+				}
+			}
+		}
+
+		//void btnSaveClicked(object sender, System.EventArgs e)
+		//{
+		//	vitalsData.save();
+		//}
 
 		void btnBleClicked(Object sender, System.EventArgs e)
 		{
@@ -45,6 +78,16 @@ namespace MyHealthVitals
 			});
 		}
 
+		public void noticeEndOfReadingSpo2() {
+			//vitalsData.sendToServer_SPO2_PI_BPM();
+		}
+
+		public void updateTemperature(int temperature, String type) {
+			Xamarin.Forms.Device.BeginInvokeOnMainThread(() => {
+				lblTemperature.Text = temperature.ToString();
+			});
+		}
+
 		//public void hideMessageWthDelay()
 		//{
 		//	Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(20000), () => {
@@ -64,10 +107,10 @@ namespace MyHealthVitals
 			});
 		}
 
-		public void SPO2_readingCompleted(int sp02, int bpm, int perfusionIndex)
+		public void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex)
 		{
 			this.vitalsData.bpDia = new Reading("Oxygen", sp02,2);
-			this.vitalsData.bpSys = new Reading("Perfusion Index", perfusionIndex,2);
+			//this.vitalsData.bpSys = new Reading("Perfusion Index", perfusionIndex,2);
 			this.vitalsData.bpSys = new Reading("Hearth Rate", bpm,3);
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -88,12 +131,12 @@ namespace MyHealthVitals
 					lblSpo2.Text = sp02.ToString();
 				}
 
-				if (perfusionIndex == 0)
+				if (perfusionIndex > 0)
 				{
-					lblPerfusionIndex.Text = "...";
+					lblPerfusionIndex.Text = perfusionIndex.ToString();
 				}
 				else {
-					lblPerfusionIndex.Text = perfusionIndex.ToString();
+					lblPerfusionIndex.Text = "...";
 				}
 			});
 		}
@@ -114,35 +157,6 @@ namespace MyHealthVitals
 
 				//layoutLoading.IsVisible = false;
 			});
-		}
-
-		public MainPage()
-		{
-			InitializeComponent();
-			// calling to start connecting the device this this should be implemented differently in android because it is calling the native API
-			DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
-		}
-
-		protected async override void OnAppearing()
-		{
-			base.OnAppearing();
-
-			// calling async to get all demographics user details 
-			var isSuccess = await Demographics.sharedInstance.getDemographicFromApi();
-
-			if (isSuccess)
-			{
-				this.lblName.Text = Demographics.sharedInstance.getFullName();
-				this.lblEmail.Text = Demographics.sharedInstance.Email;
-
-				// calling async to download the image and setting in to the image
-				String imageBase64 = await Demographics.sharedInstance.downloadProfilePic();
-
-				if (imageBase64 != null)
-				{
-					this.imgProfile.Source = Xamarin.Forms.ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(imageBase64)));
-				}
-			}
 		}
 
 		void btnLogOutClicked(object sender, System.EventArgs e)

@@ -1,19 +1,12 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/LoginPage.xaml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/MainPage.xaml.cs">
     <Files>
-      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="16" Column="17" />
-      <File FileName="MyHealthVitals/Models/VitalsData.cs" Line="57" Column="1" />
-      <File FileName="MyHealthVitals/Models/Reading.cs" Line="29" Column="4" />
-      <File FileName="MyHealthVitals/Models/Demographic.cs" Line="105" Column="27" />
-      <File FileName="MyHealthVitals/Models/Category.cs" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Models/Credential.cs" Line="37" Column="4" />
-      <File FileName="MyHealthVitals/Views/LoginPage.xaml.cs" Line="26" Column="23" />
-      <File FileName="iOS/BLE/BluetoothPeripheralDelegate.cs" Line="23" Column="4" />
-      <File FileName="MyHealthVitals/Views/ParameterListPage.xaml.cs" Line="20" Column="35" />
-      <File FileName="MyHealthVitals/Views/ParameterItemDetail.xaml.cs" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Views/ParameterListPage.xaml" Line="19" Column="30" />
-      <File FileName="MyHealthVitals/Views/MainPage.xaml" Line="7" Column="17" />
-      <File FileName="MyHealthVitals/Views/LoginPage.xaml" Line="34" Column="74" />
+      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="106" Column="66" />
+      <File FileName="iOS/BLE/BluetoothPeripheralDelegate.cs" Line="22" Column="5" />
+      <File FileName="MyHealthVitals/Models/IBluetoothCallBackUpdatable.cs" Line="13" Column="1" />
+      <File FileName="MyHealthVitals/Models/VitalsData.cs" Line="29" Column="66" />
+      <File FileName="MyHealthVitals/Models/Reading.cs" Line="21" Column="50" />
+      <File FileName="MyHealthVitals/BLE/ICBCentralManager.cs" Line="10" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />

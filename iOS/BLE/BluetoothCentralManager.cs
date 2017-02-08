@@ -16,8 +16,14 @@ namespace MyHealthVitals.iOS
 
 		public void startMeasuringBP()
 		{
-			byte[] bytes = new byte[] { 0xaa, 0x55, 0x40, 0x02, 0x01, 0x29 };
-			connectedPeripheral.WriteValue(NSData.FromArray(bytes), ((BluetoothPeripheralDelegate)BluetoothCentralManager.connectedPeripheral.Delegate).bmChar, CBCharacteristicWriteType.WithResponse);
+			if (connectedPeripheral != null && connectedPeripheral.State == CBPeripheralState.Connected)
+			{
+				byte[] bytes = new byte[] { 0xaa, 0x55, 0x40, 0x02, 0x01, 0x29 };
+				connectedPeripheral.WriteValue(NSData.FromArray(bytes), ((BluetoothPeripheralDelegate)BluetoothCentralManager.connectedPeripheral.Delegate).bmChar, CBCharacteristicWriteType.WithResponse);
+			}
+			else { 
+				((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Device is not connected. Please connect and try again.", false);
+			}
 		}
 
 		public void ConnectToDevice(Object uiController)
@@ -70,14 +76,12 @@ namespace MyHealthVitals.iOS
 		}
 
 		public void scanPeriphealOnDifferentThread() { 
-			new System.Threading.Thread(new System.Threading.ThreadStart(() =>
-				{
-					CBUUID[] cbuuids = null;
-					manager.ScanForPeripherals(cbuuids); //Initiates async calls of DiscoveredPeripheral	
-				((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Searching device...",false);
-				})).Start();
+			
+			CBUUID[] cbuuids = null;
+			manager.ScanForPeripherals(cbuuids); //Initiates async calls of DiscoveredPeripheral	
+			((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Searching device...", false);
 
-			checkIfScanningTimeOut();
+			//checkIfScanningTimeOut();
 		}
 
 		public void initializeBluetooth()

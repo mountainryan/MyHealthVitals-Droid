@@ -94,7 +94,7 @@
 					</StackLayout>
 					<StackLayout WidthRequest="72">
 						<Label Text=" " Style="{DynamicResource styleLblReading}" />
-						<Label Style="{DynamicResource styleLblReading}" Margin="0,10,0,0" Text="-" />
+						<Label x:Name="lblTemperature" Style="{DynamicResource styleLblReading}" Margin="0,10,0,0" Text="-" />
 					</StackLayout>
 				</StackLayout>
 				<BoxView HeightRequest="0.5" BackgroundColor="Gray" >
@@ -125,9 +125,7 @@
 
 				<BoxView HeightRequest="0.5" BackgroundColor="Gray">
 				</BoxView>
-
-				<Button Margin="10,20,10,10" Clicked="btnSaveClicked" TextColor="White" Text="SAVE" FontSize="17" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
-					</Button>
+			
 				<StackLayout Margin="10" BackgroundColor="White" HeightRequest="90">
 				</StackLayout>
 				<StackLayout Orientation="Horizontal" Margin="10,0,10,10">
