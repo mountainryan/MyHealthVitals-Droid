@@ -196,7 +196,7 @@ namespace MyHealthVitals
 
 		void btnListClicked(object sender, System.EventArgs e)
 		{
-			var newPage = new ParameterListPage();
+			var newPage = new ParametersPage();
 			newPage.Title = "Parameter List Screen";
 			this.Navigation.PushAsync(newPage);
 		}

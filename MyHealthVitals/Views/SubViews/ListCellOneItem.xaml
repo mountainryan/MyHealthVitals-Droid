@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.ListCellOneItem">
+		<StackLayout BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" Padding="10">
+			<Label WidthRequest="150" FontSize="14" TextColor="{StaticResource colorThemeBlue}" Text="{Binding date}"></Label>
+			<Label FontSize="14" HorizontalTextAlignment="Center" WidthRequest="120" TextColor="{StaticResource colorThemeBlue}" Text="{Binding firstItem}" ></Label>
+		</StackLayout>
+</ViewCell>

@@ -1,15 +1,5 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/LoginPage.xaml">
-    <Files>
-      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="25" Column="41" />
-      <File FileName="iOS/BLE/BluetoothPeripheralDelegate.cs" Line="87" Column="4" />
-      <File FileName="MyHealthVitals/Models/IBluetoothCallBackUpdatable.cs" Line="12" Column="30" />
-      <File FileName="MyHealthVitals/Models/VitalsData.cs" Line="24" Column="6" />
-      <File FileName="iOS/BLE/BluetoothCentralManager.cs" Line="110" Column="70" />
-      <File FileName="MyHealthVitals/Models/Reading.cs" Line="13" Column="6" />
-      <File FileName="MyHealthVitals/Views/LoginPage.xaml" Line="20" Column="19" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

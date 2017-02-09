@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.ParameterListPage">
+<ContentPage BackgroundColor="{StaticResource colorBlackBg}" 
+		xmlns="http://xamarin.com/schemas/2014/forms" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="MyHealthVitals.ParametersPage">
 	<ContentPage.Content>
+
 		<RelativeLayout>
 			<StackLayout>
 				<Label Style="{DynamicResource styleLblNumeric}" FontSize="17" Margin="10" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Reading's">
 				</Label>
-				<ListView ItemTapped="Handle_ItemTapped" x:Name="parameterListView" BackgroundColor="{StaticResource colorBlackBg}">
+				<ListView ItemAppearing="Handle_ItemAppearing" ItemTapped="Handle_ItemTapped" x:Name="parameterListView" BackgroundColor="{StaticResource colorBlackBg}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<ViewCell>
@@ -33,5 +37,6 @@
                 </StackLayout>
             </RelativeLayout>
 		</RelativeLayout>
+		
 	</ContentPage.Content>
 </ContentPage>

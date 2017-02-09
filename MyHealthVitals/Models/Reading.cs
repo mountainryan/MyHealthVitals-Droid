@@ -60,5 +60,33 @@ namespace MyHealthVitals
 				return false;
 			}
         }
+
+		public static async Task<Reading[]> GetAllReadingsFromService()
+		{
+
+			HttpClient client = new HttpClient();
+			client.MaxResponseContentBufferSize = 256000;
+			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
+
+			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+			var response = await client.GetAsync(serviceUri);
+
+			if (response.IsSuccessStatusCode)
+			{
+				try
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					return JsonConvert.DeserializeObject<Reading[]>(content);
+				}
+				catch (JsonSerializationException ex)
+				{
+					Debug.WriteLine("parse error: " + ex.Message);
+					return null;
+				}
+			}
+			else {
+				return null; ;
+			}
+		}
     }
 }

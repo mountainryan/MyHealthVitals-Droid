@@ -36,11 +36,11 @@ namespace MyHealthVitals
 				//if (isServiceCallSuccess) spo2.EnglishValue = 0;
 			}
 
-			if (perfusionIndex.EnglishValue > 0)
-			{
-				await perfusionIndex.PostReadingToService();
-				//if (isServiceCallSuccess) perfusionIndex.EnglishValue = 0;
-			}
+			//if (perfusionIndex.EnglishValue > 0)
+			//{
+			//	await perfusionIndex.PostReadingToService();
+			//	//if (isServiceCallSuccess) perfusionIndex.EnglishValue = 0;
+			//}
 
 			if (bpm.EnglishValue > 0)
 			{

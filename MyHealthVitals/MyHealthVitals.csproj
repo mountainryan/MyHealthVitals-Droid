@@ -38,13 +38,22 @@
     <EmbeddedResource Include="Views\TestPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ParameterListPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\ParameterItemDetail.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MyRespCheck\RespHomePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ParametersPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\SubViews\headerWithOneTitle.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\SubViews\headerWithTwoTitle.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\SubViews\ListCellOneItem.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -66,9 +75,6 @@
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="BLE\ICBCentralManager.cs" />
-    <Compile Include="Views\ParameterListPage.xaml.cs">
-      <DependentUpon>ParameterListPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\VitalsData.cs" />
     <Compile Include="Models\IBluetoothCallBackUpdatable.cs" />
@@ -79,6 +85,21 @@
     <Compile Include="Views\MyRespCheck\RespHomePage.xaml.cs">
       <DependentUpon>RespHomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ParametersPage.xaml.cs">
+      <DependentUpon>ParametersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BloodPressure.cs" />
+    <Compile Include="Views\SubViews\headerWithOneTitle.xaml.cs">
+      <DependentUpon>headerWithOneTitle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SubViews\headerWithTwoTitle.xaml.cs">
+      <DependentUpon>headerWithTwoTitle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SubViews\ListCellOneItem.xaml.cs">
+      <DependentUpon>ListCellOneItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\ListCellTemplateSelector.cs" />
+    <Compile Include="Models\ParameterDetailItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -111,6 +132,8 @@
     <Folder Include="BLE\" />
     <Folder Include="Models\" />
     <Folder Include="Views\MyRespCheck\" />
+    <Folder Include="Views\SubViews\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
