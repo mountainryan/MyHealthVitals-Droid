@@ -24,62 +24,169 @@ namespace MyHealthVitals
 
 	public partial class ParameterItemDetail : ContentPage
 	{
-		public ParameterItemDetail()
+
+		public long categoryId;
+
+		public ObservableCollection<ParameterDetailItem> data = new ObservableCollection<ParameterDetailItem>();
+		public ParameterItemDetail(long CategoryId)
 		{
+			this.categoryId = CategoryId;
 			InitializeComponent();
 
-			//headerWithTwoTitle header = new headerWithTwoTitle("20/20/20");
-			//header.l
+			//itemList.ItemTapped += (object sender, ItemTappedEventArgs e) =>
+			//{
+			//	// don't do anything if we just de-selected the row
+			//	if (e.Item == null) return;
+			//	// do something with e.SelectedItem
+			//	((ListView)sender).SelectedItem = null; // de-select the row
+			//};
 
-			headerWithTwoTitle header = new headerWithTwoTitle("DIA", "SYS");
+			//headerWithTwoTitle header = new headerWithTwoTitle("DIA", "SYS");
 
-			headerContainer.Children.Add(header);
+			switch (categoryId) {
+				case 1:
+				case 2: {
+						headerWithTwoTitle header = new headerWithTwoTitle("DIA", "SYS");
+						headerContainer.Children.Add(header);
+						break;
+					}
+				case 4: {
+						headerWithOneTitle header = new headerWithOneTitle("Temperature");
+						headerContainer.Children.Add(header);
+						break;
+					}
+			}
+
+			callApi();
 		}
 
-		public ObservableCollection<ParameterDetailItem> readingBP = new ObservableCollection<ParameterDetailItem>();
-
-		protected override void OnAppearing()
+		public async void callApi()
 		{
-			base.OnAppearing();
 
-			//var allReadings = await Reading.GetAllReadingsFromService();
+			layoutLoading.IsVisible = true;
 
-			//var allBpReadings = from reading in allReadings
-			//					where reading.CategoryId == 1
-			//					select reading;
 
-			//var bpReadings = from spSet in
-			//   (from reading in allBpReadings
-			//	group reading by reading.Date)
-			//				 orderby spSet.Key descending
-			//				 let dia = spSet.FirstOrDefault(x => x.ValueType == "Diastolic")
-			//				 let sys = spSet.FirstOrDefault(x => x.ValueType == "Systolic") where sys != null && dia != null
-			//				 select new
-			//				 {
-			//					 Date = spSet.Key,
-			//					 sys = sys,
-			//					 dia = dia,
-			//				 };
+			//Reading[] allReadings = new Reading[]();
+			try
+			{
+				var allReadings = await Reading.GetAllReadingsFromService();
 
-			//var newBpReadings = (bpReadings.GroupBy(s => s.Date).Select(grp => grp.First())).ToArray();
+				var allReading = from reading in allReadings
+								 where reading.CategoryId == categoryId
+								 select reading;
 
-			//foreach (var reading in newBpReadings)
-			//{
-			//	readingBP.Add(new BloodPressure(reading.Date,(int)reading.sys.EnglishValue, (int)reading.dia.EnglishValue));
-			//}
+				switch (categoryId)
+				{
+					// Blood pressure
+					case 1:
+						{
+							var bpReadings = from spSet in
+							   (from reading in allReading
+								group reading by reading.Date)
+											 orderby spSet.Key descending
+											 let dia = spSet.FirstOrDefault(x => x.ValueType == "Diastolic")
+											 let sys = spSet.FirstOrDefault(x => x.ValueType == "Systolic")
+											 where sys != null && dia != null
+											 select new
+											 {
+												 Date = spSet.Key,
+												 sys = sys,
+												 dia = dia,
+											 };
 
-			var newItem = new ParameterDetailItem();
-			newItem.date = "10/14/1990 7:30 PM";
-			newItem.firstItem = "190";
+							var newBpReadings = (bpReadings.GroupBy(s => s.Date).Select(grp => grp.First())).ToArray();
 
-			var newItem1 = new ParameterDetailItem();
-			newItem1.date = "10/14/1990 7:30 PM";
-			newItem1.firstItem = "190";
+							foreach (var reading in newBpReadings)
+							{
+								var item = new ParameterDetailItem();
+								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
+								item.firstItem = ((int)reading.dia.EnglishValue).ToString();
+								item.secondItem = ((int)reading.sys.EnglishValue).ToString();
 
-			readingBP.Add(newItem);
-			readingBP.Add(newItem1);
+								data.Add(item);
+							}
+							itemList.ItemsSource = data;
+							break;
+						}
+					case 2:
+						{
+							var bpReadings = from spSet in
+							   (from reading in allReading
+								group reading by reading.Date)
+											 orderby spSet.Key descending
+											 let dia = spSet.FirstOrDefault(x => x.ValueType == "Diastolic")
+											 let sys = spSet.FirstOrDefault(x => x.ValueType == "Systolic")
+											 where sys != null && dia != null
+											 select new
+											 {
+												 Date = spSet.Key,
+												 sys = sys,
+												 dia = dia,
+											 };
 
-			itemList.ItemsSource = readingBP;
+							var newBpReadings = (bpReadings.GroupBy(s => s.Date).Select(grp => grp.First())).ToArray();
+
+							foreach (var reading in newBpReadings)
+							{
+								var item = new ParameterDetailItem();
+								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
+								item.firstItem = ((int)reading.dia.EnglishValue).ToString();
+								item.secondItem = ((int)reading.sys.EnglishValue).ToString();
+
+								data.Add(item);
+							}
+							itemList.ItemsSource = data;
+							break;
+						}
+					case 3:
+						{
+							break;
+						}
+					// temperature
+					case 4:
+						{
+							foreach (var reading in allReading)
+							{
+								var item = new ParameterDetailItem();
+								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
+								item.firstItem = ((int)reading.EnglishValue).ToString();
+
+								data.Add(item);
+							}
+							itemList.ItemsSource = data;
+							break;
+						}
+					case 5:
+						{
+							break;
+						}
+					case 6:
+						{
+							break;
+						}
+					case 7:
+						{
+							break;
+						}
+					case 8:
+						{
+							break;
+						}
+					case 9:
+						{
+							break;
+						}
+				}
+
+				itemList.ItemsSource = data;
+			}
+			catch (Exception)
+			{
+				Debug.WriteLine("error in calling server or parsing");
+			}
+			finally { 
+				layoutLoading.IsVisible = false;
+			}
 		}
 	}
 }

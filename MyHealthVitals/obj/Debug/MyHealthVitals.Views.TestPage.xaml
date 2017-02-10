@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.TestPage">
+	<ContentPage.Content>
+
+		<RelativeLayout BackgroundColor="Blue">
+
+			<StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" BackgroundColor="Gray" Orientation="Horizontal">
+				<StackLayout BackgroundColor="Red">
+					<Label Text="First Label fdfddasfadsfadfadffadfasdfadfaasdfadaadfadafadffasfasffadfadfasdfadfasfasdfasdffadfadfadfadfadadfadfasdfasdf"></Label>
+					<Label Text="Second label fadfadfadfadfadfadfadfafdasdfadsfasdfasdfasdfasdfasdfadfasdfasdfadsfasdfadfadfadfadfafasdfafdadfadfadfadfaaLabel"></Label>
+				</StackLayout>
+
+				<Label VerticalOptions="Center" BackgroundColor="Green" WidthRequest="200" Text="Third label" HorizontalOptions="EndAndExpand"></Label>
+				
+			</StackLayout>
+
+		</RelativeLayout>
+
+	</ContentPage.Content>
+</ContentPage>

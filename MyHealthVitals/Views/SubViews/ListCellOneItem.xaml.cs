@@ -9,6 +9,7 @@ namespace MyHealthVitals
 		public ListCellOneItem()
 		{
 			InitializeComponent();
+			View.GestureRecognizers.Clear();
 		}
 	}
 }

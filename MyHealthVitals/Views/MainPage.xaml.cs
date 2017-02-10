@@ -13,25 +13,23 @@ namespace MyHealthVitals
 		public MainPage()
 		{
 			InitializeComponent();
+
+			btnFareinheit.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
+			btnCelcious.TextColor = Color.Gray;
+			isCelcious = false;
+
 			// calling to start connecting the device this this should be implemented differently in android because it is calling the native API
 			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(250), () =>
 			{
-
-				btnFareinheit.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
-				btnCelcious.TextColor = Color.Gray;
-				isCelcious = false;
-
 				Debug.WriteLine("searcching decice...");
 				DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
 				return false;
 			});
+
+			callAPi();
 		}
 
-		protected async override void OnAppearing()
-		{
-			base.OnAppearing();
-
-			// calling async to get all demographics user details 
+		private async void callAPi() { 
 			var isSuccess = await Demographics.sharedInstance.getDemographicFromApi();
 
 			if (isSuccess)
@@ -48,6 +46,7 @@ namespace MyHealthVitals
 				}
 			}
 		}
+
 
 		//void btnSaveClicked(object sender, System.EventArgs e)
 		//{
@@ -84,7 +83,7 @@ namespace MyHealthVitals
 		}
 
 		public void noticeEndOfReadingSpo2() {
-			//vitalsData.sendToServer_SPO2_PI_BPM();
+			vitalsData.sendToServer_SPO2_PI_BPM();
 		}
 
 		public void updateTemperature(decimal temperature, String type) {
@@ -124,9 +123,9 @@ namespace MyHealthVitals
 
 		public void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex)
 		{
-			this.vitalsData.bpDia = new Reading("Oxygen", sp02,2);
+			this.vitalsData.spo2 = new Reading("Oxygen", sp02,2);
+			this.vitalsData.bpm = new Reading("Hearth Rate", bpm,3);
 			//this.vitalsData.bpSys = new Reading("Perfusion Index", perfusionIndex,2);
-			this.vitalsData.bpSys = new Reading("Hearth Rate", bpm,3);
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{

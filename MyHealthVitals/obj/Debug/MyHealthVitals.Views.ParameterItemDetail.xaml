@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+		BackgroundColor="{StaticResource colorBlackBg}" 
+		xmlns="http://xamarin.com/schemas/2014/forms" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="MyHealthVitals.ParameterItemDetail"
+		xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals">
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<local:ListCellTemplateSelector x:Key="templateSelector"></local:ListCellTemplateSelector>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	
+	<ContentPage.Content>
+		<RelativeLayout>
+			<StackLayout>
+				<Label TextColor="White" FontSize="17" Margin="10" HorizontalTextAlignment="Center" Text="Most Recent Reading's">
+				</Label>
+				<StackLayout x:Name="headerContainer">
+					
+				</StackLayout>
+				<ListView ItemTemplate="{StaticResource templateSelector}"  x:Name="itemList" BackgroundColor="{StaticResource colorBlackBg}">
+					
+				</ListView>
+			</StackLayout>
+			<!--loading layout starts-->
+			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
+					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Please wait...">
+					</Label>
+				</StackLayout>
+			</RelativeLayout>
+		</RelativeLayout>
+	</ContentPage.Content>
+</ContentPage>
