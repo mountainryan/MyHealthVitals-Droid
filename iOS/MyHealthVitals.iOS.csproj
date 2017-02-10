@@ -128,6 +128,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="BLE\BluetoothCentralManager.cs" />
     <Compile Include="BLE\BluetoothPeripheralDelegate.cs" />
+    <Compile Include="MyRendererIos.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\icucarellc.png" />

@@ -3,7 +3,7 @@
 	<ContentView.Content>
 		<StackLayout BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" Padding="10">
 			<Label WidthRequest="150" FontSize="15" TextColor="{StaticResource colorThemeBlue}" Text="Date/Time"></Label>
-			<Label x:Name="lblFirstTitle" FontSize="15" HorizontalTextAlignment="Center" WidthRequest="120" TextColor="{StaticResource colorThemeBlue}" Text="ECG Results" ></Label>
+			<Label x:Name="lblFirstTitle" FontSize="15" HorizontalTextAlignment="Center" WidthRequest="140" TextColor="{StaticResource colorThemeBlue}" Text="ECG Results" ></Label>
 		</StackLayout>
 	</ContentView.Content>
 </ContentView>

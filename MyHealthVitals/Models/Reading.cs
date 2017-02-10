@@ -9,19 +9,20 @@ using Newtonsoft.Json.Linq;
 
 namespace MyHealthVitals
 {
-    public class Reading
-    {
-        public long Id { get; set; }
-        public bool Abnormal { get; set; }
-        public long CategoryId { get; set; }
-        public DateTime Date { get; set; }
-        public Guid? DeviceId { get; set; }
-        public string Source { get; set; }
-        public decimal? EnglishValue { get; set; }
-        public decimal? MetricValue { get; set; }
-        public string ValueType { get; set; }
+	public class Reading
+	{
+		public long Id { get; set; }
+		public bool Abnormal { get; set; }
+		public long CategoryId { get; set; }
+		public DateTime Date { get; set; }
+		public Guid? DeviceId { get; set; }
+		public string Source { get; set; }
+		public decimal? EnglishValue { get; set; }
+		public decimal? MetricValue { get; set; }
+		public string ValueType { get; set; }
 
-		public Reading(String valueType, decimal englishVal,long catId) {
+		public Reading(String valueType, decimal englishVal, long catId)
+		{
 
 			this.ValueType = valueType;
 			this.CategoryId = catId;
@@ -35,12 +36,12 @@ namespace MyHealthVitals
 		//public void getCelcious
 
 		public async Task<bool> PostReadingToService()
-        {
-            //var item = await Client.PostAsync(credential, $"api/v1/Patient/{credential.Mrn}/HomeHealth/Reading", this);
-            //Id = item.Id;
-            //Abnormal = item.Abnormal;
-            //EnglishValue = item.EnglishValue;
-            //MetricValue = item.MetricValue;
+		{
+			//var item = await Client.PostAsync(credential, $"api/v1/Patient/{credential.Mrn}/HomeHealth/Reading", this);
+			//Id = item.Id;
+			//Abnormal = item.Abnormal;
+			//EnglishValue = item.EnglishValue;
+			//MetricValue = item.MetricValue;
 
 			HttpClient client = new HttpClient();
 			client.MaxResponseContentBufferSize = 256000;
@@ -50,43 +51,44 @@ namespace MyHealthVitals
 			var content = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
 			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
 
-			var response = await client.PostAsync(serviceUri,content);
+			var response = await client.PostAsync(serviceUri, content);
 
-			if (response.ReasonPhrase=="OK")
+			if (response.ReasonPhrase == "OK")
 			{
 				return true;
 			}
 			else {
 				return false;
 			}
-        }
+		}
 
 		public static async Task<Reading[]> GetAllReadingsFromService()
 		{
 
 			HttpClient client = new HttpClient();
-			client.MaxResponseContentBufferSize = 256000;
+			//client.MaxResponseContentBufferSize = 256000;
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
-
 			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
-			var response = await client.GetAsync(serviceUri);
 
-			if (response.IsSuccessStatusCode)
+			try
 			{
-				try
+				var response = await client.GetAsync(serviceUri);
+
+				if (response.IsSuccessStatusCode)
 				{
+
 					var content = await response.Content.ReadAsStringAsync();
 					return JsonConvert.DeserializeObject<Reading[]>(content);
 				}
-				catch (JsonSerializationException ex)
-				{
-					Debug.WriteLine("parse error: " + ex.Message);
-					return null;
+				else {
+					return null; ;
 				}
 			}
-			else {
-				return null; ;
+			catch (Exception ex)
+			{
+				Debug.WriteLine("parse error: " + ex.Message);
+				return null;
 			}
 		}
-    }
+	}
 }

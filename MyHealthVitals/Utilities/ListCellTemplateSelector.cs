@@ -5,17 +5,23 @@ namespace MyHealthVitals
 {
 	public class ListCellTemplateSelector: Xamarin.Forms.DataTemplateSelector
 	{
+		private readonly DataTemplate listCellOneItem;
+		private readonly DataTemplate listCellTwoItem;
 		public ListCellTemplateSelector()
 		{
 			this.listCellOneItem = new DataTemplate(typeof(ListCellOneItem));
+			this.listCellTwoItem = new DataTemplate(typeof(ListCellTwoItem));
 		}
 
 		protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
 		{
-			return this.listCellOneItem;
-			//return messageVm.IsIncoming ? this.incomingDataTemplate : this.outgoingDataTemplate;
+			if (((ParameterDetailItem)item).categoryId == 1 || ((ParameterDetailItem)item).categoryId == 2)
+			{
+				return this.listCellTwoItem;
+			}
+			else {
+				return this.listCellOneItem;
+			}
 		}
-
-		private readonly DataTemplate listCellOneItem;
 	}
 }

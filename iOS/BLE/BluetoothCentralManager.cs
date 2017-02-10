@@ -43,6 +43,7 @@ namespace MyHealthVitals.iOS
 				else {
 					if (connectedPeripheral!=null && connectedPeripheral.State == CBPeripheralState.Connected)
 					{
+						((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Connected", true);
 						discoverServicesOfConnectedPeripheral();
 					}
 					else { 
@@ -52,7 +53,8 @@ namespace MyHealthVitals.iOS
 			}
 		}
 
-		public void discoverServicesOfConnectedPeripheral() { 
+		public void discoverServicesOfConnectedPeripheral() {
+			
 			connectedPeripheral.Delegate = new BluetoothPeripheralDelegate();
 			connectedPeripheral.DiscoverServices();
 		}

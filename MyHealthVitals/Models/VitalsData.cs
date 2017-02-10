@@ -30,7 +30,7 @@ namespace MyHealthVitals
 		}
 
 		public async void sendToServer_SPO2_PI_BPM() { 
-			if (spo2.EnglishValue > 0)
+			if (spo2 != null && spo2.EnglishValue > 0)
 			{
 				await spo2.PostReadingToService();
 				//if (isServiceCallSuccess) spo2.EnglishValue = 0;
@@ -42,31 +42,31 @@ namespace MyHealthVitals
 			//	//if (isServiceCallSuccess) perfusionIndex.EnglishValue = 0;
 			//}
 
-			if (bpm.EnglishValue > 0)
+			if (bpm!=null && bpm.EnglishValue > 0)
 			{
 				await bpm.PostReadingToService();
 				//if (isServiceCallSuccess) bpm.EnglishValue = 0;
 			}
 		}
 
-		public async void sendToServer_SYS_DIA_BPM() { 
-			if (bpDia.EnglishValue > 0)
+		public async void sendToServer_SYS_DIA() { 
+			if (bpDia!=null && bpDia.EnglishValue > 0)
 			{
 				await bpDia.PostReadingToService();
 				//if (isServiceCallSuccess) bpDia.EnglishValue = 0;
 			}
 
-			if (bpSys.EnglishValue > 0)
+			if (bpSys!= null && bpSys.EnglishValue > 0)
 			{
 				await bpSys.PostReadingToService();
 				//if (isServiceCallSuccess) bpSys.EnglishValue = 0;
 			}
 
-			if (bpm.EnglishValue > 0)
-			{
-				await bpm.PostReadingToService();
-				//if (isServiceCallSuccess) bpm.EnglishValue = 0;
-			}
+			//if (bpm.EnglishValue > 0)
+			//{
+			//	await bpm.PostReadingToService();
+			//	//if (isServiceCallSuccess) bpm.EnglishValue = 0;
+			//}
 		}
 	}
 }

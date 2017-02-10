@@ -56,6 +56,9 @@
     <EmbeddedResource Include="Views\SubViews\ListCellOneItem.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\SubViews\ListCellTwoItem.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -100,6 +103,10 @@
     </Compile>
     <Compile Include="Utilities\ListCellTemplateSelector.cs" />
     <Compile Include="Models\ParameterDetailItem.cs" />
+    <Compile Include="Views\SubViews\ListCellTwoItem.xaml.cs">
+      <DependentUpon>ListCellTwoItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SubViews\CustomRenderers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

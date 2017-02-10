@@ -10,6 +10,8 @@ namespace MyHealthVitals
 	{
 		private VitalsData vitalsData = new VitalsData();
 
+		public static bool isCOnnectedToSpotCheck = false;
+
 		public MainPage()
 		{
 			InitializeComponent();
@@ -18,13 +20,23 @@ namespace MyHealthVitals
 			btnCelcious.TextColor = Color.Gray;
 			isCelcious = false;
 
-			// calling to start connecting the device this this should be implemented differently in android because it is calling the native API
-			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(250), () =>
-			{
-				Debug.WriteLine("searcching decice...");
-				DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
-				return false;
-			});
+
+			//if (MainPage.isCOnnectedToSpotCheck)
+			//{
+			//	btnBle.Image = "imgDevCon.png";
+			//	btnBle.IsEnabled = false;
+			//	lblStatus.Text = "Connected";
+			//	//DependencyService.Get<ICBCentralManager>().
+			//}
+
+				// calling to start connecting the device this this should be implemented differently in android because it is calling the native API
+				Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(250), () =>
+				{
+					Debug.WriteLine("searcching decice...");
+					DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
+					return false;
+				});
+			
 
 			callAPi();
 		}
@@ -63,16 +75,23 @@ namespace MyHealthVitals
 
 		public void ShowMessageOnUI(string message, Boolean isConnected)
 		{
+			MainPage.isCOnnectedToSpotCheck = isConnected;
 			//Debug.WriteLine(message);
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
 				//layoutLoading.IsVisible = true;
 				lblStatus.Text = message;
 
+				if (!(message == "Measuring the Blood pressure..."))
+				{
+					lblPressure.Text = "";
+				}
+
 				if (isConnected)
 				{
 					btnBle.Image = "imgDevCon.png";
 					btnBle.IsEnabled = false;
+
 				}
 				else { 
 					btnBle.Image = "imgDevDiscon.png";
@@ -87,7 +106,7 @@ namespace MyHealthVitals
 		}
 
 		public void updateTemperature(decimal temperature, String type) {
-			vitalsData.temperature = new Reading("Temperature", temperature, 4);
+			vitalsData.temperature = new Reading("Temperature(°F/°C)", temperature, 4);
 			vitalsData.sendToServerTemperature();
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() => {
@@ -123,15 +142,22 @@ namespace MyHealthVitals
 
 		public void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex)
 		{
-			this.vitalsData.spo2 = new Reading("Oxygen", sp02,2);
-			this.vitalsData.bpm = new Reading("Hearth Rate", bpm,3);
+			this.vitalsData.spo2 = new Reading("SpO2", sp02,2);
+			this.vitalsData.bpm = new Reading("Pulse", bpm,2);
 			//this.vitalsData.bpSys = new Reading("Perfusion Index", perfusionIndex,2);
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
 				if (bpm == 0)
 				{
-					lblBpm.Text = "."+lblBpm.Text;
+					if (lblBpm.Text=="-")
+					{
+						lblBpm.Text = ".";
+					}
+					else { 
+						lblBpm.Text = "." + lblBpm.Text;
+					}
+
 				}
 				else { 
 					lblBpm.Text = bpm.ToString();	
@@ -139,7 +165,14 @@ namespace MyHealthVitals
 
 				if (sp02 == 0)
 				{
-					lblSpo2.Text = lblSpo2.Text+".";
+
+					if (lblSpo2.Text=="-")
+					{
+						lblSpo2.Text = ".";
+					}
+					else {
+						lblSpo2.Text = "." + lblSpo2.Text;
+					}
 				}
 				else {
 					lblSpo2.Text = sp02.ToString();
@@ -147,10 +180,18 @@ namespace MyHealthVitals
 
 				if (perfusionIndex > 0)
 				{
+					
 					lblPerfusionIndex.Text = perfusionIndex.ToString();
 				}
 				else {
-					lblPerfusionIndex.Text = lblPerfusionIndex.Text +".";
+
+					if (lblPerfusionIndex.Text =="-")
+					{
+						lblPerfusionIndex.Text = ".";
+					}
+					else {
+						lblPerfusionIndex.Text = "." + lblPerfusionIndex.Text;
+					}
 				}
 			});
 		}
@@ -158,9 +199,11 @@ namespace MyHealthVitals
 		public void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm)
 		{
 
-			this.vitalsData.bpDia = new Reading("Diastolic", bpdia,1);
-			this.vitalsData.bpSys = new Reading("Systolic", bpsys,1);
-			this.vitalsData.bpSys = new Reading("Hearth Rate", bpm,3);
+			this.vitalsData.bpDia = new Reading("DIA", bpdia,1);
+			this.vitalsData.bpSys = new Reading("SYS", bpsys,1);
+			//this.vitalsData.bpm = new Reading("Pulse", bpm,3);
+
+			vitalsData.sendToServer_SYS_DIA();
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{

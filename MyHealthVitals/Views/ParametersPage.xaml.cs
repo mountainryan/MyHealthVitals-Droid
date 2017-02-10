@@ -52,7 +52,7 @@ namespace MyHealthVitals
 		void Handle_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
 		{
 			var newPage = new ParameterItemDetail(((Category)e.Item).Id);
-			newPage.Title = "SpO2 Data List";
+			//newPage.Title = "SpO2 Data List";
 
 			this.Navigation.PushAsync(newPage);
 		}

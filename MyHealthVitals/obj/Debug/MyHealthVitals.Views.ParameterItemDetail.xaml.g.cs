@@ -20,7 +20,7 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.StackLayout headerContainer;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::Xamarin.Forms.ListView itemList;
+        private global::MyHealthVitals.CustomListView itemList;
         
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.RelativeLayout layoutLoading;
@@ -32,7 +32,7 @@ namespace MyHealthVitals {
         private void InitializeComponent() {
             this.LoadFromXaml(typeof(ParameterItemDetail));
             headerContainer = this.FindByName <global::Xamarin.Forms.StackLayout>("headerContainer");
-            itemList = this.FindByName <global::Xamarin.Forms.ListView>("itemList");
+            itemList = this.FindByName <global::MyHealthVitals.CustomListView>("itemList");
             layoutLoading = this.FindByName <global::Xamarin.Forms.RelativeLayout>("layoutLoading");
             lblLoadingMessage = this.FindByName <global::Xamarin.Forms.Label>("lblLoadingMessage");
         }

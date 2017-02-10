@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.LoginPage">
+<ContentPage BackgroundColor="{StaticResource colorBlackBg}" 
+		xmlns="http://xamarin.com/schemas/2014/forms" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals"
+		x:Class="MyHealthVitals.LoginPage">
 	<ContentPage.Content>
 		<RelativeLayout>
-<!--login view starts-->
+			<!--login view starts-->
 			<StackLayout Spacing="0">
-				<StackLayout x:Name="layoutImgContainer" Padding="0,30,0,0" Orientation="Vertical" VerticalOptions="Start">
+				
+				<StackLayout x:Name="layoutImgContainer" Padding="0,50,0,0" Orientation="Vertical" VerticalOptions="Start">
 					<Image Source="icucarellc.png">
 					</Image>
 				</StackLayout>
 				<StackLayout x:Name="layoutLoginContainer" Margin="20,30,20,10" VerticalOptions="Center" Orientation="Horizontal" Spacing="0">
 					<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical">
-						<Entry Margin="0" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="Dcarter" Placeholder="username">
-						</Entry>
-						<Entry Margin="0" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="12345" Placeholder="password">
-						</Entry>
+						<local:MyEntry Margin="0" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="rhiggs" Placeholder="username"/>
+						<Entry Margin="0" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="0600" Placeholder="password"/>
 					</StackLayout>
 					<Button Margin="5,0,0,0" Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="80" FontSize="17" Text="Login">
 					</Button>
@@ -23,21 +26,14 @@
 					</Label>
 				</ScrollView>
 			</StackLayout>
-
-<!--loading layout starts-->
-
-			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85"
-                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" 
-                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-                <StackLayout VerticalOptions="Center" HorizontalOptions="Center"
-                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" 
-                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-                    <ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
-                    <Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Loging in...">
-                    </Label>
-                </StackLayout>
-            </RelativeLayout>
-			
+			<!--loading layout starts-->
+			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
+					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Loging in...">
+					</Label>
+				</StackLayout>
+			</RelativeLayout>
 		</RelativeLayout>
 	</ContentPage.Content>
 </ContentPage>

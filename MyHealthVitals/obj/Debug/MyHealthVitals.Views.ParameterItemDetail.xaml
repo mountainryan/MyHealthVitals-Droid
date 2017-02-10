@@ -4,7 +4,7 @@
 		xmlns="http://xamarin.com/schemas/2014/forms" 
 		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
 		x:Class="MyHealthVitals.ParameterItemDetail"
-		xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals">
+		xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals;assembly=MyHealthVitals">
 
 	<ContentPage.Resources>
 		<ResourceDictionary>
@@ -20,9 +20,10 @@
 				<StackLayout x:Name="headerContainer">
 					
 				</StackLayout>
-				<ListView ItemTemplate="{StaticResource templateSelector}"  x:Name="itemList" BackgroundColor="{StaticResource colorBlackBg}">
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+				<local:CustomListView SeparatorVisibility="None" HasUnevenRows="true" ItemTemplate="{StaticResource templateSelector}"  x:Name="itemList" BackgroundColor="{StaticResource colorBlackBg}">
 					
-				</ListView>
+				</local:CustomListView>
 			</StackLayout>
 			<!--loading layout starts-->
 			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">

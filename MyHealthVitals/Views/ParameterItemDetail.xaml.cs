@@ -33,25 +33,22 @@ namespace MyHealthVitals
 			this.categoryId = CategoryId;
 			InitializeComponent();
 
-			//itemList.ItemTapped += (object sender, ItemTappedEventArgs e) =>
-			//{
-			//	// don't do anything if we just de-selected the row
-			//	if (e.Item == null) return;
-			//	// do something with e.SelectedItem
-			//	((ListView)sender).SelectedItem = null; // de-select the row
-			//};
-
-			//headerWithTwoTitle header = new headerWithTwoTitle("DIA", "SYS");
-
 			switch (categoryId) {
-				case 1:
-				case 2: {
+				case 1: {
+						this.Title = "Blood Pressure Data List";
 						headerWithTwoTitle header = new headerWithTwoTitle("DIA", "SYS");
+						headerContainer.Children.Add(header);
+						break;
+						}
+				case 2: {
+						this.Title = "SpO2 Data List";
+						headerWithTwoTitle header = new headerWithTwoTitle("SpO2", "Pulse");
 						headerContainer.Children.Add(header);
 						break;
 					}
 				case 4: {
-						headerWithOneTitle header = new headerWithOneTitle("Temperature");
+						this.Title = "Temperature Data List";
+						headerWithOneTitle header = new headerWithOneTitle("Temperature(°F/°C)");
 						headerContainer.Children.Add(header);
 						break;
 					}
@@ -71,9 +68,11 @@ namespace MyHealthVitals
 			{
 				var allReadings = await Reading.GetAllReadingsFromService();
 
-				var allReading = from reading in allReadings
+				var allCategoryReading = from reading in allReadings
 								 where reading.CategoryId == categoryId
 								 select reading;
+
+				//allCategoryReading = allCategoryReading.GroupBy(s => s.Date);
 
 				switch (categoryId)
 				{
@@ -81,11 +80,12 @@ namespace MyHealthVitals
 					case 1:
 						{
 							var bpReadings = from spSet in
-							   (from reading in allReading
+							   (from reading in allCategoryReading
 								group reading by reading.Date)
 											 orderby spSet.Key descending
-											 let dia = spSet.FirstOrDefault(x => x.ValueType == "Diastolic")
-											 let sys = spSet.FirstOrDefault(x => x.ValueType == "Systolic")
+							                              let dia = spSet.FirstOrDefault(x => x.ValueType == "DIA" || x.ValueType=="Diastolic")
+											 			let sys = spSet.FirstOrDefault(x => x.ValueType == "SYS" || x.ValueType == "Systolic")
+
 											 where sys != null && dia != null
 											 select new
 											 {
@@ -102,37 +102,40 @@ namespace MyHealthVitals
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
 								item.firstItem = ((int)reading.dia.EnglishValue).ToString();
 								item.secondItem = ((int)reading.sys.EnglishValue).ToString();
-
+								item.categoryId = reading.sys.CategoryId;
 								data.Add(item);
 							}
 							itemList.ItemsSource = data;
+
 							break;
 						}
 					case 2:
 						{
-							var bpReadings = from spSet in
-							   (from reading in allReading
+							var Spo2Readings = from spSet in
+							   (from reading in allCategoryReading
 								group reading by reading.Date)
 											 orderby spSet.Key descending
-											 let dia = spSet.FirstOrDefault(x => x.ValueType == "Diastolic")
-											 let sys = spSet.FirstOrDefault(x => x.ValueType == "Systolic")
-											 where sys != null && dia != null
+											 let SpO2 = spSet.FirstOrDefault(x => x.ValueType == "SpO2")
+											 let Pulse = spSet.FirstOrDefault(x => x.ValueType == "Pulse")
+								                              where SpO2 != null && Pulse != null
 											 select new
 											 {
-												 Date = spSet.Key,
-												 sys = sys,
-												 dia = dia,
+												Date = spSet.Key,
+												SpO2 = SpO2,
+												Pulse = Pulse,
 											 };
 
-							var newBpReadings = (bpReadings.GroupBy(s => s.Date).Select(grp => grp.First())).ToArray();
+							//Spo2Readings.GroupBy
 
-							foreach (var reading in newBpReadings)
+							var newSpo2Readings = (Spo2Readings.GroupBy(s => s.Date).Select(grp => grp.First())).ToArray();
+
+							foreach (var reading in newSpo2Readings)
 							{
 								var item = new ParameterDetailItem();
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
-								item.firstItem = ((int)reading.dia.EnglishValue).ToString();
-								item.secondItem = ((int)reading.sys.EnglishValue).ToString();
-
+								item.firstItem = ((int)reading.SpO2.EnglishValue).ToString();
+								item.secondItem = ((int)reading.Pulse.EnglishValue).ToString();
+								item.categoryId = reading.Pulse.CategoryId;
 								data.Add(item);
 							}
 							itemList.ItemsSource = data;
@@ -145,14 +148,19 @@ namespace MyHealthVitals
 					// temperature
 					case 4:
 						{
-							foreach (var reading in allReading)
+							var sortedTemps = allCategoryReading.Reverse();
+							
+							foreach (var reading in sortedTemps)
 							{
 								var item = new ParameterDetailItem();
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
-								item.firstItem = ((int)reading.EnglishValue).ToString();
-
+								item.firstItem = Math.Round((decimal)reading.EnglishValue,1).ToString() +"/"+ Math.Round((decimal)reading.MetricValue, 1).ToString();
+								item.categoryId = reading.CategoryId;
 								data.Add(item);
+
+								Debug.WriteLine(item.firstItem);
 							}
+
 							itemList.ItemsSource = data;
 							break;
 						}
@@ -187,6 +195,8 @@ namespace MyHealthVitals
 			finally { 
 				layoutLoading.IsVisible = false;
 			}
+
+			this.itemList.HeightRequest = this.Content.Bounds.Size.Height - 110;
 		}
 	}
 }
