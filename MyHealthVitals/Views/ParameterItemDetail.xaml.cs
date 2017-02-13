@@ -36,7 +36,7 @@ namespace MyHealthVitals
 			switch (categoryId) {
 				case 1: {
 						this.Title = "Blood Pressure Data List";
-						headerWithTwoTitle header = new headerWithTwoTitle("DIA", "SYS");
+						headerWithTwoTitle header = new headerWithTwoTitle("SYS", "DIA");
 						headerContainer.Children.Add(header);
 						break;
 						}
@@ -100,8 +100,8 @@ namespace MyHealthVitals
 							{
 								var item = new ParameterDetailItem();
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
-								item.firstItem = ((int)reading.dia.EnglishValue).ToString();
-								item.secondItem = ((int)reading.sys.EnglishValue).ToString();
+								item.firstItem = ((int)reading.sys.EnglishValue).ToString();
+								item.secondItem = ((int)reading.dia.EnglishValue).ToString();
 								item.categoryId = reading.sys.CategoryId;
 								data.Add(item);
 							}

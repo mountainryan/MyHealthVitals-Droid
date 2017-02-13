@@ -10,5 +10,6 @@ namespace MyHealthVitals
 		void updateTemperature(decimal temperature, String type);
 
 		void noticeEndOfReadingSpo2();
+		void updateDeviceConnected(String deviceName, bool isConnected);
 	}
 }

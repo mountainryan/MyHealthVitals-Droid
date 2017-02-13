@@ -69,8 +69,8 @@ namespace MyHealthVitals.iOS
 
 		private void ScanningTimeElapsed(object sender, EventArgs e)
 		{
-			if(connectedPeripheral == null)
-				((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Scanning time out. Please check if your device is turned on.",false);
+			//if(connectedPeripheral == null)
+			((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Scanning time out. Please check if your device is turned on.",false);
 			((Timer)sender).Stop();
 
 			manager.StopScan();

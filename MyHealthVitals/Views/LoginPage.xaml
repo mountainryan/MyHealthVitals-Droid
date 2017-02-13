@@ -13,7 +13,7 @@
 					<Image Source="icucarellc.png">
 					</Image>
 				</StackLayout>
-				<StackLayout x:Name="layoutLoginContainer" Margin="20,30,20,10" VerticalOptions="Center" Orientation="Horizontal" Spacing="0">
+				<StackLayout x:Name="layoutLoginContainer" Margin="20,30,20,10" Orientation="Horizontal" Spacing="0">
 					<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical">
 						<local:MyEntry Margin="0" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="rhiggs" Placeholder="username"/>
 						<Entry Margin="0" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="0600" Placeholder="password"/>

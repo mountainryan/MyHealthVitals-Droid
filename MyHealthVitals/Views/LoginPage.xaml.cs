@@ -47,7 +47,7 @@ namespace MyHealthVitals
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 				{
 					Debug.WriteLine("Login succesfull.");
-					var newScreen = new MainPage();
+					var newScreen = new DeviceListPage();
 					//var newScreen = new RespHomePage();
 					newScreen.Title = "Main Screeen";
 					var nav = new NavigationPage(newScreen);

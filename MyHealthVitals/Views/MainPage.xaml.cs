@@ -101,6 +101,11 @@ namespace MyHealthVitals
 			});
 		}
 
+		public void updateDeviceConnected(String deviceName, bool isConnected)
+		{
+			System.Diagnostics.Debug.WriteLine("deviceName: " + deviceName);
+		}
+
 		public void noticeEndOfReadingSpo2() {
 			vitalsData.sendToServer_SPO2_PI_BPM();
 		}
@@ -150,14 +155,7 @@ namespace MyHealthVitals
 			{
 				if (bpm == 0)
 				{
-					if (lblBpm.Text=="-")
-					{
-						lblBpm.Text = ".";
-					}
-					else { 
-						lblBpm.Text = "." + lblBpm.Text;
-					}
-
+					lblBpm.Text = "...";
 				}
 				else { 
 					lblBpm.Text = bpm.ToString();	
@@ -165,14 +163,7 @@ namespace MyHealthVitals
 
 				if (sp02 == 0)
 				{
-
-					if (lblSpo2.Text=="-")
-					{
-						lblSpo2.Text = ".";
-					}
-					else {
-						lblSpo2.Text = "." + lblSpo2.Text;
-					}
+					lblSpo2.Text = "...";
 				}
 				else {
 					lblSpo2.Text = sp02.ToString();
@@ -180,18 +171,10 @@ namespace MyHealthVitals
 
 				if (perfusionIndex > 0)
 				{
-					
 					lblPerfusionIndex.Text = perfusionIndex.ToString();
 				}
 				else {
-
-					if (lblPerfusionIndex.Text =="-")
-					{
-						lblPerfusionIndex.Text = ".";
-					}
-					else {
-						lblPerfusionIndex.Text = "." + lblPerfusionIndex.Text;
-					}
+					lblPerfusionIndex.Text = "...";
 				}
 			});
 		}
@@ -245,7 +228,9 @@ namespace MyHealthVitals
 
 		void btnViewProfileClicked(object sender, System.EventArgs e)
 		{
-			Debug.WriteLine("code to view profile detail");
+			var newPage = new UserProfile();
+			newPage.Title = "My Account";
+			this.Navigation.PushAsync(newPage);
 		}
 
 		void btnFareinheitClicked(Object sender, System.EventArgs e)

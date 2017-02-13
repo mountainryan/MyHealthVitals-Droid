@@ -7,6 +7,7 @@ using MyHealthVitals;
 
 [assembly: ExportRenderer(typeof(CustomListView), typeof(MyListViewRenderer))]
 [assembly: ExportRenderer(typeof(MyEntry), typeof(MyEntryRenderer))]
+[assembly: ExportRenderer(typeof(MyButton), typeof(MyButtonRenderer))]
 
 namespace MyHealthVitals.iOS
 {
@@ -16,6 +17,18 @@ namespace MyHealthVitals.iOS
 		{
 			base.OnElementChanged(e);
 			Control.AllowsSelection = false;
+		}
+	}
+
+	public class MyButtonRenderer : ButtonRenderer { 
+		protected override void OnElementChanged(ElementChangedEventArgs<Button> e)
+		{
+			base.OnElementChanged(e);
+
+			if (Control != null) { 
+				Control.TitleLabel.LineBreakMode = UILineBreakMode.WordWrap;
+				Control.TitleLabel.TextAlignment = UITextAlignment.Center;
+			}
 		}
 	}
 
