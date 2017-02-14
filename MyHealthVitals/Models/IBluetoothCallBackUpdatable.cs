@@ -11,5 +11,7 @@ namespace MyHealthVitals
 
 		void noticeEndOfReadingSpo2();
 		void updateDeviceConnected(String deviceName, bool isConnected);
+
+		void updateGlucoseReading(decimal gluReading,string unit);
 	}
 }

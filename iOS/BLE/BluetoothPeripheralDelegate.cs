@@ -32,7 +32,8 @@ namespace MyHealthVitals.iOS
 			}
 		}
 
-		private void printUpdatedCharacteristics(CBCharacteristic ch) { 
+		private void printUpdatedCharacteristics(CBCharacteristic ch)
+		{
 			List<int> values = new List<int>();
 			foreach (var b in ch.Value)
 			{
@@ -56,6 +57,26 @@ namespace MyHealthVitals.iOS
 		int countMeasuringPressure = 0;
 		//int lastSpo2 = 0;
 		//int lastBPM = 0;
+		//bool isReadingGlucose = false;
+		decimal glucoseReadingVal = 0;
+		string gluUnit = "";
+		Timer tmr;
+
+		private void after1Sec(object sender, EventArgs e)
+		{
+			Debug.WriteLine("inside after1sec");
+
+			if (glucoseReadingVal > 0)
+			{
+				IBluetoothCallBackUpdatable uiController = (IBluetoothCallBackUpdatable)BluetoothCentralManager.uiController;
+				uiController.updateGlucoseReading(glucoseReadingVal, gluUnit);
+				glucoseReadingVal = 0;
+			}
+			tmr.Stop();
+			tmr.Close();
+			tmr = null;
+		}
+
 		public override void UpdatedCharacterteristicValue(CBPeripheral peripheral, CBCharacteristic ch, NSError error)
 		{
 
@@ -75,13 +96,40 @@ namespace MyHealthVitals.iOS
 				if (ch.Value.Length > 21)
 				{
 					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
-					uiController.ShowMessageOnUI("Boood pressure read succesfully.",true);
+					uiController.ShowMessageOnUI("Boood pressure read succesfully.", true);
 					countMeasuringPressure = 0;
 				}
 
-				if (ch.Value.Length == 8)
+				if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
+			}
+
+			if ((int)ch.Value[2] == 115) // this token is for glucose reading
+			{
+				// combining byte 6 and byte 7 to read temperature
+
+				int data = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
+
+				// status bit
+				var D0_data1 = (15 & (1 << 0)) != 0;
+
+				if (D0_data1)
 				{
-					uiController.updatingPressureMeanTime((int)ch.Value[6]);
+					glucoseReadingVal = (decimal)data;
+					gluUnit = "mg/dL";
+				}
+				else
+				{
+					glucoseReadingVal = (decimal)data / 10;
+					gluUnit = "Mmol/L";
+				}
+
+				// this is needed because device is reading same data more than once to we are tracking glucose reading stop and sending the last reading
+				if (tmr == null)
+				{
+					tmr = new Timer();
+					tmr.Interval = 2000; // 0.1 second
+					tmr.Elapsed += after1Sec; // We'll write it in a bit
+					tmr.Start();
 				}
 			}
 
@@ -95,27 +143,24 @@ namespace MyHealthVitals.iOS
 				var D4 = (15 & (1 << 4)) != 0;
 
 				// if D4=0 means temperature reading is completed
-				if (!D4) {
+				if (!D4)
+				{
 					// has the temperature reading
 					// combining byte 6 and byte 7 to read temperature
 					int data = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
-					if(data <= 3) {
-						uiController.ShowMessageOnUI("Failed to read temperature.",true);
-					}
+					if (data <= 3) uiController.ShowMessageOnUI("Failed to read temperature.", true);
 
-					if(data >= 1312){ 
-						uiController.ShowMessageOnUI("Too high temperature.", true);
-					}
+					if (data >= 1312) uiController.ShowMessageOnUI("Too high temperature.", true);
 
 					// if this condition saisfies the reading is measured in celcious
-					if (data >= 200 && data <= 1301) {
-						uiController.ShowMessageOnUI("Temperature read successfully.",true);
+					if (data >= 200 && data <= 1301)
+					{
+						uiController.ShowMessageOnUI("Temperature read successfully.", true);
 						//decimal temperatureInCelcious = (decimal)((float)633 / 100 + 30);
-
 						//(9.0 / 5.0) * c) +32
-
+						// the device always reads in Celcious even if it is displaying in fareinheit
 						var tempC = (double)data / 100 + 30.0;
-						double tempF =  Math.Round(((9.0 / 5.0) * tempC) + 32, 1);
+						double tempF = Math.Round(((9.0 / 5.0) * tempC) + 32, 1);
 
 						uiController.updateTemperature((decimal)tempF, "Celcious");
 					}
@@ -131,15 +176,16 @@ namespace MyHealthVitals.iOS
 					//var D0 = (ch.Value[9] & (1 << 9 - 1)) != 0;
 
 					int lastSpo2 = (int)ch.Value[5];
-					int  lastBPM = (int)ch.Value[6];
-					uiController.SPO2_readingCompleted(lastSpo2, lastBPM,(float)((int)ch.Value[8])/100);
+					int lastBPM = (int)ch.Value[6];
+					uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
 
 					//var D1_byte9th = ((int)ch.Value[9] & (1 << 1)) != 0;
 					//Debug.WriteLine("D0: " + D1_byte9th);
 					//lastBPM = 
 
 				}
-				else if(ch.Value.Length==11) {
+				else if (ch.Value.Length == 11)
+				{
 					Debug.WriteLine("end of the spo2 reading.");
 					uiController.noticeEndOfReadingSpo2();
 				}
@@ -192,7 +238,7 @@ namespace MyHealthVitals.iOS
 						break;
 				}
 
-				uiController.ShowMessageOnUI(message,true);
+				uiController.ShowMessageOnUI(message, true);
 			}
 
 			printUpdatedCharacteristics(ch);

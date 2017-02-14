@@ -17,7 +17,7 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 
-			DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
+			//DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
 		}
 
 		// IBluetoothCallBackUpdatable methods
@@ -30,6 +30,11 @@ namespace MyHealthVitals
 		public void noticeEndOfReadingSpo2() { }
 		public void updateDeviceConnected(String deviceName, bool isConnected) {
 			System.Diagnostics.Debug.WriteLine("deviceName: " + deviceName);
+		}
+
+		public void updateGlucoseReading(decimal gluReading, string unit)
+		{
+			
 		}
 	}
 }

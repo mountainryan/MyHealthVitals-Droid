@@ -52,6 +52,12 @@ namespace MyHealthVitals
 						headerContainer.Children.Add(header);
 						break;
 					}
+				case 8: {
+						this.Title = "Glucose Data List";
+						headerWithOneTitle header = new headerWithOneTitle("Glucose (Mmol/L)");
+						headerContainer.Children.Add(header);
+						break;
+					}
 			}
 
 			callApi();
@@ -154,11 +160,9 @@ namespace MyHealthVitals
 							{
 								var item = new ParameterDetailItem();
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
-								item.firstItem = Math.Round((decimal)reading.EnglishValue,1).ToString() +"/"+ Math.Round((decimal)reading.MetricValue, 1).ToString();
+								item.firstItem = Math.Round((decimal)reading.EnglishValue,1) +"/"+ Math.Round((decimal)reading.MetricValue, 1);
 								item.categoryId = reading.CategoryId;
 								data.Add(item);
-
-								Debug.WriteLine(item.firstItem);
 							}
 
 							itemList.ItemsSource = data;
@@ -178,6 +182,18 @@ namespace MyHealthVitals
 						}
 					case 8:
 						{
+							var sortedTemps = allCategoryReading.Reverse();
+
+							foreach (var reading in sortedTemps)
+							{
+								var item = new ParameterDetailItem();
+								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
+								item.firstItem = Math.Round((decimal)reading.EnglishValue, 1).ToString();
+								item.categoryId = reading.CategoryId;
+								data.Add(item);
+							}
+
+							itemList.ItemsSource = data;
 							break;
 						}
 					case 9:

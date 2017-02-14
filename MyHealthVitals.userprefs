@@ -1,23 +1,25 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/MainPage.xaml.cs">
     <Files>
-      <File FileName="MyHealthVitals/Views/DeviceListPage.xaml.cs" Line="20" Column="3" />
-      <File FileName="MyHealthVitals/Views/LoginPage.xaml" Line="1" Column="1" />
+      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="111" Column="10" />
+      <File FileName="MyHealthVitals/Views/MainPage.xaml" Line="110" Column="20" />
+      <File FileName="iOS/BLE/BluetoothCentralManager.cs" Line="12" Column="58" />
+      <File FileName="MyHealthVitals/Models/IBluetoothCallBackUpdatable.cs" Line="15" Column="61" />
+      <File FileName="iOS/BLE/BluetoothPeripheralDelegate.cs" Line="98" Column="18" />
+      <File FileName="MyHealthVitals/Models/VitalsData.cs" Line="15" Column="24" />
+      <File FileName="MyHealthVitals/Models/Reading.cs" Line="78" Column="6" />
+      <File FileName="MyHealthVitals/Views/DeviceListPage.xaml.cs" Line="33" Column="4" />
+      <File FileName="MyHealthVitals/Views/ParameterItemDetail.xaml.cs" Line="184" Column="8" />
       <File FileName="MyHealthVitals/Views/LoginPage.xaml.cs" Line="50" Column="6" />
-      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="36" Column="100" />
-      <File FileName="iOS/BLE/BluetoothCentralManager.cs" Line="17" Column="19" />
-      <File FileName="MyHealthVitals/BLE/ICBCentralManager.cs" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Models/IBluetoothCallBackUpdatable.cs" Line="6" Column="3" />
-      <File FileName="MyHealthVitals/Views/MainPage.xaml" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/Models/Reading.cs" line="89" column="1" />
+      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/Views/ParameterItemDetail.xaml.cs" line="196" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_x86" />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.209D053D-9349-4465-8020-D852BF416EA8" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.5cb1f34b11eb6cec5176ff5ad3ebee1fde550339" />
 </Properties>

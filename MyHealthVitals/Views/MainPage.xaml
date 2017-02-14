@@ -106,11 +106,11 @@
 				<StackLayout Orientation="Horizontal" Margin="10,10,10,0">
 					<StackLayout WidthRequest="72">
 						<Label Text="GLU" Style="{DynamicResource styleLblNumeric}" />
-						<Label Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
+						<Label x:Name="lblUnitGlucose" Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
 						<Label Text=" " Style="{DynamicResource styleLblReading}" />
-						<Label Text="-" Style="{DynamicResource styleLblReading}" />
+						<Label x:Name="lblGlucose" Text="-" Style="{DynamicResource styleLblReading}" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />

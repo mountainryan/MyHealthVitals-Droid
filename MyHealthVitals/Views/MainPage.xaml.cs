@@ -101,6 +101,27 @@ namespace MyHealthVitals
 			});
 		}
 
+		public void updateGlucoseReading(decimal gluReading, string unit) {
+			//Conversion math mmol/L = mg/dL / 18
+			if (unit == "Mmol/L")
+			{
+				vitalsData.glucose = new Reading("Glucose", gluReading, 8);
+				vitalsData.glucose.MetricValue = Math.Round(gluReading / 18,1);
+			}
+			else {
+				vitalsData.glucose = new Reading("Glucose", Math.Round((decimal)gluReading / 18, 1), 8);
+				vitalsData.glucose.MetricValue = gluReading;
+			}
+
+			vitalsData.sendToServer_Glucose();
+
+			Device.BeginInvokeOnMainThread(() =>
+			{
+				lblGlucose.Text = (unit == "Mmol/L") ? vitalsData.glucose.EnglishValue.ToString() : vitalsData.glucose.MetricValue.ToString();
+				lblUnitGlucose.Text = unit;
+			});
+		}
+
 		public void updateDeviceConnected(String deviceName, bool isConnected)
 		{
 			System.Diagnostics.Debug.WriteLine("deviceName: " + deviceName);
@@ -114,7 +135,7 @@ namespace MyHealthVitals
 			vitalsData.temperature = new Reading("Temperature(°F/°C)", temperature, 4);
 			vitalsData.sendToServerTemperature();
 
-			Xamarin.Forms.Device.BeginInvokeOnMainThread(() => {
+			Device.BeginInvokeOnMainThread(() => {
 
 				if (isCelcious)
 				{
