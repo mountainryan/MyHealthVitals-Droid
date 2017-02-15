@@ -117,7 +117,7 @@
 						<StackLayout Orientation="Horizontal" Padding="2">
 							<Button Clicked="btnLbsClicked" x:Name="btnLbs" Text="Lbs">
 							</Button>
-							<Button Clicked="btnKgsClicked" x:Name="btnKgs" Text="Kgs" >
+							<Button TextColor="Gray" Clicked="btnKgsClicked" x:Name="btnKgs" Text="Kgs" >
 							</Button>
 						</StackLayout>
 					</StackLayout>

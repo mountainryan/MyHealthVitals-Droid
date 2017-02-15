@@ -15,8 +15,8 @@
 				</StackLayout>
 				<StackLayout x:Name="layoutLoginContainer" Margin="20,30,20,10" Orientation="Horizontal" Spacing="0">
 					<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical">
-						<local:MyEntry Margin="0" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="rhiggs" Placeholder="username"/>
-						<Entry Margin="0" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="0600" Placeholder="password"/>
+						<local:MyEntry Margin="0" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="" Placeholder="username"/>
+						<Entry Margin="0" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="" Placeholder="password"/>
 					</StackLayout>
 					<Button Margin="5,0,0,0" Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="80" FontSize="17" Text="Login">
 					</Button>

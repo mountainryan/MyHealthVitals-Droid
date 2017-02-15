@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Xamarin.Forms;
 
 namespace MyHealthVitals
 {
@@ -99,7 +100,49 @@ namespace MyHealthVitals
 
 		public static Demographics sharedInstance = new Demographics();
 
-		private Demographics(){}
+
+		// userdefaults
+		public bool isAutoLogin;
+		public bool isRememberUsername;
+		public string username;
+		public string password;
+
+		private Demographics(){
+			if (Application.Current.Properties.ContainsKey("isAutoLogin"))
+			{
+				isAutoLogin = (bool)Application.Current.Properties["isAutoLogin"];
+			}
+
+			if (Application.Current.Properties.ContainsKey("isRememberUsername"))
+			{
+				isRememberUsername = (bool)Application.Current.Properties["isRememberUsername"];
+			}
+
+			if (Application.Current.Properties.ContainsKey("username")) {
+				username = (string)Application.Current.Properties["username"];
+			}
+
+			if (Application.Current.Properties.ContainsKey("password"))
+			{
+				password = (string)Application.Current.Properties["password"];
+			}
+		}
+
+		public void saveUserDefaults() {
+			Application.Current.Properties["username"] = username;
+			Application.Current.Properties["password"] = password;
+			Application.Current.Properties["isAutoLogin"] = isAutoLogin;
+			Application.Current.Properties["isRememberUsername"] = isRememberUsername;
+			Application.Current.SavePropertiesAsync();
+		}
+
+		public void clearLocalStorageOnLogout() { 
+			//Application.Current.Properties["username"] = "";
+			Application.Current.Properties["password"] = "";
+			Application.Current.Properties["isAutoLogin"] = false;
+			//Application.Current.Properties["isRememberUsername"] = isRememberUsername;
+			Application.Current.SavePropertiesAsync();
+		}
 
 		// calling web service to get the json
 		public async Task<bool> getDemographicFromApi()
@@ -114,7 +157,14 @@ namespace MyHealthVitals
 				try
 				{
 					var content = await response.Content.ReadAsStringAsync();
-					Demographics.sharedInstance = JsonConvert.DeserializeObject<Demographics>(content);
+					var demoGraphics  = JsonConvert.DeserializeObject<Demographics>(content);
+
+					// transfering local values to the shared instance of demographics after deserialize
+					demoGraphics.username = Demographics.sharedInstance.username;
+					demoGraphics.password = Demographics.sharedInstance.password;
+					demoGraphics.isAutoLogin = Demographics.sharedInstance.isAutoLogin;
+					demoGraphics.isRememberUsername = Demographics.sharedInstance.isRememberUsername;
+					Demographics.sharedInstance = demoGraphics;
 
 					Debug.WriteLine(Demographics.sharedInstance.getFullName());
 				}

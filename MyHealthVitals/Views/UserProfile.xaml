@@ -14,33 +14,32 @@
 					</StackLayout>
 				</StackLayout>
 
-
 				<StackLayout Spacing="20" Padding="15">
 
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Gender" />
-						<Label x:Name="lblGender" Style="{DynamicResource UserProfileLabel}" Text="Male" HorizontalOptions="EndAndExpand" />
+						<Label x:Name="lblGender" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Birthdate" />
-						<Label x:Name="lblBirthdate" Style="{DynamicResource UserProfileLabel}" Text="Male" HorizontalOptions="EndAndExpand" />
+						<Label x:Name="lblBirthdate" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Age" />
-						<Label x:Name="lblAge" Style="{DynamicResource UserProfileLabel}" Text="Male" HorizontalOptions="EndAndExpand" />
+						<Label x:Name="lblAge" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Height" />
-						<Label x:Name="lblHeight" Style="{DynamicResource UserProfileLabel}" Text="Male" HorizontalOptions="EndAndExpand" />
+						<Label x:Name="lblHeight" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Weight" />
-						<Label x:Name="lblWeight" Style="{DynamicResource UserProfileLabel}" Text="Male" HorizontalOptions="EndAndExpand" />
+						<Label x:Name="lblWeight" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Mobile No." />
-						<Label x:Name="lblMobileNo" Style="{DynamicResource UserProfileLabel}" Text="Male" HorizontalOptions="EndAndExpand" />
+						<Label x:Name="lblMobileNo" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 
 					<StackLayout Orientation="Horizontal">

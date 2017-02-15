@@ -11,14 +11,48 @@ namespace MyHealthVitals
 	{
 		void btnSaveClicked(object sender, System.EventArgs e)
 		{
-			
+			Demographics.sharedInstance.isAutoLogin = switchAutoLogin.IsToggled;
+			Demographics.sharedInstance.isRememberUsername = switchRemUsername.IsToggled;
+			Demographics.sharedInstance.saveUserDefaults();
+			this.Navigation.PopAsync();
 		}
 
 		public UserProfile()
 		{
 			InitializeComponent();
 			// initial rendering previously saved data
-			initialRendering();
+
+			switchAutoLogin.IsToggled = Demographics.sharedInstance.isRememberUsername;
+			switchRemUsername.IsToggled = Demographics.sharedInstance.isAutoLogin;
+
+			if (Demographics.sharedInstance.Id > 0)
+			{
+				initialRendering();
+			}
+			else {
+				callAPi();
+			}
+		}
+
+		private async void callAPi()
+		{
+			var isSuccess = await Demographics.sharedInstance.getDemographicFromApi();
+
+			if (isSuccess)
+			{
+				initialRendering();
+
+				this.lblName.Text = Demographics.sharedInstance.getFullName();
+				this.lblEmail.Text = Demographics.sharedInstance.Email;
+
+				// calling async to download the image and setting in to the image
+				String imageBase64 = await Demographics.sharedInstance.downloadProfilePic();
+
+				if (imageBase64 != null)
+				{
+					this.imgProfile.Source = Xamarin.Forms.ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(imageBase64)));
+				}
+			}
 		}
 
 		public async void initialRendering() {
@@ -27,6 +61,9 @@ namespace MyHealthVitals
 			{
 				this.lblName.Text = Demographics.sharedInstance.getFullName();
 				this.lblEmail.Text = Demographics.sharedInstance.Email;
+
+				lblBirthdate.Text = String.Format("{0:MM/dd/yyyy}", (DateTime)Demographics.sharedInstance.DateOfBirth);
+
 				lblAge.Text = (DateTime.Now.Year - 1 - ((DateTime)Demographics.sharedInstance.DateOfBirth).Year).ToString();
 				lblHeight.Text = Demographics.sharedInstance.Height;
 				lblWeight.Text = Demographics.sharedInstance.Weight;
