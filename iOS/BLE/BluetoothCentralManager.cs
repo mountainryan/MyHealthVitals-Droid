@@ -97,7 +97,7 @@ namespace MyHealthVitals.iOS
 				((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Connected.", true);
 			}
 			else { 
-				((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Scanning time out. Please check if your device is turned on.", false);
+				((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Scanning time out. Please, check if device is turned on.", false);
 			}
 				
 			((Timer)sender).Stop();

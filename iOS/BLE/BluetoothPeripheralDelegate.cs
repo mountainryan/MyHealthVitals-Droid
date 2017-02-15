@@ -103,6 +103,76 @@ namespace MyHealthVitals.iOS
 				if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
 			}
 
+			if ((int)ch.Value[2] >= 48 && (int)ch.Value[2] <= 51) {
+				//Debug.WriteLine("this is ECG data:");
+
+				// this make sure the ECG is started
+				//if ((int)ch.Value[2] == 49 && (int)ch.Value[3] == 3) {
+
+				//	var data1 = (int)ch.Value[5];
+
+				//	var d7 = (15 & (1 << 0)) != 0;
+
+				//	//if (d7)
+				//	//{
+				//	//	Debug.WriteLine("ECG is in measuring state");
+				//	//	// below command informs slave to start measuring 
+				//	//	byte[] bytes = new byte[] { 0xaa, 0x55, 0x30, 0x02, 0x01, 0xC5 };
+				//	//	BluetoothCentralManager.connectedPeripheral.WriteValue(NSData.FromArray(bytes), ((BluetoothPeripheralDelegate)BluetoothCentralManager.connectedPeripheral.Delegate).bmChar, CBCharacteristicWriteType.WithResponse);
+				//	//}
+				//	//else {
+				//	//	Debug.WriteLine("ECG is not in measuring state");
+				//	//}
+
+				//	// sending query to get working state to the slave from master
+				//	//Debug.WriteLine("sending query to get working state to the slave from master");
+				//}
+
+				//if ((int)ch.Value[2] == 48 && (int)ch.Value[3] == 2)
+				//{
+				//	Debug.WriteLine("this is response of first command query.");
+				//}
+				//ch.Value[5]
+
+				if ((int)ch.Value[3] == 55)
+				{
+					List<int> values = new List<int>();
+
+					for (int i = 6; i < 25 + 6; i = i + 2)
+					{
+						var data = ch.Value[i];
+
+						var D7_data = (data & (1 << 7)) != 0;
+						if (D7_data == false)
+						{
+							// the first byte does not contain data out of two byte
+							//Debug.Write(" 8bit: " + (int)ch.Value[i + 1]);
+							values.Add((int)ch.Value[i + 1]);
+						}
+						else {
+							// the first byte contains status bit and MSB ( 4 bits ) of the ECG waveform data;
+							var maskedFoutBit = (int)ch.Value[i] & 15;
+							var data1 = (maskedFoutBit >> 8) + (int)ch.Value[i + 1];
+
+							values.Add(data1);
+							//Debug.Write("12 bit: " + data1);
+						}
+					}
+
+					int count = 0;
+					var sb = new StringBuilder();
+					foreach (var itm in values)
+					{
+						sb.Append(itm).Append(",");
+						count++;
+					}
+
+					Debug.WriteLine(sb);
+				}
+
+				//printUpdatedCharacteristics(ch);
+			}
+
 			if ((int)ch.Value[2] == 115) // this token is for glucose reading
 			{
 				// combining byte 6 and byte 7 to read temperature
@@ -110,7 +180,7 @@ namespace MyHealthVitals.iOS
 				int data = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
 
 				// status bit
-				var D0_data1 = (15 & (1 << 0)) != 0;
+				var D0_data1 = ((int)ch.Value[5] & (1 << 0)) != 0;
 
 				if (D0_data1)
 				{
@@ -138,12 +208,12 @@ namespace MyHealthVitals.iOS
 				Debug.WriteLine("Temparature related token.");
 
 				// from document it is written that the 5 byte is status and D4 is temperature probe is connected
-				Byte temperatureStatus = ch.Value[5];
+				//Byte temperatureStatus = ;
 				// bit 5
-				var D4 = (15 & (1 << 4)) != 0;
+				var D4 = (ch.Value[5] & (1 << 4)) != 0;
 
 				// if D4=0 means temperature reading is completed
-				if (!D4)
+				if (D4==false)
 				{
 					// has the temperature reading
 					// combining byte 6 and byte 7 to read temperature
@@ -241,7 +311,7 @@ namespace MyHealthVitals.iOS
 				uiController.ShowMessageOnUI(message, true);
 			}
 
-			printUpdatedCharacteristics(ch);
+
 		}
 	}
 }
