@@ -2,7 +2,8 @@
 <ContentPage 
 		BackgroundColor="{StaticResource colorBlackBg}" 
 		xmlns="http://xamarin.com/schemas/2014/forms" 
-		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
 		x:Class="MyHealthVitals.MainPage">
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Text="Log Out" Clicked="btnLogOutClicked">
@@ -129,9 +130,9 @@
 
 				<BoxView HeightRequest="0.5" BackgroundColor="Gray">
 				</BoxView>
-			
-				<StackLayout Margin="10" BackgroundColor="White" HeightRequest="90">
-				</StackLayout>
+
+				<oxy:PlotView BackgroundColor="White" x:Name="plotView" Margin="10" HeightRequest="150" HorizontalOptions="FillAndExpand" Model="{Binding ecgModel}" />
+				
 				<StackLayout Orientation="Horizontal" Margin="10,0,10,10">
 					<Button Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
 					</Button>

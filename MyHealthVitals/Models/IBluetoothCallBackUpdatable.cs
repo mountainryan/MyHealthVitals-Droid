@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace MyHealthVitals
 {
 	public interface IBluetoothCallBackUpdatable
@@ -13,5 +15,7 @@ namespace MyHealthVitals
 		void updateDeviceConnected(String deviceName, bool isConnected);
 
 		void updateGlucoseReading(decimal gluReading,string unit);
+
+		void updateECGResult(List<int> ecgPacket);
 	}
 }

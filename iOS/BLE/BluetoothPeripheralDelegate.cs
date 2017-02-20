@@ -77,6 +77,9 @@ namespace MyHealthVitals.iOS
 			tmr = null;
 		}
 
+
+		int countOfEcgdataIn30Sec = 0;
+
 		public override void UpdatedCharacterteristicValue(CBPeripheral peripheral, CBCharacteristic ch, NSError error)
 		{
 
@@ -138,7 +141,7 @@ namespace MyHealthVitals.iOS
 				{
 					List<int> values = new List<int>();
 
-					for (int i = 6; i < 25 + 6; i = i + 2)
+					for (int i = 6; i < 25*2 + 6; i = i + 2)
 					{
 						var data = ch.Value[i];
 
@@ -159,15 +162,20 @@ namespace MyHealthVitals.iOS
 						}
 					}
 
-					int count = 0;
-					var sb = new StringBuilder();
-					foreach (var itm in values)
-					{
-						sb.Append(itm).Append(",");
-						count++;
-					}
+					//countOfEcgdataIn30Sec = countOfEcgdataIn30Sec + values.Count;
+					//Debug.WriteLine(countOfEcgdataIn30Sec);
 
-					Debug.WriteLine(sb);
+					uiController.updateECGResult(values);
+
+					//int count = 0;
+					//var sb = new StringBuilder();
+					//foreach (var itm in values)
+					//{
+					//	sb.Append(itm).Append(",");
+					//	count++;
+					//}
+
+					//Debug.WriteLine(sb);
 				}
 
 				//printUpdatedCharacteristics(ch);

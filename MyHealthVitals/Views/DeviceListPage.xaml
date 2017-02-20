@@ -9,7 +9,7 @@
 			<StackLayout VerticalOptions="Center" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="15">
 				<StackLayout Spacing="0" HorizontalOptions="Center">
 					<Button Clicked="btnPC300clicked" Image="PC300Monitor.png" HeightRequest="65" WidthRequest="65"/>
-					<local:MyButton FontSize="15" Clicked="btnPC300clicked" TextColor="White" WidthRequest="130" Text="BP, Pulse, SpOo2, Glucose, ECG"/>
+					<local:MyButton x:Name="btnMyButton" FontSize="15" Clicked="btnPC300clicked" TextColor="White" WidthRequest="130" Text="BP, Pulse, SpOo2, Glucose, ECG"/>
 					<Image Source="imgBLEOff.png" HeightRequest="22" WidthRequest="22" />
 				</StackLayout>
 				<StackLayout HorizontalOptions="Center" Spacing="50" Orientation="Horizontal">

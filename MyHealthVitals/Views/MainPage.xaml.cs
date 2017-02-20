@@ -4,6 +4,10 @@ using Xamarin.Forms;
 using System.Diagnostics;
 using System.IO;
 
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+
 namespace MyHealthVitals
 {
 	public partial class MainPage : ContentPage, IBluetoothCallBackUpdatable
@@ -12,14 +16,46 @@ namespace MyHealthVitals
 
 		public static bool isCOnnectedToSpotCheck = false;
 
+
+		LineSeries lineSerie;
 		public MainPage()
 		{
 			InitializeComponent();
 
+			// Oxy plot thing
+			ecgModel = new PlotModel();
+			BindingContext = this;
+
+			lineSerie = new LineSeries
+			{
+				StrokeThickness = 0.5,
+				Color = OxyColor.FromRgb(0, 145, 255),
+				Smooth = true,
+			};
+
+			//ecgModel
+
+			lastDataPointPrev = new DataPoint(0, 0);
+
+			lineSerie.Points.Add(lastDataPointPrev);
+
+			//lineSerie.Points.Add(lastDataPointPrev);
+			ecgModel.Series.Add(lineSerie);
+			ecgModel.InvalidatePlot(true);
+
+			if (ecgModel.DefaultXAxis != null)
+			{
+				ecgModel.DefaultYAxis.Minimum = 0;
+				ecgModel.DefaultYAxis.Maximum = 500;
+
+				ecgModel.DefaultXAxis.Minimum = 0;
+				ecgModel.DefaultXAxis.Maximum = 4;
+			}
+			ecgModel.InvalidatePlot(true);
+
 			btnFareinheit.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
 			btnCelcious.TextColor = Color.Gray;
 			isCelcious = false;
-
 
 			//if (MainPage.isCOnnectedToSpotCheck)
 			//{
@@ -157,6 +193,54 @@ namespace MyHealthVitals
 		//		return true;
 		//	});
 		//}
+
+		public PlotModel ecgModel { get; set; }
+		float ecgTime = 0;
+		DataPoint lastDataPointPrev;
+
+		public void updateECGResult(List<int> ecgPacket)
+		{
+
+			if (ecgModel.DefaultXAxis != null)
+			{
+				ecgModel.DefaultYAxis.Minimum = 0;
+				ecgModel.DefaultYAxis.Maximum = 350;
+
+				ecgModel.DefaultXAxis.Minimum = 0;
+				ecgModel.DefaultXAxis.Maximum = 4;
+			}
+
+			for (int i = 0; i < ecgPacket.Count; i++)
+			{
+				ecgTime = ecgTime + 0.0067f;
+
+				//if (i == ecgPacket.Count - 1)
+				//	lastDataPointPrev = new DataPoint(ecgTime, ecgPacket[i]);
+
+				lineSerie.Points.Add(new DataPoint(ecgTime, ecgPacket[i]));
+			}
+
+			if (ecgTime > 4.05f)
+			{
+				DependencyService.Get<IFileHelper>().saveToPdf(ecgModel, "ecgReport" + (countEcgReport++) + ".pdf");
+				
+				ecgTime = 0.0f;
+				lineSerie.Points.Clear();
+				ecgModel.InvalidatePlot(true);
+
+				//ecgModel.PlotAreaBorderColor = OxyColors.Transparent;
+				//ecgModel.TextColor = OxyColors.Transparent;
+				//ecgModel.TitleColor = OxyColors.Transparent;
+				//ecgModel.LegendTextColor = OxyColors.Transparent;
+				//ecgModel.PlotAreaBorderColor = OxyColors.Black;
+
+			}
+			else { 
+				ecgModel.InvalidatePlot(true);
+			}
+		}
+
+		int countEcgReport = 0;
 
 		public void updatingPressureMeanTime(int pressure)
 		{
@@ -298,5 +382,21 @@ namespace MyHealthVitals
 			btnKgs.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
 			btnLbs.TextColor = Color.Gray;
 		}
+
+		// the oxy plot section
+		//public void updateEcgModel(List<int> ecgPacket)
+		//{
+			
+		//}
+
+		//int countSec = 0;
+		//public void Load()
+		//{
+		//	Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(250), () =>
+		//		{
+		//			updateModel();
+		//			return countSec++ < 30;
+		//		});
+		//}
 	}
 }

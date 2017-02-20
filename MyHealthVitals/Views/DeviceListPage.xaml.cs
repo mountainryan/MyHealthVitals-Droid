@@ -11,6 +11,8 @@ namespace MyHealthVitals
 			var newScreen = new MainPage();
 			newScreen.Title = "Main Screeen";
 			this.Navigation.PushAsync(newScreen);
+
+			//btnMyButton.ab
 		}
 
 		public DeviceListPage()
@@ -34,6 +36,10 @@ namespace MyHealthVitals
 
 		public void updateGlucoseReading(decimal gluReading, string unit)
 		{
+			
+		}
+
+		public void updateECGResult(List<int> ecgPacket) { 
 			
 		}
 	}
