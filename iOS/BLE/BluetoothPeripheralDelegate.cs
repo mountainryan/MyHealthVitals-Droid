@@ -78,7 +78,13 @@ namespace MyHealthVitals.iOS
 		}
 
 
-		int countOfEcgdataIn30Sec = 0;
+		//int countOfEcgdataIn30Sec = 0;
+
+
+		bool isEcgStarted = false;
+
+		DateTime t1;
+		DateTime t2;
 
 		public override void UpdatedCharacterteristicValue(CBPeripheral peripheral, CBCharacteristic ch, NSError error)
 		{
@@ -106,7 +112,8 @@ namespace MyHealthVitals.iOS
 				if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
 			}
 
-			if ((int)ch.Value[2] >= 48 && (int)ch.Value[2] <= 51) {
+			if ((int)ch.Value[2] >= 48 && (int)ch.Value[2] <= 51)
+			{
 				//Debug.WriteLine("this is ECG data:");
 
 				// this make sure the ECG is started
@@ -139,9 +146,16 @@ namespace MyHealthVitals.iOS
 
 				if ((int)ch.Value[3] == 55)
 				{
+
+					if (isEcgStarted == false)
+					{
+						isEcgStarted = true;
+						t1 = DateTime.Now;
+					}
+
 					List<int> values = new List<int>();
 
-					for (int i = 6; i < 25*2 + 6; i = i + 2)
+					for (int i = 6; i < 25 * 2 + 6; i = i + 2)
 					{
 						var data = ch.Value[i];
 
@@ -176,6 +190,113 @@ namespace MyHealthVitals.iOS
 					//}
 
 					//Debug.WriteLine(sb);
+				}
+
+				// end of the ecg reading
+				if ((int)ch.Value[2] == 51)
+				{
+					Debug.WriteLine("total duration of ECG measurment: " + (t1.Subtract(DateTime.Now)).TotalMilliseconds);
+					isEcgStarted = false;
+
+
+
+					var data1 = (int)ch.Value[5];
+
+					switch (data1)
+					{
+						case 0:
+							{
+								uiController.ShowMessageOnUI("No irregularity found.", true);
+								break;
+							}
+							case 1:
+							{
+								uiController.ShowMessageOnUI("Suspected a little fast beat.", true);
+								break;
+							}
+							case 2:
+							{
+								uiController.ShowMessageOnUI("Suspected fast beat.", true);
+								break;
+							}
+							case 3:
+							{
+								uiController.ShowMessageOnUI("Suspected short run of fast beat.", true);
+								break;
+							}
+							case 4:
+							{
+								uiController.ShowMessageOnUI("Suspected a little slow beat.", true);
+								break;
+							}
+							case 5:
+							{
+								uiController.ShowMessageOnUI("Suspected occasional short beat interval.", true);
+								break;
+							}
+							case 6:
+							{
+								uiController.ShowMessageOnUI("Suspected occasional short beat interval.", true);
+								break;
+							}
+							case 7:
+							{
+								uiController.ShowMessageOnUI("Suspected irregular beat interval.", true);
+								break;
+							}
+							case 8:
+							{
+								uiController.ShowMessageOnUI("Suspected fast beat with short beat interval.", true);
+								break;
+							}
+							case 9:
+							{
+								uiController.ShowMessageOnUI("Suspected slow beat with short beat interva.", true);
+								break;
+							}
+							case 10:
+							{
+								uiController.ShowMessageOnUI("Suspected slow beat with irregular beat interval.", true);
+								break;
+							}
+							case 11:
+							{
+								uiController.ShowMessageOnUI("Waveform baseline wander.", true);
+								break;
+							}
+							case 12:
+							{
+								uiController.ShowMessageOnUI("Suspected fast beat with baseline wander.", true);
+								break;
+							}
+							case 13:
+							{
+								uiController.ShowMessageOnUI("Suspected slow beat with baseline wander.", true);
+								break;
+							}
+							case 14:
+							{
+								uiController.ShowMessageOnUI("Suspected occasional short beat interval with baseline wander.", true);
+								break;
+							}
+							case 15:
+							{
+								uiController.ShowMessageOnUI("Suspected irregular beat interval with baseline wander.", true);
+								break;
+							}
+							case 16:
+							{
+								uiController.ShowMessageOnUI("Poor Signal, measure again.", true);
+								break;
+							}
+						default:
+							{
+								uiController.ShowMessageOnUI("No Result Found.", true);
+								break;
+							}
+					}
+
+					Debug.WriteLine("bpm reslt of ecg: " + (int)ch.Value[7]);
 				}
 
 				//printUpdatedCharacteristics(ch);
@@ -221,7 +342,7 @@ namespace MyHealthVitals.iOS
 				var D4 = (ch.Value[5] & (1 << 4)) != 0;
 
 				// if D4=0 means temperature reading is completed
-				if (D4==false)
+				if (D4 == false)
 				{
 					// has the temperature reading
 					// combining byte 6 and byte 7 to read temperature

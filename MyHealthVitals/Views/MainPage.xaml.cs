@@ -24,22 +24,58 @@ namespace MyHealthVitals
 
 			// Oxy plot thing
 			ecgModel = new PlotModel();
+
+			//ecgModel.TouchStarted += (object sender, OxyTouchEventArgs e) => {
+			//	//ecgModel.DefaultXAxis.pa
+			//});
+			//ecgModel.sr
 			BindingContext = this;
 
 			lineSerie = new LineSeries
 			{
-				StrokeThickness = 0.5,
+				StrokeThickness = 1.5,
 				Color = OxyColor.FromRgb(0, 145, 255),
 				Smooth = true,
 			};
 
-			//ecgModel
-
 			lastDataPointPrev = new DataPoint(0, 0);
-
 			lineSerie.Points.Add(lastDataPointPrev);
 
-			//lineSerie.Points.Add(lastDataPointPrev);
+			double p1 = 0;
+			//float d1 = 0;
+
+			//ecgModel.pa
+
+			//this.ecgModel.TouchStarted += (object sender, OxyTouchEventArgs e) =>
+			//{
+			//	p1 = e.Position.X;
+
+			//	//Debug.WriteLine("delta Translation: " + e.Position.X);
+			//	//ecgModel.DefaultXAxis.Pan(plotView.Width - 42);
+
+			//};
+
+			//this.ecgModel.TouchCompleted += (object sender, OxyTouchEventArgs e) => {
+
+			//	double dx = e.Position.X - p1;
+
+			//	if (dx > 0)
+			//	{
+			//		Debug.WriteLine("delta Translation: " + dx);
+			//		ecgModel.DefaultXAxis.Pan(plotView.Width - 42);
+
+			//		//ecgModel.DefaultXAxis.Pan
+			//	}
+			//	else { 
+			//		ecgModel.DefaultXAxis.Pan(-plotView.Width + 42);
+			//		Debug.WriteLine("delta Translation: " + dx);
+			//	}
+
+			//	//ecgModel.DefaultXAxis.Pan(plotView.Width - 42);
+			//};
+
+			//ecgModel.to
+
 			ecgModel.Series.Add(lineSerie);
 			ecgModel.InvalidatePlot(true);
 
@@ -183,20 +219,11 @@ namespace MyHealthVitals
 			});
 		}
 
-		//public void hideMessageWthDelay()
-		//{
-		//	Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(20000), () => {
-		//		Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-		//			{
-		//				//layoutLoading.IsVisible = false;
-		//			});
-		//		return true;
-		//	});
-		//}
-
 		public PlotModel ecgModel { get; set; }
 		float ecgTime = 0;
 		DataPoint lastDataPointPrev;
+
+		float xMin = 0.0f;
 
 		public void updateECGResult(List<int> ecgPacket)
 		{
@@ -206,13 +233,48 @@ namespace MyHealthVitals
 				ecgModel.DefaultYAxis.Minimum = 0;
 				ecgModel.DefaultYAxis.Maximum = 350;
 
-				ecgModel.DefaultXAxis.Minimum = 0;
-				ecgModel.DefaultXAxis.Maximum = 4;
+				ecgModel.DefaultXAxis.Minimum = xMin;
+				ecgModel.DefaultXAxis.Maximum = xMin + 4.0;
+				ecgModel.DefaultYAxis.IsPanEnabled = false;
+
+				// x - axis style
+				ecgModel.DefaultXAxis.MinorGridlineStyle = LineStyle.Solid;
+				ecgModel.DefaultXAxis.MajorGridlineStyle = LineStyle.Solid;
+
+				ecgModel.DefaultXAxis.MajorGridlineThickness = 0.25f;
+				ecgModel.DefaultXAxis.MinorGridlineThickness = 0.25f;
+
+				ecgModel.DefaultXAxis.MinorGridlineColor = OxyColors.LightGray;
+				ecgModel.DefaultXAxis.MajorGridlineColor = OxyColors.LightGray;
+
+				// y - axis style
+				ecgModel.DefaultYAxis.MinorGridlineStyle = LineStyle.Solid;
+				ecgModel.DefaultYAxis.MajorGridlineStyle = LineStyle.Solid;
+
+				ecgModel.DefaultYAxis.MajorGridlineThickness = 0.25f;
+				ecgModel.DefaultYAxis.MinorGridlineThickness = 0.25f;
+
+				ecgModel.DefaultYAxis.MajorGridlineColor = OxyColors.LightGray;
+				ecgModel.DefaultYAxis.MinorGridlineColor = OxyColors.LightGray;
+
+				//ecgModel.DefaultXAxis.TouchDelta += (object sender, OxyTouchEventArgs e) => {
+				//	ecgModel.DefaultXAxis.Pan(plotView.Width - 42);
+				//};
+
+				//ecgModel.DefaultXAxis.TouchCompleted += (object sender, OxyTouchEventArgs e) => { 
+				//	ecgModel.DefaultXAxis.Pan(plotView.Width - 42);
+				//};
+
+				//this.plotView.Model.TouchCompleted += this.PlotModelTouchCompletedHandler;
+
+				//ecgModel.HandleTouchCompleted(this,
+
 			}
+
 
 			for (int i = 0; i < ecgPacket.Count; i++)
 			{
-				ecgTime = ecgTime + 0.0067f;
+				ecgTime = ecgTime + 0.006666666667f;
 
 				//if (i == ecgPacket.Count - 1)
 				//	lastDataPointPrev = new DataPoint(ecgTime, ecgPacket[i]);
@@ -220,20 +282,19 @@ namespace MyHealthVitals
 				lineSerie.Points.Add(new DataPoint(ecgTime, ecgPacket[i]));
 			}
 
-			if (ecgTime > 4.05f)
+			if (ecgTime > ecgModel.DefaultXAxis.Maximum)
 			{
-				DependencyService.Get<IFileHelper>().saveToPdf(ecgModel, "ecgReport" + (countEcgReport++) + ".pdf");
-				
-				ecgTime = 0.0f;
-				lineSerie.Points.Clear();
+				ecgModel.PlotAreaBorderColor = OxyColors.Transparent;
+				DependencyService.Get<IFileHelper>().saveToPdf(ecgModel, "ecgReport_" + (countEcgReport++) + ".pdf");
+				ecgModel.PlotAreaBorderColor = OxyColors.Black;
+
+				//lineSerie.Points.Clear();
+				xMin = ecgTime;
 				ecgModel.InvalidatePlot(true);
 
-				//ecgModel.PlotAreaBorderColor = OxyColors.Transparent;
 				//ecgModel.TextColor = OxyColors.Transparent;
 				//ecgModel.TitleColor = OxyColors.Transparent;
 				//ecgModel.LegendTextColor = OxyColors.Transparent;
-				//ecgModel.PlotAreaBorderColor = OxyColors.Black;
-
 			}
 			else { 
 				ecgModel.InvalidatePlot(true);

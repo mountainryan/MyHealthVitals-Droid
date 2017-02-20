@@ -19,7 +19,7 @@ namespace MyHealthVitals.iOS
 			using (var stream = File.Create(filePath))
 			{
 				var pdfExporter = new PdfExporter();
-				pdfExporter.Height = 300;
+				pdfExporter.Height = 150;
 				pdfExporter.Width = 320;
 				//pdfExporter.
 				//pdfExporter.
