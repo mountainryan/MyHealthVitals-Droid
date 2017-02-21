@@ -5,6 +5,8 @@ namespace MyHealthVitals
 	{
 		void ConnectToDevice(Object uiController);
 		void startMeasuringBP();
+		void startEcgMeasuring();
+		void stopReadingECG();
 	}
 
 	public interface IButtonManager {

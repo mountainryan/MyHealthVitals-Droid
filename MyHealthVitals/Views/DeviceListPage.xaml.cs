@@ -39,8 +39,10 @@ namespace MyHealthVitals
 			
 		}
 
-		public void updateECGResult(List<int> ecgPacket) { 
+		public void updateECGPacket(List<int> ecgPacket) { 
 			
 		}
+
+		public void updateECGEnded(int bpm) { }
 	}
 }

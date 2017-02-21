@@ -16,6 +16,7 @@ namespace MyHealthVitals
 
 		void updateGlucoseReading(decimal gluReading,string unit);
 
-		void updateECGResult(List<int> ecgPacket);
+		void updateECGPacket(List<int> ecgPacket);
+		void updateECGEnded(int bpm);
 	}
 }

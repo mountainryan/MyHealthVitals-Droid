@@ -77,18 +77,13 @@ namespace MyHealthVitals.iOS
 			tmr = null;
 		}
 
-
 		//int countOfEcgdataIn30Sec = 0;
-
-
 		bool isEcgStarted = false;
-
 		DateTime t1;
-		DateTime t2;
+		//DateTime t2;
 
 		public override void UpdatedCharacterteristicValue(CBPeripheral peripheral, CBCharacteristic ch, NSError error)
 		{
-
 			IBluetoothCallBackUpdatable uiController = (IBluetoothCallBackUpdatable)BluetoothCentralManager.uiController;
 
 			// sys , dia and bpm is available in spot check monitor
@@ -114,7 +109,25 @@ namespace MyHealthVitals.iOS
 
 			if ((int)ch.Value[2] >= 48 && (int)ch.Value[2] <= 51)
 			{
-				//Debug.WriteLine("this is ECG data:");
+				Debug.WriteLine("this is ECG data:");
+
+				var token = (int)ch.Value[2];
+				// this is result of query working state
+				if (token == 49)
+				{
+					var d7_bit = (ch.Value[5] & (1 << 7)) != 0;
+
+					if (d7_bit)
+					{
+						Debug.WriteLine("measuring state");
+					}
+					else { 
+						Debug.WriteLine("standby");
+						// command to  start measuring the ecg
+						byte[] bytes = new byte[] { 0xaa, 0x55, 0x30, 0x02, 0x01, 0xC6 };
+						BluetoothCentralManager.connectedPeripheral.WriteValue(NSData.FromArray(bytes), ((BluetoothPeripheralDelegate)BluetoothCentralManager.connectedPeripheral.Delegate).bmChar, CBCharacteristicWriteType.WithResponse);
+					}
+				}
 
 				// this make sure the ECG is started
 				//if ((int)ch.Value[2] == 49 && (int)ch.Value[3] == 3) {
@@ -144,13 +157,14 @@ namespace MyHealthVitals.iOS
 				//}
 				//ch.Value[5]
 
-				if ((int)ch.Value[3] == 55)
+				if (token == 50)
 				{
-
+					// this is to measure time duration taken by ecg to get its result by itself.
 					if (isEcgStarted == false)
 					{
 						isEcgStarted = true;
 						t1 = DateTime.Now;
+						uiController.ShowMessageOnUI("Reading ECG...", true);
 					}
 
 					List<int> values = new List<int>();
@@ -179,29 +193,16 @@ namespace MyHealthVitals.iOS
 					//countOfEcgdataIn30Sec = countOfEcgdataIn30Sec + values.Count;
 					//Debug.WriteLine(countOfEcgdataIn30Sec);
 
-					uiController.updateECGResult(values);
-
-					//int count = 0;
-					//var sb = new StringBuilder();
-					//foreach (var itm in values)
-					//{
-					//	sb.Append(itm).Append(",");
-					//	count++;
-					//}
-
-					//Debug.WriteLine(sb);
+					uiController.updateECGPacket(values);
 				}
 
 				// end of the ecg reading
-				if ((int)ch.Value[2] == 51)
+				if (token == 51)
 				{
 					Debug.WriteLine("total duration of ECG measurment: " + (t1.Subtract(DateTime.Now)).TotalMilliseconds);
 					isEcgStarted = false;
 
-
-
 					var data1 = (int)ch.Value[5];
-
 					switch (data1)
 					{
 						case 0:
@@ -296,7 +297,8 @@ namespace MyHealthVitals.iOS
 							}
 					}
 
-					Debug.WriteLine("bpm reslt of ecg: " + (int)ch.Value[7]);
+					//Debug.WriteLine("bpm reslt of ecg: " + );
+					uiController.updateECGEnded((int)ch.Value[7]);
 				}
 
 				//printUpdatedCharacteristics(ch);
@@ -439,8 +441,6 @@ namespace MyHealthVitals.iOS
 
 				uiController.ShowMessageOnUI(message, true);
 			}
-
-
 		}
 	}
 }

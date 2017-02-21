@@ -155,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
-    <Folder Include="BLE\" />
     <Folder Include="Models\" />
     <Folder Include="Views\MyRespCheck\" />
     <Folder Include="Views\SubViews\" />

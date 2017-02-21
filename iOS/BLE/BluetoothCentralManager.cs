@@ -30,6 +30,30 @@ namespace MyHealthVitals.iOS
 			}
 		}
 
+		public void stopReadingECG() { 
+			if (connectedPeripheral != null && connectedPeripheral.State == CBPeripheralState.Connected)
+			{
+				byte[] bytes = new byte[] { 0xaa, 0x55, 0x30, 0x02, 0x02, 0x24 };
+				connectedPeripheral.WriteValue(NSData.FromArray(bytes), ((BluetoothPeripheralDelegate)BluetoothCentralManager.connectedPeripheral.Delegate).bmChar, CBCharacteristicWriteType.WithResponse);
+			}
+			else {
+				((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Device is not connected. Please connect and try again.", false);
+			}
+		}
+
+		public void startEcgMeasuring() { 
+			if (connectedPeripheral != null && connectedPeripheral.State == CBPeripheralState.Connected)
+			{
+				//byte[] bytes = new byte[] { 0xaa, 0x55, 0x31, 0x02, 0x02, 0xC6 };
+				byte[] bytes = new byte[] { 0xaa, 0x55, 0x31, 0x02, 0x02, 0x8F };
+				//0x8F
+				connectedPeripheral.WriteValue(NSData.FromArray(bytes), ((BluetoothPeripheralDelegate)BluetoothCentralManager.connectedPeripheral.Delegate).bmChar, CBCharacteristicWriteType.WithResponse);
+			}
+			else {
+				((IBluetoothCallBackUpdatable)uiController).ShowMessageOnUI("Device is not connected. Please connect and try again.", false);
+			}
+		}
+
 		public void ConnectToDevice(Object uiController)
 		{
 			BluetoothCentralManager.uiController = uiController;

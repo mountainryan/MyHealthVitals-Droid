@@ -6,8 +6,8 @@
 		xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
 		x:Class="MyHealthVitals.MainPage">
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Log Out" Clicked="btnLogOutClicked">
-		</ToolbarItem>
+		<!--<ToolbarItem Text="Log Out" Clicked="btnLogOutClicked">
+		</ToolbarItem>-->
 		<ToolbarItem Clicked="btnListClicked" Text="List">
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>
@@ -136,7 +136,7 @@
 				<StackLayout Orientation="Horizontal" Margin="10,0,10,10">
 					<Button Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
 					</Button>
-					<Button Text="ECG Start" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
+					<Button Clicked="btnEcgStartClicked" Text="ECG Start" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
 					</Button>
 				</StackLayout>
 			</StackLayout>
