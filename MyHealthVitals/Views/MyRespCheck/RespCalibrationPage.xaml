@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.RespCalibrationPage">
+	<ContentPage.Content>
+		<RelativeLayout>
+			<!--Heading view start here-->
+			<ScrollView RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
+				<StackLayout Spacing="12" Padding="12,4,12,4">
+					<Label FontSize="13" TextColor="White" Margin="5" XAlign="Center" Text="User needs to establish their personal Normal PEF, FEV1 Values. This is accomplished by taking three valid readings in sequence. The system will use the highest readings of the three to determine your Normal Values. These values along with your gender, height and age will be used to calculate a reference value. This value will be shown in the form of a color bar chart on the Main Screen at the conclusion of each subsequent readings." />
+
+					<!--Table view heading	-->
+					<StackLayout Orientation="Horizontal" Spacing="15" Margin="5,0,0,0">
+						<StackLayout BackgroundColor="Yellow" Padding="1">
+							<StackLayout Padding="0" BackgroundColor="{StaticResource colorBlackBg}">
+								<Button Text="Re-calibrate" HeightRequest="34" Margin="10,0,10,0" TextColor="Yellow"/>
+							</StackLayout>
+						</StackLayout>
+						<Label WidthRequest="76" XAlign="Center" Text="PEF(L/min)" FontSize="15" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
+						<Label WidthRequest="76" XAlign="Center" Text="PEF(L/min)" FontSize="15" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
+					</StackLayout>
+
+					<!-- uitableview cell -->
+					<StackLayout Spacing="15" Orientation="Horizontal" Margin="5,0,0,0">
+						<Label FontSize="14" Text="1st Reading" WidthRequest="110" TextColor="White" />
+						<Label FontSize="14" Text="567" XAlign="Center" WidthRequest="76" TextColor="White" />
+						<Label FontSize="14" Text="4.5" XAlign="Center" WidthRequest="76" TextColor="White" />
+					</StackLayout>
+					
+					<ListView BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="144">
+					</ListView>
+					<Button Text="SAVE" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White" Margin="3,15,3,50"/>
+
+				</StackLayout>
+			</ScrollView>
+			<!--Last line-->
+			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
+				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="White" XAlign="Center" FontSize="13" Margin="0,0,0,4">
+				</Label>
+			</StackLayout>
+			<!--loading layout starts-->
+			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
+					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Loging in...">
+					</Label>
+				</StackLayout>
+			</RelativeLayout>
+		</RelativeLayout>
+	</ContentPage.Content>
+</ContentPage>

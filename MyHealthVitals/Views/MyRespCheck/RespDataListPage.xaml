@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals;assembly=MyHealthVitals" x:Class="MyHealthVitals.RespDataListPage">
+	<ContentPage.Content>
+		<RelativeLayout>
+			<!--Heading view start here-->
+			<StackLayout Spacing="12" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Padding="10">
+				<Label TextColor="White" XAlign="Center" Margin="0,5,0,0" Text="Most Recent Reading's">
+				</Label>
+				<StackLayout Orientation="Horizontal">
+					<Label FontSize="13" WidthRequest="134" TextColor="{StaticResource colorThemeBlue}">Date/Time</Label>
+					<Label WidthRequest="70" HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}">PEF(L/min)</Label>
+					<Label WidthRequest="60" HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
+				</StackLayout>
+				<local:CustomListView SeparatorVisibility="None" x:Name="listView" BackgroundColor="{StaticResource colorBlackBg}">
+					<local:CustomListView.ItemTemplate>
+						<DataTemplate>
+							<ViewCell>
+								<StackLayout VerticalOptions="Fill" Spacing="0" Padding="0" Margin="0">
+									<StackLayout Orientation="Horizontal">
+										<Label YAlign="Center" FontSize="13" WidthRequest="160" TextColor="White" Text="{Binding dateString}" />
+										<Label YAlign="Center" WidthRequest="70" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" Text="{Binding pefString}" />
+										<Label YAlign="Center" WidthRequest="60" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" Text="{Binding fev1String}" />
+										<Button VerticalOptions="Center" BackgroundColor="{Binding color}" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
+									</StackLayout>
+									<BoxView Margin="0,12,0,0" HeightRequest="0.5" BackgroundColor="Gray" />
+								</StackLayout>
+							</ViewCell>
+						</DataTemplate>
+					</local:CustomListView.ItemTemplate>
+				</local:CustomListView>
+			</StackLayout>
+			<!--Last line-->
+			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
+				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="White" XAlign="Center" FontSize="10" Margin="0,0,0,4">
+				</Label>
+			</StackLayout>
+			<!--loading layout starts-->
+			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
+					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Loging in...">
+					</Label>
+				</StackLayout>
+			</RelativeLayout>
+		</RelativeLayout>
+	</ContentPage.Content>
+</ContentPage>

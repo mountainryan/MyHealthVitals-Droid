@@ -78,7 +78,7 @@ namespace MyHealthVitals
 					return false;
 				});
 
-			callAPi();
+			callAPiToDisplayGetDemographics();
 		}
 
 		private void setUpEcgDisplay() { 
@@ -146,9 +146,7 @@ namespace MyHealthVitals
 			}
 		}
 
-
-
-		private async void callAPi() { 
+		private async void callAPiToDisplayGetDemographics() { 
 			var isSuccess = await Demographics.sharedInstance.getDemographicFromApi();
 
 			if (isSuccess)

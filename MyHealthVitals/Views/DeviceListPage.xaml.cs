@@ -6,6 +6,13 @@ namespace MyHealthVitals
 {
 	public partial class DeviceListPage : ContentPage,IBluetoothCallBackUpdatable
 	{
+		void btnSpirometerClicked(object sender, System.EventArgs e)
+		{
+			var newScreen = new RespHomePage();
+			newScreen.Title = "My Resp Check";
+			this.Navigation.PushAsync(newScreen);
+		}
+
 		void btnPC300clicked(object sender, System.EventArgs e)
 		{
 			var newScreen = new MainPage();

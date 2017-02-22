@@ -6,6 +6,7 @@
 			<Color x:Key="colorWhite">#FFFFFF</Color>
 			<Color x:Key="colorThemeText">#FFFFFF</Color>
 			<Color x:Key="colorThemeBlue">#0091FF</Color>
+			<Color x:Key="ColorLightGray">#EBEBEB</Color>
 
 			<Style x:Key="styleLblReading" TargetType="Label">
             	<Setter Property="TextColor" Value="{DynamicResource colorThemeText}" />

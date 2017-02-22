@@ -1,8 +1,11 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="iOS/Main.cs">
     <Files>
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="6" Column="68" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="407" Column="37" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="61" Column="4" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespDataListPage.xaml.cs" Line="11" Column="34" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespCalibrationPage.xaml" Line="15" Column="22" />
+      <File FileName="MyHealthVitals/Models/SpirometerReading.cs" Line="25" Column="5" />
+      <File FileName="iOS/Main.cs" Line="17" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
