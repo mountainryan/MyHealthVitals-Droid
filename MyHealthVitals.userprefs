@@ -1,18 +1,11 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/DeviceListPage.xaml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs">
     <Files>
-      <File FileName="MyHealthVitals/Views/MainPage.xaml.cs" Line="382" Column="3" />
-      <File FileName="iOS/Helpers/FileHelperIos.cs" Line="23" Column="28" />
-      <File FileName="iOS/BLE/BluetoothCentralManager.cs" Line="31" Column="4" />
-      <File FileName="iOS/BLE/BluetoothPeripheralDelegate.cs" Line="173" Column="6" />
-      <File FileName="MyHealthVitals/PlatformInterfaces/ICBCentralManager.cs" Line="8" Column="28" />
-      <File FileName="MyHealthVitals/PlatformInterfaces/IFileHelper.cs" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Models/IBluetoothCallBackUpdatable.cs" Line="19" Column="23" />
-      <File FileName="MyHealthVitals/Views/MainPage.xaml" Line="138" Column="15" />
-      <File FileName="MyHealthVitals/Views/DeviceListPage.xaml.cs" Line="42" Column="24" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="6" Column="68" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="407" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/Models/Credential.cs" line="51" column="1" />
@@ -20,5 +13,5 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_x86" />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.5cb1f34b11eb6cec5176ff5ad3ebee1fde550339" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.1B0D140C-3335-458C-B4E2-E85DD5E7E2ED" />
 </Properties>
