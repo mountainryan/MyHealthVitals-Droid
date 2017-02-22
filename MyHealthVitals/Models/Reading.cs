@@ -44,7 +44,6 @@ namespace MyHealthVitals
 			//MetricValue = item.MetricValue;
 
 			HttpClient client = new HttpClient();
-			client.MaxResponseContentBufferSize = 256000;
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
 			// converting the this reading into string to send it to the service as application/json

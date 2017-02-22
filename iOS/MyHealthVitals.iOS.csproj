@@ -109,12 +109,6 @@
     <Reference Include="OxyPlot.Xamarin.iOS">
       <HintPath>..\packages\OxyPlot.Xamarin.iOS.1.0.0\lib\Xamarin.iOS10\OxyPlot.Xamarin.iOS.dll</HintPath>
     </Reference>
-    <Reference Include="OxyPlot.Xamarin.Forms">
-      <HintPath>..\packages\OxyPlot.Xamarin.Forms.1.0.0\lib\Xamarin.iOS10\OxyPlot.Xamarin.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="OxyPlot.Xamarin.Forms.Platform.iOS">
-      <HintPath>..\packages\OxyPlot.Xamarin.Forms.1.0.0\lib\Xamarin.iOS10\OxyPlot.Xamarin.Forms.Platform.iOS.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyHealthVitals\MyHealthVitals.csproj">
@@ -160,6 +154,9 @@
     <BundleResource Include="Resources\WeightScales.png" />
     <BundleResource Include="Resources\imgBLEOn.png" />
     <BundleResource Include="Resources\imgBLEOff.png" />
+    <BundleResource Include="Resources\imgNextBlue.png" />
+    <BundleResource Include="Resources\imgPrevBlue.png" />
+    <BundleResource Include="Resources\deleteicon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

@@ -15,7 +15,7 @@ namespace MyHealthVitals.iOS
 			global::Xamarin.Forms.Forms.Init();
 
 
-			OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();
+			//OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();
 
 			LoadApplication(new App());
 

@@ -7,6 +7,11 @@ namespace MyHealthVitals
 {
 	public partial class RespHomePage : ContentPage
 	{
+		void btnDeleteCurrentReadingClicked(object sender, System.EventArgs e)
+		{
+			//throw new NotImplementedException();
+		}
+
 		public RespHomePage()
 		{
 			InitializeComponent();
@@ -19,6 +24,33 @@ namespace MyHealthVitals
 			var newPage = new UserProfile();
 			newPage.Title = "My Account";
 			this.Navigation.PushAsync(newPage);
+		}
+
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+
+			try
+			{
+				if (Demographics.sharedInstance.calibratedReading.Pef > 0)
+				{
+					lblDate.Text = Demographics.sharedInstance.calibratedReading.dateString;
+					lblFev1.Text = Demographics.sharedInstance.calibratedReading.fev1String;
+					lblPef.Text = Demographics.sharedInstance.calibratedReading.pefString;
+				}
+				else {
+					lblDate.Text = "--";
+					lblFev1.Text = "--";
+					lblPef.Text = "--";
+				}
+			}
+			catch
+			{	
+				lblDate.Text = "--";
+				lblFev1.Text = "--";
+				lblPef.Text = "--";
+				System.Diagnostics.Debug.WriteLine("Exception in getting calibrated data");
+			}
 		}
 
 		private async void callAPiToDisplayGetDemographics()
@@ -47,7 +79,9 @@ namespace MyHealthVitals
 
 		void btnCalibrateClicked(object sender, System.EventArgs e)
 		{
-			//this.Navigation.PushAsync(new Loa());
+			var newPage = new RespCalibrationPage();
+			newPage.Title = "Calibration Screen";
+			this.Navigation.PushAsync(newPage);
 		}
 
 		void btnViewGraphPageClicked(object sender, System.EventArgs e)

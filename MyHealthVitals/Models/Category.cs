@@ -24,7 +24,6 @@ namespace MyHealthVitals
 			//return await Client.GetAsync<Category[]>(credential, $"api/v1/Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Category");
 
 			HttpClient client = new HttpClient();
-			client.MaxResponseContentBufferSize = 256000;
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
 			var response = await client.GetAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Category");

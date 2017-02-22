@@ -15,6 +15,8 @@ namespace MyHealthVitals
 			this.Fev1 = fev1;
 		}
 
+		public int index { get; set;}
+
 		public string pefString { get { return ((int)Pef).ToString(); } }
 		public string fev1String { get { return Math.Round(Fev1, 1).ToString(); } }
 		public string dateString { get { return Date.ToString("MM/dd/yyyy hh:mm tt"); } }
@@ -23,15 +25,23 @@ namespace MyHealthVitals
 		{
 			get
 			{
-				String color = "Green";
-				// replace 500 with user defaults saved value in production
-				if ((decimal)(750 * 0.6) < Pef && Pef < (decimal)(750 * 0.8))
+				String color = "#008000";
+
+				try
 				{
-					color = "#FFA500";
+					double standardPef = (double)Demographics.sharedInstance.calibratedReading.Pef;
+
+					if (standardPef * 0.6 < (double)Pef && (double)Pef < standardPef * 0.8)
+					{
+						color = "#FFA500";
+					}
+					if (standardPef * 0.6 > (double)Pef)
+					{
+						color = "#ff0000";
+					}
 				}
-				if ((decimal)(750 * 0.6) > this.Pef)
-				{
-					color = "Red";
+				catch {
+					System.Diagnostics.Debug.WriteLine("no established calibrated value.");
 				}
 
 				return color;

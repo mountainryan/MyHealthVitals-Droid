@@ -38,7 +38,7 @@
 			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
-					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Loging in...">
+					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Please wait...">
 					</Label>
 				</StackLayout>
 			</RelativeLayout>

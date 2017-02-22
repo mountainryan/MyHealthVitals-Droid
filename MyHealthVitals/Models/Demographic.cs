@@ -107,39 +107,67 @@ namespace MyHealthVitals
 		public string username;
 		public string password;
 
-		private Demographics(){
-			if (Application.Current.Properties.ContainsKey("isAutoLogin"))
+		public SpirometerReading calibratedReading;
+
+		private Demographics()
+		{
+			//var curr_username = "";
+			if (Application.Current.Properties.ContainsKey("_username"))
 			{
-				isAutoLogin = (bool)Application.Current.Properties["isAutoLogin"];
+				username = (string)Application.Current.Properties["_username"];
 			}
 
-			if (Application.Current.Properties.ContainsKey("isRememberUsername"))
+			if (Application.Current.Properties.ContainsKey(username+"_isAutoLogin"))
 			{
-				isRememberUsername = (bool)Application.Current.Properties["isRememberUsername"];
+				isAutoLogin = (bool)Application.Current.Properties[username+"_isAutoLogin"];
 			}
 
-			if (Application.Current.Properties.ContainsKey("username")) {
-				username = (string)Application.Current.Properties["username"];
+			if (Application.Current.Properties.ContainsKey(username + "_isRememberUsername"))
+			{
+				isRememberUsername = (bool)Application.Current.Properties[username + "_isRememberUsername"];
 			}
 
-			if (Application.Current.Properties.ContainsKey("password"))
+			if (Application.Current.Properties.ContainsKey(username + "_password"))
 			{
-				password = (string)Application.Current.Properties["password"];
+				password = (string)Application.Current.Properties[username + "_password"];
+			}
+
+			// local storage of calibrated value
+			try
+			{
+				var pef = Convert.ToDecimal(Application.Current.Properties[username + "_pef"]);
+				var fev = Convert.ToDecimal(Application.Current.Properties[username + "_fev1"]);
+				var date = Convert.ToDateTime(Application.Current.Properties[username + "_savedDate"]);
+
+				this.calibratedReading = new SpirometerReading(date, pef, fev);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("Exception: " + ex.Message);
 			}
 		}
 
-		public void saveUserDefaults() {
-			Application.Current.Properties["username"] = username;
-			Application.Current.Properties["password"] = password;
-			Application.Current.Properties["isAutoLogin"] = isAutoLogin;
-			Application.Current.Properties["isRememberUsername"] = isRememberUsername;
+		public void saveCalibratedReadig() { 
+			Application.Current.Properties[username+"_pef"] = calibratedReading.pefString;
+			Application.Current.Properties[username + "_fev1"] = calibratedReading.fev1String;
+			Application.Current.Properties[username + "_savedDate"] = calibratedReading.Date.ToString();
 			Application.Current.SavePropertiesAsync();
 		}
 
-		public void clearLocalStorageOnLogout() { 
+		public void saveUserDefaults()
+		{
+			Application.Current.Properties["_username"] = username;
+			Application.Current.Properties[username + "_password"] = password;
+			Application.Current.Properties[username + "_isAutoLogin"] = isAutoLogin;
+			Application.Current.Properties[username + "_isRememberUsername"] = isRememberUsername;
+			Application.Current.SavePropertiesAsync();
+		}
+
+		public void clearLocalStorageOnLogout()
+		{
 			//Application.Current.Properties["username"] = "";
-			Application.Current.Properties["password"] = "";
-			Application.Current.Properties["isAutoLogin"] = false;
+			Application.Current.Properties[username + "_password"] = "";
+			Application.Current.Properties[username + "_isAutoLogin"] = false;
 			//Application.Current.Properties["isRememberUsername"] = isRememberUsername;
 			Application.Current.SavePropertiesAsync();
 		}
@@ -148,7 +176,6 @@ namespace MyHealthVitals
 		public async Task<bool> getDemographicFromApi()
 		{
 			HttpClient client = new HttpClient();
-			client.MaxResponseContentBufferSize = 256000;
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
 			var response = await client.GetAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/Demographics");
@@ -157,7 +184,7 @@ namespace MyHealthVitals
 				try
 				{
 					var content = await response.Content.ReadAsStringAsync();
-					var demoGraphics  = JsonConvert.DeserializeObject<Demographics>(content);
+					var demoGraphics = JsonConvert.DeserializeObject<Demographics>(content);
 
 					// transfering local values to the shared instance of demographics after deserialize
 					demoGraphics.username = Demographics.sharedInstance.username;
@@ -175,16 +202,18 @@ namespace MyHealthVitals
 
 				return true;
 
-			}else{
+			}
+			else {
 				return false;
 				//throw new HttpStatusException(response.StatusCode,"Network Error.");
 			}
 		}
 
-		public async Task<String> downloadProfilePic() { 
+		public async Task<String> downloadProfilePic()
+		{
 
 			HttpClient client = new HttpClient();
-			client.MaxResponseContentBufferSize = 256000;
+			//client.MaxResponseContentBufferSize = 256000;
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
 			var response = await client.GetAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/File/Photo");
