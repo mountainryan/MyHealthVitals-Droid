@@ -5,16 +5,78 @@ using Xamarin.Forms;
 
 namespace MyHealthVitals
 {
-	public partial class RespHomePage : ContentPage
+	public partial class RespHomePage : ContentPage,BLEReadingUpdatableSpiroMeter
 	{
+		void btnCancelTakeReadingClicked(object sender, System.EventArgs e)
+		{
+			//BLECentralManagerSpirometer.
+			DependencyService.Get<ICBCentralManagerSpirometer>().StopReadingValue();
+			layoutLoadingTakeReading.IsVisible = false;
+		}
+
+		async void btnSaveClicked(object sender, System.EventArgs e)
+		{
+			layoutLoading.IsVisible = true;
+
+			try
+			{
+				Reading fevReading = new Reading("FEV1", currReading.Fev1, 9);
+				Reading pefReading = new Reading("PEF", currReading.Pef, 9);
+
+				await pefReading.PostReadingToService();
+				await fevReading.PostReadingToService();
+				await this.Navigation.PopAsync();
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("Exception on saving curr reading: " + ex.Message);
+			}
+			finally{
+				layoutLoading.IsVisible = false;
+			}
+		}
+
+		SpirometerReading currReading;
+		
 		void btnDeleteCurrentReadingClicked(object sender, System.EventArgs e)
 		{
-			//throw new NotImplementedException();
+			//onDeleteClicked();
+
+			this.currReading.Pef = -1;
+			this.currReading.Fev1 = -1;
+
+			lblPefReading.Text = " ";
+			lblFevReading.Text = " ";
+			lblDateReading.Text = " ";
+
+			btnDelete.IsVisible = false;
+			btnIndicator.IsVisible = false;
+		}
+
+		// call back methods
+		public void updateCaller(SpirometerReading currReading) {
+			System.Diagnostics.Debug.WriteLine(" loaded spirometer reading:" + currReading.pefString);
+
+			//this.currReading.Pef = -1;
+			//this.currReading.Fev1 = -1;
+
+			this.currReading = currReading;
+
+			lblPefReading.Text = currReading.pefString;
+			lblFevReading.Text = currReading.fev1String;
+			lblDateReading.Text = currReading.dateString;
+
+			btnDelete.IsVisible = true;
+			btnIndicator.IsVisible = true;
+
+			btnIndicator.BackgroundColor = Color.FromHex(currReading.color);
 		}
 
 		public RespHomePage()
 		{
 			InitializeComponent();
+
+			DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer(this);
 
 			callAPiToDisplayGetDemographics();
 		}
@@ -75,6 +137,10 @@ namespace MyHealthVitals
 		void btnTakeReadingClicked(object sender, System.EventArgs e)
 		{
 			//this.Navigation.PushAsync(new LoadingPage());
+
+			layoutLoadingTakeReading.IsVisible = true;
+
+
 		}
 
 		void btnCalibrateClicked(object sender, System.EventArgs e)

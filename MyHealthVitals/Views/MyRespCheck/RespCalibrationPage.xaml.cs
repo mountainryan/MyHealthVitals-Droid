@@ -77,6 +77,8 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 
+
+
 			var itm = new SpirometerReading(DateTime.Now, 456, 3.5m);
 			itm.index = 0;
 

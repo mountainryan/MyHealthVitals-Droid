@@ -25,7 +25,7 @@ namespace MyHealthVitals
 		{
 			get
 			{
-				String color = "#008000";
+				String color1 = "#008000";
 
 				try
 				{
@@ -33,18 +33,18 @@ namespace MyHealthVitals
 
 					if (standardPef * 0.6 < (double)Pef && (double)Pef < standardPef * 0.8)
 					{
-						color = "#FFA500";
+						color1 = "#FFA500";
 					}
 					if (standardPef * 0.6 > (double)Pef)
 					{
-						color = "#ff0000";
+						color1 = "#ff0000";
 					}
 				}
 				catch {
 					System.Diagnostics.Debug.WriteLine("no established calibrated value.");
 				}
 
-				return color;
+				return color1;
 			}
 		}
 

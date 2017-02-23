@@ -9,7 +9,8 @@ namespace MyHealthVitals
 		void stopReadingECG();
 	}
 
-	public interface IButtonManager {
-		void changeBorder(MyButton btn);
+	public interface ICBCentralManagerSpirometer {
+		void connectToSpirometer(Object callerNew);
+		void StopReadingValue();
 	}
 }

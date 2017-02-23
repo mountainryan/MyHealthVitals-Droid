@@ -123,6 +123,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Helpers\" />
+    <Folder Include="BLE_Spirometer\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -135,10 +136,12 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="BLE\BluetoothCentralManager.cs" />
-    <Compile Include="BLE\BluetoothPeripheralDelegate.cs" />
+    <Compile Include="BLE_SpotCheck\BluetoothCentralManager.cs" />
+    <Compile Include="BLE_SpotCheck\BluetoothPeripheralDelegate.cs" />
     <Compile Include="Helpers\FileHelperIos.cs" />
     <Compile Include="Helpers\MyRendererIos.cs" />
+    <Compile Include="BLE_Spirometer\BLECentralManagerSpirometer.cs" />
+    <Compile Include="BLE_Spirometer\BLEPeripheralDelSpirometer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\icucarellc.png" />
