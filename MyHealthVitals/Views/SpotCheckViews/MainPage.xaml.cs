@@ -16,6 +16,8 @@ namespace MyHealthVitals
 		private VitalsData vitalsData = new VitalsData();
 		public static bool isCOnnectedToSpotCheck = false;
 
+		public BleManagerSpotCheck bleManager;
+
 		LineSeries lineSerie;
 		public MainPage()
 		{
@@ -70,13 +72,16 @@ namespace MyHealthVitals
 			//	//DependencyService.Get<ICBCentralManager>().
 			//}
 
-				// calling to start connecting the device this this should be implemented differently in android because it is calling the native API
-				Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(250), () =>
-				{
-					Debug.WriteLine("searcching decice...");
-					DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
-					return false;
-				});
+			// calling to start connecting the device this this should be implemented differently in android because it is calling the native API
+			//Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(250), () =>
+			//{
+			//	Debug.WriteLine("searcching decice...");
+			//	DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
+			//	return false;
+			//});
+
+			bleManager = new BleManagerSpotCheck();
+			bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
 
 			callAPiToDisplayGetDemographics();
 		}
@@ -173,9 +178,13 @@ namespace MyHealthVitals
 		void btnBleClicked(Object sender, System.EventArgs e)
 		{
 			//Debug.WriteLine(sender.is);
-			if (this.btnBle.IsEnabled) { 
-				DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
-			}
+
+			this.bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
+
+			//if (this.btnBle.IsEnabled) {
+			//	this.bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
+			//	//DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
+			//}
 		}
 
 		public void ShowMessageOnUI(string message, Boolean isConnected)
@@ -257,6 +266,10 @@ namespace MyHealthVitals
 		DataPoint lastDataPointPrev;
 
 		float xMin = 0.0f;
+
+		public void resetEcgDisplay() { 
+			ecgModel.Series.Clear();
+		}
 
 		public void updateECGEnded(int bpm) {
 

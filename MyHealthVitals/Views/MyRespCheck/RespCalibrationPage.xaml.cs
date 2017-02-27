@@ -5,11 +5,53 @@ using Xamarin.Forms;
 
 namespace MyHealthVitals
 {
-	public partial class RespCalibrationPage : ContentPage
+	public partial class RespCalibrationPage : ContentPage,BLEReadingUpdatableSpiroMeter
 	{
+
+		ObservableCollection<SpirometerReading> calibratedReadingList = new ObservableCollection<SpirometerReading>();
+		public RespCalibrationPage()
+		{
+			InitializeComponent();
+		}
+
+		void btnCalibrateClicked(object sender, System.EventArgs e)
+		{
+			if (this.calibratedReadingList.Count < 3)
+			{
+				layoutLoading.IsVisible = true;
+				DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+
+				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
+			}
+			else {
+				DisplayAlert("Calibration", "Readings taken are sufficient for calibration. If you want to take more readings, Please, delete the unwanted row and take reading again.", "OK");
+			}
+		}
+
+		// call back methods
+		public void updateCaller(SpirometerReading currReading)
+		{
+			currReading.index = calibratedReadingList.Count;
+			calibratedReadingList.Add(currReading);
+
+			System.Diagnostics.Debug.WriteLine("loaded spirometer reading:" + currReading.pefString);
+
+			if (this.calibratedReadingList.Count < 3)
+			{
+				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
+				DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+			}
+			else {
+				layoutLoading.IsVisible = false;
+			}
+
+			listView.ItemsSource = calibratedReadingList;
+		}
+
 		async void btnSaveCLicked(object sender, System.EventArgs e)
 		{
 			layoutLoading.IsVisible = true;
+			lblLoadingMessage.Text = "Saving Calibrated Reading.";
 
 			try
 			{
@@ -36,27 +78,19 @@ namespace MyHealthVitals
 			}
 		}
 
-		ObservableCollection<SpirometerReading> calibratedReadingList = new ObservableCollection<SpirometerReading>();
-		//SpirometerReading highestReading;
-
 		void DeleteClicked(object sender, System.EventArgs e)
 		{
 			var btn = (Xamarin.Forms.Button)sender;
-
 			calibratedReadingList.RemoveAt((int)btn.CommandParameter);
 
-			//System.Diagnostics.Debug.WriteLine("the index: " + ;
-		}
+			if (this.calibratedReadingList.Count < 3)
+			{
+				layoutLoading.IsVisible = false;
+				DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer(this);
 
-		//public void DeleteClicked(object sender, EventArgs e)
-		//{
-		//	//var item = (Xamarin.Forms.Button)sender;
-		//	//Item listitem = (from itm in allItems
-		//	//				 where itm.ItemName == item.CommandParameter.ToString()
-		//	//				 select
-		//	//itm).FirstOrDefault<Item>(); 
-		//	//allItems.Remove(listitem);
-		//}
+				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
+			}
+		}
 
 		private SpirometerReading getHighestReading() {
 
@@ -70,33 +104,6 @@ namespace MyHealthVitals
 			}
 
 			return highestReading;
-		}
-
-
-		public RespCalibrationPage()
-		{
-			InitializeComponent();
-
-
-
-			var itm = new SpirometerReading(DateTime.Now, 456, 3.5m);
-			itm.index = 0;
-
-			var itm1 = new SpirometerReading(DateTime.Now, 789, 3.5m);
-			itm1.index = 1;
-
-			var itm2 = new SpirometerReading(DateTime.Now, 425, 3.5m);
-			itm2.index = 2;
-
-			var itm3 = new SpirometerReading(DateTime.Now, 452, 3.5m);
-			itm3.index = 3;
-
-			calibratedReadingList.Add(itm);
-			calibratedReadingList.Add(itm1);
-			calibratedReadingList.Add(itm2);
-			calibratedReadingList.Add(itm3);
-
-			listView.ItemsSource = calibratedReadingList;
 		}
 	}
 }

@@ -17,6 +17,37 @@ namespace MyHealthVitals
 
 		public int index { get; set;}
 
+		public string indexText {
+			get {
+
+				var retValue = "";
+
+				switch (index) { 
+					case 0:{
+							retValue = "1st reading";
+							break;
+						}
+						case 1:
+						{
+							retValue = "1st reading";
+							break;
+						}
+						case 2:
+						{
+							retValue = "1st reading";
+							break;
+						}
+					default:
+						{
+							retValue = index + "th reading";
+							break;
+						}
+				}
+
+				return retValue;
+			} 
+		}
+
 		public string pefString { get { return ((int)Pef).ToString(); } }
 		public string fev1String { get { return Math.Round(Fev1, 1).ToString(); } }
 		public string dateString { get { return Date.ToString("MM/dd/yyyy hh:mm tt"); } }

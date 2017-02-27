@@ -10,21 +10,21 @@
 					<StackLayout Orientation="Horizontal" Spacing="15" Margin="5,0,0,0">
 						<StackLayout BackgroundColor="Yellow" Padding="1">
 							<StackLayout Padding="0" BackgroundColor="{StaticResource colorBlackBg}">
-								<Button Text="Re-calibrate" HeightRequest="34" Margin="10,0,10,0" TextColor="Yellow" />
+								<Button Clicked="btnCalibrateClicked" Text="Re-calibrate" HeightRequest="34" Margin="10,0,10,0" TextColor="Yellow" />
 							</StackLayout>
 						</StackLayout>
 						<Label WidthRequest="76" XAlign="Center" Text="PEF(L/min)" FontSize="15" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
 						<Label WidthRequest="76" XAlign="Center" Text="PEF(L/min)" FontSize="15" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
 					</StackLayout>
 					
-					<local:CustomListView HeightRequest="150" BackgroundColor="{StaticResource colorBlackBg}" SeparatorVisibility="None" x:Name="listView" >
+					<local:CustomListView HeightRequest="120" BackgroundColor="{StaticResource colorBlackBg}" SeparatorVisibility="None" x:Name="listView" >
 						<local:CustomListView.ItemTemplate>
 							<DataTemplate>
 								<ViewCell>
 									<!-- this is tableview cell	-->
 									<StackLayout Spacing="0">
 										<StackLayout Spacing="15" Orientation="Horizontal">
-											<Label FontSize="14" Text="1st Reading" WidthRequest="110" YAlign="Center" TextColor="White" />
+											<Label FontSize="14" Text="{Binding indexText}" WidthRequest="110" YAlign="Center" TextColor="White" />
 											<Label FontSize="14" Text="{Binding pefString}" YAlign="Center" XAlign="Center" WidthRequest="76" TextColor="White" />
 											<Label FontSize="14" Text="{Binding fev1String}" XAlign="Center" YAlign="Center" WidthRequest="76" TextColor="White" />
 											<Button Clicked="DeleteClicked" CommandParameter="{Binding index}" Image="deleteicon.png" HeightRequest="26" WidthRequest="26" VerticalOptions="Center" />
@@ -35,16 +35,16 @@
 							</DataTemplate>
 						</local:CustomListView.ItemTemplate>
 					</local:CustomListView>
-					<Button Text="SAVE" Clicked="btnSaveCLicked" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White" Margin="3,15,3,50" />
+					<Button Text="SAVE" Clicked="btnSaveCLicked" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White" Margin="3,4,3,12" />
 				</StackLayout>
 			</ScrollView>
 			<!--Last line-->
-			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
+			<!--<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
 				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="White" XAlign="Center" FontSize="12" Margin="0,0,0,4">
 				</Label>
-			</StackLayout>
+			</StackLayout>-->
 			<!--loading layout starts-->
-			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.65" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
 					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Saving...">

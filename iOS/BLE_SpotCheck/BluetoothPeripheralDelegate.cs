@@ -86,6 +86,8 @@ namespace MyHealthVitals.iOS
 		{
 			IBluetoothCallBackUpdatable uiController = (IBluetoothCallBackUpdatable)BluetoothCentralManager.uiController;
 
+			printUpdatedCharacteristics(ch);
+
 			// sys , dia and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 63 && (int)ch.Value[2] < 68)
 			{

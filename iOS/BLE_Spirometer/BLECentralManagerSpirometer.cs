@@ -11,10 +11,10 @@ namespace MyHealthVitals.iOS
 	{
 		public static CBCentralManager manager ;
 		public static CBPeripheral connectedPeripheral;
-		public static Object caller;
+		public static BLEReadingUpdatableSpiroMeter caller;
 		//public static SpirometerMonitorDelegate peripheralDel;
 
-		public void connectToSpirometer(Object callerNew) { 
+		public void connectToSpirometer(BLEReadingUpdatableSpiroMeter callerNew) { 
 			caller = callerNew;
 
 			if (manager == null)

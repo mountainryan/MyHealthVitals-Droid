@@ -7,11 +7,51 @@ namespace MyHealthVitals
 {
 	public partial class RespHomePage : ContentPage,BLEReadingUpdatableSpiroMeter
 	{
+		SpirometerReading currReading;
+		public RespHomePage()
+		{
+			InitializeComponent();
+
+			callAPiToDisplayGetDemographics();
+		}
+
+		// call back methods
+		public void updateCaller(SpirometerReading currReading)
+		{
+
+			this.layoutLoading.IsVisible = false;
+
+			System.Diagnostics.Debug.WriteLine(" loaded spirometer reading:" + currReading.pefString);
+			this.currReading = currReading;
+
+			Device.BeginInvokeOnMainThread(() =>
+			{
+				lblPefReading.Text = currReading.pefString;
+				lblFevReading.Text = currReading.fev1String;
+				lblDateReading.Text = currReading.dateString;
+
+				btnDelete.IsVisible = true;
+				btnIndicator.IsVisible = true;
+
+				btnIndicator.BackgroundColor = Color.FromHex(currReading.color);
+
+				layoutLoadingTakeReading.IsVisible = false;
+
+			});
+		}
+
+		void btnTakeReadingClicked(object sender, System.EventArgs e)
+		{
+
+			layoutLoadingTakeReading.IsVisible = true;
+
+			DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+		}
+
 		void btnCancelTakeReadingClicked(object sender, System.EventArgs e)
 		{
-			//BLECentralManagerSpirometer.
-			DependencyService.Get<ICBCentralManagerSpirometer>().StopReadingValue();
 			layoutLoadingTakeReading.IsVisible = false;
+			DependencyService.Get<ICBCentralManagerSpirometer>().StopReadingValue();
 		}
 
 		async void btnSaveClicked(object sender, System.EventArgs e)
@@ -25,7 +65,8 @@ namespace MyHealthVitals
 
 				await pefReading.PostReadingToService();
 				await fevReading.PostReadingToService();
-				await this.Navigation.PopAsync();
+
+				clearReadingDisplay();
 			}
 			catch (Exception ex)
 			{
@@ -36,49 +77,28 @@ namespace MyHealthVitals
 			}
 		}
 
-		SpirometerReading currReading;
-		
 		void btnDeleteCurrentReadingClicked(object sender, System.EventArgs e)
 		{
-			//onDeleteClicked();
-
-			this.currReading.Pef = -1;
-			this.currReading.Fev1 = -1;
-
-			lblPefReading.Text = " ";
-			lblFevReading.Text = " ";
-			lblDateReading.Text = " ";
-
-			btnDelete.IsVisible = false;
-			btnIndicator.IsVisible = false;
+			clearReadingDisplay();
 		}
 
-		// call back methods
-		public void updateCaller(SpirometerReading currReading) {
-			System.Diagnostics.Debug.WriteLine(" loaded spirometer reading:" + currReading.pefString);
+		private void clearReadingDisplay() { 
+			try
+			{
+				this.currReading.Pef = -1;
+				this.currReading.Fev1 = -1;
 
-			//this.currReading.Pef = -1;
-			//this.currReading.Fev1 = -1;
+				lblPefReading.Text = " ";
+				lblFevReading.Text = " ";
+				lblDateReading.Text = " ";
 
-			this.currReading = currReading;
-
-			lblPefReading.Text = currReading.pefString;
-			lblFevReading.Text = currReading.fev1String;
-			lblDateReading.Text = currReading.dateString;
-
-			btnDelete.IsVisible = true;
-			btnIndicator.IsVisible = true;
-
-			btnIndicator.BackgroundColor = Color.FromHex(currReading.color);
-		}
-
-		public RespHomePage()
-		{
-			InitializeComponent();
-
-			DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer(this);
-
-			callAPiToDisplayGetDemographics();
+				btnDelete.IsVisible = false;
+				btnIndicator.IsVisible = false;
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("Exception " + ex.Message);
+			}
 		}
 
 		void btnViewProfileClicked(object sender, System.EventArgs e)
@@ -134,15 +154,6 @@ namespace MyHealthVitals
 			}
 		}
 
-		void btnTakeReadingClicked(object sender, System.EventArgs e)
-		{
-			//this.Navigation.PushAsync(new LoadingPage());
-
-			layoutLoadingTakeReading.IsVisible = true;
-
-
-		}
-
 		void btnCalibrateClicked(object sender, System.EventArgs e)
 		{
 			var newPage = new RespCalibrationPage();
@@ -157,8 +168,6 @@ namespace MyHealthVitals
 
 		void btnViewDataListClicked(object sender, System.EventArgs e)
 		{
-			//btnViewDataListClicked
-
 			var newPage = new RespDataListPage();
 			newPage.Title = "Data List Screen";
 			this.Navigation.PushAsync(newPage);

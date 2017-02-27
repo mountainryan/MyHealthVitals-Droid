@@ -16,12 +16,13 @@
 					</StackLayout>
 					<!-- Readign display container start here-->
 					<StackLayout Margin="4,2,0,8" Orientation="Horizontal" HorizontalOptions="Center">
-						<StackLayout WidthRequest="110">
+						<StackLayout WidthRequest="136">
+							
 							<Label FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="Date/Time" />
-							<Label x:Name="lblDateReading" FontSize="13" TextColor="White" Text=" " />
+							<Label x:Name="lblDateReading" FontSize="12" TextColor="White" Text=" " />
 						</StackLayout>
 						<StackLayout>
-							<Label WidthRequest="70" HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" />
+							<Label WidthRequest="75" HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" />
 							<Label x:Name="lblPefReading" HorizontalTextAlignment="Center" FontSize="13" TextColor="White" Text=" " />
 						</StackLayout>
 						<StackLayout>
@@ -29,12 +30,12 @@
 							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="13" TextColor="White" Text=" ">
 							</Label>
 						</StackLayout>
-						<Button x:Name="btnIndicator" VerticalOptions="End" BackgroundColor="Green" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
-						<Button x:Name="btnDelete" Clicked="btnDeleteCurrentReadingClicked" Margin="0,0,0,-3" Image="deleteicon.png" VerticalOptions="End" HeightRequest="26" WidthRequest="26" />
+						<Button IsVisible="false" x:Name="btnIndicator" VerticalOptions="End" BackgroundColor="Green" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
+						<Button IsVisible="false" x:Name="btnDelete" Clicked="btnDeleteCurrentReadingClicked" Margin="0,0,0,-3" Image="deleteicon.png" VerticalOptions="End" HeightRequest="26" WidthRequest="26" />
 					</StackLayout>
 					<!-- Reading display container END-->
 					<!-- Buttons collection view container -->
-					<StackLayout Orientation="Horizontal" Spacing="20" HorizontalOptions="CenterAndExpand">
+					<StackLayout Margin="0,8,0,0" Orientation="Horizontal" Spacing="20" HorizontalOptions="CenterAndExpand">
 						<Button Clicked="btnTakeReadingClicked" WidthRequest="110" BackgroundColor="#10F900" TextColor="Black" Text="Take Reading" />
 						<local:MyButton TextColor="Black" Clicked="btnCalibrateClicked" WidthRequest="106" BackgroundColor="#10F900" Text="Calibration Screen" />
 					</StackLayout>

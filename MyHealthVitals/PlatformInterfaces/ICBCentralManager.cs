@@ -10,7 +10,7 @@ namespace MyHealthVitals
 	}
 
 	public interface ICBCentralManagerSpirometer {
-		void connectToSpirometer(Object callerNew);
+		void connectToSpirometer(BLEReadingUpdatableSpiroMeter callerNew);
 		void StopReadingValue();
 	}
 }
