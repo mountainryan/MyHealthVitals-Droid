@@ -1,13 +1,10 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Models/SpirometerReading.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="iOS/BLE_SpotCheck/BluetoothCentralManager.cs">
     <Files>
-      <File FileName="iOS/BLE_Spirometer/BLECentralManagerSpirometer.cs" Line="19" Column="4" />
-      <File FileName="MyHealthVitals/Models/IBluetoothCallBackUpdatable.cs" Line="19" Column="45" />
-      <File FileName="MyHealthVitals/PlatformInterfaces/ICBCentralManager.cs" Line="10" Column="3" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml" Line="71" Column="70" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespCalibrationPage.xaml" Line="24" Column="41" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespCalibrationPage.xaml.cs" Line="11" Column="41" />
-      <File FileName="MyHealthVitals/Models/SpirometerReading.cs" Line="20" Column="6" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="274" Column="29" />
+      <File FileName="MyHealthVitals/BLE/BLEManagerSpotCheck.cs" Line="29" Column="5" />
+      <File FileName="iOS/Main.cs" Line="10" Column="26" />
+      <File FileName="iOS/BLE_SpotCheck/BluetoothCentralManager.cs" Line="29" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />

@@ -30,14 +30,22 @@ namespace MyHealthVitals
 				Adapter.StartScanningForDevicesAsync();
 			}
 			else {
-				if (connectedSpotCheck != null && connectedSpotCheck.State == Plugin.BLE.Abstractions.DeviceState.Connected) {
+				if (connectedSpotCheck != null && connectedSpotCheck.State == Plugin.BLE.Abstractions.DeviceState.Connected)
+				{
 					//discoverServices();
 					uiController.ShowMessageOnUI("Connected.", true);
 				}
-
-				if (connectedSpotCheck != null && connectedSpotCheck.State == Plugin.BLE.Abstractions.DeviceState.Disconnected)
+				else
 				{
-					Adapter.ConnectToDeviceAsync(connectedSpotCheck);
+					uiController.ShowMessageOnUI("Searching device...", false);
+					if (connectedSpotCheck != null)
+					{
+						Adapter.ConnectToDeviceAsync(connectedSpotCheck);
+						//Adapter.ConnectToDeviceAsync.e
+					}
+					else {
+						Adapter.StartScanningForDevicesAsync();
+					}
 				}
 			}
 		}
@@ -260,7 +268,7 @@ namespace MyHealthVitals
 					if (isEcgStarted == false)
 					{
 						uiController.resetEcgDisplay();
-						
+
 						isEcgStarted = true;
 						t1 = DateTime.Now;
 						uiController.ShowMessageOnUI("Reading ECG...", true);

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
+
 namespace MyHealthVitals
 {
 
-	public class SpirometerReading
+	public class SpirometerReading: INotifyPropertyChanged
 	{
 		public DateTime Date { get; set; }
 		public decimal Pef { get; set; }
@@ -15,7 +17,36 @@ namespace MyHealthVitals
 			this.Fev1 = fev1;
 		}
 
-		public int index { get; set;}
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public int _index;
+
+		public int index { 
+			get {
+				return _index;
+			}
+			set {
+				if (value == _index) return;
+
+				_index = value;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(index)));
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(indexText)));
+				//PropertyChanged(this, new PropertyChangedEventArgs
+			} 
+		}
+
+		//private string _value;
+
+		//public string Value
+		//{
+		//	get { return _value; }
+		//	set
+		//	{
+		//		if (value == _value) return;
+		//		_value = value;
+		//		OnPropertyChanged();
+		//	}
+		//}
 
 		public string indexText {
 			get {
@@ -29,12 +60,12 @@ namespace MyHealthVitals
 						}
 						case 1:
 						{
-							retValue = "1st reading";
+							retValue = "2nd reading";
 							break;
 						}
 						case 2:
 						{
-							retValue = "1st reading";
+							retValue = "3rd reading";
 							break;
 						}
 					default:
@@ -48,9 +79,11 @@ namespace MyHealthVitals
 			} 
 		}
 
+		//public string dateString1 { get; set; }
+
 		public string pefString { get { return ((int)Pef).ToString(); } }
 		public string fev1String { get { return Math.Round(Fev1, 1).ToString(); } }
-		public string dateString { get { return Date.ToString("MM/dd/yyyy hh:mm tt"); } }
+		public string dateString { get { return Date.ToString("MM/dd/yyyy hh:mm tt"); }  }
 
 		public string color
 		{

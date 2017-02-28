@@ -12,6 +12,25 @@ namespace MyHealthVitals
 		public RespCalibrationPage()
 		{
 			InitializeComponent();
+
+			////calibratedReadingList.
+			//var reading0 = new SpirometerReading(DateTime.Now, 456, 3.5m);
+			//reading0.index = calibratedReadingList.Count;
+			//calibratedReadingList.Add(reading0);
+
+			//var reading1 = new SpirometerReading(DateTime.Now, 456, 3.5m);
+			//reading1.index = calibratedReadingList.Count;
+			//calibratedReadingList.Add(reading1);
+
+			//var reading2 = new SpirometerReading(DateTime.Now, 456, 3.5m);
+			//reading2.index = calibratedReadingList.Count;
+			//calibratedReadingList.Add(reading2);
+
+			////calibratedReadingList.CollectionChanged += (sender, e) => { 
+				
+			////};
+
+			//listView.ItemsSource = calibratedReadingList;
 		}
 
 		void btnCalibrateClicked(object sender, System.EventArgs e)
@@ -81,13 +100,21 @@ namespace MyHealthVitals
 		void DeleteClicked(object sender, System.EventArgs e)
 		{
 			var btn = (Xamarin.Forms.Button)sender;
+
+			System.Diagnostics.Debug.WriteLine((int)btn.CommandParameter);
+
 			calibratedReadingList.RemoveAt((int)btn.CommandParameter);
+
+			// update the index value for reading display on left of each row
+			int count = 0;
+			foreach (var rdn in calibratedReadingList) {
+				rdn.index = count++; 
+			}
 
 			if (this.calibratedReadingList.Count < 3)
 			{
-				layoutLoading.IsVisible = false;
+				layoutLoading.IsVisible = true;
 				DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer(this);
-
 				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
 			}
 		}

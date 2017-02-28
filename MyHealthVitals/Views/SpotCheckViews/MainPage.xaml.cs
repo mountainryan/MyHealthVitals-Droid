@@ -267,14 +267,19 @@ namespace MyHealthVitals
 
 		float xMin = 0.0f;
 
-		public void resetEcgDisplay() { 
-			ecgModel.Series.Clear();
+		public void resetEcgDisplay() {
+
+			if (ecgTime > 0) { 
+				ecgTime = 0.0f;
+				ecgModel.Series.Clear();
+				ecgModel.InvalidatePlot(true);
+				ecgModel.DefaultXAxis.IsPanEnabled = true;
+			}
 		}
 
 		public void updateECGEnded(int bpm) {
 
 			ecgModel.DefaultXAxis.IsPanEnabled = true;
-			ecgTime = 0.0f;
 
 			Device.BeginInvokeOnMainThread(() =>
 			{
@@ -401,7 +406,9 @@ namespace MyHealthVitals
 		}
 		void btnNIBPStartClicked(object sender, System.EventArgs e)
 		{
-			DependencyService.Get<ICBCentralManager>().startMeasuringBP();
+			bleManager.startMeasuringBP();
+
+			//DependencyService.Get<ICBCentralManager>().startMeasuringBP();
 		}
 		void btnEcgStartClicked(object sender, System.EventArgs e)
 		{

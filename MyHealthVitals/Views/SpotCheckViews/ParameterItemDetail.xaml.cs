@@ -33,6 +33,23 @@ namespace MyHealthVitals
 			this.categoryId = CategoryId;
 			InitializeComponent();
 
+			//var newItem = new ParameterDetailItem();
+			//newItem.date = "date";
+			//newItem.firstItem = "first item";
+			//newItem.secondItem = "second item";
+
+			//var newItem1 = new ParameterDetailItem();
+			//newItem1.date = "date";
+			//newItem1.firstItem = "first item";
+			//newItem1.secondItem = "second item";
+
+			//data.Add(newItem);
+			//data.Add(newItem1);
+
+			//itemList.ItemsSource = data;
+
+
+
 			switch (categoryId) {
 				case 1: {
 						this.Title = "Blood Pressure Data List";
