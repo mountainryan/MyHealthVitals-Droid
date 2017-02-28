@@ -5,12 +5,22 @@ using Xamarin.Forms;
 
 namespace MyHealthVitals
 {
-	public partial class RespHomePage : ContentPage,BLEReadingUpdatableSpiroMeter
+	public partial class RespHomePage : ContentPage, BLEReadingUpdatableSpiroMeter
 	{
 		SpirometerReading currReading;
 		public RespHomePage()
 		{
 			InitializeComponent();
+
+			var tapGestureRecognizer = new TapGestureRecognizer();
+			tapGestureRecognizer.Tapped += (s, e) =>
+			{
+				var newPage = new UserProfile();
+				newPage.Title = "My Account";
+				this.Navigation.PushAsync(newPage);
+			};
+
+			imgProfile.GestureRecognizers.Add(tapGestureRecognizer);
 
 			callAPiToDisplayGetDemographics();
 		}
@@ -72,7 +82,8 @@ namespace MyHealthVitals
 			{
 				System.Diagnostics.Debug.WriteLine("Exception on saving curr reading: " + ex.Message);
 			}
-			finally{
+			finally
+			{
 				layoutLoading.IsVisible = false;
 			}
 		}
@@ -82,7 +93,8 @@ namespace MyHealthVitals
 			clearReadingDisplay();
 		}
 
-		private void clearReadingDisplay() { 
+		private void clearReadingDisplay()
+		{
 			try
 			{
 				this.currReading.Pef = -1;
@@ -103,9 +115,7 @@ namespace MyHealthVitals
 
 		void btnViewProfileClicked(object sender, System.EventArgs e)
 		{
-			var newPage = new UserProfile();
-			newPage.Title = "My Account";
-			this.Navigation.PushAsync(newPage);
+			
 		}
 
 		protected override void OnAppearing()
@@ -127,7 +137,7 @@ namespace MyHealthVitals
 				}
 			}
 			catch
-			{	
+			{
 				lblDate.Text = "--";
 				lblFev1.Text = "--";
 				lblPef.Text = "--";
@@ -138,6 +148,8 @@ namespace MyHealthVitals
 		private async void callAPiToDisplayGetDemographics()
 		{
 			var isSuccess = await Demographics.sharedInstance.getDemographicFromApi();
+
+			lblClickMessage.IsVisible = true;
 
 			if (isSuccess)
 			{

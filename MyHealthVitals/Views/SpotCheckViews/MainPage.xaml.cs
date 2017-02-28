@@ -23,6 +23,16 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 
+			var tapGestureRecognizer = new TapGestureRecognizer();
+			tapGestureRecognizer.Tapped += (s, e) =>
+			{
+				var newPage = new UserProfile();
+				newPage.Title = "My Account";
+				this.Navigation.PushAsync(newPage);
+			};
+
+			imgProfile.GestureRecognizers.Add(tapGestureRecognizer);
+
 			setUpEcgDisplay();
 
 			//double p1 = 0;

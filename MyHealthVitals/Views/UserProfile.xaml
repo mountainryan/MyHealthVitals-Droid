@@ -5,7 +5,7 @@
 		<ScrollView>
 
 			<StackLayout>
-				<StackLayout Orientation="Horizontal" BackgroundColor="#2b2827">
+				<StackLayout Orientation="Horizontal">
 					<Image x:Name="imgProfile" Margin="12" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
 					</Image>
 					<StackLayout Orientation="Vertical" VerticalOptions="Center">

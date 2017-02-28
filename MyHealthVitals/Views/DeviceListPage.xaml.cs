@@ -22,6 +22,13 @@ namespace MyHealthVitals
 			//btnMyButton.ab
 		}
 
+		void btnLogOutClicked(object sender, System.EventArgs e)
+		{
+			//Debug.WriteLine(" log out");
+			Demographics.sharedInstance.clearLocalStorageOnLogout();
+			this.Navigation.PopModalAsync(true);
+		}
+
 		public DeviceListPage()
 		{
 			InitializeComponent();

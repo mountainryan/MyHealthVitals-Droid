@@ -22,10 +22,16 @@
 					</Button>
 				</StackLayout>
 				<ScrollView MinimumWidthRequest="200" x:Name="scrollView" Margin="20">
-					<Label FontSize="14" TextColor="{StaticResource colorWhite}" Text="User needs to establish their personal Normal PEF, FEV1 Values. This is accomplished by taking three valid readings in sequence. The system will use the highest readings of the three to determine your Normal Values. These values along with your gender, height and age will be used to calculate a reference value. This value will be shown in the form of a color bar chart on the Main Screen at the conclusion of each subsequent readings.">
+					<Label FontSize="14" TextColor="{StaticResource colorWhite}" XAlign="Center" Text="Welcome - If this is your first time logging into your My eMHR Personal Health Records account from this App, remember to go to your Account Profile page and select Auto Login. &#x0a; &#x0a; All data as collected by the App from your connected by the App from your connected devices will be automatically uploaded to your My eMHR Home Health page and subsequently, to your My Health Mobile APP.">
 					</Label>
 				</ScrollView>
 			</StackLayout>
+
+			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
+				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2016" XAlign="Center" FontSize="13" Margin="0,0,0,4">
+				</Label>
+			</StackLayout>
+			
 			<!--loading layout starts-->
 			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">

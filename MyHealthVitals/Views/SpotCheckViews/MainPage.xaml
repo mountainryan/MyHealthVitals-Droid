@@ -15,15 +15,16 @@
 		
 		<ScrollView>
 			<StackLayout Spacing="0">
-				<StackLayout Orientation="Horizontal" BackgroundColor="#2b2827">
+				<StackLayout Orientation="Horizontal">
 					<Image x:Name="imgProfile" Margin="12" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
 					</Image>
 					<StackLayout Orientation="Vertical" VerticalOptions="Center">
 						<Label FontSize="15" x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
 						<Label FontSize="14" x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label x:Name="lblClickMessage" FontSize="10" IsVisible="true" Text="Click photo for Profile Screen" TextColor="White" />
 					</StackLayout>
-					<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}">
-					</Button>
+<!--					<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}"/>-->
+					
 				</StackLayout>
 				<RelativeLayout BackgroundColor="White" VerticalOptions="Fill" IsVisible="true" x:Name="layoutLoading">
 

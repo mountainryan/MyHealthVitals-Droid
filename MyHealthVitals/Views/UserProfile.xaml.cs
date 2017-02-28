@@ -22,8 +22,8 @@ namespace MyHealthVitals
 			InitializeComponent();
 			// initial rendering previously saved data
 
-			switchAutoLogin.IsToggled = Demographics.sharedInstance.isRememberUsername;
-			switchRemUsername.IsToggled = Demographics.sharedInstance.isAutoLogin;
+			switchAutoLogin.IsToggled = Demographics.sharedInstance.isAutoLogin;
+			switchRemUsername.IsToggled = Demographics.sharedInstance.isRememberUsername;
 
 			if (Demographics.sharedInstance.Id > 0)
 			{

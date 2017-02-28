@@ -5,14 +5,16 @@
 			<!--Heading view start here-->
 			<ScrollView RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
 				<StackLayout x:Name="layoutContainer" Spacing="6">
-					<StackLayout Orientation="Horizontal" BackgroundColor="#2b2827">
+					<StackLayout Orientation="Horizontal" >
 						<Image x:Name="imgProfile" Margin="12,3,12,3" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
 						</Image>
 						<StackLayout Orientation="Vertical" VerticalOptions="Center">
 							<Label FontSize="15" x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
 							<Label x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
+							<Label x:Name="lblClickMessage" FontSize="10" IsVisible="true" Text="Click photo for Profile Screen" TextColor="White" />
 						</StackLayout>
-						<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}" />
+
+<!--						<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}" />-->
 					</StackLayout>
 					<!-- Readign display container start here-->
 					<StackLayout Margin="4,2,0,8" Orientation="Horizontal" HorizontalOptions="Center">
