@@ -21,9 +21,9 @@
 					<StackLayout Orientation="Vertical" VerticalOptions="Center">
 						<Label FontSize="15" x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
 						<Label FontSize="14" x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
-						<Label x:Name="lblClickMessage" FontSize="10" IsVisible="true" Text="Click photo for Profile Screen" TextColor="White" />
+						<Label Margin="0,10,0,0" x:Name="lblClickMessage" FontSize="10" IsVisible="true" Text="Click photo for Profile Screen" TextColor="White" />
 					</StackLayout>
-<!--					<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}"/>-->
+				<!--<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}"/>-->
 					
 				</StackLayout>
 				<RelativeLayout BackgroundColor="White" VerticalOptions="Fill" IsVisible="true" x:Name="layoutLoading">

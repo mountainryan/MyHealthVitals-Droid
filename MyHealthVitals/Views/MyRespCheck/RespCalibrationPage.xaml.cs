@@ -48,8 +48,11 @@ namespace MyHealthVitals
 		}
 
 		// call back methods
-		public void updateCaller(SpirometerReading currReading)
+		public void updateCaller(decimal pef, decimal fev1)
 		{
+
+			var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
+
 			currReading.index = calibratedReadingList.Count;
 			calibratedReadingList.Add(currReading);
 

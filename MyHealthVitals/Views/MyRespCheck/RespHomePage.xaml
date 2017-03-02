@@ -11,26 +11,24 @@
 						<StackLayout Orientation="Vertical" VerticalOptions="Center">
 							<Label FontSize="15" x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
 							<Label x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
-							<Label x:Name="lblClickMessage" FontSize="10" IsVisible="true" Text="Click photo for Profile Screen" TextColor="White" />
+							<Label Margin="0,10,0,0" x:Name="lblClickMessage" FontSize="10" IsVisible="true" Text="Click photo for Profile Screen" TextColor="White" />
 						</StackLayout>
 
-<!--						<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}" />-->
+					<!--<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}" />-->
 					</StackLayout>
 					<!-- Readign display container start here-->
-					<StackLayout Margin="4,2,0,8" Orientation="Horizontal" HorizontalOptions="Center">
-						<StackLayout WidthRequest="136">
-							
-							<Label FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="Date/Time" />
+					<StackLayout Margin="4,2,0,8" Orientation="Horizontal">
+						<StackLayout>
+							<Label WidthRequest="120" XAlign="Start" FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="Date/Time" />
 							<Label x:Name="lblDateReading" FontSize="12" TextColor="White" Text=" " />
 						</StackLayout>
 						<StackLayout>
-							<Label WidthRequest="75" HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" />
+							<Label HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" />
 							<Label x:Name="lblPefReading" HorizontalTextAlignment="Center" FontSize="13" TextColor="White" Text=" " />
 						</StackLayout>
 						<StackLayout>
-							<Label WidthRequest="60" HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
-							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="13" TextColor="White" Text=" ">
-							</Label>
+							<Label HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
+							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="13" TextColor="White" Text=" "/>
 						</StackLayout>
 						<Button IsVisible="false" x:Name="btnIndicator" VerticalOptions="End" BackgroundColor="Green" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
 						<Button IsVisible="false" x:Name="btnDelete" Clicked="btnDeleteCurrentReadingClicked" Margin="0,0,0,-3" Image="deleteicon.png" VerticalOptions="End" HeightRequest="26" WidthRequest="26" />

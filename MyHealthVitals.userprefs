@@ -1,21 +1,20 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Models/SpirometerReading.cs">
     <Files>
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml" Line="14" Column="8" />
-      <File FileName="MyHealthVitals/Models/Demographic.cs" Line="219" Column="122" />
-      <File FileName="MyHealthVitals/Views/UserProfile.xaml.cs" Line="33" Column="15" />
-      <File FileName="MyHealthVitals/Views/LoginPage.xaml.cs" Line="24" Column="4" />
-      <File FileName="iOS/Main.cs" Line="21" Column="1" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="25" Column="20" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="27" Column="3" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="32" Column="6" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="36" Column="45" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml" Line="30" Column="30" />
+      <File FileName="MyHealthVitals/Models/SpirometerReading.cs" Line="13" Column="10" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/BLE/BLEManagerSpirometer.cs" line="53" column="1" />
+      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" line="73" column="1" />
+      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" line="44" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_x86" />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.1B0D140C-3335-458C-B4E2-E85DD5E7E2ED" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.5cb1f34b11eb6cec5176ff5ad3ebee1fde550339" />
 </Properties>

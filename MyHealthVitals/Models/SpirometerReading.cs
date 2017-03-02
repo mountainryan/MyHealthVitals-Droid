@@ -82,7 +82,7 @@ namespace MyHealthVitals
 		//public string dateString1 { get; set; }
 
 		public string pefString { get { return ((int)Pef).ToString(); } }
-		public string fev1String { get { return Math.Round(Fev1, 1).ToString(); } }
+		public string fev1String { get { return Math.Round(Fev1, 2).ToString(); } }
 		public string dateString { get { return Date.ToString("MM/dd/yyyy hh:mm tt"); }  }
 
 		public string color

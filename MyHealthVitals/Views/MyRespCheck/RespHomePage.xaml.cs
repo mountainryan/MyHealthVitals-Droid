@@ -8,6 +8,8 @@ namespace MyHealthVitals
 	public partial class RespHomePage : ContentPage, BLEReadingUpdatableSpiroMeter
 	{
 		SpirometerReading currReading;
+		//BleManagerSpirometer bleManager = new BleManagerSpirometer();
+
 		public RespHomePage()
 		{
 			InitializeComponent();
@@ -26,34 +28,36 @@ namespace MyHealthVitals
 		}
 
 		// call back methods
-		public void updateCaller(SpirometerReading currReading)
+		public void updateCaller(decimal pef, decimal fev1)
 		{
-
-			this.layoutLoading.IsVisible = false;
-
-			System.Diagnostics.Debug.WriteLine(" loaded spirometer reading:" + currReading.pefString);
-			this.currReading = currReading;
-
-			Device.BeginInvokeOnMainThread(() =>
+			if (pef > 0)
 			{
-				lblPefReading.Text = currReading.pefString;
-				lblFevReading.Text = currReading.fev1String;
-				lblDateReading.Text = currReading.dateString;
+				this.layoutLoading.IsVisible = false;
+				this.currReading = new SpirometerReading(DateTime.Now, pef, fev1);
 
-				btnDelete.IsVisible = true;
-				btnIndicator.IsVisible = true;
+				Device.BeginInvokeOnMainThread(() =>
+				{
+					lblPefReading.Text = currReading.pefString;
+					lblFevReading.Text = currReading.fev1String;
+					lblDateReading.Text = currReading.dateString;
 
-				btnIndicator.BackgroundColor = Color.FromHex(currReading.color);
+					btnDelete.IsVisible = true;
+					btnIndicator.IsVisible = true;
 
-				layoutLoadingTakeReading.IsVisible = false;
+					btnIndicator.BackgroundColor = Color.FromHex(currReading.color);
 
-			});
+					layoutLoadingTakeReading.IsVisible = false;
+
+				});
+			}
 		}
 
 		void btnTakeReadingClicked(object sender, System.EventArgs e)
 		{
 
 			layoutLoadingTakeReading.IsVisible = true;
+
+			//bleManager.ScanToConnectToSpotCheck((BLEReadingUpdatableSpiroMeter)this);
 
 			DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
 		}
@@ -115,7 +119,7 @@ namespace MyHealthVitals
 
 		void btnViewProfileClicked(object sender, System.EventArgs e)
 		{
-			
+
 		}
 
 		protected override void OnAppearing()

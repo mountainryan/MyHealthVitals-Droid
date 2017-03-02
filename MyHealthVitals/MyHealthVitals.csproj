@@ -140,6 +140,7 @@
       <DependentUpon>RespCalibrationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="BLE\BLEManagerSpotCheck.cs" />
+    <Compile Include="BLE\BLEManagerSpirometer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

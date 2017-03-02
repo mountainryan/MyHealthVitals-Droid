@@ -55,7 +55,7 @@ namespace MyHealthVitals.iOS
 			}
 		}
 
-		private void clearReadingOnSpirometerDevice(SpirometerReading currReading)
+		private void clearReadingOnSpirometerDevice(decimal pef,decimal fev1)
 		{
 			byte[] bytes = new byte[2];
 
@@ -67,7 +67,7 @@ namespace MyHealthVitals.iOS
 			if (this.bmChar != null)
 				BLECentralManagerSpirometer.connectedPeripheral.WriteValue(NSData.FromArray(bytes), this.bmChar, CBCharacteristicWriteType.WithResponse);
 			
-			((BLEReadingUpdatableSpiroMeter)BLECentralManagerSpirometer.caller).updateCaller(currReading);
+			((BLEReadingUpdatableSpiroMeter)BLECentralManagerSpirometer.caller).updateCaller(pef,fev1);
 		}
 
 		public override void DiscoveredService(CBPeripheral peripheral, NSError error)
@@ -120,7 +120,7 @@ namespace MyHealthVitals.iOS
 
 			Console.WriteLine(valueString);
 
-			SpirometerReading currReading;
+			//SpirometerReading currReading;
 
 			if (string.IsNullOrEmpty(valueString.Trim()))
 				return;
@@ -152,7 +152,7 @@ namespace MyHealthVitals.iOS
 				if (this.bmChar != null)
 					BLECentralManagerSpirometer.connectedPeripheral.WriteValue(NSData.FromArray(new byte[] { 0x55, 0x01 }), this.bmChar, CBCharacteristicWriteType.WithResponse);
 				else 
-					((BLEReadingUpdatableSpiroMeter)BLECentralManagerSpirometer.caller).updateCaller(null);
+					((BLEReadingUpdatableSpiroMeter)BLECentralManagerSpirometer.caller).updateCaller(0,0);
 
 			}
 			else if (firstFourChar == "aa01") //this is packets number 
@@ -169,20 +169,23 @@ namespace MyHealthVitals.iOS
 			{
 				//deal with the data
 
-				byte[] timeBytes1 = new byte[4];
-				timeBytes1[0] = Convert.ToByte(valueString.Substring(3, 2), 16);
-				timeBytes1[1] = Convert.ToByte(valueString.Substring(5, 2), 16);
-				timeBytes1[2] = Convert.ToByte(valueString.Substring(7, 2), 16);
-				timeBytes1[3] = Convert.ToByte(valueString.Substring(10, 2), 16);
-				var seconds1 = BitConverter.ToInt32(timeBytes1, 0);
-				DateTime temp = new DateTime(1970, 1, 1);
-				DateTime dateTime1 = temp.AddSeconds(seconds1);
+				//byte[] timeBytes1 = new byte[4];
+				//timeBytes1[0] = Convert.ToByte(valueString.Substring(3, 2), 16);
+				//timeBytes1[1] = Convert.ToByte(valueString.Substring(5, 2), 16);
+				//timeBytes1[2] = Convert.ToByte(valueString.Substring(7, 2), 16);
+				//timeBytes1[3] = Convert.ToByte(valueString.Substring(10, 2), 16);
+				//var seconds1 = BitConverter.ToInt32(timeBytes1, 0);
+				//DateTime temp = new DateTime(1970, 1, 1);
+				//DateTime dateTime1 = temp.AddSeconds(seconds1);
 				//Console.WriteLine (dateTime1.ToString());
 
 				byte[] fev1Bytes1 = new byte[2];
 				fev1Bytes1[0] = Convert.ToByte(valueString.Substring(12, 2), 16);
 				fev1Bytes1[1] = Convert.ToByte(valueString.Substring(14, 2), 16);
-				var fev11 = Convert.ToDouble(BitConverter.ToInt16(fev1Bytes1, 0)) / 100;
+				double fev11 = (double)BitConverter.ToInt16(fev1Bytes1, 0)/100;
+
+				//var fevDec = (double)fev11 / 100;
+
 				//Console.WriteLine(fev11);
 
 				byte[] pefBytes1 = new byte[2];
@@ -192,7 +195,7 @@ namespace MyHealthVitals.iOS
 				//Console.WriteLine(pef1);
 
 
-				currReading = new SpirometerReading(dateTime1, (decimal)pef1, (decimal)fev11);
+				//currReading = new SpirometerReading(dateTime1, (decimal)pef1, (decimal)fev11);
 
 				//currReading.Date = dateTime1;
 				//currReading.Pef = pef1;
@@ -200,38 +203,41 @@ namespace MyHealthVitals.iOS
 
 				if (valueString.Length > 22) // means there are two readings in this packet
 				{
-					byte[] timeBytes2 = new byte[4];
-					timeBytes2[0] = Convert.ToByte(valueString.Substring(21, 2), 16);
-					timeBytes2[1] = Convert.ToByte(valueString.Substring(23, 2), 16);
-					timeBytes2[2] = Convert.ToByte(valueString.Substring(25, 2), 16);
-					timeBytes2[3] = Convert.ToByte(valueString.Substring(28, 2), 16);
-					var seconds2 = BitConverter.ToInt32(timeBytes2, 0);
+					//byte[] timeBytes2 = new byte[4];
+					//timeBytes2[0] = Convert.ToByte(valueString.Substring(21, 2), 16);
+					//timeBytes2[1] = Convert.ToByte(valueString.Substring(23, 2), 16);
+					//timeBytes2[2] = Convert.ToByte(valueString.Substring(25, 2), 16);
+					//timeBytes2[3] = Convert.ToByte(valueString.Substring(28, 2), 16);
+					//var seconds2 = BitConverter.ToInt32(timeBytes2, 0);
 
-					DateTime temp2 = new DateTime(1970, 1, 1);
-					DateTime dateTime2 = temp2.AddSeconds(seconds2);
+					//DateTime temp2 = new DateTime(1970, 1, 1);
+					//DateTime dateTime2 = temp2.AddSeconds(seconds2);
 					//Console.WriteLine (dateTime2.ToString());
 
 
 					byte[] fev1Bytes2 = new byte[2];
 					fev1Bytes2[0] = Convert.ToByte(valueString.Substring(30, 2), 16);
 					fev1Bytes2[1] = Convert.ToByte(valueString.Substring(32, 2), 16);
-					var fev12 = Convert.ToDouble(BitConverter.ToInt16(fev1Bytes2, 0)) / 100;
+					//fev11 = Convert.ToDouble() / 100;
+
+					fev11 = (double)BitConverter.ToInt16(fev1Bytes2, 0) / 100;
+
 					//Console.WriteLine(fev12);
 
 					byte[] pefBytes2 = new byte[2];
 					pefBytes2[0] = Convert.ToByte(valueString.Substring(34, 2), 16);
 					pefBytes2[1] = Convert.ToByte(valueString.Substring(37, 2), 16);
-					var pef2 = Convert.ToDouble(BitConverter.ToInt16(pefBytes2, 0));
+					pef1 = Convert.ToDouble(BitConverter.ToInt16(pefBytes2, 0));
 					//Console.WriteLine(pef2);
 
 					//currReading.Date = dateTime2;
 					//currReading.Pef = pef2;
 					//currReading.Fev1 = fev12;
 
-					currReading = new SpirometerReading(dateTime2, (decimal)pef2, (decimal)fev12);
+					//currReading = new SpirometerReading(dateTime2, (decimal)pef2, (decimal)fev12);
 				}
 
-				this.clearReadingOnSpirometerDevice(currReading);
+				this.clearReadingOnSpirometerDevice((decimal)pef1,(decimal)fev11);
 			}
 
 			if (packetCallNumber < packets)
