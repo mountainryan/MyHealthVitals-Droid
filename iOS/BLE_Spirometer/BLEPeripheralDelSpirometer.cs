@@ -55,7 +55,7 @@ namespace MyHealthVitals.iOS
 			}
 		}
 
-		private void clearReadingOnSpirometerDevice(decimal pef,decimal fev1)
+		private void clearReadingOnSpirometerDevice()
 		{
 			byte[] bytes = new byte[2];
 
@@ -66,8 +66,6 @@ namespace MyHealthVitals.iOS
 
 			if (this.bmChar != null)
 				BLECentralManagerSpirometer.connectedPeripheral.WriteValue(NSData.FromArray(bytes), this.bmChar, CBCharacteristicWriteType.WithResponse);
-			
-			((BLEReadingUpdatableSpiroMeter)BLECentralManagerSpirometer.caller).updateCaller(pef,fev1);
 		}
 
 		public override void DiscoveredService(CBPeripheral peripheral, NSError error)
@@ -120,7 +118,7 @@ namespace MyHealthVitals.iOS
 
 			Console.WriteLine(valueString);
 
-			//SpirometerReading currReading;
+
 
 			if (string.IsNullOrEmpty(valueString.Trim()))
 				return;
@@ -152,7 +150,7 @@ namespace MyHealthVitals.iOS
 				if (this.bmChar != null)
 					BLECentralManagerSpirometer.connectedPeripheral.WriteValue(NSData.FromArray(new byte[] { 0x55, 0x01 }), this.bmChar, CBCharacteristicWriteType.WithResponse);
 				else 
-					((BLEReadingUpdatableSpiroMeter)BLECentralManagerSpirometer.caller).updateCaller(0,0);
+					((BLEReadingUpdatableSpiroMeter)BLECentralManagerSpirometer.caller).updateCaller(null);
 
 			}
 			else if (firstFourChar == "aa01") //this is packets number 
@@ -179,6 +177,8 @@ namespace MyHealthVitals.iOS
 				//DateTime dateTime1 = temp.AddSeconds(seconds1);
 				//Console.WriteLine (dateTime1.ToString());
 
+				SpirometerReading currReading;
+
 				byte[] fev1Bytes1 = new byte[2];
 				fev1Bytes1[0] = Convert.ToByte(valueString.Substring(12, 2), 16);
 				fev1Bytes1[1] = Convert.ToByte(valueString.Substring(14, 2), 16);
@@ -195,7 +195,7 @@ namespace MyHealthVitals.iOS
 				//Console.WriteLine(pef1);
 
 
-				//currReading = new SpirometerReading(dateTime1, (decimal)pef1, (decimal)fev11);
+				currReading = new SpirometerReading(DateTime.Now, (decimal)pef1, (decimal)fev11);
 
 				//currReading.Date = dateTime1;
 				//currReading.Pef = pef1;
@@ -230,14 +230,14 @@ namespace MyHealthVitals.iOS
 					pef1 = Convert.ToDouble(BitConverter.ToInt16(pefBytes2, 0));
 					//Console.WriteLine(pef2);
 
-					//currReading.Date = dateTime2;
-					//currReading.Pef = pef2;
-					//currReading.Fev1 = fev12;
-
-					//currReading = new SpirometerReading(dateTime2, (decimal)pef2, (decimal)fev12);
+					currReading = new SpirometerReading(DateTime.Now, (decimal)pef1, (decimal)fev11);
 				}
 
-				this.clearReadingOnSpirometerDevice((decimal)pef1,(decimal)fev11);
+
+
+				((BLEReadingUpdatableSpiroMeter)BLECentralManagerSpirometer.caller).updateCaller(currReading);
+
+				this.clearReadingOnSpirometerDevice();
 			}
 
 			if (packetCallNumber < packets)

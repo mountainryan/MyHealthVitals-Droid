@@ -8,7 +8,7 @@ namespace MyHealthVitals
 	public partial class RespHomePage : ContentPage, BLEReadingUpdatableSpiroMeter
 	{
 		SpirometerReading currReading;
-		//BleManagerSpirometer bleManager = new BleManagerSpirometer();
+		BleManagerSpirometer bleManager = new BleManagerSpirometer();
 
 		public RespHomePage()
 		{
@@ -28,12 +28,14 @@ namespace MyHealthVitals
 		}
 
 		// call back methods
-		public void updateCaller(decimal pef, decimal fev1)
+		public void updateCaller(SpirometerReading reading)
 		{
-			if (pef > 0)
+			currReading = reading;
+
+			if (reading !=null)
 			{
 				this.layoutLoading.IsVisible = false;
-				this.currReading = new SpirometerReading(DateTime.Now, pef, fev1);
+				//this.currReading = new SpirometerReading(DateTime.Now, pef, fev1);
 
 				Device.BeginInvokeOnMainThread(() =>
 				{
@@ -54,18 +56,18 @@ namespace MyHealthVitals
 
 		void btnTakeReadingClicked(object sender, System.EventArgs e)
 		{
-
 			layoutLoadingTakeReading.IsVisible = true;
-
+			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA",this);
 			//bleManager.ScanToConnectToSpotCheck((BLEReadingUpdatableSpiroMeter)this);
-
-			DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+			//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
 		}
 
 		void btnCancelTakeReadingClicked(object sender, System.EventArgs e)
 		{
 			layoutLoadingTakeReading.IsVisible = false;
-			DependencyService.Get<ICBCentralManagerSpirometer>().StopReadingValue();
+			BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
+			//((SpirometerServiceHandler)BLECentralManager.sharedInstance.devServiceHandler).stopPolling();
+			//DependencyService.Get<ICBCentralManagerSpirometer>().StopReadingValue();
 		}
 
 		async void btnSaveClicked(object sender, System.EventArgs e)
@@ -120,6 +122,12 @@ namespace MyHealthVitals
 		void btnViewProfileClicked(object sender, System.EventArgs e)
 		{
 
+		}
+
+		protected override void OnDisappearing()
+		{
+			base.OnDisappearing();
+			//BleManagerSpirometer.stopPolling();
 		}
 
 		protected override void OnAppearing()

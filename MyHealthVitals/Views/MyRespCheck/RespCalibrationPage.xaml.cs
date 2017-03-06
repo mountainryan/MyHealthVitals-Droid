@@ -9,6 +9,9 @@ namespace MyHealthVitals
 	{
 
 		ObservableCollection<SpirometerReading> calibratedReadingList = new ObservableCollection<SpirometerReading>();
+
+		BleManagerSpirometer bleManager = new BleManagerSpirometer();
+
 		public RespCalibrationPage()
 		{
 			InitializeComponent();
@@ -38,7 +41,10 @@ namespace MyHealthVitals
 			if (this.calibratedReadingList.Count < 3)
 			{
 				layoutLoading.IsVisible = true;
-				DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+
+				//bleManager.ScanToConnectToSpotCheck(this);
+				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+				//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
 
 				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
 			}
@@ -48,10 +54,10 @@ namespace MyHealthVitals
 		}
 
 		// call back methods
-		public void updateCaller(decimal pef, decimal fev1)
+		public void updateCaller(SpirometerReading currReading)
 		{
 
-			var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
+			//var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
 
 			currReading.index = calibratedReadingList.Count;
 			calibratedReadingList.Add(currReading);
@@ -61,7 +67,9 @@ namespace MyHealthVitals
 			if (this.calibratedReadingList.Count < 3)
 			{
 				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
-				DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+				//bleManager.ScanToConnectToSpotCheck(this);
+				//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
 			}
 			else {
 				layoutLoading.IsVisible = false;
@@ -117,7 +125,9 @@ namespace MyHealthVitals
 			if (this.calibratedReadingList.Count < 3)
 			{
 				layoutLoading.IsVisible = true;
-				DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer(this);
+				//bleManager.ScanToConnectToSpotCheck(this);
+				//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer(this);
+				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
 				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
 			}
 		}

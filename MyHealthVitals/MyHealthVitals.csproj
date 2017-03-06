@@ -139,8 +139,9 @@
     <Compile Include="Views\MyRespCheck\RespCalibrationPage.xaml.cs">
       <DependentUpon>RespCalibrationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BLE\BLEManagerSpotCheck.cs" />
-    <Compile Include="BLE\BLEManagerSpirometer.cs" />
+    <Compile Include="BLE\BLECentralManager.cs" />
+    <Compile Include="BLE\SpirometerServiceHandler.cs" />
+    <Compile Include="BLE\SpotCheckServiceHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

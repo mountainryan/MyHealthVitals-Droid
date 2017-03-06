@@ -16,7 +16,7 @@ namespace MyHealthVitals
 		private VitalsData vitalsData = new VitalsData();
 		public static bool isCOnnectedToSpotCheck = false;
 
-		public BleManagerSpotCheck bleManager;
+		//public BleManagerSpotCheck bleManager;
 
 		LineSeries lineSerie;
 		public MainPage()
@@ -90,8 +90,10 @@ namespace MyHealthVitals
 			//	return false;
 			//});
 
-			bleManager = new BleManagerSpotCheck();
-			bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
+			//bleManager = new BleManagerSpotCheck();
+			//bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
+
+			BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
 
 			callAPiToDisplayGetDemographics();
 		}
@@ -187,9 +189,11 @@ namespace MyHealthVitals
 
 		void btnBleClicked(Object sender, System.EventArgs e)
 		{
+			BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
+
 			//Debug.WriteLine(sender.is);
 
-			this.bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
+			//this.bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
 
 			//if (this.btnBle.IsEnabled) {
 			//	this.bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
@@ -416,8 +420,8 @@ namespace MyHealthVitals
 		}
 		void btnNIBPStartClicked(object sender, System.EventArgs e)
 		{
-			bleManager.startMeasuringBP();
-
+			BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
+			//bleManager.startMeasuringBP();
 			//DependencyService.Get<ICBCentralManager>().startMeasuringBP();
 		}
 		void btnEcgStartClicked(object sender, System.EventArgs e)

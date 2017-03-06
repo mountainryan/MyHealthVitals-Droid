@@ -1,17 +1,9 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Models/SpirometerReading.cs">
-    <Files>
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="36" Column="45" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml" Line="30" Column="30" />
-      <File FileName="MyHealthVitals/Models/SpirometerReading.cs" Line="13" Column="10" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/BLE/BLEManagerSpirometer.cs" line="53" column="1" />
-      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" line="73" column="1" />
-      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" line="44" column="1" />
+      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/BLE/BLEManagerSpotCheck.cs" line="100" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
