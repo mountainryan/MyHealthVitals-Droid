@@ -13,12 +13,12 @@
 					<Image Source="icucarellc.png">
 					</Image>
 				</StackLayout>
-				<StackLayout x:Name="layoutLoginContainer" Margin="20,30,20,10" Orientation="Horizontal" Spacing="0">
-					<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical">
-						<local:MyEntry Margin="0" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="" Placeholder="username"/>
-						<Entry Margin="0" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="" Placeholder="password"/>
+				<StackLayout x:Name="layoutLoginContainer" Margin="30,30,30,10" Orientation="Horizontal" Spacing="0">
+					<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical" Spacing="1">
+						<local:MyEntry BackgroundColor="#D3D3D3" TextColor="Black" Margin="0" HeightRequest="34" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="" Placeholder="username"/>
+						<local:MyEntry BackgroundColor="#D3D3D3" TextColor="Black" Margin="0" HeightRequest="34" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="" Placeholder="password"/>
 					</StackLayout>
-					<Button Margin="5,0,0,0" Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="80" FontSize="17" Text="Login">
+					<Button Margin="1,0,0,0" HorizontalOptions="Center" BorderRadius="0" Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="68" HeightRequest="66" FontSize="16" Text="Login">
 					</Button>
 				</StackLayout>
 				<ScrollView MinimumWidthRequest="200" x:Name="scrollView" Margin="20">

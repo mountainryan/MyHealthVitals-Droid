@@ -11,16 +11,6 @@ namespace MyHealthVitals
 		public LoginPage()
 		{
 			InitializeComponent();
-		}
-
-		protected override void OnDisappearing()
-		{
-			base.OnDisappearing();
-		}
-
-		protected override void OnAppearing()
-		{
-			base.OnAppearing();
 
 			if (Demographics.sharedInstance.isAutoLogin)
 			{
@@ -35,6 +25,16 @@ namespace MyHealthVitals
 			else {
 				txtUsername.Text = "";
 			}
+		}
+
+		protected override void OnDisappearing()
+		{
+			base.OnDisappearing();
+		}
+
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
 
 			scrollView.HeightRequest = this.Content.Bounds.Size.Height - layoutImgContainer.Height - layoutLoginContainer.Height-40;
 		}

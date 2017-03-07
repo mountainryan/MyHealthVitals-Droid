@@ -24,23 +24,15 @@ namespace MyHealthVitals
 
 			foreach (var cat in cats)
 			{
-				//cat.Name
-				categories.Add(cat);
+				if (!(cat.Name == "Fall" || cat.Name == "Height" || cat.Name == "Spirometer" || cat.Name == "BMI")) { 
+					categories.Add(cat);	
+				}
 			}
-
-			//DataTemplate template = new DataTemplate();
-			////template.
 
 			parameterListView.ItemsSource = categories;
 
 			layoutLoading.IsVisible = false;
 			this.parameterListView.HeightRequest = this.Content.Bounds.Size.Height - this.lblLoadingMessage.Height - this.lblLoadingMessage.Margin.Top * 2;
-			//parameterListView.ItemTemplate
-
-			//Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-			//{
-				
-			//});
 		}
 
 		// listview Delegates

@@ -25,7 +25,10 @@ namespace MyHealthVitals
 		void btnLogOutClicked(object sender, System.EventArgs e)
 		{
 			//Debug.WriteLine(" log out");
-			Demographics.sharedInstance.clearLocalStorageOnLogout();
+			//Demographics.sharedInstance.clearLocalStorageOnLogout();
+
+			//Demographics.sharedInstance.password = "";
+
 			this.Navigation.PopModalAsync(true);
 		}
 

@@ -8,7 +8,7 @@ namespace MyHealthVitals
 	public partial class RespHomePage : ContentPage, BLEReadingUpdatableSpiroMeter
 	{
 		SpirometerReading currReading;
-		BleManagerSpirometer bleManager = new BleManagerSpirometer();
+		//BleManagerSpirometer bleManager = new BleManagerSpirometer();
 
 		public RespHomePage()
 		{
@@ -23,6 +23,8 @@ namespace MyHealthVitals
 			};
 
 			imgProfile.GestureRecognizers.Add(tapGestureRecognizer);
+
+			gifWebView.Source = DependencyService.Get<IBaseUrl>().Get() + "/gifContainer.html";
 
 			callAPiToDisplayGetDemographics();
 		}

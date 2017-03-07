@@ -22,6 +22,17 @@ namespace MyHealthVitals
 		public TestPage()
 		{
 			InitializeComponent();
+
+			//var htmlsource = new HtmlWebViewSource();
+			//htmlsource.BaseUrl = DependencyService.Get<IBaseUrl>().Get();
+			////htmlsource.Html = @"<html><body>
+			////							<img src=""https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"" alt=""Mountain View"" style=""width:304px;height:228px;"">
+			////							</body></html>";
+
+			////htmlsource.Html = 
+
+
+			
 		}
 
 		protected override void OnDisappearing()
@@ -39,13 +50,6 @@ namespace MyHealthVitals
 		public void SYS_DIA_BPM_updated()
 		{
 			Debug.WriteLine("update UI showoing readings");
-		}
-
-		//private BleManager bleManager;
-
-		protected async override void OnAppearing()
-		{
-			base.OnAppearing();
 		}
 	}
 }

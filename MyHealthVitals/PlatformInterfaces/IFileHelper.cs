@@ -5,4 +5,6 @@ namespace MyHealthVitals
 	{
 		void saveToPdf(OxyPlot.PlotModel ecgModel,String fileName);
 	}
+
+	public interface IBaseUrl { string Get(); }
 }

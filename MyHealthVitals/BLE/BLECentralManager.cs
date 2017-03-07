@@ -67,29 +67,12 @@ namespace MyHealthVitals
 			if (!checkIfDeviceScanned(deviceName))
 			{
 				// the device is not in the scanned list now scan to find the desired device and then connnect
-				if (deviceName == "PC_300SNT")
-				{
-					spotServHandler.uiController.ShowMessageOnUI("Searching device...", false);
-				}
 				CrossBluetoothLE.Current.Adapter.StartScanningForDevicesAsync();
-			}
-			else {
 
-				switch (deviceName)
-				{
-					case "BLE-MSA":
-						{
-							spiroServHandler.reconnectToDevice(getCurrentDevice());
-							break;
-						}
+				if (deviceName == "PC_300SNT") spotServHandler.uiController.ShowMessageOnUI("Searching device...", false);
 
-					case "PC_300SNT":
-						{
-							spotServHandler.reconnectToDevice(getCurrentDevice());
-							break;
-						}
-				}
 			}
+			else spiroServHandler.reconnectToDevice(getCurrentDevice());
 		}
 
 		private IDevice getCurrentDevice()

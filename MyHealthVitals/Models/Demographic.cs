@@ -166,10 +166,13 @@ namespace MyHealthVitals
 		public void clearLocalStorageOnLogout()
 		{
 			//Application.Current.Properties["username"] = "";
-			Application.Current.Properties[username + "_password"] = "";
-			Application.Current.Properties[username + "_isAutoLogin"] = false;
+			//Application.Current.Properties[username + "_password"] = "";
+
+			//Application.Current.Properties[username + "_isAutoLogin"] = false;
 			//Application.Current.Properties["isRememberUsername"] = isRememberUsername;
-			Application.Current.SavePropertiesAsync();
+			//Application.Current.SavePropertiesAsync();
+
+			Demographics.sharedInstance.password = "";
 		}
 
 		// calling web service to get the json

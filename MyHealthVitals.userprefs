@@ -1,6 +1,15 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/SpotCheckViews/ParametersPage.xaml.cs">
+    <Files>
+      <File FileName="iOS/Helpers/FileHelperIos.cs" Line="27" Column="29" />
+      <File FileName="iOS/Helpers/MyRendererIos.cs" Line="39" Column="4" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="32" Column="23" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml" Line="68" Column="19" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="13" Column="29" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/ParametersPage.xaml.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/BLE/BLEManagerSpotCheck.cs" line="100" column="1" />
@@ -8,5 +17,5 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_x86" />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.5cb1f34b11eb6cec5176ff5ad3ebee1fde550339" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.83F08327-FD5F-4308-9CCC-038F3F38A71D" />
 </Properties>

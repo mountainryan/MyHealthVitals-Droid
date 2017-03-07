@@ -10,7 +10,7 @@ namespace MyHealthVitals
 
 		ObservableCollection<SpirometerReading> calibratedReadingList = new ObservableCollection<SpirometerReading>();
 
-		BleManagerSpirometer bleManager = new BleManagerSpirometer();
+		//BleManagerSpirometer bleManager = new BleManagerSpirometer();
 
 		public RespCalibrationPage()
 		{

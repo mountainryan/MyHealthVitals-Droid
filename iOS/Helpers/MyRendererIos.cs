@@ -39,6 +39,9 @@ namespace MyHealthVitals.iOS
 
 			if (Control != null)
 			{
+				//Control.BackgroundColor = UIColor.FromRGB(204, 153, 255);
+				Control.BorderStyle = UITextBorderStyle.None;
+				Control.TextAlignment = UITextAlignment.Center;
 				Control.SpellCheckingType = UITextSpellCheckingType.No;             // No Spellchecking
 				Control.AutocorrectionType = UITextAutocorrectionType.No;           // No Autocorrection
 				Control.AutocapitalizationType = UITextAutocapitalizationType.None; // No Autocapitalization
