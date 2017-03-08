@@ -117,14 +117,25 @@ namespace MyHealthVitals
 				username = (string)Application.Current.Properties["_username"];
 			}
 
-			if (Application.Current.Properties.ContainsKey(username+"_isAutoLogin"))
+			updateDemographicsFromLocal();
+
+		}
+
+		public void updateDemographicsFromLocal() {
+			if (Application.Current.Properties.ContainsKey(username + "_isAutoLogin"))
 			{
-				isAutoLogin = (bool)Application.Current.Properties[username+"_isAutoLogin"];
+				isAutoLogin = (bool)Application.Current.Properties[username + "_isAutoLogin"];
+			}
+			else {
+				isAutoLogin = false;
 			}
 
 			if (Application.Current.Properties.ContainsKey(username + "_isRememberUsername"))
 			{
 				isRememberUsername = (bool)Application.Current.Properties[username + "_isRememberUsername"];
+			}
+			else { 
+				isRememberUsername = false;
 			}
 
 			if (Application.Current.Properties.ContainsKey(username + "_password"))
@@ -143,6 +154,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception ex)
 			{
+				this.calibratedReading = new SpirometerReading(DateTime.Now, 0, 0);
 				Debug.WriteLine("Exception: " + ex.Message);
 			}
 		}

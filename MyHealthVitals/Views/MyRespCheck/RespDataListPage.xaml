@@ -7,9 +7,9 @@
 				<Label TextColor="White" XAlign="Center" Margin="0,5,0,0" Text="Most Recent Reading's">
 				</Label>
 				<StackLayout Orientation="Horizontal">
-					<Label FontSize="13" WidthRequest="134" TextColor="{StaticResource colorThemeBlue}">Date/Time</Label>
-					<Label WidthRequest="70" HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}">PEF(L/min)</Label>
-					<Label WidthRequest="60" HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
+					<Label FontSize="14" WidthRequest="134" TextColor="{StaticResource colorThemeBlue}">Date/Time</Label>
+					<Label WidthRequest="70" HorizontalTextAlignment="Center" FontSize="14" TextColor="{StaticResource colorThemeBlue}">PEF(L/min)</Label>
+					<Label WidthRequest="60" HorizontalTextAlignment="Center" FontSize="14" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
 				</StackLayout>
 				<local:CustomListView SeparatorVisibility="None" x:Name="listView" BackgroundColor="{StaticResource colorBlackBg}">
 					<local:CustomListView.ItemTemplate>
@@ -17,7 +17,7 @@
 							<ViewCell>
 								<StackLayout VerticalOptions="Fill" Spacing="0" Padding="0" Margin="0">
 									<StackLayout Orientation="Horizontal">
-										<Label YAlign="Center" FontSize="13" WidthRequest="160" TextColor="White" Text="{Binding dateString}" />
+										<Label YAlign="Center" FontSize="14" WidthRequest="160" TextColor="White" Text="{Binding dateString}" />
 										<Label YAlign="Center" WidthRequest="70" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" Text="{Binding pefString}" />
 										<Label YAlign="Center" WidthRequest="60" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" Text="{Binding fev1String}" />
 										<Button VerticalOptions="Center" BackgroundColor="{Binding color}" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
@@ -31,7 +31,7 @@
 			</StackLayout>
 			<!--Last line-->
 			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
-				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="White" XAlign="Center" FontSize="10" Margin="0,0,0,4">
+				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4">
 				</Label>
 			</StackLayout>
 			<!--loading layout starts-->

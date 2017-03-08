@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SegmentedControl;
 using Foundation;
 using UIKit;
 
@@ -13,6 +14,7 @@ namespace MyHealthVitals.iOS
 		{
 			global::Xamarin.Forms.Forms.Init();
 
+			SegmentedControl.FormsPlugin.iOS.SegmentedControlRenderer.Init();
 
 			OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();
 

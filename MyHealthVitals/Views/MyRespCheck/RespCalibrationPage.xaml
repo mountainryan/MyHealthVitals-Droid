@@ -5,29 +5,29 @@
 			<!--Heading view start here-->
 			<ScrollView RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
 				<StackLayout Spacing="12" Padding="12,4,12,4">
-					<Label FontSize="13" TextColor="White" Margin="5" XAlign="Center" Text="User needs to establish their personal Normal PEF, FEV1 Values. This is accomplished by taking three valid readings in sequence. The system will use the highest readings of the three to determine your Normal Values. These values along with your gender, height and age will be used to calculate a reference value. This value will be shown in the form of a color bar chart on the Main Screen at the conclusion of each subsequent readings." />
+					<Label FontSize="12" TextColor="White" Margin="5" XAlign="Center" Text="User needs to establish their personal Normal PEF, FEV1 Values. This is accomplished by taking three valid readings in sequence. The system will use the highest readings of the three to determine your Normal Values. These values along with your gender, height and age will be used to calculate a reference value. This value will be shown in the form of a color bar chart on the Main Screen at the conclusion of each subsequent readings." />
 					<!--Table view heading	-->
-					<StackLayout Orientation="Horizontal" Spacing="15" Margin="5,0,0,0">
+					<StackLayout Orientation="Horizontal" Spacing="10" Margin="5,0,0,0">
 						<StackLayout BackgroundColor="Yellow" Padding="1">
 							<StackLayout Padding="0" BackgroundColor="{StaticResource colorBlackBg}">
 								<Button Clicked="btnCalibrateClicked" Text="Re-calibrate" HeightRequest="34" Margin="10,0,10,0" TextColor="Yellow" />
 							</StackLayout>
 						</StackLayout>
-						<Label WidthRequest="76" XAlign="Center" Text="PEF(L/min)" FontSize="15" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
-						<Label WidthRequest="76" XAlign="Center" Text="PEF(L/min)" FontSize="15" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
+						<Label WidthRequest="72" XAlign="Start" Text="PEF(L/min)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
+						<Label WidthRequest="76" XAlign="Center" Text="PEF(L/min)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
 					</StackLayout>
 					
-					<local:CustomListView HeightRequest="120" BackgroundColor="{StaticResource colorBlackBg}" SeparatorVisibility="None" x:Name="listView" >
+					<local:CustomListView HeightRequest="90" BackgroundColor="{StaticResource colorBlackBg}" SeparatorVisibility="None" x:Name="listView" >
 						<local:CustomListView.ItemTemplate>
 							<DataTemplate>
 								<ViewCell>
 									<!-- this is tableview cell	-->
 									<StackLayout Spacing="0">
-										<StackLayout Spacing="15" Orientation="Horizontal">
-											<Label FontSize="14" Text="{Binding indexText}" WidthRequest="110" YAlign="Center" TextColor="White" />
-											<Label FontSize="14" Text="{Binding pefString}" YAlign="Center" XAlign="Center" WidthRequest="76" TextColor="White" />
-											<Label FontSize="14" Text="{Binding fev1String}" XAlign="Center" YAlign="Center" WidthRequest="76" TextColor="White" />
-											<Button Clicked="DeleteClicked" CommandParameter="{Binding index}" Image="deleteicon.png" HeightRequest="26" WidthRequest="26" VerticalOptions="Center" />
+										<StackLayout Spacing="10" Orientation="Horizontal">
+											<Label Margin="3,0,0,0" FontSize="13" Text="{Binding indexText}" WidthRequest="110" YAlign="Center" TextColor="White" />
+											<Label FontSize="13" Text="{Binding pefString}" YAlign="Center" XAlign="Center" WidthRequest="72" TextColor="White" />
+											<Label FontSize="13" Text="{Binding fev1String}" XAlign="Center" YAlign="Center" WidthRequest="54" TextColor="White" />
+											<Button Clicked="DeleteClicked" CommandParameter="{Binding index}" Image="deleteicon.png" HeightRequest="23" WidthRequest="23" VerticalOptions="Center" />
 										</StackLayout>
 										<BoxView Margin="0,8,0,0" HeightRequest="0.5" BackgroundColor="Gray" />
 									</StackLayout>
@@ -35,14 +35,14 @@
 							</DataTemplate>
 						</local:CustomListView.ItemTemplate>
 					</local:CustomListView>
-					<Button Text="SAVE" Clicked="btnSaveCLicked" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White" Margin="3,4,3,12" />
+					<Button Text="SAVE" Clicked="btnSaveCLicked" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White" Margin="3,4,3,30" />
 				</StackLayout>
 			</ScrollView>
 			<!--Last line-->
-			<!--<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
-				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="White" XAlign="Center" FontSize="12" Margin="0,0,0,4">
+			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
+				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4">
 				</Label>
-			</StackLayout>-->
+			</StackLayout>
 			<!--loading layout starts-->
 			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.65" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">

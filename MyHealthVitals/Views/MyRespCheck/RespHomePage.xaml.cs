@@ -138,6 +138,8 @@ namespace MyHealthVitals
 
 			try
 			{
+				Demographics.sharedInstance.updateDemographicsFromLocal();
+
 				if (Demographics.sharedInstance.calibratedReading.Pef > 0)
 				{
 					lblDate.Text = Demographics.sharedInstance.calibratedReading.dateString;

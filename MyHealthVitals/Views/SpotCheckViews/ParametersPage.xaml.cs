@@ -24,8 +24,13 @@ namespace MyHealthVitals
 
 			foreach (var cat in cats)
 			{
-				if (!(cat.Name == "Fall" || cat.Name == "Height" || cat.Name == "Spirometer" || cat.Name == "BMI")) { 
+				if (!( cat.Name == "Weight" || cat.Name == "Fall" || cat.Name == "Height" || cat.Name == "Spirometer" || cat.Name == "BMI")) { 
 					categories.Add(cat);	
+				}
+
+				if (cat.Name == "Weight") {
+					cat.Name = "Weight/BMI";
+					categories.Add(cat);
 				}
 			}
 

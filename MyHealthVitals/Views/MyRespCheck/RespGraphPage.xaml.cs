@@ -11,16 +11,17 @@ namespace MyHealthVitals
 		void btnNextClicked(object sender, System.EventArgs e)
 		{
 			// next
-			if (currentIndex < spirometerReadingList.Count - 1) {
-				renderCurrentSpirometer(spirometerReadingList[++currentIndex]);
+			if (currentIndex > 0)
+			{
+				renderCurrentSpirometer(spirometerReadingList[--currentIndex]);
 			}
 		}
 
 		void btnPrevClicked(object sender, System.EventArgs e)
 		{
-			if (currentIndex > 0)
+			if (currentIndex < spirometerReadingList.Count - 1)
 			{
-				renderCurrentSpirometer(spirometerReadingList[--currentIndex]);
+				renderCurrentSpirometer(spirometerReadingList[++currentIndex]);
 			}
 		}
 

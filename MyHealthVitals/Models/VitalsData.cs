@@ -80,11 +80,11 @@ namespace MyHealthVitals
 				//if (isServiceCallSuccess) bpSys.EnglishValue = 0;
 			}
 
-			//if (bpm.EnglishValue > 0)
-			//{
-			//	await bpm.PostReadingToService();
-			//	//if (isServiceCallSuccess) bpm.EnglishValue = 0;
-			//}
+			if (bpm.EnglishValue > 0)
+			{
+				await bpm.PostReadingToService();
+				//if (isServiceCallSuccess) bpm.EnglishValue = 0;
+			}
 		}
 	}
 }

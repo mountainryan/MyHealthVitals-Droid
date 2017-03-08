@@ -44,7 +44,7 @@
 						<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
-						<Label Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label FontSize="13" Text=" " />
 						<Label x:Name="lblSys" Style="{DynamicResource styleLblReading}" Text="-" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
@@ -52,7 +52,7 @@
 						<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
-						<Label Text=" " Style="{DynamicResource styleLblReading}" />
+						<Label Text=" " FontSize="13" />
 						<Label x:Name="lblDia" Style="{DynamicResource styleLblReading}" Text="-" />
 					</StackLayout>
 				</StackLayout>
@@ -64,7 +64,7 @@
 						<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
-						<Label Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label FontSize="13" Text=" " />
 						<Label x:Name="lblSpo2" Style="{DynamicResource styleLblReading}" Text="-" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
@@ -72,7 +72,7 @@
 						<Label Style="{DynamicResource styleLblNumeric}" Text="bpm" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
-						<Label Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label FontSize="13" Text=" " />
 						<Label Style="{DynamicResource styleLblReading}" x:Name="lblBpm" Text="-" />
 					</StackLayout>
 				</StackLayout>
@@ -84,48 +84,45 @@
 						<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
-						<Label Style="{DynamicResource styleLblReading}" Text=" " />
+						<Label FontSize="13" Text=" " />
 						<Label x:Name="lblPerfusionIndex" Style="{DynamicResource styleLblReading}" Text="-" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
 						<StackLayout Orientation="Horizontal" Padding="2">
 							<StackLayout Orientation="Horizontal" Padding="2">
-								<Button TextColor="Gray" Clicked="btnFareinheitClicked" x:Name="btnFareinheit" Text="°F">
-								</Button>
-								<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" Text="°C">
-								</Button>
+								<Button TextColor="Gray" Clicked="btnFareinheitClicked" HeightRequest="21" x:Name="btnFareinheit" Text="°F"/>
+								<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" HeightRequest="21" Text="°C"/>
 							</StackLayout>
 						</StackLayout>
 					</StackLayout>
 					<StackLayout WidthRequest="72">
-						<Label Text=" " Style="{DynamicResource styleLblReading}" />
-						<Label x:Name="lblTemperature" Style="{DynamicResource styleLblReading}" Margin="0,10,0,0" Text="-" />
+						<Label Text=" " FontSize="13" />
+						<Label x:Name="lblTemperature" Style="{DynamicResource styleLblReading}" Margin="0,2,0,12"  Text="-" />
 					</StackLayout>
 				</StackLayout>
-				<BoxView HeightRequest="0.5" BackgroundColor="Gray" >
-				</BoxView>
+				<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+
 				<StackLayout Orientation="Horizontal" Margin="10,10,10,0">
 					<StackLayout WidthRequest="72">
 						<Label Text="GLU" Style="{DynamicResource styleLblNumeric}" />
 						<Label x:Name="lblUnitGlucose" Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
-						<Label Text=" " Style="{DynamicResource styleLblReading}" />
+						<Label FontSize="13" Style="{DynamicResource styleLblReading}" />
 						<Label x:Name="lblGlucose" Text="-" Style="{DynamicResource styleLblReading}" />
 					</StackLayout>
 					<StackLayout WidthRequest="72">
 						<Label Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />
 						<StackLayout Orientation="Horizontal" Padding="2">
-							<Button Clicked="btnLbsClicked" x:Name="btnLbs" Text="Lbs">
-							</Button>
-							<Button TextColor="Gray" Clicked="btnKgsClicked" x:Name="btnKgs" Text="Kgs" >
-							</Button>
+							<Button Clicked="btnLbsClicked" x:Name="btnLbs" HeightRequest="21" Text="Lbs"/>
+							<Button TextColor="Gray" Clicked="btnKgsClicked" HeightRequest="21" x:Name="btnKgs" Text="Kgs" />
+
 						</StackLayout>
 					</StackLayout>
 					<StackLayout WidthRequest="72">
-						<Label Text=" " Style="{DynamicResource styleLblReading}" />
-						<Label Text="-" Margin="0,10,0,0" Style="{DynamicResource styleLblReading}" />
+						<Label FontSize="13" Style="{DynamicResource styleLblReading}" />
+						<Label Text="-" Margin="0,2,0,12"  Style="{DynamicResource styleLblReading}" />
 					</StackLayout>
 				</StackLayout>
 

@@ -107,7 +107,6 @@ namespace MyHealthVitals
 
 			if (e.Device.Name == currentDeviceName)
 			{
-				connectedDevices.Add(e.Device);
 				CrossBluetoothLE.Current.Adapter.StopScanningForDevicesAsync();
 				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device);
 			}
@@ -116,7 +115,7 @@ namespace MyHealthVitals
 		private void Adapter_DeviceConnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
 			Debug.WriteLine("Adapter_DeviceConnected: " + e.Device.Name);
-
+			connectedDevices.Add(e.Device);
 			switch (e.Device.Name)
 			{
 				case "BLE-MSA":

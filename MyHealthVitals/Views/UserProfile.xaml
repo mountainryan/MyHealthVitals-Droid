@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.UserProfile">
+<ContentPage xmlns:controls="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions" BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.UserProfile">
 	<ContentPage.Content>
-
 		<ScrollView>
-
 			<StackLayout>
 				<StackLayout Orientation="Horizontal">
 					<Image x:Name="imgProfile" Margin="12" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
@@ -13,12 +11,16 @@
 						<Label FontSize="14" x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
 					</StackLayout>
 				</StackLayout>
-
 				<StackLayout Spacing="20" Padding="15">
-
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Gender" />
-						<Label x:Name="lblGender" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
+						<Label x:Name="lblGender" Style="{DynamicResource UserProfileLabel}"  Text=" " HorizontalOptions="EndAndExpand" />
+						<controls:SegmentedControl x:Name="SegControl" TintColor="#0091FF" IsEnabled="false" SelectedSegment="0" HeightRequest="28" WidthRequest="120">
+							<controls:SegmentedControl.Children>
+								<controls:SegmentedControlOption  Text="Male" />
+								<controls:SegmentedControlOption  Text="Female" />
+							</controls:SegmentedControl.Children>
+						</controls:SegmentedControl>
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Birthdate" />
@@ -36,28 +38,24 @@
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Weight" />
 						<Label x:Name="lblWeight" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
-
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Mobile No." />
 						<Label x:Name="lblMobileNo" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
-
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Remember Username" />
-						<Switch x:Name="switchRemUsername" HorizontalOptions="EndAndExpand"></Switch>
+						<Switch x:Name="switchRemUsername" HorizontalOptions="EndAndExpand">
+						</Switch>
 					</StackLayout>
-
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Augo Login" />
-						<Switch x:Name="switchAutoLogin" HorizontalOptions="EndAndExpand"></Switch>
+						<Switch x:Name="switchAutoLogin" HorizontalOptions="EndAndExpand">
+						</Switch>
 					</StackLayout>
-
-					<Button Clicked="btnSaveClicked" Text="SAVE" Font="16" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White"> </Button>
+					<Button Clicked="btnSaveClicked" Text="SAVE" Font="16" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White">
+					</Button>
 				</StackLayout>
-
 			</StackLayout>
-			
 		</ScrollView>
-		
 	</ContentPage.Content>
 </ContentPage>

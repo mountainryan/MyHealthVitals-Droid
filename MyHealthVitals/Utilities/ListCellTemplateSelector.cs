@@ -15,7 +15,7 @@ namespace MyHealthVitals
 
 		protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
 		{
-			if (((ParameterDetailItem)item).categoryId == 1 || ((ParameterDetailItem)item).categoryId == 2)
+			if (((ParameterDetailItem)item).categoryId == 1 || ((ParameterDetailItem)item).categoryId == 2 || ((ParameterDetailItem)item).categoryId == 5)
 			{
 				return this.listCellTwoItem;
 			}

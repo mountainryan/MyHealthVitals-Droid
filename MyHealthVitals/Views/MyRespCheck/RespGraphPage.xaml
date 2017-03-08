@@ -59,8 +59,8 @@
 					RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
 					RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" 
 					Spacing="0">
-				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="White" XAlign="Center" FontSize="12" Margin="0,0,0,4">
-				</Label>
+				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4"/>
+
 			</StackLayout>
 			
 			<!--loading layout starts-->

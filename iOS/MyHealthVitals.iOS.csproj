@@ -18,7 +18,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>true</MtouchFastDev>
     <MtouchUseSGen>true</MtouchUseSGen>
@@ -29,6 +29,8 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <PlatformTarget>x86</PlatformTarget>
+    <CodesignProvision>ee06c046-bc01-4fbc-8c2e-34221fde3a55</CodesignProvision>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
@@ -71,7 +73,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: ROBERT HIGGS (UUB26SNJJ5)</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>false</MtouchFastDev>
@@ -120,6 +122,12 @@
     </Reference>
     <Reference Include="Plugin.BLE">
       <HintPath>..\packages\Plugin.BLE.1.2.0\lib\Xamarin.iOS10\Plugin.BLE.dll</HintPath>
+    </Reference>
+    <Reference Include="SegmentedControl.FormsPlugin.Abstractions">
+      <HintPath>..\packages\SegmentedControl.FormsPlugin.1.2.4\lib\Xamarin.iOS10\SegmentedControl.FormsPlugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="SegmentedControl.FormsPlugin.iOS">
+      <HintPath>..\packages\SegmentedControl.FormsPlugin.1.2.4\lib\Xamarin.iOS10\SegmentedControl.FormsPlugin.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

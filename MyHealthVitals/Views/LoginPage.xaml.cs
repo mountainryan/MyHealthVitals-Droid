@@ -55,6 +55,8 @@ namespace MyHealthVitals
 
 				this.txtPassword.Text = "";
 
+				//Demographics.sharedInstance.updateDemographicsFromLocal();
+
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 				{
 					Debug.WriteLine("Login succesfull.");

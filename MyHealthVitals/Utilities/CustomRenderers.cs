@@ -6,6 +6,10 @@ namespace MyHealthVitals
 		
 	}
 
+	public class RoundedBox : BoxView { 
+		
+	}
+
 	public class MyEntry : Entry { 
 		
 	}

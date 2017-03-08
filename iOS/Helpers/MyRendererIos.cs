@@ -9,6 +9,8 @@ using MyHealthVitals;
 [assembly: ExportRenderer(typeof(MyEntry), typeof(MyEntryRenderer))]
 [assembly: ExportRenderer(typeof(MyButton), typeof(MyButtonRenderer))]
 
+[assembly: ExportRenderer(typeof(RoundedBox), typeof(RoundedBoxRenderer))]
+
 namespace MyHealthVitals.iOS
 {
 	public class MyListViewRenderer : ListViewRenderer
@@ -17,6 +19,25 @@ namespace MyHealthVitals.iOS
 		{
 			base.OnElementChanged(e);
 			Control.AllowsSelection = false;
+		}
+	}
+
+	public class RoundedBoxRenderer : BoxRenderer
+	{
+		protected override void OnElementChanged(ElementChangedEventArgs<BoxView> e)
+		{
+			base.OnElementChanged(e);
+
+			if (Element != null)
+			{
+				Layer.MasksToBounds = true;
+				UpdateCornerRadius(Element as RoundedBox);
+			}
+		}
+
+		void UpdateCornerRadius(RoundedBox box)
+		{
+			Layer.CornerRadius = 4;
 		}
 	}
 

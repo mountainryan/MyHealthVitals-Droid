@@ -352,7 +352,7 @@ namespace MyHealthVitals
 		public void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex)
 		{
 			this.vitalsData.spo2 = new Reading("SpO2", sp02,2);
-			this.vitalsData.bpm = new Reading("Pulse", bpm,2);
+			this.vitalsData.bpm = new Reading("Heart Rate", bpm,3);
 			//this.vitalsData.bpSys = new Reading("Perfusion Index", perfusionIndex,2);
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -388,7 +388,7 @@ namespace MyHealthVitals
 
 			this.vitalsData.bpDia = new Reading("DIA", bpdia,1);
 			this.vitalsData.bpSys = new Reading("SYS", bpsys,1);
-			//this.vitalsData.bpm = new Reading("Pulse", bpm,3);
+			this.vitalsData.bpm = new Reading("Heart Rate", bpm,3);
 
 			vitalsData.sendToServer_SYS_DIA();
 

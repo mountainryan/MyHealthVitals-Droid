@@ -5,16 +5,15 @@
 			<!--Heading view start here-->
 			<ScrollView RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
 				<StackLayout x:Name="layoutContainer" Spacing="6">
-					<StackLayout Orientation="Horizontal" >
+					<StackLayout Orientation="Horizontal">
 						<Image x:Name="imgProfile" Margin="12,3,12,3" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
 						</Image>
 						<StackLayout Orientation="Vertical" VerticalOptions="Center">
 							<Label FontSize="15" x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
 							<Label x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
-							<Label Margin="0,10,0,0" x:Name="lblClickMessage" FontSize="10" IsVisible="true" Text="Click photo for Profile Screen" TextColor="White" />
+							<Label Margin="0,10,0,0" x:Name="lblClickMessage" FontSize="10" IsVisible="false" Text="Click photo for Profile Screen" TextColor="White" />
 						</StackLayout>
-
-					<!--<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}" />-->
+						<!--<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}" />-->
 					</StackLayout>
 					<!-- Readign display container start here-->
 					<StackLayout Margin="4,2,0,8" Orientation="Horizontal">
@@ -28,7 +27,7 @@
 						</StackLayout>
 						<StackLayout>
 							<Label HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
-							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="13" TextColor="White" Text=" "/>
+							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="13" TextColor="White" Text=" " />
 						</StackLayout>
 						<Button IsVisible="false" x:Name="btnIndicator" VerticalOptions="End" BackgroundColor="Green" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
 						<Button IsVisible="false" x:Name="btnDelete" Clicked="btnDeleteCurrentReadingClicked" Margin="0,0,0,-3" Image="deleteicon.png" VerticalOptions="End" HeightRequest="26" WidthRequest="26" />
@@ -39,14 +38,18 @@
 						<Button Clicked="btnTakeReadingClicked" WidthRequest="100" BackgroundColor="#10F900" TextColor="Black" Text="Take Reading" />
 						<local:MyButton TextColor="Black" Clicked="btnCalibrateClicked" WidthRequest="100" BackgroundColor="#10F900" Text="Calibration Screen" />
 					</StackLayout>
-					<StackLayout Margin="15,0,15,0" Padding="6" Spacing="6" BackgroundColor="White">
-						<Label XAlign="Center" Text="Patient Established Normal" />
-						<StackLayout Padding="3" HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Spacing="35">
-							<Label x:Name="lblDate" Margin="-5,0,0,0" FontSize="14" FontAttributes="Bold" Text="--" />
-							<Label x:Name="lblPef" FontSize="14" FontAttributes="Bold" Text="--" />
-							<Label x:Name="lblFev1" FontSize="14" FontAttributes="Bold" Text="--" />
+					<RelativeLayout VerticalOptions="Start" HeightRequest="60">
+
+						<local:RoundedBox RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.03}" BackgroundColor="White" HeightRequest="60" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.94}"/>
+						<StackLayout BackgroundColor="Transparent" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.03}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.94}" Margin="15,0,15,0" Padding="6" Spacing="6" >
+							<Label HorizontalOptions="FillAndExpand" FontAttributes="Bold" XAlign="Center" Text="Patient's Established Normal" />
+							<StackLayout BackgroundColor="Transparent" Padding="3" HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Spacing="35">
+								<Label x:Name="lblDate" FontSize="14" FontAttributes="Bold" Text="--" />
+								<Label x:Name="lblPef" FontSize="14" FontAttributes="Bold" Text="--" />
+								<Label x:Name="lblFev1" FontSize="14" FontAttributes="Bold" Text="--" />
+							</StackLayout>
 						</StackLayout>
-					</StackLayout>
+					</RelativeLayout>
 					<StackLayout Orientation="Horizontal" Spacing="20" HorizontalOptions="CenterAndExpand">
 						<local:MyButton Clicked="btnViewGraphPageClicked" WidthRequest="100" BackgroundColor="#FFFB00" TextColor="Black" Text="Click to View Data Graph" />
 						<local:MyButton Clicked="btnViewDataListClicked" WidthRequest="100" BackgroundColor="#FF9300" TextColor="Black" Text="Click to View Data List" />
@@ -56,7 +59,7 @@
 			</ScrollView>
 			<!--Last line-->
 			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
-				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2016" XAlign="Center" FontSize="13" Margin="0,0,0,4">
+				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2016" XAlign="Center" FontSize="12" Margin="0,0,0,4">
 				</Label>
 			</StackLayout>
 			<!--loading layout starts-->
@@ -69,18 +72,16 @@
 			</RelativeLayout>
 			<!--Loading on take reading-->
 			<RelativeLayout IsVisible="false" x:Name="layoutLoadingTakeReading" BackgroundColor="Black">
-
 				<Button Clicked="btnCancelTakeReadingClicked" Margin="0,10,0,0" Image="deleteicon.png" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1,Constant = -40}" HeightRequest="30" WidthRequest="30" />
-				
 				<StackLayout Margin="20,20,20,0" Spacing="20" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Padding="10">
 					<Image Source="icucarellc.png" Margin="0,15,0,0" />
 					<Label Text="icuCare ‘s universally accessible patient-centered health data echo system is transforming healthcare and enabling people to live a healthier life, one patient at a time!" TextColor="White" FontSize="14" XAlign="Center" />
-<!--					<ActivityIndicator Margin="50" Color="Green" Scale="2" IsVisible="true" IsRunning="true" />-->
-					<WebView HorizontalOptions="Center" BackgroundColor="Red" x:Name="gifWebView" HeightRequest="100" WidthRequest="100"/>
+					<!--					<ActivityIndicator Margin="50" Color="Green" Scale="2" IsVisible="true" IsRunning="true" />-->
+					<WebView IsEnabled="false" HorizontalOptions="Center" BackgroundColor="Red" x:Name="gifWebView" HeightRequest="100" WidthRequest="100" />
 				</StackLayout>
 				<!--Last line-->
 				<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
-					<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="White" XAlign="Center" FontSize="13" Margin="0,0,0,4">
+					<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4">
 					</Label>
 				</StackLayout>
 			</RelativeLayout>

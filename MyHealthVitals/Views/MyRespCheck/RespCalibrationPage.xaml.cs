@@ -29,10 +29,8 @@ namespace MyHealthVitals
 			//reading2.index = calibratedReadingList.Count;
 			//calibratedReadingList.Add(reading2);
 
-			////calibratedReadingList.CollectionChanged += (sender, e) => { 
-				
-			////};
-
+			//////calibratedReadingList.CollectionChanged += (sender, e) => { 
+			//////};
 			//listView.ItemsSource = calibratedReadingList;
 		}
 

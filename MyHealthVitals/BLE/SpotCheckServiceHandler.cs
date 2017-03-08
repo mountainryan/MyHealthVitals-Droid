@@ -388,6 +388,8 @@ namespace MyHealthVitals
 			//// spo2 , PI and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 80 && (int)ch.Value[2] < 84)
 			{
+				printUpdatedCharacteristics(e.Characteristic);
+
 				if (ch.Value[5] == 0 || ch.Value[6] == 0)
 				{
 					Debug.WriteLine("either start or end of the spo2 reading.");
@@ -398,7 +400,7 @@ namespace MyHealthVitals
 
 					isSpo2ReadingStarted = false;
 				}
-				else if(ch.Value.Length == 11) {
+				else if(ch.Value.Length > 8) {
 
 					isSpo2ReadingStarted = true;
 
