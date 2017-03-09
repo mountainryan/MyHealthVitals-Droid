@@ -16,22 +16,22 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 
-			////calibratedReadingList.
-			//var reading0 = new SpirometerReading(DateTime.Now, 456, 3.5m);
-			//reading0.index = calibratedReadingList.Count;
-			//calibratedReadingList.Add(reading0);
+			//calibratedReadingList.
+			var reading0 = new SpirometerReading(DateTime.Now, 420, 3.1m);
+			reading0.index = calibratedReadingList.Count;
+			calibratedReadingList.Add(reading0);
 
-			//var reading1 = new SpirometerReading(DateTime.Now, 456, 3.5m);
-			//reading1.index = calibratedReadingList.Count;
-			//calibratedReadingList.Add(reading1);
+			var reading1 = new SpirometerReading(DateTime.Now, 300, 3.4m);
+			reading1.index = calibratedReadingList.Count;
+			calibratedReadingList.Add(reading1);
 
-			//var reading2 = new SpirometerReading(DateTime.Now, 456, 3.5m);
-			//reading2.index = calibratedReadingList.Count;
-			//calibratedReadingList.Add(reading2);
+			var reading2 = new SpirometerReading(DateTime.Now, 300, 3.5m);
+			reading2.index = calibratedReadingList.Count;
+			calibratedReadingList.Add(reading2);
 
-			//////calibratedReadingList.CollectionChanged += (sender, e) => { 
-			//////};
-			//listView.ItemsSource = calibratedReadingList;
+			////calibratedReadingList.CollectionChanged += (sender, e) => { 
+			////};
+			listView.ItemsSource = calibratedReadingList;
 		}
 
 		void btnCalibrateClicked(object sender, System.EventArgs e)
@@ -86,8 +86,10 @@ namespace MyHealthVitals
 				SpirometerReading highestReading = getHighestReading();
 
 				// saving it to the local storage
-				Demographics.sharedInstance.calibratedReading = highestReading;
-				Demographics.sharedInstance.saveCalibratedReadig();
+				//Demographics.sharedInstance.calibratedReading = highestReading;
+				//Demographics.sharedInstance.saveCalibratedReadig();
+
+				Demographics.sharedInstance.saveCalibratedReadig(highestReading);
 
 				Reading fevReading = new Reading("FEV1", highestReading.Fev1, 9);
 				Reading pefReading = new Reading("PEF", highestReading.Pef, 9);

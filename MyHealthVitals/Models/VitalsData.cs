@@ -66,6 +66,13 @@ namespace MyHealthVitals
 			}
 		}
 
+		public async void sendHeartRateToServer() { 
+			if (bpm.EnglishValue > 0)
+			{
+				await bpm.PostReadingToService();;
+			}
+		}
+
 		public async void sendToServer_SYS_DIA()
 		{
 			if (bpDia != null && bpDia.EnglishValue > 0)

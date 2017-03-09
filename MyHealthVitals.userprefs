@@ -1,44 +1,12 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/MyRespCheck/RespCalibrationPage.xaml.cs">
     <Files>
-      <File FileName="MyHealthVitals/Models/VitalsData.cs" Line="67" Column="4" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="406" Column="7" />
-      <File FileName="MyHealthVitals/Models/Reading.cs" Line="18" Column="38" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/ParameterItemDetail.xaml.cs" Line="83" Column="7" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespDataListPage.xaml" Line="16" Column="21" />
-      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="403" Column="35" />
-      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="129" Column="39" />
-      <File FileName="iOS/Main.cs" Line="17" Column="50" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="97" Column="21" />
-      <File FileName="MyHealthVitals/Utilities/ListCellTemplateSelector.cs" Line="12" Column="66" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/ParametersPage.xaml.cs" Line="33" Column="26" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/headerWithTwoTitle.xaml" Line="5" Column="28" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" Line="7" Column="106" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespDataListPage.xaml.cs" Line="48" Column="40" />
+      <File FileName="MyHealthVitals/Models/SpirometerReading.cs" Line="93" Column="5" />
+      <File FileName="MyHealthVitals/Models/Demographic.cs" Line="223" Column="4" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="60" Column="4" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespCalibrationPage.xaml.cs" Line="20" Column="55" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="MyHealthVitals" expanded="True">
-            <Node name="MyHealthVitals" expanded="True">
-              <Node name="BLE" expanded="True" />
-              <Node name="Utilities" expanded="True" />
-              <Node name="Views" expanded="True">
-                <Node name="MyRespCheck" expanded="True" />
-                <Node name="SpotCheckViews" expanded="True">
-                  <Node name="SubViews" expanded="True">
-                    <Node name="headerWithTwoTitle.xaml" expanded="True" />
-                    <Node name="ListCellTwoItem.xaml" selected="True" />
-                  </Node>
-                  <Node name="ParameterItemDetail.xaml" expanded="True" />
-                  <Node name="ParametersPage.xaml" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="MyHealthVitals.iOS" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -30,6 +30,10 @@ namespace MyHealthVitals
 			}
 		}
 
+		public void updateController(IBluetoothCallBackUpdatable controller) {
+			this.uiController = controller;
+		}
+
 		public async void discoverServices(IDevice device)
 		{
 			this.connectedDevice = device;
@@ -131,18 +135,18 @@ namespace MyHealthVitals
 
 				if (countMeasuringPressure == 0)
 				{
-					uiController.ShowMessageOnUI("Measuring the Blood pressure...", true);
+					//uiController.ShowMessageOnUI("Measuring the Blood pressure...", true);
 					countMeasuringPressure++;
 				}
 
 				if (ch.Value.Length > 21)
 				{
 					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
-					uiController.ShowMessageOnUI("Boood pressure read succesfully.", true);
+					//uiController.ShowMessageOnUI("Boood pressure read succesfully.", true);
 					countMeasuringPressure = 0;
 				}
 
-				if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
+				//if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
 			}
 
 			if ((int)ch.Value[2] >= 48 && (int)ch.Value[2] <= 51)
@@ -373,7 +377,7 @@ namespace MyHealthVitals
 					// if this condition saisfies the reading is measured in celcious
 					if (data >= 200 && data <= 1301)
 					{
-						uiController.ShowMessageOnUI("Temperature read successfully.", true);
+						//uiController.ShowMessageOnUI("Temperature read successfully.", true);
 						//decimal temperatureInCelcious = (decimal)((float)633 / 100 + 30);
 						//(9.0 / 5.0) * c) +32
 						// the device always reads in Celcious even if it is displaying in fareinheit

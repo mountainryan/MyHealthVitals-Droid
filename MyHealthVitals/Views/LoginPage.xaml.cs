@@ -47,6 +47,9 @@ namespace MyHealthVitals
 				//Credential cred = await Credential.sharedInstance.CallApiForLogin(txtUsername.Text.Trim(), txtPassword.Text.Trim());
 				Credential cred = await Credential.sharedInstance.CallApiForLogin(username, password);
 
+				Application.Current.Properties["_username"] = txtUsername.Text.Trim();
+				await Application.Current.SavePropertiesAsync();
+
 				if (cred.Token.Length > 0)
 				{
 					Demographics.sharedInstance.username = txtUsername.Text.Trim();
@@ -55,7 +58,7 @@ namespace MyHealthVitals
 
 				this.txtPassword.Text = "";
 
-				//Demographics.sharedInstance.updateDemographicsFromLocal();
+				Demographics.sharedInstance.updateDemographicsFromLocal();
 
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 				{

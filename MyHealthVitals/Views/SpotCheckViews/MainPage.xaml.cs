@@ -93,7 +93,7 @@ namespace MyHealthVitals
 			//bleManager = new BleManagerSpotCheck();
 			//bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
 
-			BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
+			//BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
 
 			callAPiToDisplayGetDemographics();
 		}
@@ -189,7 +189,7 @@ namespace MyHealthVitals
 
 		void btnBleClicked(Object sender, System.EventArgs e)
 		{
-			BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
+			//BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
 
 			//Debug.WriteLine(sender.is);
 
@@ -203,30 +203,32 @@ namespace MyHealthVitals
 
 		public void ShowMessageOnUI(string message, Boolean isConnected)
 		{
-			MainPage.isCOnnectedToSpotCheck = isConnected;
-			//Debug.WriteLine(message);
-			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-			{
-				//layoutLoading.IsVisible = true;
-				lblStatus.Text = message;
+			//MainPage.isCOnnectedToSpotCheck = isConnected;
+			////Debug.WriteLine(message);
+			//Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+			//{
+			//	//layoutLoading.IsVisible = true;
+			//	lblStatus.Text = message;
 
-				if (!(message == "Measuring the Blood pressure..."))
-				{
-					lblPressure.Text = "";
-				}
+			//	if (!(message == "Measuring the Blood pressure..."))
+			//	{
+			//		lblPressure.Text = "";
+			//	}
 
-				if (isConnected)
-				{
-					btnBle.Image = "imgDevCon.png";
-					btnBle.IsEnabled = false;
+			//	if (isConnected)
+			//	{
+			//		btnBle.Image = "imgDevCon.png";
+			//		btnBle.IsEnabled = false;
 
-				}
-				else { 
-					btnBle.Image = "imgDevDiscon.png";
-					btnBle.IsEnabled = true;
-				}
-				//hideMessageWthDelay();
-			});
+			//	}
+			//	else { 
+			//		btnBle.Image = "imgDevDiscon.png";
+			//		btnBle.IsEnabled = true;
+			//	}
+			//	//hideMessageWthDelay();
+			//});
+
+			DisplayAlert("ICUCare LLC", message, "OK");
 		}
 
 		public void updateGlucoseReading(decimal gluReading, string unit) {
@@ -294,11 +296,14 @@ namespace MyHealthVitals
 		public void updateECGEnded(int bpm) {
 
 			ecgModel.DefaultXAxis.IsPanEnabled = true;
-
 			Device.BeginInvokeOnMainThread(() =>
 			{
 				lblBpm.Text = bpm.ToString();
 			});
+
+			// sending the Heart rate to server separately
+			vitalsData.bpm = new Reading("Heart Rate", bpm, 3);
+			vitalsData.sendHeartRateToServer();
 		}
 
 		public void updateECGPacket(List<int> ecgPacket)
@@ -343,10 +348,10 @@ namespace MyHealthVitals
 
 		public void updatingPressureMeanTime(int pressure)
 		{
-			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-			{
-				lblPressure.Text = pressure.ToString() + " mmHg";
-			});
+			//Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+			//{
+			//	lblPressure.Text = pressure.ToString() + " mmHg";
+			//});
 		}
 
 		public void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex)
@@ -416,6 +421,7 @@ namespace MyHealthVitals
 		void btnLogOutClicked(object sender, System.EventArgs e)
 		{
 			Debug.WriteLine(" log out");
+			Demographics.sharedInstance.calibratedReadingList.Clear();
 			this.Navigation.PopModalAsync(true);
 		}
 		void btnNIBPStartClicked(object sender, System.EventArgs e)

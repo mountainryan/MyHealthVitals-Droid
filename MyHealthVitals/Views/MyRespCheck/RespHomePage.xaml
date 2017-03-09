@@ -44,9 +44,9 @@
 						<StackLayout BackgroundColor="Transparent" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.03}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.94}" Margin="15,0,15,0" Padding="6" Spacing="6" >
 							<Label HorizontalOptions="FillAndExpand" FontAttributes="Bold" XAlign="Center" Text="Patient's Established Normal" />
 							<StackLayout BackgroundColor="Transparent" Padding="3" HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Spacing="35">
-								<Label x:Name="lblDate" FontSize="14" FontAttributes="Bold" Text="--" />
-								<Label x:Name="lblPef" FontSize="14" FontAttributes="Bold" Text="--" />
-								<Label x:Name="lblFev1" FontSize="14" FontAttributes="Bold" Text="--" />
+								<Label XAlign="Center" x:Name="lblDate" FontSize="14" Text="--" />
+								<Label x:Name="lblPef" FontSize="14"  Text="--" />
+								<Label x:Name="lblFev1" FontSize="14" Text="--" />
 							</StackLayout>
 						</StackLayout>
 					</RelativeLayout>

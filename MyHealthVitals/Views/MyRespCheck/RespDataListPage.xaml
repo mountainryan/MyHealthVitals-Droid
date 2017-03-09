@@ -6,9 +6,9 @@
 			<StackLayout Spacing="12" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Padding="10">
 				<Label TextColor="White" XAlign="Center" Margin="0,5,0,0" Text="Most Recent Reading's">
 				</Label>
-				<StackLayout Orientation="Horizontal">
-					<Label FontSize="14" WidthRequest="134" TextColor="{StaticResource colorThemeBlue}">Date/Time</Label>
-					<Label WidthRequest="70" HorizontalTextAlignment="Center" FontSize="14" TextColor="{StaticResource colorThemeBlue}">PEF(L/min)</Label>
+				<StackLayout Orientation="Horizontal" Spacing="0">
+					<Label FontSize="14" WidthRequest="140" TextColor="{StaticResource colorThemeBlue}">Date/Time</Label>
+					<Label WidthRequest="80" HorizontalTextAlignment="Center" FontSize="14" TextColor="{StaticResource colorThemeBlue}">PEF(L/min)</Label>
 					<Label WidthRequest="60" HorizontalTextAlignment="Center" FontSize="14" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
 				</StackLayout>
 				<local:CustomListView SeparatorVisibility="None" x:Name="listView" BackgroundColor="{StaticResource colorBlackBg}">

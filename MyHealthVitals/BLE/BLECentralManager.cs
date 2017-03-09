@@ -28,6 +28,7 @@ namespace MyHealthVitals
 		//public IBLEDeviceServiceHandler devServiceHandler;
 		public SpirometerServiceHandler spiroServHandler;
 		public SpotCheckServiceHandler spotServHandler;
+		public DeviceListPage deviceListPage;
 
 		//public get
 
@@ -38,6 +39,7 @@ namespace MyHealthVitals
 			CrossBluetoothLE.Current.Adapter.DeviceConnected += Adapter_DeviceConnected;
 			CrossBluetoothLE.Current.Adapter.ScanTimeoutElapsed += Adapter_ScanTimeoutElapsed;
 			CrossBluetoothLE.Current.Adapter.DeviceConnectionLost += Adapter_DeviceConnectionLost;
+			//CrossBluetoothLE.Current.s
 
 			Debug.WriteLine("bluetooth adapter initialized.");
 
@@ -69,10 +71,26 @@ namespace MyHealthVitals
 				// the device is not in the scanned list now scan to find the desired device and then connnect
 				CrossBluetoothLE.Current.Adapter.StartScanningForDevicesAsync();
 
-				if (deviceName == "PC_300SNT") spotServHandler.uiController.ShowMessageOnUI("Searching device...", false);
+				//if (deviceName == "PC_300SNT") spotServHandler.uiController.ShowMessageOnUI("Searching device...", false);
 
 			}
-			else spiroServHandler.reconnectToDevice(getCurrentDevice());
+			else {
+				
+				switch (deviceName)
+				{
+					case "BLE-MSA":
+						{
+							spiroServHandler.reconnectToDevice(getCurrentDevice());
+							break;
+						}
+
+					case "PC_300SNT":
+						{
+							spotServHandler.reconnectToDevice(getCurrentDevice());
+							break;
+						}
+				}
+			}
 		}
 
 		private IDevice getCurrentDevice()

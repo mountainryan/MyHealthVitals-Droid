@@ -93,13 +93,16 @@ namespace MyHealthVitals
 
 				try
 				{
-					double standardPef = (double)Demographics.sharedInstance.calibratedReading.Pef;
+					double normalPefAtThatTime = (double)Demographics.sharedInstance.getNormalPefForDate(this.Date);
 
-					if (standardPef * 0.6 < (double)Pef && (double)Pef < standardPef * 0.8)
+					if (!(normalPefAtThatTime > 0))
+						return color1;
+
+					if (normalPefAtThatTime * 0.6 < (double)Pef && (double)Pef < normalPefAtThatTime * 0.8)
 					{
 						color1 = "#FFA500";
 					}
-					if (standardPef * 0.6 > (double)Pef)
+					if (normalPefAtThatTime * 0.6 > (double)Pef)
 					{
 						color1 = "#ff0000";
 					}

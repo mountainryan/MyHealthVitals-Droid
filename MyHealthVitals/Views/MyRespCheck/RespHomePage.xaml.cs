@@ -51,15 +51,17 @@ namespace MyHealthVitals
 					btnIndicator.BackgroundColor = Color.FromHex(currReading.color);
 
 					layoutLoadingTakeReading.IsVisible = false;
-
 				});
 			}
 		}
 
 		void btnTakeReadingClicked(object sender, System.EventArgs e)
 		{
-			layoutLoadingTakeReading.IsVisible = true;
-			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA",this);
+
+			updateCaller(new SpirometerReading(DateTime.Now, 680, 3.5m));
+
+			//layoutLoadingTakeReading.IsVisible = true;
+			//BLECentralManager.sharedInstance.connectToDevice("BLE-MSA",this);
 			//bleManager.ScanToConnectToSpotCheck((BLEReadingUpdatableSpiroMeter)this);
 			//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
 		}
@@ -126,31 +128,21 @@ namespace MyHealthVitals
 
 		}
 
-		protected override void OnDisappearing()
-		{
-			base.OnDisappearing();
-			//BleManagerSpirometer.stopPolling();
-		}
-
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
 
 			try
 			{
-				Demographics.sharedInstance.updateDemographicsFromLocal();
+				var latestCalibratedReading = Demographics.sharedInstance.getLatestCalibratedReading();
 
-				if (Demographics.sharedInstance.calibratedReading.Pef > 0)
-				{
-					lblDate.Text = Demographics.sharedInstance.calibratedReading.dateString;
-					lblFev1.Text = Demographics.sharedInstance.calibratedReading.fev1String;
-					lblPef.Text = Demographics.sharedInstance.calibratedReading.pefString;
-				}
-				else {
-					lblDate.Text = "--";
-					lblFev1.Text = "--";
-					lblPef.Text = "--";
-				}
+				System.Diagnostics.Debug.WriteLine(latestCalibratedReading.dateString);
+
+				//latestCalibratedReading.Date.
+
+				lblDate.Text = latestCalibratedReading.dateString;
+				lblFev1.Text = latestCalibratedReading.fev1String;
+				lblPef.Text = latestCalibratedReading.pefString;
 			}
 			catch
 			{

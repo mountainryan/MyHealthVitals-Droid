@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
+using System.Collections.Generic;
 
 namespace MyHealthVitals
 {
@@ -107,18 +108,16 @@ namespace MyHealthVitals
 		public string username;
 		public string password;
 
-		public SpirometerReading calibratedReading;
+		public List<SpirometerReading> calibratedReadingList = new List<SpirometerReading>();
 
 		private Demographics()
 		{
-			//var curr_username = "";
 			if (Application.Current.Properties.ContainsKey("_username"))
 			{
-				username = (string)Application.Current.Properties["_username"];
+				username = (String)Application.Current.Properties["_username"];
 			}
 
 			updateDemographicsFromLocal();
-
 		}
 
 		public void updateDemographicsFromLocal() {
@@ -134,7 +133,7 @@ namespace MyHealthVitals
 			{
 				isRememberUsername = (bool)Application.Current.Properties[username + "_isRememberUsername"];
 			}
-			else { 
+			else {
 				isRememberUsername = false;
 			}
 
@@ -143,27 +142,90 @@ namespace MyHealthVitals
 				password = (string)Application.Current.Properties[username + "_password"];
 			}
 
-			// local storage of calibrated value
+			//local storage of calibrated value
+
 			try
 			{
-				var pef = Convert.ToDecimal(Application.Current.Properties[username + "_pef"]);
-				var fev = Convert.ToDecimal(Application.Current.Properties[username + "_fev1"]);
-				var date = Convert.ToDateTime(Application.Current.Properties[username + "_savedDate"]);
+				this.calibratedReadingList.Clear();
+				var readingCount = 0;
+				if (Application.Current.Properties.ContainsKey(username + "_readingCount"))
+				{
+					readingCount = (int)Application.Current.Properties[username + "_readingCount"];
+				}
 
-				this.calibratedReading = new SpirometerReading(date, pef, fev);
+				for (int i = 0; i < readingCount; i++)
+				{
+					var pef = Convert.ToDecimal(Application.Current.Properties[username + "_pef_" + i]);
+					var fev1 = Convert.ToDecimal(Application.Current.Properties[username + "_fev1_" + i]);
+					var date = Convert.ToDateTime(Application.Current.Properties[username + "_savedDate_" + i]);
+
+					this.calibratedReadingList.Add(new SpirometerReading(date, pef, fev1));
+				}
+
+				Debug.WriteLine("calibrated count: " + this.calibratedReadingList.Count);
+
+				//this.calibratedReading = new SpirometerReading(date, pef, fev);
 			}
 			catch (Exception ex)
 			{
-				this.calibratedReading = new SpirometerReading(DateTime.Now, 0, 0);
+				//this.calibratedReading = new SpirometerReading(DateTime.Now, 0, 0);
 				Debug.WriteLine("Exception: " + ex.Message);
 			}
 		}
 
-		public void saveCalibratedReadig() { 
-			Application.Current.Properties[username+"_pef"] = calibratedReading.pefString;
-			Application.Current.Properties[username + "_fev1"] = calibratedReading.fev1String;
-			Application.Current.Properties[username + "_savedDate"] = calibratedReading.Date.ToString();
+		public void saveCalibratedReadig(SpirometerReading calibratedReading) {
+
+			this.calibratedReadingList.Add(calibratedReading);
+
+			var readingCount = 0;
+			if (Application.Current.Properties.ContainsKey(username + "_readingCount"))
+			{
+				readingCount = (int)Application.Current.Properties[username + "_readingCount"];
+			}
+
+			//Application.Current.Properties[username + "_readingCount"] = calibratedReading.pefString;
+
+			Application.Current.Properties[username + "_pef_" + readingCount] = calibratedReading.pefString;
+			Application.Current.Properties[username + "_fev1_" + readingCount] = calibratedReading.fev1String;
+			Application.Current.Properties[username +"_savedDate_" + readingCount] = calibratedReading.Date.ToString();
+
+			Application.Current.Properties[username + "_readingCount"] = ++readingCount;
+
 			Application.Current.SavePropertiesAsync();
+
+		}
+
+		public SpirometerReading getLatestCalibratedReading() {
+
+			return  this.calibratedReadingList.Count>0? this.calibratedReadingList[this.calibratedReadingList.Count - 1] : null;
+
+			//var readingCount = 0;
+			//if (Application.Current.Properties.ContainsKey(username + "_readingCount"))
+			//{
+			//	readingCount = (int)Application.Current.Properties[username + "_readingCount"];
+			//}
+
+			//var pef = Convert.ToDecimal(Application.Current.Properties[username + "_pef_"+readingCount]);
+			//var fev1 = Convert.ToDecimal(Application.Current.Properties[username + "_fev1_"+readingCount]);
+			//var date = Convert.ToDateTime(Application.Current.Properties[username + "_savedDate_"+readingCount]);
+
+			//return new SpirometerReading(date, pef, fev1);
+		}
+
+		public decimal getNormalPefForDate(DateTime readingDate) {
+			for (int i = this.calibratedReadingList.Count - 1; i >= 0; i--) {
+				SpirometerReading reading = this.calibratedReadingList[i];
+
+				if (readingDate >= reading.Date){
+					return reading.Pef;
+				}
+			}
+
+			if (this.calibratedReadingList.Count > 0) {
+				return this.calibratedReadingList[0].Pef;
+			}
+
+			return 0;
 		}
 
 		public void saveUserDefaults()
@@ -199,14 +261,16 @@ namespace MyHealthVitals
 				try
 				{
 					var content = await response.Content.ReadAsStringAsync();
-					var demoGraphics = JsonConvert.DeserializeObject<Demographics>(content);
+					var tempDemographics = JsonConvert.DeserializeObject<Demographics>(content);
 
 					// transfering local values to the shared instance of demographics after deserialize
-					demoGraphics.username = Demographics.sharedInstance.username;
-					demoGraphics.password = Demographics.sharedInstance.password;
-					demoGraphics.isAutoLogin = Demographics.sharedInstance.isAutoLogin;
-					demoGraphics.isRememberUsername = Demographics.sharedInstance.isRememberUsername;
-					Demographics.sharedInstance = demoGraphics;
+					tempDemographics.username = Demographics.sharedInstance.username;
+					tempDemographics.password = Demographics.sharedInstance.password;
+					tempDemographics.isAutoLogin = Demographics.sharedInstance.isAutoLogin;
+					tempDemographics.isRememberUsername = Demographics.sharedInstance.isRememberUsername;
+					tempDemographics.calibratedReadingList = Demographics.sharedInstance.calibratedReadingList;
+
+					Demographics.sharedInstance = tempDemographics;
 
 					Debug.WriteLine(Demographics.sharedInstance.getFullName());
 				}
