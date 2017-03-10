@@ -25,5 +25,6 @@ namespace MyHealthVitals
 	public interface BLEReadingUpdatableSpiroMeter
 	{
 		void updateCaller(SpirometerReading currReading);
+		void updateDeviceStateOnUI(String message, bool isConnected);
 	}
 }

@@ -3,23 +3,23 @@
 	<ContentPage.Content>
 		<RelativeLayout>
 			<!--Heading view start here-->
-			<StackLayout Spacing="12" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Padding="10">
-				<Label TextColor="White" XAlign="Center" Margin="0,5,0,0" Text="Most Recent Reading's">
-				</Label>
+			<StackLayout Spacing="12" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
+				<Label FontAttributes="Bold" TextColor="White" XAlign="Center" Margin="0,10,0,0" Text="Most Recent Reading's"/>
+
 				<StackLayout Orientation="Horizontal" Spacing="0">
-					<Label FontSize="14" WidthRequest="140" TextColor="{StaticResource colorThemeBlue}">Date/Time</Label>
+					<Label Margin="10,0,10,0" FontSize="14" WidthRequest="130" TextColor="{StaticResource colorThemeBlue}">Date/Time</Label>
 					<Label WidthRequest="80" HorizontalTextAlignment="Center" FontSize="14" TextColor="{StaticResource colorThemeBlue}">PEF(L/min)</Label>
 					<Label WidthRequest="60" HorizontalTextAlignment="Center" FontSize="14" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
 				</StackLayout>
-				<local:CustomListView SeparatorVisibility="None" x:Name="listView" BackgroundColor="{StaticResource colorBlackBg}">
+				<local:CustomListView Margin="0,3,0,0" SeparatorVisibility="None" x:Name="listView" BackgroundColor="{StaticResource colorBlackBg}">
 					<local:CustomListView.ItemTemplate>
 						<DataTemplate>
 							<ViewCell>
 								<StackLayout VerticalOptions="Fill" Spacing="0" Padding="0" Margin="0">
-									<StackLayout Orientation="Horizontal">
-										<Label YAlign="Center" FontSize="14" WidthRequest="160" TextColor="White" Text="{Binding dateString}" />
-										<Label YAlign="Center" WidthRequest="70" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" Text="{Binding pefString}" />
-										<Label YAlign="Center" WidthRequest="60" HorizontalTextAlignment="Center" TextColor="White" FontSize="13" Text="{Binding fev1String}" />
+									<StackLayout Padding="10,0,10,0" Orientation="Horizontal">
+										<Label YAlign="Center" FontSize="14" WidthRequest="166" TextColor="White" Text="{Binding dateString}" />
+										<Label YAlign="Center" WidthRequest="66" HorizontalTextAlignment="Center" TextColor="White" FontSize="14" Text="{Binding pefString}" />
+										<Label YAlign="Center" WidthRequest="58" HorizontalTextAlignment="Center" TextColor="White" FontSize="14" Text="{Binding fev1String}" />
 										<Button VerticalOptions="Center" BackgroundColor="{Binding color}" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
 									</StackLayout>
 									<BoxView Margin="0,12,0,0" HeightRequest="0.5" BackgroundColor="Gray" />

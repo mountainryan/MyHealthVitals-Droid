@@ -41,6 +41,8 @@ namespace MyHealthVitals
 			CrossBluetoothLE.Current.Adapter.DeviceConnectionLost += Adapter_DeviceConnectionLost;
 			//CrossBluetoothLE.Current.s
 
+			//connec
+
 			Debug.WriteLine("bluetooth adapter initialized.");
 
 			spiroServHandler = new SpirometerServiceHandler();
@@ -127,6 +129,10 @@ namespace MyHealthVitals
 			{
 				CrossBluetoothLE.Current.Adapter.StopScanningForDevicesAsync();
 				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device);
+
+				//CrossBluetoothLE.Current.Adapter.fail
+
+				//CrossBluetoothLE.Current.Adapter.ConnectedDevices
 			}
 		}
 
@@ -158,7 +164,13 @@ namespace MyHealthVitals
 			Debug.WriteLine(e.Device.Name + " just Adapter_DeviceConnectionLost");
 
 			if (e.Device.Name == "PC_300SNT") { 
-				spotServHandler.uiController.ShowMessageOnUI("Disconnected.", false);
+				spotServHandler.uiController.ShowMessageOnUI("Spot Check Monitor Connection Lost.", false);
+			}
+
+			if (currentDeviceName == "BLE-MSA")
+			{
+				spiroServHandler.stopPolling();
+				spiroServHandler.uiController.updateDeviceStateOnUI("Spirometer Connection Lost.", false);
 			}
 		}
 
@@ -166,7 +178,13 @@ namespace MyHealthVitals
 		{
 			if (currentDeviceName == "PC_300SNT")
 			{
-				spotServHandler.uiController.ShowMessageOnUI("Scanning time out. Please, check if device is turned on.", false);
+				spotServHandler.uiController.ShowMessageOnUI("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
+			}
+
+			if (currentDeviceName == "BLE-MSA")
+			{
+				spiroServHandler.stopPolling();
+				spiroServHandler.uiController.updateDeviceStateOnUI("Scanning time out. Please, check if Spirometer is turned on.", false);
 			}
 
 			Debug.WriteLine("Adapter_ScanTimeoutElapsed.");

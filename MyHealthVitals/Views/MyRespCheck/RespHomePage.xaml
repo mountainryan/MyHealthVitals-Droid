@@ -4,10 +4,10 @@
 		<RelativeLayout>
 			<!--Heading view start here-->
 			<ScrollView RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
-				<StackLayout x:Name="layoutContainer" Spacing="6">
+				<StackLayout x:Name="layoutContainer" Spacing="15">
 					<StackLayout Orientation="Horizontal">
-						<Image x:Name="imgProfile" Margin="12,3,12,3" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
-						</Image>
+						<Image x:Name="imgProfile" Margin="12,3,12,3" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80"/>
+
 						<StackLayout Orientation="Vertical" VerticalOptions="Center">
 							<Label FontSize="15" x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
 							<Label x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
@@ -16,7 +16,7 @@
 						<!--<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}" />-->
 					</StackLayout>
 					<!-- Readign display container start here-->
-					<StackLayout Margin="4,2,0,8" Orientation="Horizontal">
+					<StackLayout Margin="6,0,6,6" Orientation="Horizontal">
 						<StackLayout>
 							<Label WidthRequest="120" XAlign="Start" FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="Date/Time" />
 							<Label x:Name="lblDateReading" FontSize="12" TextColor="White" Text=" " />
@@ -41,12 +41,12 @@
 					<RelativeLayout VerticalOptions="Start" HeightRequest="60">
 
 						<local:RoundedBox RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.03}" BackgroundColor="White" HeightRequest="60" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.94}"/>
-						<StackLayout BackgroundColor="Transparent" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.03}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.94}" Margin="15,0,15,0" Padding="6" Spacing="6" >
+						<StackLayout BackgroundColor="Transparent" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Margin="15,0,15,0" Padding="6" Spacing="6" >
 							<Label HorizontalOptions="FillAndExpand" FontAttributes="Bold" XAlign="Center" Text="Patient's Established Normal" />
-							<StackLayout BackgroundColor="Transparent" Padding="3" HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Spacing="35">
-								<Label XAlign="Center" x:Name="lblDate" FontSize="14" Text="--" />
-								<Label x:Name="lblPef" FontSize="14"  Text="--" />
-								<Label x:Name="lblFev1" FontSize="14" Text="--" />
+							<StackLayout Padding="3" HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Spacing="30">
+								<Label FontAttributes="Bold" XAlign="Center" HorizontalOptions="FillAndExpand" x:Name="lblDate" FontSize="14" Text="--" />
+								<Label FontAttributes="Bold" XAlign="Center" x:Name="lblPef" FontSize="14"  Text="--" />
+								<Label FontAttributes="Bold" XAlign="Center" x:Name="lblFev1" FontSize="14" Text="--" />
 							</StackLayout>
 						</StackLayout>
 					</RelativeLayout>

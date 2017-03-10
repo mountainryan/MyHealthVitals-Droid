@@ -29,6 +29,12 @@ namespace MyHealthVitals
 			callAPiToDisplayGetDemographics();
 		}
 
+		protected override void OnDisappearing()
+		{
+			base.OnDisappearing();
+			BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
+		}
+
 		// call back methods
 		public void updateCaller(SpirometerReading reading)
 		{
@@ -55,13 +61,23 @@ namespace MyHealthVitals
 			}
 		}
 
+		public void updateDeviceStateOnUI(String message, bool isConnected) {
+
+			Device.BeginInvokeOnMainThread(() =>
+				{
+				layoutLoadingTakeReading.IsVisible = false;
+				});
+
+			DisplayAlert("ICUCare LLC", message, "OK");
+		}
+
 		void btnTakeReadingClicked(object sender, System.EventArgs e)
 		{
 
-			updateCaller(new SpirometerReading(DateTime.Now, 680, 3.5m));
+			//updateCaller(new SpirometerReading(DateTime.Now, 680, 3.5m));
 
-			//layoutLoadingTakeReading.IsVisible = true;
-			//BLECentralManager.sharedInstance.connectToDevice("BLE-MSA",this);
+			layoutLoadingTakeReading.IsVisible = true;
+			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA",this);
 			//bleManager.ScanToConnectToSpotCheck((BLEReadingUpdatableSpiroMeter)this);
 			//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
 		}
@@ -140,9 +156,16 @@ namespace MyHealthVitals
 
 				//latestCalibratedReading.Date.
 
+				//lblDate.Text = "03/10/2017 08:25 PM    ";
 				lblDate.Text = latestCalibratedReading.dateString;
+				//lblDate.BackgroundColor = Color.Red;
+
 				lblFev1.Text = latestCalibratedReading.fev1String;
 				lblPef.Text = latestCalibratedReading.pefString;
+
+				//lblDate.Text = latestCalibratedReading.dateString +" AM";
+
+				System.Diagnostics.Debug.WriteLine("date:" + lblDate.Text);
 			}
 			catch
 			{

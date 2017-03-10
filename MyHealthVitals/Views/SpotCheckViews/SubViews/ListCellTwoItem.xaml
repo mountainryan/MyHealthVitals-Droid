@@ -3,7 +3,7 @@
 	<StackLayout VerticalOptions="Fill" Spacing="0">
 		<StackLayout Spacing="0" VerticalOptions="Fill" BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" HeightRequest="44">
 
-			<Label Margin="8,0,0,0" VerticalTextAlignment="Center" WidthRequest="157" FontSize="14" TextColor="White" Text="{Binding date}"></Label>
+			<Label Margin="8,0,0,0" VerticalTextAlignment="Center" WidthRequest="166" FontSize="14" TextColor="White" Text="{Binding date}"></Label>
 			<Label VerticalTextAlignment="Center"  FontSize="14" HorizontalTextAlignment="Center" WidthRequest="78" TextColor="White" Text="{Binding firstItem}" ></Label>
 			<Label VerticalTextAlignment="Center" FontSize="14" HorizontalTextAlignment="Center" WidthRequest="74" TextColor="White" Text="{Binding secondItem}" ></Label>
 		

@@ -16,22 +16,29 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 
-			//calibratedReadingList.
-			var reading0 = new SpirometerReading(DateTime.Now, 420, 3.1m);
-			reading0.index = calibratedReadingList.Count;
-			calibratedReadingList.Add(reading0);
+			////calibratedReadingList.
+			//var reading0 = new SpirometerReading(DateTime.Now, 420, 3.1m);
+			//reading0.index = calibratedReadingList.Count;
+			//calibratedReadingList.Add(reading0);
 
-			var reading1 = new SpirometerReading(DateTime.Now, 300, 3.4m);
-			reading1.index = calibratedReadingList.Count;
-			calibratedReadingList.Add(reading1);
+			//var reading1 = new SpirometerReading(DateTime.Now, 300, 3.4m);
+			//reading1.index = calibratedReadingList.Count;
+			//calibratedReadingList.Add(reading1);
 
-			var reading2 = new SpirometerReading(DateTime.Now, 300, 3.5m);
-			reading2.index = calibratedReadingList.Count;
-			calibratedReadingList.Add(reading2);
+			//var reading2 = new SpirometerReading(DateTime.Now, 300, 3.5m);
+			//reading2.index = calibratedReadingList.Count;
+			//calibratedReadingList.Add(reading2);
 
-			////calibratedReadingList.CollectionChanged += (sender, e) => { 
-			////};
-			listView.ItemsSource = calibratedReadingList;
+			//////calibratedReadingList.CollectionChanged += (sender, e) => { 
+			//////};
+			//listView.ItemsSource = calibratedReadingList;
+		}
+
+		protected override void OnDisappearing()
+		{
+			base.OnDisappearing();
+
+			BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
 		}
 
 		void btnCalibrateClicked(object sender, System.EventArgs e)
@@ -74,6 +81,23 @@ namespace MyHealthVitals
 			}
 
 			listView.ItemsSource = calibratedReadingList;
+		}
+
+		public void updateDeviceStateOnUI(String message, bool isConnected)
+		{
+			try
+			{
+				Device.BeginInvokeOnMainThread(() =>
+					{
+						layoutLoading.IsVisible = false;
+					});
+
+			}
+			catch { 
+			
+			}
+
+			DisplayAlert("ICUCare LLC", message, "OK");
 		}
 
 		async void btnSaveCLicked(object sender, System.EventArgs e)

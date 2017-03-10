@@ -89,7 +89,7 @@ namespace MyHealthVitals
 		{
 			get
 			{
-				String color1 = "#008000";
+				String color1 = "#11FF00";
 
 				try
 				{
@@ -100,7 +100,7 @@ namespace MyHealthVitals
 
 					if (normalPefAtThatTime * 0.6 < (double)Pef && (double)Pef < normalPefAtThatTime * 0.8)
 					{
-						color1 = "#FFA500";
+						color1 = "#FFFF00";
 					}
 					if (normalPefAtThatTime * 0.6 > (double)Pef)
 					{

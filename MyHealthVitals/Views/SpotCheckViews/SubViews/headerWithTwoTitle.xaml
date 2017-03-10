@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.headerWithTwoTitle">
 	<ContentView.Content>
-		<StackLayout BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" Padding="10" Spacing="5" >
+		<StackLayout BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" Padding="10" Spacing="6" >
 			<Label WidthRequest="145" FontSize="14" TextColor="{StaticResource colorThemeBlue}" Text="Date/Time" ></Label>
-			<Label x:Name="lblFirstTitle" Text="First Item" HorizontalTextAlignment="Center" FontSize="14" WidthRequest="90" TextColor="{StaticResource colorThemeBlue}" ></Label>
+			<Label x:Name="lblFirstTitle" Text="First Item" HorizontalTextAlignment="Center" FontSize="14" WidthRequest="100" TextColor="{StaticResource colorThemeBlue}" ></Label>
 			<Label x:Name="lblSecondTitle" Text="First Item" FontSize="14" WidthRequest="50" HorizontalTextAlignment="Center" TextColor="{StaticResource colorThemeBlue}"></Label>
 		</StackLayout>
 	</ContentView.Content>

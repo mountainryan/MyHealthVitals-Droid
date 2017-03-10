@@ -180,9 +180,9 @@ namespace MyHealthVitals
 						}
 					case 3:
 						{
-							var sortedHeartRates = allCategoryReading.Reverse();
+							//var sortedHeartRates = allCategoryReading.Reverse();
 
-							foreach (var reading in sortedHeartRates)
+							foreach (var reading in allCategoryReading)
 							{
 								var item = new ParameterDetailItem();
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
@@ -197,9 +197,9 @@ namespace MyHealthVitals
 					// temperature
 					case 4:
 						{
-							var sortedTemps = allCategoryReading.Reverse();
+							//var sortedTemps = allCategoryReading.Reverse();
 
-							foreach (var reading in sortedTemps)
+							foreach (var reading in allCategoryReading)
 							{
 								var item = new ParameterDetailItem();
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
@@ -257,9 +257,10 @@ namespace MyHealthVitals
 						}
 					case 8:
 						{
-							var sortedTemps = allCategoryReading.Reverse();
+							// Glucose data list
+							//var sortedTemps = allCategoryReading.Reverse();
 
-							foreach (var reading in sortedTemps)
+							foreach (var reading in allCategoryReading)
 							{
 								var item = new ParameterDetailItem();
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
