@@ -97,7 +97,7 @@ namespace MyHealthVitals
 			
 			}
 
-			DisplayAlert("ICUCare LLC", message, "OK");
+			DisplayAlert("Spirometer", message, "OK");
 		}
 
 		async void btnSaveCLicked(object sender, System.EventArgs e)

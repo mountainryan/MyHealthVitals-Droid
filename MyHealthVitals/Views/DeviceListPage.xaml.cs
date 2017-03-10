@@ -15,23 +15,23 @@ namespace MyHealthVitals
 
 		void btnPC300clicked(object sender, System.EventArgs e)
 		{
-			navigateToMainPage();
+			//navigateToMainPage();
 
-			//try
-			//{
-			//	if (BLECentralManager.sharedInstance.spotServHandler.connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
-			//	{
-			//		navigateToMainPage();
-			//	}
-			//	else {
-			//		layoutLoadingDevice.IsVisible = true;
-			//		BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
-			//	}
-			//}
-			//catch { 
-			//	layoutLoadingDevice.IsVisible = true;
-			//	BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
-			//}
+			try
+			{
+				if (BLECentralManager.sharedInstance.spotServHandler.connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
+				{
+					navigateToMainPage();
+				}
+				else {
+					layoutLoadingDevice.IsVisible = true;
+					BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
+				}
+			}
+			catch { 
+				layoutLoadingDevice.IsVisible = true;
+				BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
+			}
 		}
 
 		public void updateControllerWithMessage(String message,bool isConnected) { 
@@ -75,7 +75,7 @@ namespace MyHealthVitals
 				navigateToMainPage();
 			}
 			else {
-				DisplayAlert("ICUCare LLC", message, "OK");
+				DisplayAlert("Spot Check Monitor", message, "OK");
 			}	
 		}
 

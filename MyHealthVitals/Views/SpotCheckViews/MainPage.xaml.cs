@@ -228,7 +228,7 @@ namespace MyHealthVitals
 			//	//hideMessageWthDelay();
 			//});
 
-			DisplayAlert("ICUCare LLC", message, "OK");
+			DisplayAlert("Spot Check Monitor", message, "OK");
 		}
 
 		public void updateGlucoseReading(decimal gluReading, string unit) {

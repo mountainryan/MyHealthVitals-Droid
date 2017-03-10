@@ -179,7 +179,7 @@ namespace MyHealthVitals
 
 						isEcgStarted = true;
 						t1 = DateTime.Now;
-						uiController.ShowMessageOnUI("Reading ECG...", true);
+						//uiController.ShowMessageOnUI("Reading ECG...", true);
 					}
 
 					List<int> values = new List<int>();

@@ -104,7 +104,8 @@ namespace MyHealthVitals
 					}
 					if (normalPefAtThatTime * 0.6 > (double)Pef)
 					{
-						color1 = "#ff0000";
+						//#ff0000
+						color1 = "Red";
 					}
 				}
 				catch {

@@ -15,7 +15,7 @@
 	<ContentPage.Content>
 		<RelativeLayout>
 			<StackLayout>
-				<Label TextColor="White" FontSize="17" Margin="10" HorizontalTextAlignment="Center" Text="Most Recent Reading's">
+				<Label TextColor="White" FontSize="16" FontAttributes="Bold" Margin="10" HorizontalTextAlignment="Center" Text="Most Recent Reading's">
 				</Label>
 				<StackLayout x:Name="headerContainer">
 					
