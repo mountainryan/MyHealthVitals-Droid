@@ -142,6 +142,7 @@
     <Compile Include="BLE\BLECentralManager.cs" />
     <Compile Include="BLE\SpirometerServiceHandler.cs" />
     <Compile Include="BLE\SpotCheckServiceHandler.cs" />
+    <Compile Include="BLE\PC100ServiceHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

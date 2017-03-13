@@ -20,6 +20,7 @@ namespace MyHealthVitals
 		void updateECGEnded(int bpm);
 
 		void resetEcgDisplay();
+
 	}
 
 	public interface BLEReadingUpdatableSpiroMeter

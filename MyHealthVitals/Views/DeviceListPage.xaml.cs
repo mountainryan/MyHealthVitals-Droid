@@ -6,6 +6,40 @@ namespace MyHealthVitals
 {
 	public partial class DeviceListPage : ContentPage, IBluetoothCallBackUpdatable
 	{
+
+		private String activeDeviceName = "";
+		bool isNavigated = false;
+
+		void btnPC100Clicked(object sender, System.EventArgs e)
+		{
+			//BLECentralManager.sharedInstance.connectToDevice("PC-100", this);
+
+			activeDeviceName = "PC-100";
+
+			try
+			{
+				if (BLECentralManager.sharedInstance.pc100ServHandler.connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
+				{
+					navigateToMainPage();
+				}
+				else {
+					layoutLoadingDevice.IsVisible = true;
+					BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
+				}
+			}
+			catch
+			{
+				layoutLoadingDevice.IsVisible = true;
+				BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
+			}
+		}
+
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+			isNavigated = false;
+		}
+
 		void btnSpirometerClicked(object sender, System.EventArgs e)
 		{
 			var newScreen = new RespHomePage();
@@ -15,7 +49,7 @@ namespace MyHealthVitals
 
 		void btnPC300clicked(object sender, System.EventArgs e)
 		{
-			//navigateToMainPage();
+			activeDeviceName = "PC_300SNT";
 
 			try
 			{
@@ -25,12 +59,12 @@ namespace MyHealthVitals
 				}
 				else {
 					layoutLoadingDevice.IsVisible = true;
-					BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
+					BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
 				}
 			}
 			catch { 
 				layoutLoadingDevice.IsVisible = true;
-				BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
+				BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
 			}
 		}
 
@@ -59,7 +93,7 @@ namespace MyHealthVitals
 		}
 
 		public void navigateToMainPage() { 
-			var newScreen = new MainPage();
+			var newScreen = new MainPage(activeDeviceName);
 			newScreen.Title = "Main Screeen";
 			if(BLECentralManager.sharedInstance.spotServHandler!=null)
 				BLECentralManager.sharedInstance.spotServHandler.updateController(newScreen);
@@ -72,12 +106,20 @@ namespace MyHealthVitals
 
 			if (isConnected)
 			{
+				isNavigated = true;
 				navigateToMainPage();
 			}
 			else {
-				DisplayAlert("Spot Check Monitor", message, "OK");
+				if (!isNavigated)
+				{
+					DisplayAlert(activeDeviceName, message, "OK");
+				}
 			}	
 		}
+
+		//void updateDeviceList(string devNama,string message, bool isConnected) { 
+			
+		//}
 
 		public void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex) { }
 		public void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm) { }

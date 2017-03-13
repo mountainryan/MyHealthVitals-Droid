@@ -25,8 +25,8 @@
 <!--						<Image Margin="0,-5,0,0" Source="imgBLEOff.png" HeightRequest="22" WidthRequest="22" />-->
 					</StackLayout>
 					<StackLayout Spacing="0" HorizontalOptions="Center">
-						<Button Image="PC100Monitor.png" HeightRequest="75" WidthRequest="75"/>
-						<local:MyButton FontSize="15" TextColor="White" WidthRequest="130" Text="BP, Pulse, Spo2" />
+						<Button Clicked="btnPC100Clicked" Image="PC100Monitor.png" HeightRequest="75" WidthRequest="75"/>
+						<local:MyButton Clicked="btnPC100Clicked" FontSize="15" TextColor="White" WidthRequest="130" Text="BP, Pulse, Spo2" />
 <!--						<Image Source="imgBLEOff.png" Margin="0,-5,0,0" HeightRequest="22" WidthRequest="22" />-->
 					</StackLayout>
 				</StackLayout>

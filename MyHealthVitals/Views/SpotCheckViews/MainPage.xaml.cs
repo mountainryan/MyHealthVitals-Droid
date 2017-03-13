@@ -18,9 +18,12 @@ namespace MyHealthVitals
 
 		//public BleManagerSpotCheck bleManager;
 
+		public String deviceName = "";
+
 		LineSeries lineSerie;
-		public MainPage()
+		public MainPage(string deviceName)
 		{
+			this.deviceName = deviceName;
 			InitializeComponent();
 
 			var tapGestureRecognizer = new TapGestureRecognizer();
@@ -93,7 +96,16 @@ namespace MyHealthVitals
 			//bleManager = new BleManagerSpotCheck();
 			//bleManager.ScanToConnectToSpotCheck((IBluetoothCallBackUpdatable)this);
 
-			//BLECentralManager.sharedInstance.connectToDevice("PC_300SNT", this);
+			//BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
+			//BLECentralManager.sharedInstance.
+
+			if (deviceName == "PC-100")
+			{
+				BLECentralManager.sharedInstance.pc100ServHandler.updateController(this);
+			}
+			else {
+				BLECentralManager.sharedInstance.spotServHandler.updateController(this);
+			}
 
 			callAPiToDisplayGetDemographics();
 		}
@@ -426,7 +438,54 @@ namespace MyHealthVitals
 		}
 		void btnNIBPStartClicked(object sender, System.EventArgs e)
 		{
-			BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
+			//Debug.WriteLine(().Text);
+
+			//if(
+
+			//var btn = (Button)sender;
+
+			//if (btn.Text == "NIBP Start")
+			//{
+
+				//btn.Text = "NIBP Stop";
+
+				switch (this.deviceName)
+				{
+
+					case "PC_300SNT":
+						{
+							BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
+							break;
+						}
+
+					case "PC-100":
+						{
+							BLECentralManager.sharedInstance.pc100ServHandler.startMeasuringBP();
+							break;
+						}
+				}
+			//}
+			//else {
+
+			//	btn.Text = "NIBP Start";
+
+			//	switch (this.deviceName)
+			//	{
+
+			//		case "PC_300SNT":
+			//			{
+			//				BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
+			//				break;
+			//			}
+
+			//		case "PC-100":
+			//			{
+			//				BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
+			//				break;
+			//			}
+			//	}
+			//}
+
 			//bleManager.startMeasuringBP();
 			//DependencyService.Get<ICBCentralManager>().startMeasuringBP();
 		}

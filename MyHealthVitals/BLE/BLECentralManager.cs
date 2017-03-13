@@ -24,11 +24,13 @@ namespace MyHealthVitals
 
 		public List<IDevice> connectedDevices = new List<IDevice>();
 		//public IDevice currentDevice;
-		public string currentDeviceName;
+		public string scanningDeviceName;
 		//public IBLEDeviceServiceHandler devServiceHandler;
 		public SpirometerServiceHandler spiroServHandler;
 		public SpotCheckServiceHandler spotServHandler;
-		public DeviceListPage deviceListPage;
+		public PC100ServiceHandler pc100ServHandler;
+
+		//public DeviceListPage deviceListPage;
 
 		//public get
 
@@ -47,11 +49,12 @@ namespace MyHealthVitals
 
 			spiroServHandler = new SpirometerServiceHandler();
 			spotServHandler = new SpotCheckServiceHandler();
+			pc100ServHandler = new PC100ServiceHandler();
 		}
 
 		public void connectToDevice(String deviceName, object controller)
 		{
-			currentDeviceName = deviceName;
+			scanningDeviceName = deviceName;
 
 			switch (deviceName)
 			{
@@ -66,6 +69,11 @@ namespace MyHealthVitals
 						spotServHandler.uiController = (IBluetoothCallBackUpdatable)controller;
 						break;
 					}
+				case "PC-100":
+					{
+						pc100ServHandler.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+					}
 			}
 
 			if (!checkIfDeviceScanned(deviceName))
@@ -77,29 +85,35 @@ namespace MyHealthVitals
 
 			}
 			else {
-				
+
 				switch (deviceName)
 				{
 					case "BLE-MSA":
 						{
-							spiroServHandler.reconnectToDevice(getCurrentDevice());
+							spiroServHandler.reconnectToDevice(getCurrentDevice(deviceName));
 							break;
 						}
 
 					case "PC_300SNT":
 						{
-							spotServHandler.reconnectToDevice(getCurrentDevice());
+							spotServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+							break;
+						}
+
+					case "PC-100":
+						{
+							pc100ServHandler.reconnectToDevice(getCurrentDevice(deviceName));
 							break;
 						}
 				}
 			}
 		}
 
-		private IDevice getCurrentDevice()
+		private IDevice getCurrentDevice(String deviceName)
 		{
 			foreach (var device in connectedDevices)
 			{
-				if (device.Name == this.currentDeviceName)
+				if (device.Name == deviceName)
 				{
 					return device;
 				}
@@ -125,13 +139,12 @@ namespace MyHealthVitals
 		{
 			Debug.WriteLine(string.Format("Device Found : {0}", e.Device.Name));
 
-			if (e.Device.Name == currentDeviceName)
+			if (e.Device.Name == scanningDeviceName)
 			{
 				CrossBluetoothLE.Current.Adapter.StopScanningForDevicesAsync();
 				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device);
 
 				//CrossBluetoothLE.Current.Adapter.fail
-
 				//CrossBluetoothLE.Current.Adapter.ConnectedDevices
 			}
 		}
@@ -151,7 +164,13 @@ namespace MyHealthVitals
 				case "PC_300SNT":
 					{
 						spotServHandler.discoverServices(e.Device);
-						//spotServHandler.uiController.ShowMessageOnUI("Connected.", true);
+						spotServHandler.uiController.ShowMessageOnUI("Connected.", true);
+						break;
+					}
+				case "PC-100":
+					{
+						pc100ServHandler.discoverServices(e.Device);
+						pc100ServHandler.uiController.ShowMessageOnUI("Connected.", true);
 						break;
 					}
 			}
@@ -163,28 +182,39 @@ namespace MyHealthVitals
 		{
 			Debug.WriteLine(e.Device.Name + " just Adapter_DeviceConnectionLost");
 
-			if (e.Device.Name == "PC_300SNT") { 
+			if (e.Device.Name == "PC_300SNT")
+			{
 				spotServHandler.uiController.ShowMessageOnUI("Spot Check Monitor Connection Lost.", false);
 			}
 
-			if (currentDeviceName == "BLE-MSA")
+			if (e.Device.Name == "BLE-MSA")
 			{
 				spiroServHandler.stopPolling();
 				spiroServHandler.uiController.updateDeviceStateOnUI("Spirometer Connection Lost.", false);
+			}
+
+			if (e.Device.Name == "PC-100")
+			{
+				pc100ServHandler.uiController.ShowMessageOnUI("Connection Lost.", false);
 			}
 		}
 
 		void Adapter_ScanTimeoutElapsed(object sender, EventArgs e)
 		{
-			if (currentDeviceName == "PC_300SNT")
+			if (scanningDeviceName == "PC_300SNT")
 			{
 				spotServHandler.uiController.ShowMessageOnUI("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
 			}
 
-			if (currentDeviceName == "BLE-MSA")
+			if (scanningDeviceName == "BLE-MSA")
 			{
 				spiroServHandler.stopPolling();
 				spiroServHandler.uiController.updateDeviceStateOnUI("Scanning time out. Please, check if Spirometer is turned on.", false);
+			}
+
+			if (scanningDeviceName == "PC-100")
+			{
+				pc100ServHandler.uiController.ShowMessageOnUI("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
 			}
 
 			Debug.WriteLine("Adapter_ScanTimeoutElapsed.");
