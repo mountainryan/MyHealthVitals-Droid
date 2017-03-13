@@ -11,7 +11,7 @@
 						<Label FontSize="14" x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
 					</StackLayout>
 				</StackLayout>
-				<StackLayout Spacing="20" Padding="15">
+				<StackLayout Spacing="25" Padding="15">
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Gender" />
 						<Label x:Name="lblGender" Style="{DynamicResource UserProfileLabel}"  Text=" " HorizontalOptions="EndAndExpand" />

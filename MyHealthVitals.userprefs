@@ -1,12 +1,14 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/MyRespCheck/RespDataListPage.xaml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/BLE/BLECentralManager.cs">
     <Files>
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="228" Column="31" />
-      <File FileName="MyHealthVitals/Views/DeviceListPage.xaml.cs" Line="76" Column="5" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespCalibrationPage.xaml.cs" Line="98" Column="5" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="62" Column="4" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/ParameterItemDetail.xaml" Line="22" Column="19" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespDataListPage.xaml" Line="35" Column="13" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespDataListPage.xaml" Line="67" Column="121" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="217" Column="40" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml" Line="63" Column="13" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/headerWithOneTitle.xaml" Line="1" Column="1" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespCalibrationPage.xaml" Line="39" Column="121" />
+      <File FileName="MyHealthVitals/Views/DeviceListPage.xaml.cs" Line="20" Column="7" />
+      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="23" Column="35" />
+      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="150" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
@@ -17,5 +19,5 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_x86" />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.2e5dafe5cd5a42d8e22c4894f730798ac813c382" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.5cb1f34b11eb6cec5176ff5ad3ebee1fde550339" />
 </Properties>

@@ -27,16 +27,23 @@ namespace MyHealthVitals
 
 		private void renderCurrentSpirometer(SpirometerReading currReading) {
 
-			Xamarin.Forms.Device.BeginInvokeOnMainThread(() => { 
-				lblPef.Text = currReading.pefString;
-				lblFev1.Text = currReading.fev1String;
-				lblDate.Text = currReading.dateString;
-				boxFev.HeightRequest = layoutFevContainer.Height * (double)currReading.Fev1 / 9;
-				boxPef.HeightRequest = layoutPefContainer.Height * (double)currReading.Pef / 900;
+			try
+			{
+				Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+				{
+					lblPef.Text = currReading.pefString;
+					lblFev1.Text = currReading.fev1String;
+					lblDate.Text = currReading.dateString;
+					boxFev.HeightRequest = layoutFevContainer.Height * (double)currReading.Fev1 / 9;
+					boxPef.HeightRequest = layoutPefContainer.Height * (double)currReading.Pef / 900;
 
-				boxFev.BackgroundColor = Color.FromHex(currReading.color);
-				boxPef.BackgroundColor = Color.FromHex(currReading.color);
-			});
+					boxFev.BackgroundColor = Color.FromHex(currReading.color);
+					boxPef.BackgroundColor = Color.FromHex(currReading.color);
+				});
+			}
+			catch{
+				
+			}
 		}
 
 		int currentIndex = 0;

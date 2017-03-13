@@ -65,7 +65,7 @@ namespace MyHealthVitals
 					Debug.WriteLine("Login succesfull.");
 					var newScreen = new DeviceListPage();
 					//var newScreen = new RespHomePage();
-					newScreen.Title = "Main Screeen";
+					newScreen.Title = " ";
 					var nav = new NavigationPage(newScreen);
 					this.Navigation.PushModalAsync(nav);
 				});
@@ -93,7 +93,7 @@ namespace MyHealthVitals
 			}
 		}
 
-		public async void btnLoginClicked(object sender, System.EventArgs e)
+		public void btnLoginClicked(object sender, System.EventArgs e)
 		{
 			doLogin(txtUsername.Text.Trim(), txtPassword.Text.Trim());
 		}

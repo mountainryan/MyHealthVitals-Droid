@@ -7,6 +7,6 @@
 			<Label VerticalOptions="Center" FontSize="14" HorizontalTextAlignment="Center" WidthRequest="150" TextColor="White" Text="{Binding firstItem}">
 			</Label>
 		</StackLayout>
-		<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+		<BoxView HeightRequest="0.5" BackgroundColor="White" />
 	</StackLayout>
 </ViewCell>

@@ -76,8 +76,15 @@ namespace MyHealthVitals
 
 			//updateCaller(new SpirometerReading(DateTime.Now, 680, 3.5m));
 
-			layoutLoadingTakeReading.IsVisible = true;
-			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA",this);
+			try
+			{
+				layoutLoadingTakeReading.IsVisible = true;
+				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+			}
+			catch { 
+				layoutLoadingTakeReading.IsVisible = true;
+			}
+
 			//bleManager.ScanToConnectToSpotCheck((BLEReadingUpdatableSpiroMeter)this);
 			//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
 		}
@@ -206,7 +213,9 @@ namespace MyHealthVitals
 
 		void btnViewGraphPageClicked(object sender, System.EventArgs e)
 		{
-			this.Navigation.PushAsync(new RespGraphPage());
+			var newPage = new RespGraphPage();
+			newPage.Title = "Data Graph Screen";
+			this.Navigation.PushAsync(newPage);
 		}
 
 		void btnViewDataListClicked(object sender, System.EventArgs e)

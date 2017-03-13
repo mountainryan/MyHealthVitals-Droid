@@ -20,11 +20,11 @@ namespace MyHealthVitals
 
 			if (connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
 			{
-				uiController.ShowMessageOnUI("Connected.", true);
+				//uiController.ShowMessageOnUI("Connected.", true);
 			}
 			else
 			{
-				uiController.ShowMessageOnUI("Searching device...", false);
+				//uiController.ShowMessageOnUI("Searching device...", false);
 				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(connectedDevice);
 				// after this it will call central manager and when device_connected event of the central manager fires then it will call again this class discoverServices()
 			}

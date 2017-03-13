@@ -151,7 +151,7 @@ namespace MyHealthVitals
 				case "PC_300SNT":
 					{
 						spotServHandler.discoverServices(e.Device);
-						spotServHandler.uiController.ShowMessageOnUI("Connected.", true);
+						//spotServHandler.uiController.ShowMessageOnUI("Connected.", true);
 						break;
 					}
 			}

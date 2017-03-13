@@ -20,7 +20,7 @@
 				<StackLayout x:Name="headerContainer">
 					
 				</StackLayout>
-				<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+				<BoxView HeightRequest="0.5" BackgroundColor="White" />
 				<local:CustomListView SeparatorVisibility="None" HasUnevenRows="true" ItemTemplate="{StaticResource templateSelector}"  x:Name="itemList" BackgroundColor="{StaticResource colorBlackBg}">
 					
 				</local:CustomListView>

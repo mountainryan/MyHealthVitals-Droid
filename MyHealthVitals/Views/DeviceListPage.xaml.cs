@@ -9,7 +9,7 @@ namespace MyHealthVitals
 		void btnSpirometerClicked(object sender, System.EventArgs e)
 		{
 			var newScreen = new RespHomePage();
-			newScreen.Title = "My Resp Check";
+			newScreen.Title = "Main Screen";
 			this.Navigation.PushAsync(newScreen);
 		}
 

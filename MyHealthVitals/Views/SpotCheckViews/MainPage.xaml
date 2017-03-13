@@ -32,7 +32,7 @@
 					
 				</RelativeLayout>-->
 				<StackLayout x:Name="layoutContainer" Spacing="7">
-					<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+					<BoxView HeightRequest="0.5" BackgroundColor="White" />
 					<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
 						<StackLayout WidthRequest="72">
 							<Label Style="{DynamicResource styleLblNumeric}" Text="SYS" />
@@ -51,7 +51,7 @@
 							<Label x:Name="lblDia" Style="{DynamicResource styleLblReading}" Text="-" />
 						</StackLayout>
 					</StackLayout>
-					<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+					<BoxView HeightRequest="0.5" BackgroundColor="White" />
 					<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
 						<StackLayout WidthRequest="72">
 							<Label Style="{DynamicResource styleLblNumeric}" Text="SpO2" />
@@ -70,7 +70,7 @@
 							<Label Style="{DynamicResource styleLblReading}" x:Name="lblBpm" Text="-" />
 						</StackLayout>
 					</StackLayout>
-					<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+					<BoxView HeightRequest="0.5" BackgroundColor="White" />
 					<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
 						<StackLayout WidthRequest="72">
 							<Label Style="{DynamicResource styleLblNumeric}" Text="PI" />
@@ -94,7 +94,7 @@
 							<Label x:Name="lblTemperature" Style="{DynamicResource styleLblReading}" Text="-" />
 						</StackLayout>
 					</StackLayout>
-					<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+					<BoxView HeightRequest="0.5" BackgroundColor="White" />
 					<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
 						<StackLayout WidthRequest="72">
 							<Label Text="GLU" Style="{DynamicResource styleLblNumeric}" />
@@ -116,7 +116,7 @@
 							<Label Text="-" Style="{DynamicResource styleLblReading}" />
 						</StackLayout>
 					</StackLayout>
-					<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+					<BoxView HeightRequest="0.5" BackgroundColor="White" />
 				</StackLayout>
 				<oxy:PlotView BackgroundColor="White" x:Name="plotView" Margin="10" HeightRequest="150" HorizontalOptions="FillAndExpand" Model="{Binding ecgModel}" />
 				<StackLayout Orientation="Horizontal" Margin="10,5,10,5">

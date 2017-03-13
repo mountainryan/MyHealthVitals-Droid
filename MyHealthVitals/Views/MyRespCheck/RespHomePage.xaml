@@ -4,7 +4,7 @@
 		<RelativeLayout>
 			<!--Heading view start here-->
 			<ScrollView RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
-				<StackLayout x:Name="layoutContainer" Spacing="15">
+				<StackLayout x:Name="layoutContainer" Spacing="12">
 					<StackLayout Orientation="Horizontal">
 						<Image x:Name="imgProfile" Margin="12,3,12,3" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80"/>
 
@@ -36,15 +36,15 @@
 					<!-- Buttons collection view container -->
 					<StackLayout Margin="0,8,0,0" Orientation="Horizontal" Spacing="20" HorizontalOptions="CenterAndExpand">
 						<Button Clicked="btnTakeReadingClicked" WidthRequest="100" BackgroundColor="#10F900" TextColor="Black" Text="Take Reading" />
-						<local:MyButton TextColor="Black" Clicked="btnCalibrateClicked" WidthRequest="100" BackgroundColor="#10F900" Text="Calibration Screen" />
+						<local:MyButton TextColor="Black" Clicked="btnCalibrateClicked" WidthRequest="100" BackgroundColor="#639BFF" Text="Calibration Screen" />
 					</StackLayout>
 					<RelativeLayout VerticalOptions="Start" HeightRequest="60">
 
-						<local:RoundedBox RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.03}" BackgroundColor="White" HeightRequest="60" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.94}"/>
+						<local:RoundedBox RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.06}" BackgroundColor="{StaticResource ColorLightGray}" HeightRequest="60" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.88}"/>
 						<StackLayout BackgroundColor="Transparent" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Margin="15,0,15,0" Padding="6" Spacing="6" >
-							<Label HorizontalOptions="FillAndExpand" FontAttributes="Bold" XAlign="Center" Text="Patient's Established Normal" />
+							<Label HorizontalOptions="FillAndExpand" FontAttributes="Bold" FontSize="14" XAlign="Center" Text="Patient's Established Normal" />
 							<StackLayout Padding="3" HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Spacing="30">
-								<Label FontAttributes="Bold" XAlign="Center" HorizontalOptions="FillAndExpand" x:Name="lblDate" FontSize="14" Text="--" />
+								<Label FontAttributes="Bold" XAlign="Center" HorizontalOptions="FillAndExpand" x:Name="lblDate" FontSize="15" Text="--" />
 								<Label FontAttributes="Bold" XAlign="Center" x:Name="lblPef" FontSize="14"  Text="--" />
 								<Label FontAttributes="Bold" XAlign="Center" x:Name="lblFev1" FontSize="14" Text="--" />
 							</StackLayout>
@@ -75,9 +75,9 @@
 				<Button Clicked="btnCancelTakeReadingClicked" Margin="0,10,0,0" Image="deleteicon.png" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1,Constant = -40}" HeightRequest="30" WidthRequest="30" />
 				<StackLayout Margin="20,20,20,0" Spacing="20" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Padding="10">
 					<Image Source="icucarellc.png" Margin="0,15,0,0" />
-					<Label Text="icuCare ‘s universally accessible patient-centered health data echo system is transforming healthcare and enabling people to live a healthier life, one patient at a time!" TextColor="White" FontSize="14" XAlign="Center" />
+					<Label HorizontalOptions="Center" WidthRequest="200" Text="icuCare ‘s universally accessible patient-centered health data echo system is transforming healthcare and enabling people to live a healthier life, one patient at a time!" TextColor="White" FontSize="14" XAlign="Center" />
 					<!--					<ActivityIndicator Margin="50" Color="Green" Scale="2" IsVisible="true" IsRunning="true" />-->
-					<WebView IsEnabled="false" HorizontalOptions="Center" BackgroundColor="Red" x:Name="gifWebView" HeightRequest="100" WidthRequest="100" />
+					<WebView IsEnabled="false" HorizontalOptions="Center" BackgroundColor="Red" x:Name="gifWebView" HeightRequest="95" WidthRequest="95" />
 				</StackLayout>
 				<!--Last line-->
 				<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">

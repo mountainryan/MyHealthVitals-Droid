@@ -5,7 +5,7 @@
 			<StackLayout Spacing="0">
 				<Label Style="{DynamicResource styleLblNumeric}" FontSize="17" Margin="10" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Reading's">
 				</Label>
-				<BoxView HeightRequest="0.5" BackgroundColor="Gray" />
+				<BoxView HeightRequest="0.5" BackgroundColor="White" />
 				<ListView SeparatorVisibility="None" ItemAppearing="Handle_ItemAppearing" ItemTapped="Handle_ItemTapped" x:Name="parameterListView" BackgroundColor="{StaticResource colorBlackBg}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
@@ -16,7 +16,7 @@
 										<Image VerticalOptions="Center" HorizontalOptions="EndAndExpand" HeightRequest="26" WidthRequest="26" Source="imgArrow.png">
 										</Image>
 									</StackLayout>
-									<BoxView Margin="0,2,0,0" HeightRequest="0.5" BackgroundColor="Gray" />
+									<BoxView Margin="0,2,0,0" HeightRequest="0.5" BackgroundColor="White" />
 								</StackLayout>
 							</ViewCell>
 						</DataTemplate>
