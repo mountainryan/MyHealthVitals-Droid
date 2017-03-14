@@ -115,10 +115,6 @@ namespace MyHealthVitals
 			}	
 		}
 
-		//void updateDeviceList(string devNama,string message, bool isConnected) { 
-			
-		//}
-
 		public void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex) { }
 		public void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm) { }
 		public void updatingPressureMeanTime(int pressure) { }
@@ -133,5 +129,6 @@ namespace MyHealthVitals
 		public void updateECGEnded(int bpm) { }
 
 		public void resetEcgDisplay() { }
+		public void updateBpmWaveform(int bpm) { }
 	}
 }

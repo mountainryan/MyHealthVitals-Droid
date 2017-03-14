@@ -1,5 +1,14 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs">
+    <Files>
+      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="157" Column="5" />
+      <File FileName="MyHealthVitals/BLE/PC100ServiceHandler.cs" Line="224" Column="46" />
+      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="206" Column="4" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="1" Column="1" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="272" Column="4" />
+      <File FileName="MyHealthVitals/Models/IBluetoothCallBackUpdatable.cs" Line="21" Column="32" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

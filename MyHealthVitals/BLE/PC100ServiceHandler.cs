@@ -208,15 +208,19 @@ namespace MyHealthVitals
 				}
 			}
 
-
 			/// <summary>
 			/// Spo2 related parsing
 			/// </summary>
 			if ((int)ch.Value[2] == 82)
 			{
-				//Debug.WriteLine("status.");
-				var status = (int)ch.Value[5];
-				if (status == 0) { 
+				// when waveform data comes down to 0 then it is end of the spo2 reading
+				var waveformData = (int)ch.Value[5];
+				//Debug.WriteLine("WaveformData: " + waveformData);
+				//printUpdatedCharacteristics(ch);
+
+				this.uiController.updateBpmWaveform((int)ch.Value[6]);
+
+				if (waveformData == 0) { 
 					this.uiController.noticeEndOfReadingSpo2();
 				}
 			}
@@ -230,7 +234,7 @@ namespace MyHealthVitals
 				else { 
 					int lastSpo2 = (int)ch.Value[5];
 					int lastBPM = (int)ch.Value[6];
-					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 10);
+					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
 				}
 			}
 

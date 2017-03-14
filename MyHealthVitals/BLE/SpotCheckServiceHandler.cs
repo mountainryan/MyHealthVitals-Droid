@@ -87,12 +87,12 @@ namespace MyHealthVitals
 		//ECG commands
 		public void stopReadingECG()
 		{
-			executeWriteCommand(new byte[] { 0xaa, 0x55, 0x30, 0x02, 0x02, 0x2 });
+			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x30, 0x02, 0x02, 0x24 });
 		}
 
 		public void startEcgMeasuring()
 		{
-			executeWriteCommand(new byte[] { 0xaa, 0x55, 0x31, 0x02, 0x02, 0xC6 });
+			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x30, 0x02, 0x01, 0xC6 });
 		}
 
 		private void printUpdatedCharacteristics(ICharacteristic ch)
@@ -204,21 +204,68 @@ namespace MyHealthVitals
 				uiController.ShowMessageOnUI(message, true);
 			}
 
+
+			/// <summary>
+			/// Spo2 related parsing
+			/// </summary>
+			//if ((int)ch.Value[2] == 82)
+			//{
+			//	// when waveform data comes down to 0 then it is end of the spo2 reading
+			//	var waveformData = (int)ch.Value[5];
+			//	//Debug.WriteLine("WaveformData: " + waveformData);
+			//	//printUpdatedCharacteristics(ch);
+
+			//	this.uiController.updateBpmWaveform((int)ch.Value[6]);
+
+			//	if (waveformData == 0)
+			//	{
+			//		this.uiController.noticeEndOfReadingSpo2();
+			//	}
+			//}
+
+			//if ((int)ch.Value[2] == 83 && (int)ch.Value[3] == 7)
+			//{
+			//	if (ch.Value[5] == 0 || ch.Value[6] == 0)
+			//	{
+			//		Debug.WriteLine("Invallid readings.");
+			//	}
+			//	else {
+			//		int lastSpo2 = (int)ch.Value[5];
+			//		int lastBPM = (int)ch.Value[6];
+			//		this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
+			//	}
+			//}
+
 			//// spo2 , PI and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 80 && (int)ch.Value[2] < 84)
 			{
+				if ((int)ch.Value[2] == 82)
+				{
+					var waveformBpm = (int)ch.Value[6];
+					this.uiController.updateBpmWaveform(waveformBpm);
+				}
+
 				var token = (int)ch.Value[2];
 				var length = (int)ch.Value[3];
-				if (token == 83 && length == 7) { 
-					int lastSpo2 = (int)ch.Value[5];
-					int lastBPM = (int)ch.Value[6];
-					uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);	
+
+				if (token == 83 && length == 7) {
 
 					var status_bit1 = ((int)ch.Value[9] & (1 << 1)) != 0;
-
-					if (status_bit1) {
+					if (status_bit1)
+					{
 						Debug.WriteLine("end of the spo2 reading");
 						uiController.noticeEndOfReadingSpo2();
+					}
+
+					if (ch.Value[5] == 0 || ch.Value[6] == 0)
+					{
+						Debug.WriteLine("Invallid readings.");
+					}
+					else { 
+						int lastSpo2 = (int)ch.Value[5];
+						int lastBPM = (int)ch.Value[6];
+
+						uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
 					}
 				}
 			}

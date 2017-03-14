@@ -110,6 +110,10 @@ namespace MyHealthVitals
 			callAPiToDisplayGetDemographics();
 		}
 
+		public void updateBpmWaveform(int bpm) { 
+			
+		}
+
 		private void setUpEcgDisplay() { 
 			// Oxy plot thing
 			ecgModel = new PlotModel();
@@ -318,12 +322,18 @@ namespace MyHealthVitals
 			vitalsData.sendHeartRateToServer();
 		}
 
+		int ecgPacketCount = 0;
 		public void updateECGPacket(List<int> ecgPacket)
 		{
 			try
 			{
-				ecgModel.DefaultXAxis.Minimum = xMin;
-				ecgModel.DefaultXAxis.Maximum = xMin + 4.0;
+				if (ecgPacketCount == 0) { 
+					ecgModel.DefaultXAxis.Minimum = xMin;
+					ecgModel.DefaultXAxis.Maximum = xMin + 4.0;
+				}
+
+				ecgPacketCount++;
+
 
 				for (int i = 0; i < ecgPacket.Count; i++)
 				{
@@ -334,12 +344,16 @@ namespace MyHealthVitals
 				// find the end and save the screen into pdf
 				if (ecgTime > ecgModel.DefaultXAxis.Maximum)
 				{
-					ecgModel.PlotAreaBorderColor = OxyColors.Transparent;
-					DependencyService.Get<IFileHelper>().saveToPdf(ecgModel, "ecgReport_" + (countEcgReport++) + ".pdf");
-					ecgModel.PlotAreaBorderColor = OxyColors.Black;
+					//ecgModel.PlotAreaBorderColor = OxyColors.Transparent;
+					//DependencyService.Get<IFileHelper>().saveToPdf(ecgModel, "ecgReport_" + (countEcgReport++) + ".pdf");
+					//ecgModel.PlotAreaBorderColor = OxyColors.Black;
 
 					//lineSerie.Points.Clear();
+
 					xMin = ecgTime;
+					ecgModel.DefaultXAxis.Minimum = xMin;
+					ecgModel.DefaultXAxis.Maximum = xMin + 4.0;
+
 					ecgModel.InvalidatePlot(true);
 
 					//ecgModel.TextColor = OxyColors.Transparent;
@@ -488,6 +502,7 @@ namespace MyHealthVitals
 		}
 		void btnEcgStartClicked(object sender, System.EventArgs e)
 		{
+			BLECentralManager.sharedInstance.spotServHandler.startEcgMeasuring();
 			//DependencyService.Get<ICBCentralManager>().startEcgMeasuring();
 		}
 

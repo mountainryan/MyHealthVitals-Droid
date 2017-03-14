@@ -20,6 +20,8 @@ namespace MyHealthVitals
 		void updateECGPacket(List<int> ecgPacket);
 		void updateECGEnded(int bpm);
 
+		void updateBpmWaveform(int bpm);
+
 		void resetEcgDisplay();
 
 	}
