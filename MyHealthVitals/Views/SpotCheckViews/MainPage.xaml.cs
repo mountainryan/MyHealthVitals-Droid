@@ -240,7 +240,7 @@ namespace MyHealthVitals
 			//	//hideMessageWthDelay();
 			//});
 
-			DisplayAlert("Spot Check Monitor", message, "OK");
+			DisplayAlert(this.deviceName, message, "OK");
 		}
 
 		public void updateGlucoseReading(decimal gluReading, string unit) {
@@ -273,7 +273,7 @@ namespace MyHealthVitals
 			vitalsData.sendToServer_SPO2_PI_BPM();
 		}
 
-		public void updateTemperature(decimal temperature, String type) {
+		public void updateTemperature(decimal temperature) {
 			vitalsData.temperature = new Reading("Temperature(°F/°C)", temperature, 4);
 			vitalsData.sendToServerTemperature();
 
@@ -438,16 +438,13 @@ namespace MyHealthVitals
 		}
 		void btnNIBPStartClicked(object sender, System.EventArgs e)
 		{
-			//Debug.WriteLine(().Text);
 
-			//if(
+			var btn = (Button)sender;
 
-			//var btn = (Button)sender;
+			if (btn.Text == "NIBP Start")
+			{
 
-			//if (btn.Text == "NIBP Start")
-			//{
-
-				//btn.Text = "NIBP Stop";
+				btn.Text = "NIBP Stop";
 
 				switch (this.deviceName)
 				{
@@ -464,27 +461,27 @@ namespace MyHealthVitals
 							break;
 						}
 				}
-			//}
-			//else {
+			}
+			else {
 
-			//	btn.Text = "NIBP Start";
+				btn.Text = "NIBP Start";
 
-			//	switch (this.deviceName)
-			//	{
+				switch (this.deviceName)
+				{
 
-			//		case "PC_300SNT":
-			//			{
-			//				BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
-			//				break;
-			//			}
+					case "PC_300SNT":
+						{
+							BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
+							break;
+						}
 
-			//		case "PC-100":
-			//			{
-			//				BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
-			//				break;
-			//			}
-			//	}
-			//}
+					case "PC-100":
+						{
+							BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
+							break;
+						}
+				}
+			}
 
 			//bleManager.startMeasuringBP();
 			//DependencyService.Get<ICBCentralManager>().startMeasuringBP();

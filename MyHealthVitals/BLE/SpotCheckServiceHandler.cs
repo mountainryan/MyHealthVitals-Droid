@@ -73,16 +73,15 @@ namespace MyHealthVitals
 			}
 		}
 
-
 		//NIBP commands
 		public void startMeasuringBP()
 		{
-			executeWriteCommand(new byte[] { 0xaa, 0x55, 0x40, 0x02, 0x01, 0x29 });
+			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x01, 0x29 });
 		}
 
 		public void stoptMeasuringBP()
 		{
-			executeWriteCommand(new byte[] { 0xaa, 0x55, 0x40, 0x02, 0x02, 0x29 });
+			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x02, 0xCB });
 		}
 
 		//ECG commands
@@ -119,9 +118,7 @@ namespace MyHealthVitals
 		}
 
 		int countMeasuringPressure = 0;
-		//int lastSpo2 = 0;
-		//int lastBPM = 0;
-		//bool isReadingGlucose = false;
+
 		decimal glucoseReadingVal = -1;
 		string gluUnit = "";
 
@@ -129,7 +126,6 @@ namespace MyHealthVitals
 		bool isEcgStarted = false;
 		DateTime t1;
 		//DateTime t2;
-		bool isSpo2ReadingStarted = false;
 		public void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e)
 		{
 			//Debug.WriteLine("guid:D "+e.Characteristic.Id);
@@ -211,27 +207,19 @@ namespace MyHealthVitals
 			//// spo2 , PI and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 80 && (int)ch.Value[2] < 84)
 			{
-				printUpdatedCharacteristics(e.Characteristic);
-
-				if (ch.Value[5] == 0 || ch.Value[6] == 0)
-				{
-					Debug.WriteLine("either start or end of the spo2 reading.");
-
-					if (isSpo2ReadingStarted)
-					{
-						uiController.noticeEndOfReadingSpo2();
-					}
-
-					isSpo2ReadingStarted = false;
-				}
-				else if (ch.Value.Length > 8)
-				{
-
-					isSpo2ReadingStarted = true;
-
+				var token = (int)ch.Value[2];
+				var length = (int)ch.Value[3];
+				if (token == 83 && length == 7) { 
 					int lastSpo2 = (int)ch.Value[5];
 					int lastBPM = (int)ch.Value[6];
-					uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
+					uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);	
+
+					var status_bit1 = ((int)ch.Value[9] & (1 << 1)) != 0;
+
+					if (status_bit1) {
+						Debug.WriteLine("end of the spo2 reading");
+						uiController.noticeEndOfReadingSpo2();
+					}
 				}
 			}
 
@@ -254,19 +242,19 @@ namespace MyHealthVitals
 				}
 
 				// combining byte 6 and byte 7 to read temperature
-				int data = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
-
 				// status bit
 				var D0_data1 = ((int)ch.Value[5] & (1 << 0)) != 0;
 
 				if (D0_data1)
 				{
-					glucoseReadingVal = (decimal)data;
+					int dataMgDl = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
+					glucoseReadingVal = (decimal)dataMgDl;
 					gluUnit = "mg/dL";
 				}
 				else
 				{
-					glucoseReadingVal = (decimal)data / 10;
+					int dataMmol = (int)ch.Value[6] * 100 + (int)ch.Value[7];
+					glucoseReadingVal = (decimal)dataMmol / 10;
 					gluUnit = "Mmol/L";
 				}
 			}
@@ -470,7 +458,7 @@ namespace MyHealthVitals
 						var tempC = (double)data / 100 + 30.0;
 						double tempF = Math.Round(((9.0 / 5.0) * tempC) + 32, 1);
 
-						uiController.updateTemperature((decimal)tempF, "Celcious");
+						uiController.updateTemperature((decimal)tempF);
 					}
 				}
 			}

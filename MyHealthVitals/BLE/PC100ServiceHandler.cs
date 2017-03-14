@@ -7,7 +7,7 @@ using Plugin.BLE.Abstractions.Contracts;
 
 namespace MyHealthVitals
 {
-	public class PC100ServiceHandler:IBLEDeviceServiceHandler
+	public class PC100ServiceHandler : IBLEDeviceServiceHandler
 	{
 		public ICharacteristic bmChar;
 		public IDevice connectedDevice;
@@ -52,7 +52,7 @@ namespace MyHealthVitals
 
 		public void stoptMeasuringBP()
 		{
-			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x02, 0x3D });
+			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x02, 0xCB });
 		}
 
 		public async void discoverServices(IDevice device)
@@ -105,154 +105,197 @@ namespace MyHealthVitals
 			Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.Uuid, sb.ToString()));
 		}
 
-
-		int countMeasuringPressure = 0;
-		//int lastSpo2 = 0;
-		//int lastBPM = 0;
-		//bool isReadingGlucose = false;
 		decimal glucoseReadingVal = -1;
 		string gluUnit = "";
 
-		//int countOfEcgdataIn30Sec = 0;
-		bool isEcgStarted = false;
-		DateTime t1;
-		//DateTime t2;
-		bool isSpo2ReadingStarted = false;
+		int tempReadingCount = 0;
+
 		public void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e)
 		{
 			var ch = e.Characteristic;
 
-			// sys , dia and bpm is available in spot check monitor
-			if ((int)ch.Value[2] > 63 && (int)ch.Value[2] < 68)
+			//token in NIBP result in pc-100
+			if ((int)ch.Value[2] == 67)
 			{
-				Debug.WriteLine("NIBP related token.");
-
-				if (countMeasuringPressure == 0)
+				// checking length of data
+				if ((int)ch.Value[3] == 7)
 				{
-					//uiController.ShowMessageOnUI("Measuring the Blood pressure...", true);
-					countMeasuringPressure++;
+					// combining byte 6 and byte 7 to read temperature
+					// high byte << 8 + low byte
+					int sys = ((int)ch.Value[5] << 8) + (int)ch.Value[6];
+					//int map = (int)ch.Value[7];
+					int dia = (int)ch.Value[8];
+					int heartRate = (int)ch.Value[9];
+
+					//Debug.WriteLine(sys);
+
+					this.uiController.SYS_DIA_BPM_updated(sys, dia, heartRate);
 				}
 
-				if (ch.Value.Length > 21)
+				// error
+				if ((int)ch.Value[3] == 3)
 				{
-					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
-					//uiController.ShowMessageOnUI("Boood pressure read succesfully.", true);
-					countMeasuringPressure = 0;
-				}
+					var bit7 = (ch.Value[5] & (1 << 7));
 
-				//if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
-			}
+					var bit3 = (ch.Value[5] & (1 << 3));
+					var bit2 = (ch.Value[5] & (1 << 2));
+					var bit1 = (ch.Value[5] & (1 << 1));
+					var bit0 = (ch.Value[5] & (1 << 0));
 
-			// error in blood pressure reading
-			if (ch.Value.Length == 14)
-			{
-				String message = "";
-				switch (127 & (int)ch.Value[5])
-				{
-					case 0:
-						message = "NO pulse is detected.";
-						break;
-					case 1:
-						message = "the cuff pressure does not reach 30 mmhg within 7 seconds. Probably the cuff is not wrapped well.";
-						break;
-					case 2:
-						message = "Over pressure";
-						break;
-					case 3:
-						message = "no pulse detected";
-						break;
-					case 4:
-						message = "Too much motion artifects.";
-						break;
-					case 5:
-						message = "Invallid result is obtained.";
-						break;
-					case 6:
-						message = "Air leakage occured.";
-						break;
-					case 7:
-						message = "Self - checking failed, probably transducer or A/ D sampling error. ";
-						break;
-					case 8:
-						message = "Pressure error, probably valve can't open normally.";
-						break;
-					case 9:
-						message = "signal saturation, caused by movement or other reason yielding too big signal amplitude";
-						break;
-					case 10:
-						message = "Air leakage in airway leakage checking.";
-						break;
-					case 11:
-						message = "Hardware or software fault.";
-						break;
-					case 12:
-						message = "measurement exceeds the specified time limits, 120s for adults with cuff pressure over 200 mmHg, 90s for adults with cuff pressure under 200 mmhg; 90s for neonate";
-						break;
-				}
+					var bit3_0 = ""+bit3+""+bit2+""+bit1+""+bit0;
 
-				uiController.ShowMessageOnUI(message, true);
-			}
+					var message = "";
 
-			//// spo2 , PI and bpm is available in spot check monitor
-			if ((int)ch.Value[2] > 80 && (int)ch.Value[2] < 84)
-			{
-				printUpdatedCharacteristics(e.Characteristic);
-
-				if (ch.Value[5] == 0 || ch.Value[6] == 0)
-				{
-					Debug.WriteLine("either start or end of the spo2 reading.");
-
-					if (isSpo2ReadingStarted)
+					if (bit7==1)
 					{
-						uiController.noticeEndOfReadingSpo2();
-					}
-
-					isSpo2ReadingStarted = false;
-				}
-				else if (ch.Value.Length > 8)
-				{
-
-					isSpo2ReadingStarted = true;
-
-					int lastSpo2 = (int)ch.Value[5];
-					int lastBPM = (int)ch.Value[6];
-					uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
-				}
-			}
-
-			// this token is for glucose reading
-			if ((int)ch.Value[2] == 115)
-			{
-				// this is needed because device is reading same data more than once to we are tracking glucose reading stop and sending the last reading
-				if (glucoseReadingVal == -1)
-				{
-					Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(10000), () =>
-					{
-						if (glucoseReadingVal > 0)
+						switch (Convert.ToInt32(bit3_0))
 						{
-							uiController.updateGlucoseReading(glucoseReadingVal, gluUnit);
+							case 1:
+								message = "Pressure did not reach 30 mmHg in 7 seconds.";
+								break;
+							case 2:
+								message = "Pressure over 295mmHg, device is self - protecting.";
+								break;
+							case 3:
+								message = "Can't detect pulse.";
+								break;
+							case 4:
+								message = "Too many interferennce. Movements, Talking.";
+								break;
+							case 5:
+								message = "Result value incorrect.";
+								break;
+							case 6:
+								message = "Air leakage.";
+								break;
+							case 15:
+								message = "Low Battery, measurement stopped.";
+								break;
 						}
 
-						glucoseReadingVal = -1;
-						return false;
-					});
+						Debug.WriteLine("error type 1");
+						Debug.WriteLine(message);
+					}
+					else {
+						
+						switch (Convert.ToInt32(bit3_0))
+						{
+							case 0:
+								message = "Can't detect pulse.";
+								break;
+							case 1:
+								message = "Pressure did not reach 30 mmHg in 7 seconds.";
+								break;
+							case 2:
+								message = "Result value incorrect.";
+								break;
+							case 3:
+								message = "Pressure over 295mmHg, device is self-protecting.";
+								break;
+							case 4:
+								message = "Too many interferennce. Movements, Talking.";
+								break;
+							case 15:
+								message = "Low Battery, measurement stopped.";
+								break;
+						}
+
+						Debug.WriteLine("error type 0");
+						Debug.WriteLine(message);
+					}
+
+					this.uiController.ShowMessageOnUI(message, false);
+				}
+			}
+
+
+			/// <summary>
+			/// Spo2 related parsing
+			/// </summary>
+			if ((int)ch.Value[2] == 82)
+			{
+				//Debug.WriteLine("status.");
+				var status = (int)ch.Value[5];
+				if (status == 0) { 
+					this.uiController.noticeEndOfReadingSpo2();
+				}
+			}
+
+			if ((int)ch.Value[2] == 83 && (int)ch.Value[3] == 7)
+			{
+				if (ch.Value[5] == 0 || ch.Value[6] == 0)
+				{
+					Debug.WriteLine("Invallid readings.");
+				}
+				else { 
+					int lastSpo2 = (int)ch.Value[5];
+					int lastBPM = (int)ch.Value[6];
+					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 10);
+				}
+			}
+
+			// this token is for GLU data pc-100
+			//if ((int)ch.Value[2] == 226)
+			//{
+			//	var bit5 = (ch.Value[5] & (1 << 5)) != 0;
+			//	var bit4 = (ch.Value[5] & (1 << 4)) != 0;
+
+			//	// normal reading
+			//	if (bit5 && bit4) {
+			//		var dataGlu = (double)((int)ch.Value[6] * 100 + (int)ch.Value[7])/10;
+			//		Debug.WriteLine("dataGlu: " + dataGlu);
+			//	}
+			//}
+
+			// temperature related token with result 0x72 = 114 in pc-100
+			if ((int)ch.Value[2] == 114)
+			{
+				Debug.WriteLine("Temparature related token pc100.");
+				//int dataTemp1 = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
+				//Debug.WriteLine("datatemp: " + dataTemp1);
+				//printUpdatedCharacteristics(ch);
+
+				// from document it is written that the 5 byte is status and D4 is temperature probe is connected
+				//Byte temperatureStatus = ;
+				// bit 5
+				var bit4 = ch.Value[5] & (1 << 4);
+				if (bit4 == 1)
+				{
+					uiController.ShowMessageOnUI("Probe disconnected while measuring.", true);
+					return;
 				}
 
+				var bit5 = ch.Value[5] & (1 << 5);
+				var bit6 = ch.Value[5] & (1 << 6);
+
+				if (bit6==1 && bit5==1) {
+					uiController.ShowMessageOnUI("Temperature measuring time out.", true);
+					return;
+				}
+
+				// measurement finished normallly
 				// combining byte 6 and byte 7 to read temperature
-				int data = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
+				int dataTemp = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
 
-				// status bit
-				var D0_data1 = ((int)ch.Value[5] & (1 << 0)) != 0;
-
-				if (D0_data1)
+				if (dataTemp >= 200 && dataTemp <= 1301)
 				{
-					glucoseReadingVal = (decimal)data;
-					gluUnit = "mg/dL";
+					// this variable is introduced because it is reading temperature twice identical data and we send only last one to server and UI
+					tempReadingCount++;
+
+					//uiController.ShowMessageOnUI("Temperature read successfully.", true);
+					//decimal temperatureInCelcious = (decimal)((float)633 / 100 + 30);
+					//(9.0 / 5.0) * c) +32
+					// the device always reads in Celcious even if it is displaying in fareinheit
+					if (tempReadingCount == 2) { 
+						var tempC = (double)dataTemp / 100 + 30.0;
+						double tempF = Math.Round(((9.0 / 5.0) * tempC) + 32, 1);
+						this.uiController.updateTemperature((decimal)tempF);
+						tempReadingCount = 0;
+					}
 				}
-				else
-				{
-					glucoseReadingVal = (decimal)data / 10;
-					gluUnit = "Mmol/L";
+				else {
+					if (dataTemp >= 1312) uiController.ShowMessageOnUI("Too high temperature.", true);
+					if (dataTemp < 200) uiController.ShowMessageOnUI("Too low temperature.", true);
 				}
 			}
 		}

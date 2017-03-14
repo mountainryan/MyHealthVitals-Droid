@@ -95,8 +95,6 @@ namespace MyHealthVitals
 		public void navigateToMainPage() { 
 			var newScreen = new MainPage(activeDeviceName);
 			newScreen.Title = "Main Screeen";
-			if(BLECentralManager.sharedInstance.spotServHandler!=null)
-				BLECentralManager.sharedInstance.spotServHandler.updateController(newScreen);
 			this.Navigation.PushAsync(newScreen);
 		}
 
@@ -124,7 +122,7 @@ namespace MyHealthVitals
 		public void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex) { }
 		public void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm) { }
 		public void updatingPressureMeanTime(int pressure) { }
-		public void updateTemperature(decimal temperature, String type) { }
+		public void updateTemperature(decimal temperature) { }
 
 		public void noticeEndOfReadingSpo2() { }
 		public void updateDeviceConnected(String deviceName, bool isConnected) { }

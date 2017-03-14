@@ -1,17 +1,9 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/BLE/PC100ServiceHandler.cs">
-    <Files>
-      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="174" Column="13" />
-      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="89" Column="5" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="453" Column="61" />
-      <File FileName="MyHealthVitals/BLE/PC100ServiceHandler.cs" Line="49" Column="1" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/BLE/BLEManagerSpotCheck.cs" line="100" column="1" />
-      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/BLE/PC100ServiceHandler.cs" line="49" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

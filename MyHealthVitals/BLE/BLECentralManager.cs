@@ -184,7 +184,7 @@ namespace MyHealthVitals
 
 			if (e.Device.Name == "PC_300SNT")
 			{
-				spotServHandler.uiController.ShowMessageOnUI("Spot Check Monitor Connection Lost.", false);
+				spotServHandler.uiController.ShowMessageOnUI("PC 300 Connection Lost.", false);
 			}
 
 			if (e.Device.Name == "BLE-MSA")
@@ -195,7 +195,7 @@ namespace MyHealthVitals
 
 			if (e.Device.Name == "PC-100")
 			{
-				pc100ServHandler.uiController.ShowMessageOnUI("Connection Lost.", false);
+				pc100ServHandler.uiController.ShowMessageOnUI("PC-100 Connection Lost.", false);
 			}
 		}
 

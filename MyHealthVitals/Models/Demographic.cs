@@ -252,39 +252,50 @@ namespace MyHealthVitals
 		// calling web service to get the json
 		public async Task<bool> getDemographicFromApi()
 		{
-			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
-
-			var response = await client.GetAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/Demographics");
-			if (response.IsSuccessStatusCode)
+			try
 			{
-				try
+				HttpClient client = new HttpClient();
+				client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
+
+				var response = await client.GetAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/Demographics");
+
+				if (response.IsSuccessStatusCode)
 				{
-					var content = await response.Content.ReadAsStringAsync();
-					var tempDemographics = JsonConvert.DeserializeObject<Demographics>(content);
+					try
+					{
+						var content = await response.Content.ReadAsStringAsync();
+						var tempDemographics = JsonConvert.DeserializeObject<Demographics>(content);
 
-					// transfering local values to the shared instance of demographics after deserialize
-					tempDemographics.username = Demographics.sharedInstance.username;
-					tempDemographics.password = Demographics.sharedInstance.password;
-					tempDemographics.isAutoLogin = Demographics.sharedInstance.isAutoLogin;
-					tempDemographics.isRememberUsername = Demographics.sharedInstance.isRememberUsername;
-					tempDemographics.calibratedReadingList = Demographics.sharedInstance.calibratedReadingList;
+						// transfering local values to the shared instance of demographics after deserialize
+						tempDemographics.username = Demographics.sharedInstance.username;
+						tempDemographics.password = Demographics.sharedInstance.password;
+						tempDemographics.isAutoLogin = Demographics.sharedInstance.isAutoLogin;
+						tempDemographics.isRememberUsername = Demographics.sharedInstance.isRememberUsername;
+						tempDemographics.calibratedReadingList = Demographics.sharedInstance.calibratedReadingList;
 
-					Demographics.sharedInstance = tempDemographics;
+						Demographics.sharedInstance = tempDemographics;
 
-					Debug.WriteLine(Demographics.sharedInstance.getFullName());
+						Debug.WriteLine(Demographics.sharedInstance.getFullName());
+					}
+					catch (JsonSerializationException ex)
+					{
+						Debug.WriteLine("parse error: " + ex.Message);
+					}
+
+					return true;
+
 				}
-				catch (JsonSerializationException ex)
-				{
-					Debug.WriteLine("parse error: " + ex.Message);
+				else {
+					return false;
+					//throw new HttpStatusException(response.StatusCode,"Network Error.");
 				}
 
-				return true;
-
+				//return false;
 			}
-			else {
+			catch(Exception ex) {
+
+				Debug.WriteLine("exception in calling the server." + ex.Message);
 				return false;
-				//throw new HttpStatusException(response.StatusCode,"Network Error.");
 			}
 		}
 
