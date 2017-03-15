@@ -118,7 +118,7 @@
 					</StackLayout>
 					<BoxView HeightRequest="0.5" BackgroundColor="White" />
 				</StackLayout>
-				<oxy:PlotView BackgroundColor="White" x:Name="plotView" Margin="10" HeightRequest="150" HorizontalOptions="FillAndExpand" Model="{Binding ecgModel}" />
+				<oxy:PlotView BackgroundColor="White" x:Name="plotView" Margin="10" HeightRequest="150" HorizontalOptions="FillAndExpand" Model="{Binding graphModel}" />
 				<StackLayout Orientation="Horizontal" Margin="10,5,10,5">
 					<Button Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
 					</Button>

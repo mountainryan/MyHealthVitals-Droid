@@ -85,14 +85,14 @@ namespace MyHealthVitals
 		}
 
 		//ECG commands
+		public void startEcgMeasuring()
+		{
+			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x31, 0x02, 0x02, 0x8F });
+		}
+
 		public void stopReadingECG()
 		{
 			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x30, 0x02, 0x02, 0x24 });
-		}
-
-		public void startEcgMeasuring()
-		{
-			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x30, 0x02, 0x01, 0xC6 });
 		}
 
 		private void printUpdatedCharacteristics(ICharacteristic ch)
@@ -308,7 +308,9 @@ namespace MyHealthVitals
 
 			if ((int)ch.Value[2] >= 48 && (int)ch.Value[2] <= 51)
 			{
-				Debug.WriteLine("this is ECG data:");
+				//Debug.WriteLine("this is ECG data:");
+
+				printUpdatedCharacteristics(ch);
 
 				var token = (int)ch.Value[2];
 				// this is result of query working state
@@ -323,7 +325,7 @@ namespace MyHealthVitals
 					else {
 						Debug.WriteLine("standby");
 						// command to  start measuring the ecg;
-						bmChar.WriteAsync(new byte[] { 0xaa, 0x55, 0x30, 0x02, 0x01, 0xC6 });
+						bmChar.WriteAsync(new byte[] { 0xAA, 0x55, 0x30, 0x02, 0x01, 0x29 });
 					}
 				}
 
@@ -332,7 +334,7 @@ namespace MyHealthVitals
 					// this is to measure time duration taken by ecg to get its result by itself.
 					if (isEcgStarted == false)
 					{
-						uiController.resetEcgDisplay();
+						//uiController.resetEcgDisplay();
 
 						isEcgStarted = true;
 						t1 = DateTime.Now;
@@ -366,6 +368,10 @@ namespace MyHealthVitals
 					//Debug.WriteLine(countOfEcgdataIn30Sec);
 
 					uiController.updateECGPacket(values);
+				}
+
+				if (token == 48) {
+					Debug.WriteLine("stop response may be");
 				}
 
 				// end of the ecg reading

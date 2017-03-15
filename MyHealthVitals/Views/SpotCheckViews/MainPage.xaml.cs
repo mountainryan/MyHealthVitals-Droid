@@ -41,37 +41,37 @@ namespace MyHealthVitals
 			//double p1 = 0;
 			//float d1 = 0;
 
-			//ecgModel.pa
+			//graphModel.pa
 
-			//this.ecgModel.TouchStarted += (object sender, OxyTouchEventArgs e) =>
+			//this.graphModel.TouchStarted += (object sender, OxyTouchEventArgs e) =>
 			//{
 			//	p1 = e.Position.X;
 
 			//	//Debug.WriteLine("delta Translation: " + e.Position.X);
-			//	//ecgModel.DefaultXAxis.Pan(plotView.Width - 42);
+			//	//graphModel.DefaultXAxis.Pan(plotView.Width - 42);
 
 			//};
 
-			//this.ecgModel.TouchCompleted += (object sender, OxyTouchEventArgs e) => {
+			//this.graphModel.TouchCompleted += (object sender, OxyTouchEventArgs e) => {
 
 			//	double dx = e.Position.X - p1;
 
 			//	if (dx > 0)
 			//	{
 			//		Debug.WriteLine("delta Translation: " + dx);
-			//		ecgModel.DefaultXAxis.Pan(plotView.Width - 42);
+			//		graphModel.DefaultXAxis.Pan(plotView.Width - 42);
 
-			//		//ecgModel.DefaultXAxis.Pan
+			//		//graphModel.DefaultXAxis.Pan
 			//	}
 			//	else { 
-			//		ecgModel.DefaultXAxis.Pan(-plotView.Width + 42);
+			//		graphModel.DefaultXAxis.Pan(-plotView.Width + 42);
 			//		Debug.WriteLine("delta Translation: " + dx);
 			//	}
 
-			//	//ecgModel.DefaultXAxis.Pan(plotView.Width - 42);
+			//	//graphModel.DefaultXAxis.Pan(plotView.Width - 42);
 			//};
 
-			//ecgModel.to
+			//graphModel.to
 
 			btnFareinheit.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
 			btnCelcious.TextColor = Color.Gray;
@@ -110,18 +110,16 @@ namespace MyHealthVitals
 			callAPiToDisplayGetDemographics();
 		}
 
-		public void updateBpmWaveform(int bpm) { 
-			
-		}
+
 
 		private void setUpEcgDisplay() { 
 			// Oxy plot thing
-			ecgModel = new PlotModel();
+			graphModel = new PlotModel();
 
-			//ecgModel.TouchStarted += (object sender, OxyTouchEventArgs e) => {
-			//	//ecgModel.DefaultXAxis.pa
+			//graphModel.TouchStarted += (object sender, OxyTouchEventArgs e) => {
+			//	//graphModel.DefaultXAxis.pa
 			//});
-			//ecgModel.sr
+			//graphModel.sr
 			BindingContext = this;
 
 			lineSerie = new LineSeries
@@ -134,49 +132,50 @@ namespace MyHealthVitals
 			lastDataPointPrev = new DataPoint(0, 0);
 			lineSerie.Points.Add(lastDataPointPrev);
 
-			ecgModel.Series.Add(lineSerie);
-			ecgModel.InvalidatePlot(true);
-
-
+			graphModel.Series.Add(lineSerie);
+			graphModel.InvalidatePlot(true);
 		}
 
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
 
-			if (ecgModel.DefaultXAxis != null)
+			if (countECGPacket ==0 && graphModel.DefaultXAxis != null)
 			{
-				ecgModel.DefaultXAxis.IsPanEnabled = false;
-				ecgModel.DefaultYAxis.IsPanEnabled = false;
+				graphModel.DefaultXAxis.IsPanEnabled = false;
+				graphModel.DefaultYAxis.IsPanEnabled = false;
 
-				ecgModel.DefaultYAxis.Minimum = 0;
-				ecgModel.DefaultYAxis.Maximum = 350;
+				graphModel.DefaultYAxis.Minimum = 0;
+				graphModel.DefaultYAxis.Maximum = 265;
 
-				ecgModel.DefaultXAxis.Minimum = 0;
-				ecgModel.DefaultXAxis.Maximum = 30;
+				graphModel.DefaultXAxis.Minimum = 0;
+				graphModel.DefaultXAxis.Maximum = 30;
 
-
-				// x - axis style
-				ecgModel.DefaultXAxis.MinorGridlineStyle = LineStyle.Solid;
-				ecgModel.DefaultXAxis.MajorGridlineStyle = LineStyle.Solid;
-
-				ecgModel.DefaultXAxis.MajorGridlineThickness = 0.25f;
-				ecgModel.DefaultXAxis.MinorGridlineThickness = 0.25f;
-
-				ecgModel.DefaultXAxis.MinorGridlineColor = OxyColors.LightGray;
-				ecgModel.DefaultXAxis.MajorGridlineColor = OxyColors.LightGray;
-
-				// y - axis style
-				ecgModel.DefaultYAxis.MinorGridlineStyle = LineStyle.Solid;
-				ecgModel.DefaultYAxis.MajorGridlineStyle = LineStyle.Solid;
-
-				ecgModel.DefaultYAxis.MajorGridlineThickness = 0.25f;
-				ecgModel.DefaultYAxis.MinorGridlineThickness = 0.25f;
-
-				ecgModel.DefaultYAxis.MajorGridlineColor = OxyColors.LightGray;
-				ecgModel.DefaultYAxis.MinorGridlineColor = OxyColors.LightGray;
-				this.ecgModel.InvalidatePlot(true);
+				styleGraphModel();
 			}
+		}
+
+		private void styleGraphModel() { 
+			// x - axis style
+			graphModel.DefaultXAxis.MinorGridlineStyle = LineStyle.Solid;
+			graphModel.DefaultXAxis.MajorGridlineStyle = LineStyle.Solid;
+
+			graphModel.DefaultXAxis.MajorGridlineThickness = 0.25f;
+			graphModel.DefaultXAxis.MinorGridlineThickness = 0.25f;
+
+			graphModel.DefaultXAxis.MinorGridlineColor = OxyColors.LightGray;
+			graphModel.DefaultXAxis.MajorGridlineColor = OxyColors.LightGray;
+
+			// y - axis style
+			graphModel.DefaultYAxis.MinorGridlineStyle = LineStyle.Solid;
+			graphModel.DefaultYAxis.MajorGridlineStyle = LineStyle.Solid;
+
+			graphModel.DefaultYAxis.MajorGridlineThickness = 0.25f;
+			graphModel.DefaultYAxis.MinorGridlineThickness = 0.25f;
+
+			graphModel.DefaultYAxis.MajorGridlineColor = OxyColors.LightGray;
+			graphModel.DefaultYAxis.MinorGridlineColor = OxyColors.LightGray;
+			this.graphModel.InvalidatePlot(true);
 		}
 
 		private async void callAPiToDisplayGetDemographics() { 
@@ -293,25 +292,23 @@ namespace MyHealthVitals
 			});
 		}
 
-		public PlotModel ecgModel { get; set; }
-		float ecgTime = 0.0f;
+
+		// ECG waveform portion
+		public PlotModel graphModel { get; set; }
 		DataPoint lastDataPointPrev;
 
 		float xMin = 0.0f;
-
-		public void resetEcgDisplay() {
-
-			if (ecgTime > 0) { 
-				ecgTime = 0.0f;
-				ecgModel.Series.Clear();
-				ecgModel.InvalidatePlot(true);
-				ecgModel.DefaultXAxis.IsPanEnabled = true;
-			}
-		}
+		float ecgTime = 0.0f;
+		int countECGPacket = 0;
+		int countEcgReport = 0;
 
 		public void updateECGEnded(int bpm) {
+			countECGPacket = 0;
+			countEcgReport = 0;
+			ecgTime = 0.0f;
 
-			ecgModel.DefaultXAxis.IsPanEnabled = true;
+			graphModel.DefaultXAxis.IsPanEnabled = true;
+
 			Device.BeginInvokeOnMainThread(() =>
 			{
 				lblBpm.Text = bpm.ToString();
@@ -322,18 +319,26 @@ namespace MyHealthVitals
 			vitalsData.sendHeartRateToServer();
 		}
 
-		int ecgPacketCount = 0;
+
 		public void updateECGPacket(List<int> ecgPacket)
 		{
 			try
 			{
-				if (ecgPacketCount == 0) { 
-					ecgModel.DefaultXAxis.Minimum = xMin;
-					ecgModel.DefaultXAxis.Maximum = xMin + 4.0;
+				if (countECGPacket == 0) { 
+					// reseting the graphmodel for ecg waveform
+					graphModel.DefaultXAxis.IsPanEnabled = false;
+					xMin = 0;
+					graphModel.DefaultXAxis.Minimum = xMin;
+					graphModel.DefaultXAxis.Maximum = xMin + 4.0;
+
+					graphModel.DefaultYAxis.Minimum = 0;
+					graphModel.DefaultYAxis.Maximum = 350;
+
+					lineSerie.Points.Clear();
+					graphModel.InvalidatePlot(true);
 				}
 
-				ecgPacketCount++;
-
+				countECGPacket++;
 
 				for (int i = 0; i < ecgPacket.Count; i++)
 				{
@@ -342,26 +347,26 @@ namespace MyHealthVitals
 				}
 
 				// find the end and save the screen into pdf
-				if (ecgTime > ecgModel.DefaultXAxis.Maximum)
+				if (ecgTime > graphModel.DefaultXAxis.Maximum)
 				{
-					//ecgModel.PlotAreaBorderColor = OxyColors.Transparent;
-					//DependencyService.Get<IFileHelper>().saveToPdf(ecgModel, "ecgReport_" + (countEcgReport++) + ".pdf");
-					//ecgModel.PlotAreaBorderColor = OxyColors.Black;
+					//graphModel.PlotAreaBorderColor = OxyColors.Transparent;
+					//DependencyService.Get<IFileHelper>().saveToPdf(graphModel, "ecgReport_" + (countEcgReport++) + ".pdf");
+					//graphModel.PlotAreaBorderColor = OxyColors.Black;
 
 					//lineSerie.Points.Clear();
 
 					xMin = ecgTime;
-					ecgModel.DefaultXAxis.Minimum = xMin;
-					ecgModel.DefaultXAxis.Maximum = xMin + 4.0;
+					graphModel.DefaultXAxis.Minimum = xMin;
+					graphModel.DefaultXAxis.Maximum = xMin + 4.0;
 
-					ecgModel.InvalidatePlot(true);
+					graphModel.InvalidatePlot(true);
 
-					//ecgModel.TextColor = OxyColors.Transparent;
-					//ecgModel.TitleColor = OxyColors.Transparent;
-					//ecgModel.LegendTextColor = OxyColors.Transparent;
+					//graphModel.TextColor = OxyColors.Transparent;
+					//graphModel.TitleColor = OxyColors.Transparent;
+					//graphModel.LegendTextColor = OxyColors.Transparent;
 				}
 				else {
-					ecgModel.InvalidatePlot(true);
+					graphModel.InvalidatePlot(true);
 				}
 			}
 			catch (Exception)
@@ -370,7 +375,51 @@ namespace MyHealthVitals
 			}
 		}
 
-		int countEcgReport = 0;
+		// Spo2 waveform portion
+		float pulseTime = 0.0f;
+		int countBpm = 0;
+
+		public void updateBpmWaveform(int bpm)
+		{
+			try
+			{
+				if (countBpm == 0 && graphModel.DefaultXAxis != null)
+				{
+					graphModel.DefaultXAxis.IsPanEnabled = false;
+
+					graphModel.DefaultYAxis.Minimum = -10;
+					graphModel.DefaultYAxis.Maximum = 265;
+
+					xMin = 0;
+					graphModel.DefaultXAxis.Minimum = xMin;
+					graphModel.DefaultXAxis.Maximum = xMin + 3.0;
+
+					lineSerie.Points.Clear();
+					graphModel.InvalidatePlot(true);
+				}
+
+				// preventing the countbpm cross int limit
+				if (countBpm >= int.MaxValue - 300) countBpm = 0;
+				else countBpm++;
+
+				if (pulseTime > graphModel.DefaultXAxis.Maximum)
+				{
+					lineSerie.Points.Clear();
+					xMin = pulseTime;
+					graphModel.DefaultXAxis.Minimum = xMin;
+					graphModel.DefaultXAxis.Maximum = xMin + 3.0;
+				}
+
+				pulseTime = pulseTime + 0.02f;
+				lineSerie.Points.Add(new DataPoint(pulseTime, bpm));
+
+				graphModel.InvalidatePlot(true);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("Exception on updateting ui:" + ex.Message);
+			}
+		}
 
 		public void updatingPressureMeanTime(int pressure)
 		{
