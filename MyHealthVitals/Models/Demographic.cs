@@ -333,7 +333,7 @@ namespace MyHealthVitals
 
 		public String getFullName()
 		{
-			if (this.MiddleName.Length > 0)
+			if (this.MiddleName!= null && this.MiddleName.Length > 0)
 			{
 				return FirstName + " " + MiddleName + " " + LastName;
 			}

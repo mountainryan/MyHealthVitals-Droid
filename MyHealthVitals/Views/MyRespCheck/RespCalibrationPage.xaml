@@ -40,7 +40,7 @@
 				</Label>
 			</StackLayout>
 			<!--loading layout starts-->
-			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.65" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Transparent" Opacity="0.65" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
 					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Saving...">

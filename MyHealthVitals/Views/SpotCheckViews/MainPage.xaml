@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms" x:Class="MyHealthVitals.MainPage">
+<ContentPage BackgroundColor="{StaticResource colorBlackBg}" 
+	xmlns="http://xamarin.com/schemas/2014/forms" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
+	xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals"
+	x:Class="MyHealthVitals.MainPage">
 	<ContentPage.ToolbarItems>
 		<!--<ToolbarItem Text="Log Out" Clicked="btnLogOutClicked">
 		</ToolbarItem>-->
@@ -7,125 +12,148 @@
 		</ToolbarItem>
 	</ContentPage.ToolbarItems>
 	<ContentPage.Content>
-		<ScrollView>
-			<StackLayout Spacing="0">
-				<StackLayout Orientation="Horizontal">
-					<Image x:Name="imgProfile" Margin="12" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
-					</Image>
-					<StackLayout Orientation="Vertical" VerticalOptions="Center">
-						<Label FontSize="15" x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
-						<Label FontSize="14" x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
-						<Label Margin="0,10,0,0" x:Name="lblClickMessage" FontSize="10" IsVisible="true" Text="Click photo for Profile Screen" TextColor="White" />
-					</StackLayout>
-					<!--<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}"/>-->
-				</StackLayout>
-				<!--<RelativeLayout BackgroundColor="White" VerticalOptions="Fill" IsVisible="true" x:Name="layoutLoading">
+		<RelativeLayout>
+				<StackLayout
+					VerticalOptions="FillAndExpand"
+			        HorizontalOptions="FillAndExpand"
+			        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+					RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+					RelativeLayout.XConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+					RelativeLayout.YConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+				  >
+				<ScrollView>
+					<StackLayout Spacing="0">
+						<StackLayout Orientation="Horizontal">
+							<Image x:Name="imgProfile" Margin="12" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
+							</Image>
+							<StackLayout Orientation="Vertical" VerticalOptions="Center">
+								<Label FontSize="15" x:Name="lblName" Style="{DynamicResource styleLblReading}" Text=" " FontAttributes="Bold" />
+								<Label FontSize="14" x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
+								<Label Margin="0,10,0,0" x:Name="lblClickMessage" FontSize="10" IsVisible="true" Text="Click photo for Profile Screen" TextColor="White" />
+							</StackLayout>
+							<!--<Button Clicked="btnViewProfileClicked" HorizontalOptions="EndAndExpand" Image="imgNext.png" HeightRequest="27" WidthRequest="27" TextColor="{StaticResource colorThemeBlue}"/>-->
+						</StackLayout>
+						<!--<RelativeLayout BackgroundColor="White" VerticalOptions="Fill" IsVisible="true" x:Name="layoutLoading">
 
-					<StackLayout Padding="10" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}" HorizontalOptions="Fill" >
-							<Label x:Name="lblStatus" HorizontalOptions="StartAndExpand" VerticalOptions="Center" FontSize="14" Text="Searching device..." />
-							<Label x:Name="lblPressure"  Text="" />
-					</StackLayout>
-					
-					<Button Margin="10" IsEnabled="true" 
-						RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.87}" 
-						x:Name="btnBle" Clicked="btnBleClicked" Image="imgDevDiscon.png" HeightRequest="30" WidthRequest="30" ></Button>			
-					
-				</RelativeLayout>-->
-				<StackLayout x:Name="layoutContainer" Spacing="7">
-					<BoxView HeightRequest="0.5" BackgroundColor="White" />
-					<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
-						<StackLayout WidthRequest="72">
-							<Label Style="{DynamicResource styleLblNumeric}" Text="SYS" />
-							<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label FontSize="13" Text=" " />
-							<Label x:Name="lblSys" Style="{DynamicResource styleLblReading}" Text="-" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label Style="{DynamicResource styleLblNumeric}" Text="DIA" />
-							<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label Text=" " FontSize="13" />
-							<Label x:Name="lblDia" Style="{DynamicResource styleLblReading}" Text="-" />
-						</StackLayout>
-					</StackLayout>
-					<BoxView HeightRequest="0.5" BackgroundColor="White" />
-					<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
-						<StackLayout WidthRequest="72">
-							<Label Style="{DynamicResource styleLblNumeric}" Text="SpO2" />
-							<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label FontSize="13" Text=" " />
-							<Label x:Name="lblSpo2" Style="{DynamicResource styleLblReading}" Text="-" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label Style="{DynamicResource styleLblNumeric}" Text="PR" />
-							<Label Style="{DynamicResource styleLblNumeric}" Text="bpm" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label FontSize="13" Text=" " />
-							<Label Style="{DynamicResource styleLblReading}" x:Name="lblBpm" Text="-" />
-						</StackLayout>
-					</StackLayout>
-					<BoxView HeightRequest="0.5" BackgroundColor="White" />
-					<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
-						<StackLayout WidthRequest="72">
-							<Label Style="{DynamicResource styleLblNumeric}" Text="PI" />
-							<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label FontSize="13" Text=" " />
-							<Label x:Name="lblPerfusionIndex" Style="{DynamicResource styleLblReading}" Text="-" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
-							<StackLayout Orientation="Horizontal" Padding="2">
-								<StackLayout Orientation="Horizontal" Padding="2">
-									<Button TextColor="Gray" Clicked="btnFareinheitClicked" HeightRequest="20" x:Name="btnFareinheit" Text="°F" />
-									<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" HeightRequest="20" Text="°C" />
+							<StackLayout Padding="10" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}" HorizontalOptions="Fill" >
+									<Label x:Name="lblStatus" HorizontalOptions="StartAndExpand" VerticalOptions="Center" FontSize="14" Text="Searching device..." />
+									<Label x:Name="lblPressure"  Text="" />
+							</StackLayout>
+							
+							<Button Margin="10" IsEnabled="true" 
+								RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.87}" 
+								x:Name="btnBle" Clicked="btnBleClicked" Image="imgDevDiscon.png" HeightRequest="30" WidthRequest="30" ></Button>			
+							
+						</RelativeLayout>-->
+						<StackLayout x:Name="layoutContainer" Spacing="7">
+							<BoxView HeightRequest="0.5" BackgroundColor="White" />
+							<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
+								<StackLayout WidthRequest="72">
+									<Label Style="{DynamicResource styleLblNumeric}" Text="SYS" />
+									<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label FontSize="13" Text=" " />
+									<Label x:Name="lblSys" Style="{DynamicResource styleLblReading}" Text="-" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label Style="{DynamicResource styleLblNumeric}" Text="DIA" />
+									<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label Text=" " FontSize="13" />
+									<Label x:Name="lblDia" Style="{DynamicResource styleLblReading}" Text="-" />
 								</StackLayout>
 							</StackLayout>
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label Text=" " FontSize="15" />
-							<Label x:Name="lblTemperature" Style="{DynamicResource styleLblReading}" Text="-" />
-						</StackLayout>
-					</StackLayout>
-					<BoxView HeightRequest="0.5" BackgroundColor="White" />
-					<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
-						<StackLayout WidthRequest="72">
-							<Label Text="GLU" Style="{DynamicResource styleLblNumeric}" />
-							<Label x:Name="lblUnitGlucose" Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label Text=" " FontSize="13" Style="{DynamicResource styleLblReading}" />
-							<Label x:Name="lblGlucose" Text="-" Style="{DynamicResource styleLblReading}" />
-						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />
-							<StackLayout Orientation="Horizontal" Padding="2">
-								<Button Clicked="btnLbsClicked" x:Name="btnLbs" HeightRequest="20" Text="Lbs" />
-								<Button TextColor="Gray" Clicked="btnKgsClicked" HeightRequest="20" x:Name="btnKgs" Text="Kgs" />
+							<BoxView HeightRequest="0.5" BackgroundColor="White" />
+							<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
+								<StackLayout WidthRequest="72">
+									<Label Style="{DynamicResource styleLblNumeric}" Text="SpO2" />
+									<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label FontSize="13" Text=" " />
+									<Label x:Name="lblSpo2" Style="{DynamicResource styleLblReading}" Text="-" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label Style="{DynamicResource styleLblNumeric}" Text="PR" />
+									<Label Style="{DynamicResource styleLblNumeric}" Text="bpm" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label FontSize="13" Text=" " />
+									<Label Style="{DynamicResource styleLblReading}" x:Name="lblBpm" Text="-" />
+								</StackLayout>
 							</StackLayout>
+							<BoxView HeightRequest="0.5" BackgroundColor="White" />
+							<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
+								<StackLayout WidthRequest="72">
+									<Label Style="{DynamicResource styleLblNumeric}" Text="PI" />
+									<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label FontSize="13" Text=" " />
+									<Label x:Name="lblPerfusionIndex" Style="{DynamicResource styleLblReading}" Text="-" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
+									<StackLayout Orientation="Horizontal" Padding="2">
+										<StackLayout Orientation="Horizontal" Padding="2">
+											<Button TextColor="Gray" Clicked="btnFareinheitClicked" HeightRequest="20" x:Name="btnFareinheit" Text="°F" />
+											<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" HeightRequest="20" Text="°C" />
+										</StackLayout>
+									</StackLayout>
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label Text=" " FontSize="15" />
+									<Label x:Name="lblTemperature" Style="{DynamicResource styleLblReading}" Text="-" />
+								</StackLayout>
+							</StackLayout>
+							<BoxView HeightRequest="0.5" BackgroundColor="White" />
+							<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
+								<StackLayout WidthRequest="72">
+									<Label Text="GLU" Style="{DynamicResource styleLblNumeric}" />
+									<Label x:Name="lblUnitGlucose" Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label Text=" " FontSize="13" Style="{DynamicResource styleLblReading}" />
+									<Label x:Name="lblGlucose" Text="-" Style="{DynamicResource styleLblReading}" />
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />
+									<StackLayout Orientation="Horizontal" Padding="2">
+										<Button Clicked="btnLbsClicked" x:Name="btnLbs" HeightRequest="20" Text="Lbs" />
+										<Button TextColor="Gray" Clicked="btnKgsClicked" HeightRequest="20" x:Name="btnKgs" Text="Kgs" />
+									</StackLayout>
+								</StackLayout>
+								<StackLayout WidthRequest="72">
+									<Label FontSize="15" Text=" "/>
+									<Label x:Name = "lblWeight" Text="-" Style="{DynamicResource styleLblReading}" />
+								</StackLayout>
+							</StackLayout>
+							<BoxView HeightRequest="0.5" BackgroundColor="White" />
+							<Label x:Name = "countDownLabel" FontSize = "10" IsVisible = "false" Text = "Please keep measuring 44 seconds" Style="{DynamicResource styleLblReading}" />
+							<ProgressBar x:Name="progressBar" Progress="0" IsVisible = "false" />
+
 						</StackLayout>
-						<StackLayout WidthRequest="72">
-							<Label FontSize="15" Text=" " Style="{DynamicResource styleLblReading}" />
-							<Label Text="-" Style="{DynamicResource styleLblReading}" />
+
+						<oxy:PlotView BackgroundColor="White" x:Name="plotView" Margin="10" HeightRequest="150" HorizontalOptions="FillAndExpand" Model="{Binding graphModel}" />
+
+						<StackLayout Orientation="Horizontal" Margin="10,5,10,5">
+							<Button x:Name = "NIBPButton" Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
+							</Button>
+							<Button Clicked="btnEcgReportClicked" x:Name="ecgReportcBtn" IsEnabled="false" Text="ECG Report" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
+							</Button>
 						</StackLayout>
 					</StackLayout>
-					<BoxView HeightRequest="0.5" BackgroundColor="White" />
-				</StackLayout>
-				<oxy:PlotView BackgroundColor="White" x:Name="plotView" Margin="10" HeightRequest="150" HorizontalOptions="FillAndExpand" Model="{Binding graphModel}" />
-				<StackLayout Orientation="Horizontal" Margin="10,5,10,5">
-					<Button Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
-					</Button>
-					<Button Clicked="btnEcgStartClicked" Text="ECG Start" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
-					</Button>
-				</StackLayout>
+				</ScrollView>
 			</StackLayout>
-		</ScrollView>
+			<RelativeLayout x:Name="layoutLoading" IsVisible="false"  Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
+					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Connecting with device ...">
+					</Label>
+				</StackLayout>
+			</RelativeLayout>
+		</RelativeLayout>
 	</ContentPage.Content>
 </ContentPage>

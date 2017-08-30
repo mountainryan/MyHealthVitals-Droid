@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
+	x:Class="MyHealthVitals.EcgReport">
+
+	<ContentPage.Content>
+		<RelativeLayout>
+			<StackLayout VerticalOptions = "FillAndExpand">
+				<Grid VerticalOptions = "FillAndExpand">
+				  <Grid.RowDefinitions>
+   						 <RowDefinition Height="auto"/>
+				  </Grid.RowDefinitions>
+				    <oxy:PlotView Model="{Binding graphModel_report}"  x:Name="plotView" BackgroundColor="White" Margin="10" 
+					              HeightRequest="355" HorizontalOptions="FillAndExpand" />	
+					
+				</Grid>	
+					<Button VerticalOptions = "LayoutOptions.End" x:Name ="reportButton" Clicked="btnSaveClicked" Text="Save ECG Report" Font="16" BackgroundColor="{StaticResource colorThemeBlue}" 
+								TextColor="White">
+					</Button>
+			</StackLayout>
+			<RelativeLayout x:Name="ReportSaving" IsVisible="false" BackgroundColor="Transparent" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+					<ActivityIndicator Color="Black" Scale="2.5" IsVisible="true" IsRunning="true" />
+					<Label x:Name="lblLoadingMessage" TextColor="Black"  Margin="20" Text="Saving ...">
+					</Label>
+				</StackLayout>
+			</RelativeLayout>
+		</RelativeLayout>
+	</ContentPage.Content>
+</ContentPage>

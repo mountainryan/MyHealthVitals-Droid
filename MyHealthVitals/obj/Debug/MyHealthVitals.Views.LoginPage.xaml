@@ -9,28 +9,34 @@
 			<!--login view starts-->
 			<StackLayout Spacing="0">
 				
-				<StackLayout x:Name="layoutImgContainer" Padding="0,50,0,0" Orientation="Vertical" VerticalOptions="Start">
+				<StackLayout x:Name="layoutImgContainer" Margin="0,50,0,0" Orientation="Vertical" VerticalOptions="Start">
 					<Image Source="icucarellc.png">
 					</Image>
 				</StackLayout>
-				<StackLayout x:Name="layoutLoginContainer" Margin="20,30,20,10" VerticalOptions="Center" Orientation="Horizontal" Spacing="0">
-					<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical">
-						<local:MyEntry Margin="0" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="rhiggs" Placeholder="username"/>
-						<Entry Margin="0" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="0600" Placeholder="password"/>
+				<StackLayout x:Name="layoutLoginContainer" Margin="30,30,30,10" Orientation="Horizontal" Spacing="0">
+					<StackLayout HorizontalOptions="FillAndExpand" Orientation="Vertical" Spacing="1">
+						<local:MyEntry BackgroundColor="#D3D3D3" TextColor="Black" Margin="0" HeightRequest="34" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="" Placeholder="username"/>
+						<local:MyEntry BackgroundColor="#D3D3D3" TextColor="Black" Margin="0" HeightRequest="34" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="" Placeholder="password"/>
 					</StackLayout>
-					<Button Margin="5,0,0,0" Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="80" FontSize="17" Text="Login">
+					<Button Margin="1,0,0,0" HorizontalOptions="Center" BorderRadius="0" Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="68" HeightRequest="66" FontSize="16" Text="Login">
 					</Button>
 				</StackLayout>
-				<ScrollView MinimumWidthRequest="200" x:Name="scrollView" Margin="20">
-					<Label FontSize="14" TextColor="{StaticResource colorWhite}" Text="User needs to establish their personal Normal PEF, FEV1 Values. This is accomplished by taking three valid readings in sequence. The system will use the highest readings of the three to determine your Normal Values. These values along with your gender, height and age will be used to calculate a reference value. This value will be shown in the form of a color bar chart on the Main Screen at the conclusion of each subsequent readings.">
+				<ScrollView MinimumWidthRequest="200" x:Name="scrollView" Margin="30">
+					<Label FontSize="13.5" TextColor="{StaticResource colorWhite}" XAlign="Center" Text="Welcome - If this is your first time logging into your My eMHR Personal Health Records account from this App, remember to go to your Account Profile page and select Auto Login. &#x0a; &#x0a; All data as collected by the App from your connected devices will be automatically uploaded to your My eMHR Home Health page and subsequently, to your My Health Mobile APP.">
 					</Label>
 				</ScrollView>
 			</StackLayout>
+
+			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
+				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2016" XAlign="Center" FontSize="13" Margin="0,0,0,4">
+				</Label>
+			</StackLayout>
+			
 			<!--loading layout starts-->
 			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
-					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Loging in...">
+					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Logging...">
 					</Label>
 				</StackLayout>
 			</RelativeLayout>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace MyHealthVitals
 {
@@ -10,5 +12,6 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 		}
+
 	}
 }

@@ -9,16 +9,18 @@
 // ------------------------------------------------------------------------------
 
 namespace MyHealthVitals {
-    using System;
-    using Xamarin.Forms;
-    using Xamarin.Forms.Xaml;
     
     
+    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("/Users/rhiggs/Documents/untitled folder/MyHealthVitals-NEW 2/MyHealthVitals/Views/TestPage.xaml")]
     public partial class TestPage : global::Xamarin.Forms.ContentPage {
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::SegmentedControl.FormsPlugin.Abstractions.SegmentedControl SegControl;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private void InitializeComponent() {
-            this.LoadFromXaml(typeof(TestPage));
+            global::Xamarin.Forms.Xaml.Extensions.LoadFromXaml(this, typeof(TestPage));
+            SegControl = global::Xamarin.Forms.NameScopeExtensions.FindByName <global::SegmentedControl.FormsPlugin.Abstractions.SegmentedControl>(this, "SegControl");
         }
     }
 }

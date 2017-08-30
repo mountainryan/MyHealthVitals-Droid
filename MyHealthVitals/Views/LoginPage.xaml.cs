@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MyHealthVitals
@@ -22,7 +22,8 @@ namespace MyHealthVitals
 			{
 				txtUsername.Text = Demographics.sharedInstance.username;
 			}
-			else {
+			else
+			{
 				txtUsername.Text = "";
 			}
 		}
@@ -36,12 +37,13 @@ namespace MyHealthVitals
 		{
 			base.OnAppearing();
 
-			scrollView.HeightRequest = this.Content.Bounds.Size.Height - layoutImgContainer.Height - layoutLoginContainer.Height-40;
+			scrollView.HeightRequest = this.Content.Bounds.Size.Height - layoutImgContainer.Height - layoutLoginContainer.Height - 40;
 		}
 
-		public async void doLogin(string username,string password) { 
+		public async void doLogin(string username, string password)
+		{
 			layoutLoading.IsVisible = true;
-
+			//var status = Reachability.   .InternetConnectionStatus();
 			try
 			{
 				//Credential cred = await Credential.sharedInstance.CallApiForLogin(txtUsername.Text.Trim(), txtPassword.Text.Trim());
@@ -66,9 +68,14 @@ namespace MyHealthVitals
 					var newScreen = new DeviceListPage();
 					//var newScreen = new RespHomePage();
 					newScreen.Title = " ";
+
 					var nav = new NavigationPage(newScreen);
 					this.Navigation.PushModalAsync(nav);
 				});
+
+				Task.Run(async () => { 
+					ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService(); Debug.WriteLine("sync data from website");});
+
 			}
 
 			catch (HttpStatusException ex)

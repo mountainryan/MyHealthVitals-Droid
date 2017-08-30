@@ -15,12 +15,6 @@
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Gender" />
 						<Label x:Name="lblGender" Style="{DynamicResource UserProfileLabel}"  Text=" " HorizontalOptions="EndAndExpand" />
-						<controls:SegmentedControl x:Name="SegControl" TintColor="#0091FF" IsEnabled="false" SelectedSegment="0" HeightRequest="28" WidthRequest="120">
-							<controls:SegmentedControl.Children>
-								<controls:SegmentedControlOption  Text="Male" />
-								<controls:SegmentedControlOption  Text="Female" />
-							</controls:SegmentedControl.Children>
-						</controls:SegmentedControl>
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
 						<Label Style="{DynamicResource UserProfileLabel}" Text="Birthdate" />
@@ -48,7 +42,7 @@
 						</Switch>
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
-						<Label Style="{DynamicResource UserProfileLabel}" Text="Augo Login" />
+						<Label Style="{DynamicResource UserProfileLabel}" Text="Auto Login" />
 						<Switch x:Name="switchAutoLogin" HorizontalOptions="EndAndExpand">
 						</Switch>
 					</StackLayout>

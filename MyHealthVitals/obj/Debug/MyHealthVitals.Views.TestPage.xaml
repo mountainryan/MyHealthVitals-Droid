@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.TestPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:controls="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.TestPage">
 	<ContentPage.Content>
+		<StackLayout VerticalOptions="Start" Margin="0,100,0,0" Orientation="Horizontal">
 
-		<RelativeLayout BackgroundColor="Blue">
+			<Label Text="Gender"></Label>
+			
+			<controls:SegmentedControl x:Name="SegControl" TintColor="#007AFF" SelectedSegment="0" HeightRequest="36" WidthRequest="100">
+				<controls:SegmentedControl.Children>
+					<controls:SegmentedControlOption WidthRequest="30" Text="Tab 1" />
+					<controls:SegmentedControlOption WidthRequest="30" Text="Tab 2" />
+				</controls:SegmentedControl.Children>
+			</controls:SegmentedControl>
 
-			<StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" BackgroundColor="Gray" Orientation="Horizontal">
-				<StackLayout BackgroundColor="Red">
-					<Label Text="First Label fdfddasfadsfadfadffadfasdfadfaasdfadaadfadafadffasfasffadfadfasdfadfasfasdfasdffadfadfadfadfadadfadfasdfasdf"></Label>
-					<Label Text="Second label fadfadfadfadfadfadfadfafdasdfadsfasdfasdfasdfasdfasdfadfasdfasdfadsfasdfadfadfadfadfafasdfafdadfadfadfadfaaLabel"></Label>
-				</StackLayout>
-
-				<Label VerticalOptions="Center" BackgroundColor="Green" WidthRequest="200" Text="Third label" HorizontalOptions="EndAndExpand"></Label>
-				
-			</StackLayout>
-
-		</RelativeLayout>
-
+		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

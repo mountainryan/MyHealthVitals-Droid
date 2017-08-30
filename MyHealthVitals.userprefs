@@ -1,22 +1,41 @@
-﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals/BLE/SpotCheckServiceHandler.cs">
+﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default" GitUserInfo="UsingGIT">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MyHealthVitals-NEW 2 Status">
     <Files>
-      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="157" Column="5" />
-      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="311" Column="44" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="118" Column="20" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="554" Column="62" />
-      <File FileName="MyHealthVitals/Models/IBluetoothCallBackUpdatable.cs" Line="6" Column="19" />
-      <File FileName="MyHealthVitals/Views/DeviceListPage.xaml.cs" Line="7" Column="53" />
+      <File FileName="MyHealthVitals/BLE/PC100ServiceHandler.cs" Line="1" Column="1" />
+      <File FileName="iOS/Entitlements.plist" />
+      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="1" Column="1" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/headerWithOneTitle.xaml" Line="1" Column="1" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="1" Column="1" />
+      <File FileName="MyHealthVitals-NEW 2 Status" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellOneItem.xaml" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="MyHealthVitals" expanded="True">
+            <Node name="MyHealthVitals" expanded="True">
+              <Node name="BLE" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="SpotCheckViews" expanded="True">
+                  <Node name="SubViews" expanded="True">
+                    <Node name="ListCellOneItem.xaml" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+            <Node name="MyHealthVitals.iOS" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/BLE/BLEManagerSpotCheck.cs" line="100" column="1" />
-      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/MyHealthVitals/BLE/SpotCheckServiceHandler.cs" line="78" column="1" />
+      <Breakpoint file="/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" relfile="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" line="15" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_x86" />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.5cb1f34b11eb6cec5176ff5ad3ebee1fde550339" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.15ee9ccde11747ba3c033828466a83ff65bd0538" />
 </Properties>

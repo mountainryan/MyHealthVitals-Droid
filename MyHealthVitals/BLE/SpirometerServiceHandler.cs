@@ -19,13 +19,14 @@ namespace MyHealthVitals
 		{
 			//uiController = (BLEReadingUpdatableSpiroMeter)controller;
 			connectedDevice = device;
-
 			if (connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
 			{
 				startPolling();
 			}
 			else
 			{
+				Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice );
+
 				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(connectedDevice);
 				// after this it will call central manager and when device_connected event of the central manager fires then it will call again this class discoverServices()
 			}
@@ -104,7 +105,7 @@ namespace MyHealthVitals
 				count++;
 			}
 
-			Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.Uuid, sb.ToString()));
+		//	Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.Uuid, sb.ToString()));
 		}
 
 
@@ -118,7 +119,7 @@ namespace MyHealthVitals
 			//printUpdatedCharacteristics(e.Characteristic);
 
 			var data = e.Characteristic.Value;
-
+		//	Debug.WriteLine("C_ValueUpdated");
 			if (data[0] == 170 && data[1] == 6 && isStatusAsked == false)
 			{
 				isStopPolling = true;
@@ -145,21 +146,22 @@ namespace MyHealthVitals
 
 				var fev1 = (double)((data[dataIndex + 1] << 8) + data[dataIndex]) / 100;
 				int pef = (data[dataIndex + 3] << 8) + data[dataIndex + 2];
-
-				var reading = new SpirometerReading(DateTime.Now, (decimal)pef, (decimal)fev1);
-
-				//var fev11 = (double)fev1 / 100.0;
+				Debug.WriteLine("fev1: " + fev1 + "  " + "pef: " + pef);
 
 				isDataAsked = false;
 				isStatusAsked = false;
+                clearReadingOnDevice();
 
-				uiController.updateCaller(reading);
+				if (pef <= 200)
+				{
+					uiController.testAgainDialog();
+				}
+				else 
+				{
+					var reading = new SpirometerReading(DateTime.Now, (decimal)pef, (decimal)fev1);
+					uiController.updateCaller(reading);
+				}
 
-				clearReadingOnDevice();
-
-				//isStopPolling = false;
-
-				Debug.WriteLine("fev1: " + fev1 + "  " + "pef: " + pef);
 			}
 		}
 	}

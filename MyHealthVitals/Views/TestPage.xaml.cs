@@ -51,5 +51,9 @@ namespace MyHealthVitals
 		{
 			Debug.WriteLine("update UI showoing readings");
 		}
+		public void updated_Weight(double weight)
+		{ 
+			Debug.WriteLine("updated_Weight");
+		}
 	}
 }

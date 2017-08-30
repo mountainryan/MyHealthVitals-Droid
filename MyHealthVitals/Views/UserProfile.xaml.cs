@@ -67,8 +67,8 @@ namespace MyHealthVitals
 				if (Demographics.sharedInstance.Sex.ToString() == "Female") {
 					genValue = 1;
 				}
-
-				SegControl.SelectedSegment = genValue;
+				lblGender.Text = Demographics.sharedInstance.Sex.ToString();
+				//SegControl.SelectedSegment = genValue;
 
 				lblBirthdate.Text = String.Format("{0:MM/dd/yyyy}", (DateTime)Demographics.sharedInstance.DateOfBirth);
 

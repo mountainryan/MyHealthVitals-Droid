@@ -19,15 +19,15 @@
 					<StackLayout Margin="6,0,6,6" Orientation="Horizontal">
 						<StackLayout>
 							<Label WidthRequest="120" XAlign="Start" FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="Date/Time" />
-							<Label x:Name="lblDateReading" FontSize="12" TextColor="White" Text=" " />
+							<Label x:Name="lblDateReading" FontSize="11" TextColor="White" Text=" " />
 						</StackLayout>
 						<StackLayout>
 							<Label HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" />
-							<Label x:Name="lblPefReading" HorizontalTextAlignment="Center" FontSize="13" TextColor="White" Text=" " />
+							<Label x:Name="lblPefReading" HorizontalTextAlignment="Center" FontSize="12" TextColor="White" Text=" " />
 						</StackLayout>
 						<StackLayout>
 							<Label HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
-							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="13" TextColor="White" Text=" " />
+							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="12" TextColor="White" Text=" " />
 						</StackLayout>
 						<Button IsVisible="false" x:Name="btnIndicator" VerticalOptions="End" BackgroundColor="Green" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
 						<Button IsVisible="false" x:Name="btnDelete" Clicked="btnDeleteCurrentReadingClicked" Margin="0,0,0,-3" Image="deleteicon.png" VerticalOptions="End" HeightRequest="26" WidthRequest="26" />
@@ -44,9 +44,9 @@
 						<StackLayout BackgroundColor="Transparent" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Margin="15,0,15,0" Padding="6" Spacing="6" >
 							<Label HorizontalOptions="FillAndExpand" FontAttributes="Bold" FontSize="14" XAlign="Center" Text="Patient's Established Normal" />
 							<StackLayout Padding="3" HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Spacing="30">
-								<Label FontAttributes="Bold" XAlign="Center" HorizontalOptions="FillAndExpand" x:Name="lblDate" FontSize="15" Text="--" />
-								<Label FontAttributes="Bold" XAlign="Center" x:Name="lblPef" FontSize="14"  Text="--" />
-								<Label FontAttributes="Bold" XAlign="Center" x:Name="lblFev1" FontSize="14" Text="--" />
+								<Label FontAttributes="Bold" XAlign="Center" HorizontalOptions="FillAndExpand" x:Name="lblDate" FontSize="12" Text="--" />
+								<Label FontAttributes="Bold" XAlign="Center" x:Name="lblPef" FontSize="12"  Text="--" />
+								<Label FontAttributes="Bold" XAlign="Center" x:Name="lblFev1" FontSize="12" Text="--" />
 							</StackLayout>
 						</StackLayout>
 					</RelativeLayout>
@@ -63,7 +63,7 @@
 				</Label>
 			</StackLayout>
 			<!--loading layout starts-->
-			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Transparent" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 					<ActivityIndicator Color="White" Scale="1.5" IsVisible="true" IsRunning="true" />
 					<Label x:Name="lblLoadingMessage" TextColor="White" Margin="20" Text="Saving...">

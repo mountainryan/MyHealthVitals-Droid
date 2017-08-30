@@ -24,6 +24,8 @@ namespace MyHealthVitals
 			}
 			else
 			{
+				Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice );
+
 				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(connectedDevice);
 			}
 		}
@@ -102,21 +104,45 @@ namespace MyHealthVitals
 				count++;
 			}
 
-			Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.Uuid, sb.ToString()));
+		//	Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.Uuid, sb.ToString()));
 		}
 
 		decimal glucoseReadingVal = -1;
 		string gluUnit = "";
+		int glucoseResult = -1;
 
 		int tempReadingCount = 0;
 
 		public void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e)
 		{
 			var ch = e.Characteristic;
+			Debug.WriteLine("ch.Value[2]" + ch.Value[2]);
 
-			//token in NIBP result in pc-100
-			if ((int)ch.Value[2] == 67)
+
+
+			if ((int)ch.Value[2] == 66)
 			{
+				Debug.WriteLine("ch.Value.Length  ===  " + ch.Value.Length);
+				if (ch.Value.Length >= 9)
+				{
+					int sys = ((int)ch.Value[5] << 8) + (int)ch.Value[6];
+					Debug.WriteLine("sys" + sys);
+					this.uiController.SYS_DIA_BPM_updated(sys, (int)ch.Value[8], 0);
+
+				}
+				else if(ch.Value.Length >= 7)
+				{
+					int sys = ((int)ch.Value[5] << 8) + (int)ch.Value[6];
+					Debug.WriteLine("sys" + sys);
+					this.uiController.SYS_DIA_BPM_updated(sys, 0, 0);
+						//	Debug.WriteLine("ch.Value[8]" + ch.Value[8]);
+				}
+			}
+		//token in NIBP result in pc-100
+			else if ((int)ch.Value[2] == 67)
+			{
+
+
 				// checking length of data
 				if ((int)ch.Value[3] == 7)
 				{
@@ -204,13 +230,15 @@ namespace MyHealthVitals
 						Debug.WriteLine(message);
 					}
 
-					this.uiController.ShowMessageOnUI(message, false);
+					this.uiController.ShowMessageOnUI(message, false, "Blood Pressure Measure Error");
 				}
 			}
 
 			/// <summary>
 			/// Spo2 related parsing
 			/// </summary>
+			/// 
+			/// 
 			if ((int)ch.Value[2] == 82)
 			{
 				// when waveform data comes down to 0 then it is end of the spo2 reading
@@ -220,11 +248,16 @@ namespace MyHealthVitals
 
 				this.uiController.updateBpmWaveform((int)ch.Value[6]);
 
-				if (waveformData == 0) { 
-					this.uiController.noticeEndOfReadingSpo2();
+				if (waveformData == 0) {
+					Debug.WriteLine("Wave form Data");
+				//	this.uiController.noticeEndOfReadingSpo2();
 				}
 			}
+		
 
+			if ((int)ch.Value[2] == 80 && (int)ch.Value[4] == 2) { 
+                    this.uiController.noticeEndOfReadingSpo2();
+			}
 			if ((int)ch.Value[2] == 83 && (int)ch.Value[3] == 7)
 			{
 				if (ch.Value[5] == 0 || ch.Value[6] == 0)
@@ -234,7 +267,10 @@ namespace MyHealthVitals
 				else { 
 					int lastSpo2 = (int)ch.Value[5];
 					int lastBPM = (int)ch.Value[6];
-					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
+
+					Debug.WriteLine("this.uiController.SPO2_readingCompleted");
+
+					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8])/10);
 				}
 			}
 
@@ -272,8 +308,9 @@ namespace MyHealthVitals
 				var bit5 = ch.Value[5] & (1 << 5);
 				var bit6 = ch.Value[5] & (1 << 6);
 
-				if (bit6==1 && bit5==1) {
-					uiController.ShowMessageOnUI("Temperature measuring time out.", true);
+				if (bit6 == 1 && bit5 == 1)
+				{
+					uiController.ShowMessageOnUI("Temperature measuring time out.", true, "Temperature measuring ");
 					return;
 				}
 
@@ -290,16 +327,80 @@ namespace MyHealthVitals
 					//decimal temperatureInCelcious = (decimal)((float)633 / 100 + 30);
 					//(9.0 / 5.0) * c) +32
 					// the device always reads in Celcious even if it is displaying in fareinheit
-					if (tempReadingCount == 2) { 
+					if (tempReadingCount == 2)
+					{
 						var tempC = (double)dataTemp / 100 + 30.0;
 						double tempF = Math.Round(((9.0 / 5.0) * tempC) + 32, 1);
 						this.uiController.updateTemperature((decimal)tempF);
 						tempReadingCount = 0;
 					}
 				}
-				else {
-					if (dataTemp >= 1312) uiController.ShowMessageOnUI("Too high temperature.", true);
-					if (dataTemp < 200) uiController.ShowMessageOnUI("Too low temperature.", true);
+				else
+				{
+					if (dataTemp >= 1312) uiController.ShowMessageOnUI("Too high temperature.", true, "Temperature measuring ");
+					if (dataTemp < 200) uiController.ShowMessageOnUI("Too low temperature.", true, "Temperature measuring ");
+				}
+			}
+
+
+			Debug.WriteLine("ch.Value[2] = " + ch.Value[2]);
+			Debug.WriteLine("ch.Value[3] = " + ch.Value[3]);
+			Debug.WriteLine("ch.Value[4] = " + ch.Value[4]);
+			Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
+
+			// this token is for glucose reading
+			if ((int)ch.Value[2] == 115) 
+			{
+				Debug.WriteLine("glucose");
+				// this is needed because device is reading same data more than once to we are tracking glucose reading stop and sending the last reading
+				if (glucoseResult == -1)
+				{
+					Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(5000), () =>
+					{
+						if (glucoseResult >= 0)
+						{
+							if (glucoseResult != 0)
+							{
+								string title = glucoseResult == 2 ? "Too Low" : "Too High";
+								uiController.ShowMessageOnUI("The measurement result is out of range", true, title);							
+							}
+							else
+							{
+								uiController.updateGlucoseReading(glucoseReadingVal, gluUnit);
+							}
+						}
+
+						glucoseResult = -1;
+						return false;
+					});
+				}
+
+				// combining byte 6 and byte 7 to read temperature
+				// status bit
+			
+				glucoseResult = ((int)ch.Value[5] >> 3) & 3;
+				Debug.WriteLine("correctResult= " + glucoseResult);
+				if (glucoseResult == 0)
+				{
+					int D0_data1 = (int)ch.Value[5];
+					Debug.WriteLine("((int)ch.Value[6] << 8) + (int)ch.Value[7] = " + ((int)ch.Value[6] << 8) + (int)ch.Value[7]);
+					Debug.WriteLine("(int)ch.Value[6] * 100 + (int)ch.Value[7] = " + (int)ch.Value[6] * 100 + (int)ch.Value[7]);
+					if ((D0_data1 & 1) == 1)
+					{
+						int dataMgDl = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
+						glucoseReadingVal = (decimal)dataMgDl;
+						gluUnit = "mg/dL";
+					}
+					else
+					{
+						int dataMmol = (int)ch.Value[6] * 100 + (int)ch.Value[7];
+						glucoseReadingVal = (decimal)dataMmol / 10;
+						gluUnit = "Mmol/L";
+					}
+
+					Debug.WriteLine("D0_data1 = " + D0_data1);
+					Debug.WriteLine("glucoseReadingVal = " + glucoseReadingVal);
+					Debug.WriteLine("gluUnit = " + gluUnit);
 				}
 			}
 		}

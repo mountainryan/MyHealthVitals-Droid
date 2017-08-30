@@ -11,11 +11,13 @@ namespace MyHealthVitals
 		{
 			this.listCellOneItem = new DataTemplate(typeof(ListCellOneItem));
 			this.listCellTwoItem = new DataTemplate(typeof(ListCellTwoItem));
+
 		}
 
 		protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
 		{
-			if (((ParameterDetailItem)item).categoryId == 1 || ((ParameterDetailItem)item).categoryId == 2 || ((ParameterDetailItem)item).categoryId == 5)
+			if (((ParameterDetailItem)item).categoryId == 1 || ((ParameterDetailItem)item).categoryId == 2 
+			    || ((ParameterDetailItem)item).categoryId == 5 || ((ParameterDetailItem)item).categoryId == 10)
 			{
 				return this.listCellTwoItem;
 			}

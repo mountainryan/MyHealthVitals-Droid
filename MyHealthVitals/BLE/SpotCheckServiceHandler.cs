@@ -24,8 +24,8 @@ namespace MyHealthVitals
 			}
 			else
 			{
-				//uiController.ShowMessageOnUI("Searching device...", false);
-				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(connectedDevice);
+				Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice );
+				     CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(connectedDevice);
 				// after this it will call central manager and when device_connected event of the central manager fires then it will call again this class discoverServices()
 			}
 		}
@@ -94,7 +94,7 @@ namespace MyHealthVitals
 		{
 			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x30, 0x02, 0x02, 0x24 });
 		}
-
+		int pretoken = 0;
 		private void printUpdatedCharacteristics(ICharacteristic ch)
 		{
 			List<int> values = new List<int>();
@@ -114,12 +114,13 @@ namespace MyHealthVitals
 				count++;
 			}
 
-			Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.Uuid, sb.ToString()));
+		//	Debug.WriteLine(string.Format("UUID: {0}  ->{1}", ch.Uuid, sb.ToString()));
 		}
 
 		int countMeasuringPressure = 0;
-
+		int preBMP = 0;
 		decimal glucoseReadingVal = -1;
+		int glucoseResult = -1;
 		string gluUnit = "";
 
 		//int countOfEcgdataIn30Sec = 0;
@@ -132,32 +133,45 @@ namespace MyHealthVitals
 			//printUpdatedCharacteristics(e.Characteristic);
 
 			var ch = e.Characteristic;
+		//	Debug.WriteLine("ch.Value[2]"+ch.Value[2]);
 
 			// sys , dia and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 63 && (int)ch.Value[2] < 68)
 			{
-				Debug.WriteLine("NIBP related token.");
-
-				if (countMeasuringPressure == 0)
+					Debug.WriteLine("NIBP related token. ch.Value.Length  = " + ch.Value.Length );
+				if (ch.Value.Length >= 9)
 				{
-					//uiController.ShowMessageOnUI("Measuring the Blood pressure...", true);
-					countMeasuringPressure++;
+					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], 0);
+
+				}
+				else if (ch.Value.Length >= 7)
+				{
+					Debug.WriteLine("ch.Value[6]" + ch.Value[6]);
+					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], 0, 0);
 				}
 
-				if (ch.Value.Length > 21)
-				{
-					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
-					//uiController.ShowMessageOnUI("Boood pressure read succesfully.", true);
-					countMeasuringPressure = 0;
+
+					if (countMeasuringPressure == 0)
+					{
+						//uiController.ShowMessageOnUI("Measuring the Blood pressure...", true);
+						countMeasuringPressure++;
+					}
+
+					if (ch.Value.Length > 21)
+					{
+						uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
+						//uiController.ShowMessageOnUI("Boood pressure read succesfully.", true);
+						countMeasuringPressure = 0;
+					}
+					//if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
 				}
-
-				//if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
-			}
-
 			// error in blood pressure reading
 			if (ch.Value.Length == 14)
 			{
 				String message = "";
+				Debug.WriteLine("ch.Value[8]" + ch.Value[5]);
+				Debug.WriteLine("127 & (int)ch.Value[5]" + (127 & (int)ch.Value[5]));
+
 				switch (127 & (int)ch.Value[5])
 				{
 					case 0:
@@ -199,9 +213,13 @@ namespace MyHealthVitals
 					case 12:
 						message = "measurement exceeds the specified time limits, 120s for adults with cuff pressure over 200 mmHg, 90s for adults with cuff pressure under 200 mmhg; 90s for neonate";
 						break;
+					default:
+						return;
+						//message = "Unknow error.";
+						//break;
 				}
 
-				uiController.ShowMessageOnUI(message, true);
+				uiController.ShowMessageOnUI(message, true, "Blood Pressure Measure Error");
 			}
 
 
@@ -237,26 +255,34 @@ namespace MyHealthVitals
 			//}
 
 			//// spo2 , PI and bpm is available in spot check monitor
-			if ((int)ch.Value[2] > 80 && (int)ch.Value[2] < 84)
+			if ((int)ch.Value[2] >= 80 && (int)ch.Value[2] < 84)
 			{
 				if ((int)ch.Value[2] == 82)
 				{
 					var waveformBpm = (int)ch.Value[6];
-					this.uiController.updateBpmWaveform(waveformBpm);
+					if (waveformBpm != 0)
+						this.uiController.updateBpmWaveform(waveformBpm);
 				}
 
 				var token = (int)ch.Value[2];
 				var length = (int)ch.Value[3];
 
 				if (token == 83 && length == 7) {
+					Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
+					Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
+					Debug.WriteLine("ch.Value[9] = " + ch.Value[9]);
 
 					var status_bit1 = ((int)ch.Value[9] & (1 << 1)) != 0;
 					if (status_bit1)
 					{
 						Debug.WriteLine("end of the spo2 reading");
-						uiController.noticeEndOfReadingSpo2();
+						if (preBMP != 0)
+						{
+							uiController.noticeEndOfReadingSpo2();
+							preBMP = 0;
+						}
 					}
-
+					preBMP = (int)ch.Value[6];
 					if (ch.Value[5] == 0 || ch.Value[6] == 0)
 					{
 						Debug.WriteLine("Invallid readings.");
@@ -265,44 +291,71 @@ namespace MyHealthVitals
 						int lastSpo2 = (int)ch.Value[5];
 						int lastBPM = (int)ch.Value[6];
 
-						uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
+						uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 10);
 					}
 				}
+				/*
+				if ((int)ch.Value[2] == 0x50 && (int)ch.Value[4] == 2)
+				{
+					int lastSpo2 = (int)ch.Value[5];
+					int lastBPM = (int)ch.Value[6];
+					uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
+
+				}*/
 			}
 
 			// this token is for glucose reading
 			if ((int)ch.Value[2] == 115) 
 			{
+				Debug.WriteLine("glucose");
 				// this is needed because device is reading same data more than once to we are tracking glucose reading stop and sending the last reading
-				if (glucoseReadingVal == -1)
+				if (glucoseResult == -1)
 				{
-					Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(10000), () =>
+					Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(5000), () =>
 					{
-						if (glucoseReadingVal > 0)
+						if (glucoseResult >= 0)
 						{
-							uiController.updateGlucoseReading(glucoseReadingVal, gluUnit);
+							if (glucoseResult != 0)
+							{
+								string title = glucoseResult == 2 ? "Too Low" : "Too High";
+								uiController.ShowMessageOnUI("The measurement result is out of range", true, title);							
+							}
+							else
+							{
+								uiController.updateGlucoseReading(glucoseReadingVal, gluUnit);
+							}
 						}
 
-						glucoseReadingVal = -1;
+						glucoseResult = -1;
 						return false;
 					});
 				}
 
 				// combining byte 6 and byte 7 to read temperature
 				// status bit
-				var D0_data1 = ((int)ch.Value[5] & (1 << 0)) != 0;
+			
+				glucoseResult = ((int)ch.Value[5] >> 3) & 3;
+				Debug.WriteLine("correctResult= " + glucoseResult);
+				if (glucoseResult == 0)
+				{
+					int D0_data1 = (int)ch.Value[5];
 
-				if (D0_data1)
-				{
-					int dataMgDl = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
-					glucoseReadingVal = (decimal)dataMgDl;
-					gluUnit = "mg/dL";
-				}
-				else
-				{
-					int dataMmol = (int)ch.Value[6] * 100 + (int)ch.Value[7];
-					glucoseReadingVal = (decimal)dataMmol / 10;
-					gluUnit = "Mmol/L";
+					if ((D0_data1 & 1) == 1)
+					{
+						int dataMgDl = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
+						glucoseReadingVal = (decimal)dataMgDl;
+						gluUnit = "mg/dL";
+					}
+					else
+					{
+						int dataMmol = (int)ch.Value[6] * 100 + (int)ch.Value[7];
+						glucoseReadingVal = (decimal)dataMmol / 10;
+						gluUnit = "Mmol/L";
+					}
+
+					Debug.WriteLine("D0_data1 = " + D0_data1);
+					Debug.WriteLine("glucoseReadingVal = " + glucoseReadingVal);
+					Debug.WriteLine("gluUnit = " + gluUnit);
 				}
 			}
 
@@ -313,6 +366,7 @@ namespace MyHealthVitals
 				printUpdatedCharacteristics(ch);
 
 				var token = (int)ch.Value[2];
+
 				// this is result of query working state
 				if (token == 49)
 				{
@@ -369,9 +423,11 @@ namespace MyHealthVitals
 
 					uiController.updateECGPacket(values);
 				}
+		//		Debug.WriteLine("token = " + token);
 
-				if (token == 48) {
+				if (token == 48 && pretoken == 50) {
 					Debug.WriteLine("stop response may be");
+					uiController.ShowMessageOnUI("You have not finished your ECG measure.", true, "Measure Interruped");
 				}
 
 				// end of the ecg reading
@@ -381,102 +437,104 @@ namespace MyHealthVitals
 					isEcgStarted = false;
 
 					var data1 = (int)ch.Value[5];
+					uiController.SaveEcgState(data1);
+					uiController.updateECGEnded((int)ch.Value[7], data1);
+
 					switch (data1)
 					{
 						case 0:
 							{
-								uiController.ShowMessageOnUI("No irregularity found.", true);
+								uiController.ShowMessageOnUI("No irregularity found.", true,"Normal");
 								break;
 							}
 						case 1:
 							{
-								uiController.ShowMessageOnUI("Suspected a little fast beat.", true);
+								uiController.ShowMessageOnUI("Suspected a little fast beat.", true, "Abnormal");
 								break;
 							}
 						case 2:
 							{
-								uiController.ShowMessageOnUI("Suspected fast beat.", true);
+								uiController.ShowMessageOnUI("Suspected fast beat.", true, "Abnormal");
 								break;
 							}
 						case 3:
 							{
-								uiController.ShowMessageOnUI("Suspected short run of fast beat.", true);
+								uiController.ShowMessageOnUI("Suspected short run of fast beat.", true, "Abnormal");
 								break;
 							}
 						case 4:
 							{
-								uiController.ShowMessageOnUI("Suspected a little slow beat.", true);
+								uiController.ShowMessageOnUI("Suspected a little slow beat.", true, "Abnormal");
 								break;
 							}
 						case 5:
 							{
-								uiController.ShowMessageOnUI("Suspected occasional short beat interval.", true);
+								uiController.ShowMessageOnUI("Suspected occasional short beat interval.", true, "Abnormal");
 								break;
 							}
 						case 6:
 							{
-								uiController.ShowMessageOnUI("Suspected occasional short beat interval.", true);
+								uiController.ShowMessageOnUI("Suspected occasional short beat interval.", true, "Abnormal");
 								break;
 							}
 						case 7:
 							{
-								uiController.ShowMessageOnUI("Suspected irregular beat interval.", true);
+								uiController.ShowMessageOnUI("Suspected irregular beat interval.", true, "Abnormal");
 								break;
 							}
 						case 8:
 							{
-								uiController.ShowMessageOnUI("Suspected fast beat with short beat interval.", true);
+								uiController.ShowMessageOnUI("Suspected fast beat with short beat interval.", true, "Abnormal");
 								break;
 							}
 						case 9:
 							{
-								uiController.ShowMessageOnUI("Suspected slow beat with short beat interva.", true);
-								break;
+								uiController.ShowMessageOnUI("Suspected slow beat with short beat interva.", true, "Abnormal");								break;
 							}
 						case 10:
 							{
-								uiController.ShowMessageOnUI("Suspected slow beat with irregular beat interval.", true);
+								uiController.ShowMessageOnUI("Suspected slow beat with irregular beat interval.", true, "Abnormal");
 								break;
 							}
 						case 11:
 							{
-								uiController.ShowMessageOnUI("Waveform baseline wander.", true);
+								uiController.ShowMessageOnUI("Waveform baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 12:
 							{
-								uiController.ShowMessageOnUI("Suspected fast beat with baseline wander.", true);
+								uiController.ShowMessageOnUI("Suspected fast beat with baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 13:
 							{
-								uiController.ShowMessageOnUI("Suspected slow beat with baseline wander.", true);
+								uiController.ShowMessageOnUI("Suspected slow beat with baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 14:
 							{
-								uiController.ShowMessageOnUI("Suspected occasional short beat interval with baseline wander.", true);
+								uiController.ShowMessageOnUI("Suspected occasional short beat interval with baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 15:
 							{
-								uiController.ShowMessageOnUI("Suspected irregular beat interval with baseline wander.", true);
+								uiController.ShowMessageOnUI("Suspected irregular beat interval with baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 16:
 							{
-								uiController.ShowMessageOnUI("Poor Signal, measure again.", true);
+								uiController.ShowMessageOnUI("Poor Signal, measure again.", true, "Poor Signal");
 								break;
 							}
 						default:
 							{
-								uiController.ShowMessageOnUI("No Result Found.", true);
+								uiController.ShowMessageOnUI("No Result Found.", true, "Abnormal");
 								break;
 							}
 					}
 
-					//Debug.WriteLine("bpm reslt of ecg: " + );
-					uiController.updateECGEnded((int)ch.Value[7]);
+					//Debug.WriteLine("bpm reslt of ecg: " + );  bpm  , ecg
+
 				}
 
 				//printUpdatedCharacteristics(ch);
@@ -497,9 +555,9 @@ namespace MyHealthVitals
 					// has the temperature reading
 					// combining byte 6 and byte 7 to read temperature
 					int data = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
-					if (data <= 3) uiController.ShowMessageOnUI("Failed to read temperature.", true);
+					if (data <= 3) uiController.ShowMessageOnUI("Failed to read temperature.", true, "Temperature measuring ");
 
-					if (data >= 1312) uiController.ShowMessageOnUI("Too high temperature.", true);
+					if (data >= 1312) uiController.ShowMessageOnUI("Too high temperature.", true, "Temperature measuring ");
 
 					// if this condition saisfies the reading is measured in celcious
 					if (data >= 200 && data <= 1301)
@@ -515,6 +573,7 @@ namespace MyHealthVitals
 					}
 				}
 			}
+			pretoken = (int)ch.Value[2];
 		}
 	}
 }

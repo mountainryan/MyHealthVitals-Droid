@@ -57,7 +57,13 @@ namespace MyHealthVitals
 				DisplayAlert("Calibration", "Readings taken are sufficient for calibration. If you want to take more readings, Please, delete the unwanted row and take reading again.", "OK");
 			}
 		}
-
+		public void testAgainDialog()
+		{
+           DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
+	//		DisplayAlert("Test Again", "The FEV value is too low, please test again.", "OK");"
+			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+		
+		}
 		// call back methods
 		public void updateCaller(SpirometerReading currReading)
 		{
@@ -118,6 +124,8 @@ namespace MyHealthVitals
 				Reading fevReading = new Reading("FEV1", highestReading.Fev1, 9);
 				Reading pefReading = new Reading("PEF", highestReading.Pef, 9);
 
+
+				logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, highestReading.Pef, highestReading.Fev1));
 				await pefReading.PostReadingToService();
 				await fevReading.PostReadingToService();
 				await this.Navigation.PopAsync();

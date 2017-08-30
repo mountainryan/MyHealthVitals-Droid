@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace MyHealthVitals
 {
 	public class ParameterDetailItem
@@ -7,5 +9,12 @@ namespace MyHealthVitals
 		public string firstItem { get; set;}
 		public string secondItem { get; set; }
 		public long categoryId;
+
 	}
+	public class logcalParameteritem { 
+		static public Dictionary<int, List<ParameterDetailItem>> localhashmap = new Dictionary<int , List<ParameterDetailItem>>();
+		static public List<SpirometerReading> localspirometerList = new List<SpirometerReading>();
+
+	}
+
 }

@@ -5,12 +5,12 @@ using UIKit;
 using MyHealthVitals.iOS;
 using MyHealthVitals;
 
+
 [assembly: ExportRenderer(typeof(CustomListView), typeof(MyListViewRenderer))]
 [assembly: ExportRenderer(typeof(MyEntry), typeof(MyEntryRenderer))]
 [assembly: ExportRenderer(typeof(MyButton), typeof(MyButtonRenderer))]
 
 [assembly: ExportRenderer(typeof(RoundedBox), typeof(RoundedBoxRenderer))]
-
 namespace MyHealthVitals.iOS
 {
 	public class MyListViewRenderer : ListViewRenderer
@@ -19,6 +19,7 @@ namespace MyHealthVitals.iOS
 		{
 			base.OnElementChanged(e);
 			Control.AllowsSelection = false;
+		//	text
 		}
 	}
 
@@ -69,4 +70,5 @@ namespace MyHealthVitals.iOS
 			}
 		}
 	}
+
 }

@@ -21,6 +21,7 @@ namespace MyHealthVitals
 		public decimal? MetricValue { get; set; }
 		public string ValueType { get; set; }
 
+
 		public Reading(String valueType, decimal englishVal, long catId)
 		{
 
@@ -31,6 +32,7 @@ namespace MyHealthVitals
 			// this is same for all reading
 			this.Source = "Device";
 			this.Date = DateTime.Now;
+
 		}
 
 		//public void getCelcious
@@ -41,13 +43,13 @@ namespace MyHealthVitals
 			//Id = item.Id;
 			//Abnormal = item.Abnormal;
 			//EnglishValue = item.EnglishValue;
-			//MetricValue = item.MetricValue;
-
+			Debug.WriteLine("PostReadingToService");
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
 			// converting the this reading into string to send it to the service as application/json
 			var content = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
+
 			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
 
 			var response = await client.PostAsync(serviceUri, content);
@@ -75,8 +77,8 @@ namespace MyHealthVitals
 
 				if (response.IsSuccessStatusCode)
 				{
-
 					var content = await response.Content.ReadAsStringAsync();
+					Debug.WriteLine(JsonConvert.DeserializeObject<Reading[]>(content));
 					return JsonConvert.DeserializeObject<Reading[]>(content);
 				}
 				else {

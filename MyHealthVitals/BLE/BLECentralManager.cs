@@ -6,7 +6,6 @@ using System.Diagnostics;
 using Plugin.BLE.Abstractions.Contracts;
 namespace MyHealthVitals
 {
-
 	public interface IBLEDeviceServiceHandler
 	{
 		void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e);
@@ -15,7 +14,15 @@ namespace MyHealthVitals
 
 		//object uiController;
 	}
-
+/*	public class ListItemManager {
+		public static ListItemManager sharedInstance = new ListItemManager();
+		public ListCellTwoItem listcellTwoItem;
+		private ListItemManager()r
+		{
+			listcellTwoItem = new void ListCellTwoItem();
+		}
+	}
+*/
 	public class BLECentralManager
 	{
 		//public static IAdapter Adapter = new IAdapter;
@@ -29,6 +36,8 @@ namespace MyHealthVitals
 		public SpirometerServiceHandler spiroServHandler;
 		public SpotCheckServiceHandler spotServHandler;
 		public PC100ServiceHandler pc100ServHandler;
+		public ScaleServiceHandler scaleServHandle;
+		string ScaleName = "eBody-Scale";
 
 		//public DeviceListPage deviceListPage;
 
@@ -50,6 +59,7 @@ namespace MyHealthVitals
 			spiroServHandler = new SpirometerServiceHandler();
 			spotServHandler = new SpotCheckServiceHandler();
 			pc100ServHandler = new PC100ServiceHandler();
+			scaleServHandle = new ScaleServiceHandler();
 		}
 
 		public void connectToDevice(String deviceName, object controller)
@@ -74,17 +84,24 @@ namespace MyHealthVitals
 						pc100ServHandler.uiController = (IBluetoothCallBackUpdatable)controller;
 						break;
 					}
+				case "eBody-Scale":
+						scaleServHandle.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+				default:
+					break;
 			}
 
 			if (!checkIfDeviceScanned(deviceName))
 			{
 				// the device is not in the scanned list now scan to find the desired device and then connnect
+				Debug.WriteLine("StartScanningForDevicesAsync : " + deviceName);
 				CrossBluetoothLE.Current.Adapter.StartScanningForDevicesAsync();
 
 				//if (deviceName == "PC_300SNT") spotServHandler.uiController.ShowMessageOnUI("Searching device...", false);
 
 			}
 			else {
+				Debug.WriteLine("reconnectToDevice : " + deviceName);
 
 				switch (deviceName)
 				{
@@ -105,6 +122,11 @@ namespace MyHealthVitals
 							pc100ServHandler.reconnectToDevice(getCurrentDevice(deviceName));
 							break;
 						}
+					case "eBody-Scale":
+						scaleServHandle.reconnectToDevice(getCurrentDevice(deviceName));
+						break;
+					default:
+						break;
 				}
 			}
 		}
@@ -121,8 +143,10 @@ namespace MyHealthVitals
 			return null;
 		}
 
-		private bool checkIfDeviceScanned(string deviceName)
+		public bool checkIfDeviceScanned(string deviceName)
 		{
+			Debug.WriteLine("checkIfDeviceScanned  IN CONNECTED ARRAY :"+ deviceName);
+
 			foreach (var device in connectedDevices)
 			{
 				if (device.Name == deviceName)
@@ -141,6 +165,8 @@ namespace MyHealthVitals
 
 			if (e.Device.Name == scanningDeviceName)
 			{
+				Debug.WriteLine(string.Format("StopScanningForDevicesAsync"));
+
 				CrossBluetoothLE.Current.Adapter.StopScanningForDevicesAsync();
 				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device);
 
@@ -164,15 +190,21 @@ namespace MyHealthVitals
 				case "PC_300SNT":
 					{
 						spotServHandler.discoverServices(e.Device);
-						spotServHandler.uiController.ShowMessageOnUI("Connected.", true);
+						spotServHandler.uiController.ShowConcetion("Connected.", true);
 						break;
 					}
 				case "PC-100":
 					{
 						pc100ServHandler.discoverServices(e.Device);
-						pc100ServHandler.uiController.ShowMessageOnUI("Connected.", true);
+						pc100ServHandler.uiController.ShowConcetion("Connected.", true);
 						break;
 					}
+				case "eBody-Scale":
+					scaleServHandle.discoverServices(e.Device);
+					scaleServHandle.uiController.ShowConcetion("Connected.", true);
+					break;
+				default:
+					break;
 			}
 
 			//devServiceHandler.discoverServices(e.Device);
@@ -181,21 +213,23 @@ namespace MyHealthVitals
 		void Adapter_DeviceConnectionLost(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceErrorEventArgs e)
 		{
 			Debug.WriteLine(e.Device.Name + " just Adapter_DeviceConnectionLost");
-
+			connectedDevices.Remove(e.Device);
 			if (e.Device.Name == "PC_300SNT")
 			{
-				spotServHandler.uiController.ShowMessageOnUI("PC 300 Connection Lost.", false);
+				spotServHandler.uiController.ShowConcetion("PC-300 Connection Lost.", false);
 			}
-
-			if (e.Device.Name == "BLE-MSA")
+			else if (e.Device.Name == "BLE-MSA")
 			{
 				spiroServHandler.stopPolling();
 				spiroServHandler.uiController.updateDeviceStateOnUI("Spirometer Connection Lost.", false);
 			}
-
-			if (e.Device.Name == "PC-100")
+			else if (e.Device.Name == "PC-100")
 			{
-				pc100ServHandler.uiController.ShowMessageOnUI("PC-100 Connection Lost.", false);
+				pc100ServHandler.uiController.ShowConcetion("PC-100 Connection Lost.", false);
+			}
+			else if (e.Device.Name == "eBody-Scale")
+			{
+				scaleServHandle.uiController.ShowConcetion("Scale Connection Lost.", false);
 			}
 		}
 
@@ -203,20 +237,23 @@ namespace MyHealthVitals
 		{
 			if (scanningDeviceName == "PC_300SNT")
 			{
-				spotServHandler.uiController.ShowMessageOnUI("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
+				spotServHandler.uiController.ShowConcetion("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
 			}
 
-			if (scanningDeviceName == "BLE-MSA")
+			else if (scanningDeviceName == "BLE-MSA")
 			{
 				spiroServHandler.stopPolling();
 				spiroServHandler.uiController.updateDeviceStateOnUI("Scanning time out. Please, check if Spirometer is turned on.", false);
 			}
 
-			if (scanningDeviceName == "PC-100")
+			else if (scanningDeviceName == "PC-100")
 			{
-				pc100ServHandler.uiController.ShowMessageOnUI("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
+				pc100ServHandler.uiController.ShowConcetion("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
 			}
 
+			else if (scanningDeviceName == "eBody-Scale") {
+				scaleServHandle.uiController.ShowConcetion("Scanning time out. Please check if Scale is turned on.", false);
+			}
 			Debug.WriteLine("Adapter_ScanTimeoutElapsed.");
 		}
 	}

@@ -14,7 +14,7 @@
 			<StackLayout VerticalOptions="Center" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="15">
 				<StackLayout Spacing="0" HorizontalOptions="Center">
 					<Button Clicked="btnPC300clicked" Image="PC300Monitor.png" HeightRequest="65" WidthRequest="65"/>
-					<local:MyButton x:Name="btnMyButton" FontSize="15" Clicked="btnPC300clicked" TextColor="White" WidthRequest="130" Text="BP, Pulse, SpOo2, Glucose, ECG"/>
+					<local:MyButton x:Name="btnMyButton" FontSize="15" Clicked="btnPC300clicked" TextColor="White" WidthRequest="130" Text="BP, Pulse, SpO2, Glucose, ECG"/>
 					<!--<Image Source="imgBLEOff.png" HeightRequest="22" WidthRequest="22" />-->
 				</StackLayout>
 				<StackLayout HorizontalOptions="Center" Spacing="50" Orientation="Horizontal">
@@ -26,13 +26,13 @@
 					</StackLayout>
 					<StackLayout Spacing="0" HorizontalOptions="Center">
 						<Button Clicked="btnPC100Clicked" Image="PC100Monitor.png" HeightRequest="75" WidthRequest="75"/>
-						<local:MyButton Clicked="btnPC100Clicked" FontSize="15" TextColor="White" WidthRequest="130" Text="BP, Pulse, Spo2" />
+						<local:MyButton Clicked="btnPC100Clicked" FontSize="15" TextColor="White" WidthRequest="130" Text="BP, Pulse, SpO2" />
 <!--						<Image Source="imgBLEOff.png" Margin="0,-5,0,0" HeightRequest="22" WidthRequest="22" />-->
 					</StackLayout>
 				</StackLayout>
 				<StackLayout Spacing="0" HorizontalOptions="Center">
-					<Button Image="WeightScales.png" HeightRequest="65" WidthRequest="65"/>
-					<local:MyButton FontSize="15" TextColor="White" WidthRequest="130" Text="Weight, BMI Scale" />
+					<Button  Clicked="btnScaleClicked"  Image="WeightScales.png" HeightRequest="65" WidthRequest="65"/>
+					<local:MyButton Clicked="btnScaleClicked" FontSize="15" TextColor="White" WidthRequest="130" Text="Weight, BMI Scale" />
 <!--					<Image Margin="0,-5,0,0" Source="imgBLEOff.png" HeightRequest="22" WidthRequest="22" />-->
 				</StackLayout>
 			</StackLayout>

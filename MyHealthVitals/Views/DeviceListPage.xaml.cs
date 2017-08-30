@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace MyHealthVitals
@@ -9,13 +10,35 @@ namespace MyHealthVitals
 
 		private String activeDeviceName = "";
 		bool isNavigated = false;
-
+		void btnScaleClicked(object sender, System.EventArgs e) 
+		{
+			activeDeviceName = "eBody-Scale";//"Headset";
+            navigateToMainPage();
+			/*
+			try
+			{
+				if (BLECentralManager.sharedInstance.scaleServHandle.connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
+				{
+                    navigateToMainPage();
+				}
+				else {
+					layoutLoadingDevice.IsVisible = true;
+					BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
+				}
+			}
+			catch
+			{
+				layoutLoadingDevice.IsVisible = true;
+				BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
+			}*/
+		}
 		void btnPC100Clicked(object sender, System.EventArgs e)
 		{
 			//BLECentralManager.sharedInstance.connectToDevice("PC-100", this);
 
 			activeDeviceName = "PC-100";
-
+            navigateToMainPage();
+			/*
 			try
 			{
 				if (BLECentralManager.sharedInstance.pc100ServHandler.connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
@@ -31,7 +54,7 @@ namespace MyHealthVitals
 			{
 				layoutLoadingDevice.IsVisible = true;
 				BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
-			}
+			}*/
 		}
 
 		protected override void OnAppearing()
@@ -50,9 +73,11 @@ namespace MyHealthVitals
 		void btnPC300clicked(object sender, System.EventArgs e)
 		{
 			activeDeviceName = "PC_300SNT";
-
+            navigateToMainPage();
+			/*
 			try
 			{
+				
 				if (BLECentralManager.sharedInstance.spotServHandler.connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
 				{
 					navigateToMainPage();
@@ -65,7 +90,7 @@ namespace MyHealthVitals
 			catch { 
 				layoutLoadingDevice.IsVisible = true;
 				BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
-			}
+			}*/
 		}
 
 		public void updateControllerWithMessage(String message,bool isConnected) { 
@@ -81,7 +106,9 @@ namespace MyHealthVitals
 			//Debug.WriteLine(" log out");
 			//Demographics.sharedInstance.clearLocalStorageOnLogout();
 			//Demographics.sharedInstance.password = "";
-
+			ParametersPageLocal.allReadings = null;
+			logcalParameteritem.localhashmap.Clear();
+			logcalParameteritem.localspirometerList.Clear();
 			this.Navigation.PopModalAsync(true);
 		}
 
@@ -94,11 +121,15 @@ namespace MyHealthVitals
 
 		public void navigateToMainPage() { 
 			var newScreen = new MainPage(activeDeviceName);
+			newScreen.isFromDeviecList = true;
 			newScreen.Title = "Main Screeen";
 			this.Navigation.PushAsync(newScreen);
 		}
 
-		public void ShowMessageOnUI(String message, Boolean isConnected) {
+		public void ShowMessageOnUI(String message, Boolean isConnected, String title = null ) {
+
+
+						Debug.WriteLine("ShowMessageOnUI  device list page  :"  );
 
 			layoutLoadingDevice.IsVisible = false;
 
@@ -114,19 +145,26 @@ namespace MyHealthVitals
 				}
 			}	
 		}
-
+		public void SaveEcgState(int state) { }
 		public void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex) { }
 		public void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm) { }
+		public void updated_Weight(decimal weight) { }
 		public void updatingPressureMeanTime(int pressure) { }
 		public void updateTemperature(decimal temperature) { }
 
+
+
+		//	public void Showupdata(String message, Boolean isConnected) { }
+
+		public void ShowConcetion(String message, Boolean isConnected) { }
+		
 		public void noticeEndOfReadingSpo2() { }
 		public void updateDeviceConnected(String deviceName, bool isConnected) { }
 
 		public void updateGlucoseReading(decimal gluReading, string unit) { }
 
 		public void updateECGPacket(List<int> ecgPacket) { }
-		public void updateECGEnded(int bpm) { }
+		public void updateECGEnded(int bpm, int ecg) { }
 
 		public void resetEcgDisplay() { }
 		public void updateBpmWaveform(int bpm) { }

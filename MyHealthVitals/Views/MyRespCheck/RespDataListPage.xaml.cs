@@ -21,9 +21,19 @@ namespace MyHealthVitals
 
 			try
 			{
-				var allReadings = await Reading.GetAllReadingsFromService();
+				if (logcalParameteritem.localspirometerList != null && logcalParameteritem.localspirometerList.Count > 0)
+				{ 
+					foreach (var item in logcalParameteritem.localspirometerList) 
+					{
+						spirometerReadingList.Add(item);
+					}
+				}
+				if (ParametersPageLocal.allReadings == null) { 
+					ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
+				}
 
-				var allCategoryReading = from reading in allReadings
+
+				var allCategoryReading = from reading in ParametersPageLocal.allReadings 
 										 where reading.CategoryId == 9
 										 select reading;
 

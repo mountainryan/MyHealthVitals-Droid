@@ -14,6 +14,8 @@ namespace MyHealthVitals
 		public string Token { get; set; }
 		public string username { get; set; }
 
+		public static String BASE_URL_DEV = "http://testmyemhr.local/api/v1/";
+
 		public static String BASE_URL_TEST = "https://test.myemhr.com/api/v1/";
 		public static String BASE_URL_LIVE = "https://myemhr.com/api/v1/";
 		public static Credential sharedInstance = new Credential();

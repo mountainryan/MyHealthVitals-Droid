@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals;assembly=MyHealthVitals"
+	x:Class="MyHealthVitals.ParameterItemDetailNew">
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<local:ListCellTemplateSelector x:Key="templateSelector"></local:ListCellTemplateSelector>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+		<StackLayout BackgroundColor="{StaticResource colorBlackBg}">
+				<Label TextColor="White" FontSize="16" FontAttributes="Bold" Margin="10" HorizontalTextAlignment="Center" Text="Most Recent Reading's" >
+				</Label>
+				<StackLayout x:Name="headerContainer">
+					
+				</StackLayout>
+				<BoxView HeightRequest="0.5" BackgroundColor="White" />
+				<local:CustomListView SeparatorVisibility="None"  HasUnevenRows="true" ItemTemplate="{StaticResource templateSelector}"  x:Name="itemList" BackgroundColor="{StaticResource colorBlackBg}">
+					
+				</local:CustomListView>
+			</StackLayout>
+	<ContentPage.Content>
+		
+	</ContentPage.Content>
+</ContentPage>

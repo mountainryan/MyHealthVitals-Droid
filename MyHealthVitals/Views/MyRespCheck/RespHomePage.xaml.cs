@@ -34,6 +34,13 @@ namespace MyHealthVitals
 			base.OnDisappearing();
 			BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
 		}
+		async public void testAgainDialog() {
+           await DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
+		//	BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
+
+			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+
+		}
 
 		// call back methods
 		public void updateCaller(SpirometerReading reading)
@@ -73,7 +80,6 @@ namespace MyHealthVitals
 
 		void btnTakeReadingClicked(object sender, System.EventArgs e)
 		{
-
 			//updateCaller(new SpirometerReading(DateTime.Now, 680, 3.5m));
 
 			try
@@ -105,6 +111,7 @@ namespace MyHealthVitals
 			{
 				Reading fevReading = new Reading("FEV1", currReading.Fev1, 9);
 				Reading pefReading = new Reading("PEF", currReading.Pef, 9);
+				logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, currReading.Pef, currReading.Fev1));
 
 				await pefReading.PostReadingToService();
 				await fevReading.PostReadingToService();
@@ -213,7 +220,8 @@ namespace MyHealthVitals
 
 		void btnViewGraphPageClicked(object sender, System.EventArgs e)
 		{
-			var newPage = new RespGraphPage();
+			//	var newPage = new RespGraphPage();
+			var newPage = new RespGraphPageNew();
 			newPage.Title = "Data Graph Screen";
 			this.Navigation.PushAsync(newPage);
 		}

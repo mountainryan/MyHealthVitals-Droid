@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Xamarin.Forms;
 
 namespace MyHealthVitals
@@ -26,27 +27,14 @@ namespace MyHealthVitals
 	{
 
 		public long categoryId;
-
 		public ObservableCollection<ParameterDetailItem> data = new ObservableCollection<ParameterDetailItem>();
+		Reading[] allReadings;
+
 		public ParameterItemDetail(long CategoryId)
 		{
 			this.categoryId = CategoryId;
 			InitializeComponent();
 
-			//var newItem = new ParameterDetailItem();
-			//newItem.date = "date";
-			//newItem.firstItem = "first item";
-			//newItem.secondItem = "second item";
-
-			//var newItem1 = new ParameterDetailItem();
-			//newItem1.date = "date";
-			//newItem1.firstItem = "first item";
-			//newItem1.secondItem = "second item";
-
-			//data.Add(newItem);
-			//data.Add(newItem1);
-
-			//itemList.ItemsSource = data;
 
 			switch (categoryId)
 			{
@@ -58,7 +46,7 @@ namespace MyHealthVitals
 					}
 				case 2:
 					{
-						this.Title = "SpO2 Data List";
+						this.Title = "Sp2 Data List";
 						headerContainer.Children.Add(new headerWithTwoTitle("SpO2", "Pulse"));
 						break;
 					}
@@ -68,7 +56,7 @@ namespace MyHealthVitals
 						headerContainer.Children.Add(new headerWithOneTitle("Heart Rate (Pulse)"));
 						break;
 					}
-				
+
 				case 4:
 					{
 						this.Title = "Temperature Data List";
@@ -87,6 +75,12 @@ namespace MyHealthVitals
 						headerContainer.Children.Add(new headerWithOneTitle("Glucose (Mmol/L)"));
 						break;
 					}
+				case 10:
+					{
+						this.Title = "ECG Data List";
+						headerContainer.Children.Add(new headerWithTwoTitle("ECG Result","Report Status"));
+						break;
+					}
 			}
 
 			callApi();
@@ -94,31 +88,33 @@ namespace MyHealthVitals
 
 		public async void callApi()
 		{
-
 			layoutLoading.IsVisible = true;
 
-			//Reading[] allReadings = new Reading[]();
 			try
 			{
+				Debug.WriteLine("LIST");
 				var allReadings = await Reading.GetAllReadingsFromService();
-
+				Debug.WriteLine("call api  all reading = " + allReadings.Length);
 				var allCategoryReading = from reading in allReadings
 										 where reading.CategoryId == categoryId
 										 select reading;
 
 				//allCategoryReading = allCategoryReading.GroupBy(s => s.Date);
-
+				Debug.WriteLine("categoryID = " + categoryId);
 				switch (categoryId)
 				{
 					// Blood pressure
 					case 1:
+					//	case 10:
 						{
+							//		categoryId = 1;
+							Debug.WriteLine("BP START");
 							var bpReadings = from spSet in
 							   (from reading in allCategoryReading
 								group reading by reading.Date)
 											 orderby spSet.Key descending
-							                              let dia = spSet.FirstOrDefault(x => (x.ValueType == "DIA" || x.ValueType == "Diastolic"))
-							                              let sys = spSet.FirstOrDefault(x => (x.ValueType == "SYS" || x.ValueType == "Systolic"))
+											 let dia = spSet.FirstOrDefault(x => (x.ValueType == "DIA" || x.ValueType == "Diastolic"))
+											 let sys = spSet.FirstOrDefault(x => (x.ValueType == "SYS" || x.ValueType == "Systolic"))
 
 											 where sys != null && dia != null
 											 select new
@@ -137,9 +133,12 @@ namespace MyHealthVitals
 								item.firstItem = ((int)reading.sys.EnglishValue).ToString();
 								item.secondItem = ((int)reading.dia.EnglishValue).ToString();
 								item.categoryId = reading.sys.CategoryId;
+
 								data.Add(item);
 							}
+
 							itemList.ItemsSource = data;
+							Debug.WriteLine("END data= " +data.Count());
 
 							break;
 						}
@@ -153,8 +152,8 @@ namespace MyHealthVitals
 							   (from reading in allCategoryReading2
 								group reading by reading.Date)
 											   orderby spSet.Key descending
-											   let SpO2 = spSet.FirstOrDefault(x => x.ValueType == "SpO2")
-											   let Pulse = spSet.FirstOrDefault(x => (x.ValueType == "Heart Rate" || x.ValueType == "Pulse"))
+											   let SpO2 = spSet.FirstOrDefault(x => x.CategoryId == 2)
+											   let Pulse = spSet.FirstOrDefault(x => (x.CategoryId == 3))
 											   where SpO2 != null && Pulse != null
 											   select new
 											   {
@@ -213,34 +212,42 @@ namespace MyHealthVitals
 						}
 					case 5:
 						{
+							
 							var allCategoryReading5 = from reading in allReadings
 													  where reading.CategoryId == 5 || reading.CategoryId == 7
 													  select reading;
 
-							var weightBmiReading = from spSet in
+							var weightBmiReading = (from spSet in
 							   (from reading in allCategoryReading5
 								group reading by reading.Date)
-											   orderby spSet.Key descending
-							                                let weight = spSet.FirstOrDefault(x => x.CategoryId == 5)
-							                                let bmi = spSet.FirstOrDefault(x => x.CategoryId == 7)
-											   where weight != null && bmi != null
-											   select new
-											   {
-												   Date = spSet.Key,
-												   weight = weight,
-												   bmi = bmi,
-											   };
+													orderby spSet.Key descending
+													let weight = spSet.FirstOrDefault(x => x.CategoryId == 5)
+													let bmi = spSet.FirstOrDefault(x => x.CategoryId == 7)
+													where weight != null
+													select new
+													{
+														Date = spSet.Key,
+														weight = weight,
+														bmi = bmi,
+													});//.Take(1);
 
-							//Spo2Readings.GroupBy
+//where weight != null && bmi != null
 
 							var newWeightBmiReading = (weightBmiReading.GroupBy(s => s.Date).Select(grp => grp.First())).ToArray();
-
+							Debug.WriteLine("newWeightBmiReading = " + newWeightBmiReading);
 							foreach (var reading in newWeightBmiReading)
 							{
 								var item = new ParameterDetailItem();
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
 								item.firstItem = Math.Round((decimal)reading.weight.EnglishValue, 1) + "/" + Math.Round((decimal)reading.weight.MetricValue, 1);
-								item.secondItem = Math.Round((decimal)reading.bmi.EnglishValue, 1).ToString();
+								Debug.WriteLine("firstItem = " + item.firstItem);
+								if (reading.bmi != null)
+								{
+										item.secondItem = Math.Round((decimal)reading.bmi.EnglishValue, 1).ToString();
+								}else
+								{
+										item.secondItem = null;
+								}
 								item.categoryId = reading.weight.CategoryId;
 								data.Add(item);
 							}
@@ -248,13 +255,9 @@ namespace MyHealthVitals
 							break;
 						}
 					case 6:
-						{
 							break;
-						}
 					case 7:
-						{
 							break;
-						}
 					case 8:
 						{
 							// Glucose data list
@@ -268,17 +271,54 @@ namespace MyHealthVitals
 								item.categoryId = reading.CategoryId;
 								data.Add(item);
 							}
-
 							itemList.ItemsSource = data;
 							break;
 						}
 					case 9:
+						break;
+					case 10:
+						int count = 0;
+						foreach (var reading in allCategoryReading)
 						{
-							break;
+							var item = new ParameterDetailItem();
+							item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
+					
+							if (count < 30)
+							{
+								var fileName = Regex.Replace(item.date, @"\s+", "");
+								fileName = Regex.Replace(fileName, @"[/:]+", "");
+								bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
+								if (ret)
+								{
+									item.secondItem = "No Report";
+								}
+								else if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + "ECG.pdf"))
+								{
+									//count++;
+									item.secondItem = "Saved";
+								}
+								else
+								{
+									item.secondItem = "Emailed";
+								}
+								count++;
+							}
+							else {
+							//	DependencyService.Get<IFileHelper>()	
+							}
+							item.firstItem = reading.EnglishValue == 0 ? "Normal" : "Abnormal";
+							item.categoryId = reading.CategoryId;
+							data.Add(item);
 						}
+
+						itemList.ItemsSource = data;
+						break;
+					default:
+						break;
 				}
 
 				itemList.ItemsSource = data;
+
 			}
 			catch (Exception)
 			{
