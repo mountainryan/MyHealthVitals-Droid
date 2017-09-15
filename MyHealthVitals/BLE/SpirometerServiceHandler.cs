@@ -119,7 +119,7 @@ namespace MyHealthVitals
 			//printUpdatedCharacteristics(e.Characteristic);
 
 			var data = e.Characteristic.Value;
-		//	Debug.WriteLine("C_ValueUpdated");
+			//Debug.WriteLine("C_ValueUpdated  data[0]==" +data[0] +"   data[1]" +data[1]);
 			if (data[0] == 170 && data[1] == 6 && isStatusAsked == false)
 			{
 				isStopPolling = true;

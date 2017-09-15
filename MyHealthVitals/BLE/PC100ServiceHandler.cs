@@ -56,6 +56,10 @@ namespace MyHealthVitals
 		{
 			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x02, 0xCB });
 		}
+		public void stopMeasuringSpo2()
+		{
+			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x50, 0x02, 0x02, 0x85 });
+		}
 
 		public async void discoverServices(IDevice device)
 		{
@@ -122,6 +126,7 @@ namespace MyHealthVitals
 
 			if ((int)ch.Value[2] == 66)
 			{
+				glucoseResult = -100;
 				Debug.WriteLine("ch.Value.Length  ===  " + ch.Value.Length);
 				if (ch.Value.Length >= 9)
 				{
@@ -141,7 +146,7 @@ namespace MyHealthVitals
 		//token in NIBP result in pc-100
 			else if ((int)ch.Value[2] == 67)
 			{
-
+				glucoseResult = -1;
 
 				// checking length of data
 				if ((int)ch.Value[3] == 7)
@@ -241,6 +246,7 @@ namespace MyHealthVitals
 			/// 
 			if ((int)ch.Value[2] == 82)
 			{
+				glucoseResult = -100;
 				// when waveform data comes down to 0 then it is end of the spo2 reading
 				var waveformData = (int)ch.Value[5];
 				//Debug.WriteLine("WaveformData: " + waveformData);
@@ -255,7 +261,8 @@ namespace MyHealthVitals
 			}
 		
 
-			if ((int)ch.Value[2] == 80 && (int)ch.Value[4] == 2) { 
+			if ((int)ch.Value[2] == 80 && (int)ch.Value[4] == 2) {
+				glucoseResult = -1;
                     this.uiController.noticeEndOfReadingSpo2();
 			}
 			if ((int)ch.Value[2] == 83 && (int)ch.Value[3] == 7)
@@ -271,74 +278,6 @@ namespace MyHealthVitals
 					Debug.WriteLine("this.uiController.SPO2_readingCompleted");
 
 					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8])/10);
-				}
-			}
-
-			// this token is for GLU data pc-100
-			//if ((int)ch.Value[2] == 226)
-			//{
-			//	var bit5 = (ch.Value[5] & (1 << 5)) != 0;
-			//	var bit4 = (ch.Value[5] & (1 << 4)) != 0;
-
-			//	// normal reading
-			//	if (bit5 && bit4) {
-			//		var dataGlu = (double)((int)ch.Value[6] * 100 + (int)ch.Value[7])/10;
-			//		Debug.WriteLine("dataGlu: " + dataGlu);
-			//	}
-			//}
-
-			// temperature related token with result 0x72 = 114 in pc-100
-			if ((int)ch.Value[2] == 114)
-			{
-				Debug.WriteLine("Temparature related token pc100.");
-				//int dataTemp1 = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
-				//Debug.WriteLine("datatemp: " + dataTemp1);
-				//printUpdatedCharacteristics(ch);
-
-				// from document it is written that the 5 byte is status and D4 is temperature probe is connected
-				//Byte temperatureStatus = ;
-				// bit 5
-				var bit4 = ch.Value[5] & (1 << 4);
-				if (bit4 == 1)
-				{
-					uiController.ShowMessageOnUI("Probe disconnected while measuring.", true);
-					return;
-				}
-
-				var bit5 = ch.Value[5] & (1 << 5);
-				var bit6 = ch.Value[5] & (1 << 6);
-
-				if (bit6 == 1 && bit5 == 1)
-				{
-					uiController.ShowMessageOnUI("Temperature measuring time out.", true, "Temperature measuring ");
-					return;
-				}
-
-				// measurement finished normallly
-				// combining byte 6 and byte 7 to read temperature
-				int dataTemp = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
-
-				if (dataTemp >= 200 && dataTemp <= 1301)
-				{
-					// this variable is introduced because it is reading temperature twice identical data and we send only last one to server and UI
-					tempReadingCount++;
-
-					//uiController.ShowMessageOnUI("Temperature read successfully.", true);
-					//decimal temperatureInCelcious = (decimal)((float)633 / 100 + 30);
-					//(9.0 / 5.0) * c) +32
-					// the device always reads in Celcious even if it is displaying in fareinheit
-					if (tempReadingCount == 2)
-					{
-						var tempC = (double)dataTemp / 100 + 30.0;
-						double tempF = Math.Round(((9.0 / 5.0) * tempC) + 32, 1);
-						this.uiController.updateTemperature((decimal)tempF);
-						tempReadingCount = 0;
-					}
-				}
-				else
-				{
-					if (dataTemp >= 1312) uiController.ShowMessageOnUI("Too high temperature.", true, "Temperature measuring ");
-					if (dataTemp < 200) uiController.ShowMessageOnUI("Too low temperature.", true, "Temperature measuring ");
 				}
 			}
 
@@ -375,8 +314,7 @@ namespace MyHealthVitals
 					});
 				}
 
-				// combining byte 6 and byte 7 to read temperature
-				// status bit
+
 			
 				glucoseResult = ((int)ch.Value[5] >> 3) & 3;
 				Debug.WriteLine("correctResult= " + glucoseResult);

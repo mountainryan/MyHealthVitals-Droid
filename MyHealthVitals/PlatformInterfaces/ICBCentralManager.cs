@@ -7,6 +7,7 @@ namespace MyHealthVitals
 		void startMeasuringBP();
 		void startEcgMeasuring();
 		void stopReadingECG();
+		void stopMeasuringSpo2();
 	}
 
 	public interface ICBCentralManagerSpirometer {

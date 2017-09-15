@@ -2,25 +2,19 @@
 <Paths>
   <Jars></Jars>
   <ResolvedResourceDirectories>
-    <ResolvedResourceDirectory>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/OxyPlot.Xamarin.Android/library_project_imports/res</ResolvedResourceDirectory>
-    <ResolvedResourceDirectory>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/OxyPlot.Xamarin.Forms.Platform.Android/library_project_imports/res</ResolvedResourceDirectory>
-    <ResolvedResourceDirectory>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/Plugin.BLE/library_project_imports/res</ResolvedResourceDirectory>
-    <ResolvedResourceDirectory>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/Xamarin.Forms.Platform.Android/library_project_imports/res</ResolvedResourceDirectory>
-    <ResolvedResourceDirectory>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/Xamarin.Forms.Platform/library_project_imports/res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>/Users/rhiggs/Projects/Droid/obj/Release/__library_projects__/OxyPlot.Xamarin.Android/library_project_imports/res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>/Users/rhiggs/Projects/Droid/obj/Release/__library_projects__/OxyPlot.Xamarin.Forms.Platform.Android/library_project_imports/res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>/Users/rhiggs/Projects/Droid/obj/Release/__library_projects__/Plugin.BLE/library_project_imports/res</ResolvedResourceDirectory>
   </ResolvedResourceDirectories>
   <ResolvedAssetDirectories>
     <ResolvedAssetDirectory>obj/Release/__library_projects__/OxyPlot.Xamarin.Android/library_project_imports/assets</ResolvedAssetDirectory>
     <ResolvedAssetDirectory>obj/Release/__library_projects__/OxyPlot.Xamarin.Forms.Platform.Android/library_project_imports/assets</ResolvedAssetDirectory>
     <ResolvedAssetDirectory>obj/Release/__library_projects__/Plugin.BLE/library_project_imports/assets</ResolvedAssetDirectory>
-    <ResolvedAssetDirectory>obj/Release/__library_projects__/Xamarin.Forms.Platform.Android/library_project_imports/assets</ResolvedAssetDirectory>
-    <ResolvedAssetDirectory>obj/Release/__library_projects__/Xamarin.Forms.Platform/library_project_imports/assets</ResolvedAssetDirectory>
   </ResolvedAssetDirectories>
   <ResolvedEnvironmentFiles />
   <ResolvedResourceDirectoryStamps>
-    <ResolvedResourceDirectoryStamp>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/OxyPlot.Xamarin.Android.stamp</ResolvedResourceDirectoryStamp>
-    <ResolvedResourceDirectoryStamp>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/OxyPlot.Xamarin.Forms.Platform.Android.stamp</ResolvedResourceDirectoryStamp>
-    <ResolvedResourceDirectoryStamp>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/Plugin.BLE.stamp</ResolvedResourceDirectoryStamp>
-    <ResolvedResourceDirectoryStamp>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/Xamarin.Forms.Platform.Android.stamp</ResolvedResourceDirectoryStamp>
-    <ResolvedResourceDirectoryStamp>/Users/rhiggs/Documents/copy/MyHealthVitals-NEW 2/Droid/obj/Release/__library_projects__/Xamarin.Forms.Platform.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>/Users/rhiggs/Projects/Droid/obj/Release/__library_projects__/OxyPlot.Xamarin.Android.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>/Users/rhiggs/Projects/Droid/obj/Release/__library_projects__/OxyPlot.Xamarin.Forms.Platform.Android.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>/Users/rhiggs/Projects/Droid/obj/Release/__library_projects__/Plugin.BLE.stamp</ResolvedResourceDirectoryStamp>
   </ResolvedResourceDirectoryStamps>
 </Paths>

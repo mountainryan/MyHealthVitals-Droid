@@ -23,11 +23,11 @@
 						</StackLayout>
 						<StackLayout>
 							<Label HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" />
-							<Label x:Name="lblPefReading" HorizontalTextAlignment="Center" FontSize="12" TextColor="White" Text=" " />
+							<Label x:Name="lblPefReading" HorizontalTextAlignment="Center" FontSize="11" TextColor="White" Text=" " />
 						</StackLayout>
 						<StackLayout>
 							<Label HorizontalTextAlignment="Center" FontSize="13" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
-							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="12" TextColor="White" Text=" " />
+							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="11" TextColor="White" Text=" " />
 						</StackLayout>
 						<Button IsVisible="false" x:Name="btnIndicator" VerticalOptions="End" BackgroundColor="Green" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
 						<Button IsVisible="false" x:Name="btnDelete" Clicked="btnDeleteCurrentReadingClicked" Margin="0,0,0,-3" Image="deleteicon.png" VerticalOptions="End" HeightRequest="26" WidthRequest="26" />
@@ -59,7 +59,7 @@
 			</ScrollView>
 			<!--Last line-->
 			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
-				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2016" XAlign="Center" FontSize="12" Margin="0,0,0,4">
+				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2017" XAlign="Center" FontSize="12" Margin="0,0,0,4">
 				</Label>
 			</StackLayout>
 			<!--loading layout starts-->
@@ -81,7 +81,7 @@
 				</StackLayout>
 				<!--Last line-->
 				<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
-					<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2016" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4">
+					<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2017" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4">
 					</Label>
 				</StackLayout>
 			</RelativeLayout>

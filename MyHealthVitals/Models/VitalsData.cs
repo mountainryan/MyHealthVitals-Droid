@@ -17,14 +17,14 @@ namespace MyHealthVitals
 		public Reading glucose;
 		public Reading ecg;
 		public Reading weight;
-
+		public Reading bmi;
 		private void addDataTolocal(ParameterDetailItem pdi)
 		{
 			Dictionary<int, List<ParameterDetailItem>> dic = logcalParameteritem.localhashmap;
 			if (dic.ContainsKey((int)pdi.categoryId))
 			{
 				List<ParameterDetailItem> valuelist = dic[(int)pdi.categoryId];
-				valuelist.Add(pdi);
+				valuelist.Insert(0, pdi);
 			}
 			else {
 				List<ParameterDetailItem> valuelist = new List<ParameterDetailItem>();
@@ -55,7 +55,7 @@ namespace MyHealthVitals
 				//if (isServiceCallSuccess) temperature.EnglishValue = 0;
 			}
 		}
-		public async void sendToServerWeight()
+		public async void sendToServerWeight(float height)
 		{
 			Debug.WriteLine("send to server weight");
 			if (weight!= null && weight.EnglishValue > 0)
@@ -65,9 +65,18 @@ namespace MyHealthVitals
 					ParameterDetailItem pdi = new ParameterDetailItem();
 					pdi.categoryId = weight.CategoryId;
 					pdi.date = weight.Date.ToString("MM/dd/yyyy hh:mm tt");
-					pdi.firstItem = weight.EnglishValue.ToString() + MainPage.ConvertLBToKG((double)weight.EnglishValue).ToString();
-					addDataTolocal(pdi);
+					pdi.firstItem = weight.EnglishValue.ToString() + "/"+ MainPage.ConvertLBToKG((double)weight.EnglishValue).ToString();
+					if (height > 1)
+					{
+						float bmivalue = calculateBMI((float)height, (float)weight.EnglishValue);
+						pdi.secondItem = Convert.ToString(bmivalue);
+						//BMI = weight (lb) ÷ height2 (in2) × 703
+						bmi = new Reading(null, (decimal)bmivalue, 7);
+						bmi.Date = weight.Date;
+					}
+                    addDataTolocal(pdi);
 					await weight.PostReadingToService();
+					if (height >= 1) await bmi.PostReadingToService();
 				}
 				catch (Exception)
 				{
@@ -76,7 +85,10 @@ namespace MyHealthVitals
 				//if (isServiceCallSuccess) temperature.EnglishValue = 0;
 			}
 		}
-
+		private float calculateBMI(float h, float w) {
+			
+			return (float)Math.Round((double)(w / h / h * 703), 1);
+		}
 		public async void sendToServer_SPO2_PI_BPM()
 		{
 			ParameterDetailItem pdi = new ParameterDetailItem();
@@ -157,8 +169,8 @@ namespace MyHealthVitals
 				ParameterDetailItem pdi = new ParameterDetailItem();
 				pdi.categoryId = bpDia.CategoryId;
 				pdi.date =bpDia.Date.ToString("MM/dd/yyyy hh:mm tt");
-				pdi.firstItem = bpDia.EnglishValue.ToString();
-				pdi.secondItem = bpSys.EnglishValue.ToString();
+				pdi.firstItem = bpSys.EnglishValue.ToString();
+				pdi.secondItem = bpDia.EnglishValue.ToString();
 				addDataTolocal(pdi);
 
 				await bpDia.PostReadingToService();

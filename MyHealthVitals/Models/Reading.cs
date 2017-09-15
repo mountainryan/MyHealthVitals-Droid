@@ -52,6 +52,7 @@ namespace MyHealthVitals
 
 			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
 
+
 			var response = await client.PostAsync(serviceUri, content);
 
 			if (response.ReasonPhrase == "OK")
@@ -70,11 +71,13 @@ namespace MyHealthVitals
 			//client.MaxResponseContentBufferSize = 256000;
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+	
+			Debug.WriteLine("serviceUri = " +serviceUri);
 
 			try
 			{
 				var response = await client.GetAsync(serviceUri);
-
+				Debug.WriteLine("GetAllReadingsFromService response.IsSuccessStatusCode= "+response.IsSuccessStatusCode);
 				if (response.IsSuccessStatusCode)
 				{
 					var content = await response.Content.ReadAsStringAsync();

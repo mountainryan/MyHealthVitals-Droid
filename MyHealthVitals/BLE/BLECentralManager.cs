@@ -12,25 +12,30 @@ namespace MyHealthVitals
 		void discoverServices(IDevice device);
 		void reconnectToDevice(IDevice device);
 
+
+
+
 		//object uiController;
+
 	}
-/*	public class ListItemManager {
-		public static ListItemManager sharedInstance = new ListItemManager();
-		public ListCellTwoItem listcellTwoItem;
-		private ListItemManager()r
-		{
-			listcellTwoItem = new void ListCellTwoItem();
+	/*	public class ListItemManager {
+			public static ListItemManager sharedInstance = new ListItemManager();
+			public ListCellTwoItem listcellTwoItem;
+			private ListItemManager()r
+			{
+				listcellTwoItem = new void ListCellTwoItem();
+			}
 		}
-	}
-*/
+	*/
 	public class BLECentralManager
 	{
 		//public static IAdapter Adapter = new IAdapter;
 
 		public static BLECentralManager sharedInstance = new BLECentralManager();
 
-		public List<IDevice> connectedDevices = new List<IDevice>();
-		//public IDevice currentDevice;
+	//	public HashSet<IDevice> connectedDevices = new HashSet<IDevice>();
+
+		//	public IDevice currentDevice;
 		public string scanningDeviceName;
 		//public IBLEDeviceServiceHandler devServiceHandler;
 		public SpirometerServiceHandler spiroServHandler;
@@ -50,8 +55,8 @@ namespace MyHealthVitals
 			CrossBluetoothLE.Current.Adapter.DeviceConnected += Adapter_DeviceConnected;
 			CrossBluetoothLE.Current.Adapter.ScanTimeoutElapsed += Adapter_ScanTimeoutElapsed;
 			CrossBluetoothLE.Current.Adapter.DeviceConnectionLost += Adapter_DeviceConnectionLost;
-			//CrossBluetoothLE.Current.s
-
+		//	CrossBluetoothLE.Current.Adapter.DeviceDisconnected += Adapter_DisConnection;
+		
 			//connec
 
 			Debug.WriteLine("bluetooth adapter initialized.");
@@ -85,8 +90,8 @@ namespace MyHealthVitals
 						break;
 					}
 				case "eBody-Scale":
-						scaleServHandle.uiController = (IBluetoothCallBackUpdatable)controller;
-						break;
+					scaleServHandle.uiController = (IBluetoothCallBackUpdatable)controller;
+					break;
 				default:
 					break;
 			}
@@ -100,7 +105,8 @@ namespace MyHealthVitals
 				//if (deviceName == "PC_300SNT") spotServHandler.uiController.ShowMessageOnUI("Searching device...", false);
 
 			}
-			else {
+			else
+			{
 				Debug.WriteLine("reconnectToDevice : " + deviceName);
 
 				switch (deviceName)
@@ -133,7 +139,8 @@ namespace MyHealthVitals
 
 		private IDevice getCurrentDevice(String deviceName)
 		{
-			foreach (var device in connectedDevices)
+
+			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices )
 			{
 				if (device.Name == deviceName)
 				{
@@ -141,13 +148,14 @@ namespace MyHealthVitals
 				}
 			}
 			return null;
+
 		}
 
 		public bool checkIfDeviceScanned(string deviceName)
 		{
-			Debug.WriteLine("checkIfDeviceScanned  IN CONNECTED ARRAY :"+ deviceName);
+			Debug.WriteLine("checkIfDeviceScanned  IN CONNECTED ARRAY :" + deviceName);
 
-			foreach (var device in connectedDevices)
+			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices)
 			{
 				if (device.Name == deviceName)
 				{
@@ -157,6 +165,7 @@ namespace MyHealthVitals
 				}
 			}
 			return false;
+
 		}
 
 		private void Adapter_DeviceDiscovered(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
@@ -178,7 +187,8 @@ namespace MyHealthVitals
 		private void Adapter_DeviceConnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
 			Debug.WriteLine("Adapter_DeviceConnected: " + e.Device.Name);
-			connectedDevices.Add(e.Device);
+		//	connectedDevices.Add(e.Device);
+
 			switch (e.Device.Name)
 			{
 				case "BLE-MSA":
@@ -212,8 +222,10 @@ namespace MyHealthVitals
 
 		void Adapter_DeviceConnectionLost(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceErrorEventArgs e)
 		{
-			Debug.WriteLine(e.Device.Name + " just Adapter_DeviceConnectionLost");
-			connectedDevices.Remove(e.Device);
+			Debug.WriteLine(e.Device.Name + "  Adapter_DeviceConnectionLost");
+			//	if (!connectedDevices.Contains(e.Device)) return;
+			//	connectedDevices.Remove(e.Device);
+
 			if (e.Device.Name == "PC_300SNT")
 			{
 				spotServHandler.uiController.ShowConcetion("PC-300 Connection Lost.", false);
@@ -251,10 +263,45 @@ namespace MyHealthVitals
 				pc100ServHandler.uiController.ShowConcetion("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
 			}
 
-			else if (scanningDeviceName == "eBody-Scale") {
+			else if (scanningDeviceName == "eBody-Scale")
+			{
 				scaleServHandle.uiController.ShowConcetion("Scanning time out. Please check if Scale is turned on.", false);
 			}
 			Debug.WriteLine("Adapter_ScanTimeoutElapsed.");
+		}
+
+
+		void Adapter_DisConnection(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
+		{
+				Debug.WriteLine(e.Device.Name + "  Adapter_DisConnection");
+			if (e.Device.Name == "PC_300SNT")
+			{
+				spotServHandler.uiController.ShowConcetion("PC-300 DisConnection.", false);
+			}
+			else if (e.Device.Name == "BLE-MSA")
+			{
+				spiroServHandler.stopPolling();
+				spiroServHandler.uiController.updateDeviceStateOnUI("Spirometer DisConnection.", false);
+			}
+			else if (e.Device.Name == "PC-100")
+			{
+				pc100ServHandler.uiController.ShowConcetion("PC-100 DisConnection.", false);
+			}
+			else if (e.Device.Name == "eBody-Scale")
+			{
+				scaleServHandle.uiController.ShowConcetion("Scale DisConnection.", false);
+			}
+		}
+		public void disConnectAll(string exceptDevice = "")
+		{
+			Debug.WriteLine("================DisconnectDeviceAsync=========================");
+			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices)
+			{
+				Debug.WriteLine(device.State);
+				if (!device.Name.Equals(exceptDevice))
+					CrossBluetoothLE.Current.Adapter.DisconnectDeviceAsync(device);
+				Debug.WriteLine("after " + device.State);
+			}
 		}
 	}
 }

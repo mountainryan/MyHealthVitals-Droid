@@ -7,7 +7,7 @@ using Plugin.BLE.Abstractions.Contracts;
 
 namespace MyHealthVitals
 {
-	public class SpotCheckServiceHandler: IBLEDeviceServiceHandler
+	public class SpotCheckServiceHandler : IBLEDeviceServiceHandler
 	{
 		public ICharacteristic bmChar;
 		public IDevice connectedDevice;
@@ -24,13 +24,14 @@ namespace MyHealthVitals
 			}
 			else
 			{
-				Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice );
-				     CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(connectedDevice);
+				Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice);
+				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(connectedDevice);
 				// after this it will call central manager and when device_connected event of the central manager fires then it will call again this class discoverServices()
 			}
 		}
 
-		public void updateController(IBluetoothCallBackUpdatable controller) {
+		public void updateController(IBluetoothCallBackUpdatable controller)
+		{
 			this.uiController = controller;
 		}
 
@@ -42,10 +43,11 @@ namespace MyHealthVitals
 			var services = await connectedDevice.GetServicesAsync();
 			foreach (var s in services)
 			{
+				Debug.WriteLine(s);
 				var characteristics = await s.GetCharacteristicsAsync();
 				foreach (var c in characteristics)
 				{
-					//Debug.WriteLine(string.Format("Char UUID: {0}  Value: {1}", c.Uuid, c.Value));
+					Debug.WriteLine(string.Format("Char UUID: {0}  Value: {1}", c.Uuid, c.Value));
 					//Debug.WriteLine("uuid: " + c.Uuid);
 
 					if (c.CanUpdate)
@@ -68,7 +70,8 @@ namespace MyHealthVitals
 			{
 				bmChar.WriteAsync(byteCommand);
 			}
-			else {
+			else
+			{
 				uiController.ShowMessageOnUI("Device is not connected. Please connect and try again.", false);
 			}
 		}
@@ -94,6 +97,12 @@ namespace MyHealthVitals
 		{
 			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x30, 0x02, 0x02, 0x24 });
 		}
+
+		public void stopMeasuringSpo2()
+		{
+			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x50, 0x02, 0x02, 0x85 });
+		}
+
 		int pretoken = 0;
 		private void printUpdatedCharacteristics(ICharacteristic ch)
 		{
@@ -133,7 +142,8 @@ namespace MyHealthVitals
 			//printUpdatedCharacteristics(e.Characteristic);
 
 			var ch = e.Characteristic;
-		//	Debug.WriteLine("ch.Value[2]"+ch.Value[2]);
+		//	Debug.WriteLine("ch.Value[0]"+ch.Value[0]);
+		//	Debug.WriteLine("ch.Value[1]"+ch.Value[1]);
 
 			// sys , dia and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 63 && (int)ch.Value[2] < 68)
@@ -426,8 +436,12 @@ namespace MyHealthVitals
 		//		Debug.WriteLine("token = " + token);
 
 				if (token == 48 && pretoken == 50) {
-					Debug.WriteLine("stop response may be");
-					uiController.ShowMessageOnUI("You have not finished your ECG measure.", true, "Measure Interruped");
+					Debug.WriteLine("stop response may be token=" +token+"   pretoken "+pretoken);
+					Debug.WriteLine("ch.Value[3] :" + ch.Value[3] + "ch.Value[4] " + ch.Value[4] + "ch.Value[5] :" + ch.Value[5]);
+					if (ch.Value[4] == 2 && ch.Value[5] == 36)
+					{
+						uiController.ShowMessageOnUI("You have not finished your ECG measure.", true, "Measure Interruped");
+					}
 				}
 
 				// end of the ecg reading

@@ -16,8 +16,8 @@ using System.Threading.Tasks;
 namespace MyHealthVitals
 {
 	public partial class MainPage : ContentPage, IBluetoothCallBackUpdatable
-	{	
-		
+	{
+
 
 		private VitalsData vitalsData = new VitalsData();
 		public static bool isCOnnectedToSpotCheck = false;
@@ -30,13 +30,14 @@ namespace MyHealthVitals
 		bool isKg = false;
 		//	private EcgReport ecgReportInstance = null;
 		string lashEcgFile = null;
+		float userHeight = (float)0.0;
 		bool isBPMeasuring = false;
 		bool isupLoadedSPO2 = false;
 		public bool isFromDeviecList = false;
 		bool isNavigated = false;
 		public MainPage(string deviceName)
 		{
-			
+
 			this.deviceName = deviceName;
 			InitializeComponent();
 
@@ -56,12 +57,13 @@ namespace MyHealthVitals
 			btnCelcious.TextColor = Color.Gray;
 			isCelcious = false;
 
-
+			BLECentralManager.sharedInstance.disConnectAll();
 			if (deviceName == "PC-100")
 			{
 				BLECentralManager.sharedInstance.pc100ServHandler.updateController(this);
 			}
-			else if (deviceName == "eBody-Scale") {
+			else if (deviceName == "eBody-Scale")
+			{
 				BLECentralManager.sharedInstance.scaleServHandle.updateController(this);
 			}
 			else
@@ -71,7 +73,8 @@ namespace MyHealthVitals
 
 			callAPiToDisplayGetDemographics();
 		}
-		public void setSavereportbutton() { 
+		public void setSavereportbutton()
+		{
 			lineSerie.Points.Clear();
 
 			ecgReportcBtn.IsEnabled = false;
@@ -102,14 +105,13 @@ namespace MyHealthVitals
 			graphModel.Series.Add(lineSerie);
 			graphModel.InvalidatePlot(true);
 			Debug.WriteLine("graphModel      143   :" + graphModel);
-
 		}
-	
+
 
 		protected async override void OnAppearing()
 		{
 			base.OnAppearing();
-			Debug.WriteLine("OnAppearing  :"  );
+			Debug.WriteLine("OnAppearing  :");
 
 			if (graphModel == null) return;
 			Debug.WriteLine("graphModel.DefaultXAxis  :" + graphModel.DefaultXAxis);
@@ -137,13 +139,15 @@ namespace MyHealthVitals
 					setSavereportbutton();
 				}
 			}
-	
-			if (!isFromDeviecList || BLECentralManager.sharedInstance.checkIfDeviceScanned(deviceName)) {
+
+			if (!isFromDeviecList || BLECentralManager.sharedInstance.checkIfDeviceScanned(deviceName))
+			{
 				return;
 			}
 
 			var ret = await DisplayAlert(deviceName, "Do you want to take a measurement?", "Yes", "No");
-			if(ret){
+			if (ret)
+			{
 				try
 				{
 					if (BLECentralManager.sharedInstance.scaleServHandle.connectedDevice.State
@@ -158,13 +162,14 @@ namespace MyHealthVitals
 				{
 					layoutLoading.IsVisible = true;
 					BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
-				}		
+				}
 			}
 			isFromDeviecList = false;
-			
+
 		}
 
-		private void styleGraphModel(PlotModel graphModel) {
+		private void styleGraphModel(PlotModel graphModel)
+		{
 			// x - axis style
 			if (graphModel == null) return;
 
@@ -199,14 +204,18 @@ namespace MyHealthVitals
 			this.graphModel.InvalidatePlot(true);
 		}
 
-		private async void callAPiToDisplayGetDemographics() { 
+		private async void callAPiToDisplayGetDemographics()
+		{
 			var isSuccess = await Demographics.sharedInstance.getDemographicFromApi();
-
+			Debug.WriteLine("Demographics.sharedInstance.Height  " + Demographics.sharedInstance.Height);
+			if (Demographics.sharedInstance.Height != null)
+				userHeight = float.Parse(Demographics.sharedInstance.Height.Split(' ')[0]);
+			Debug.WriteLine("userHeight  " + userHeight);
 			if (isSuccess)
 			{
 				this.lblName.Text = Demographics.sharedInstance.getFullName();
 				this.lblEmail.Text = Demographics.sharedInstance.Email;
-
+				//		this.Height = Demographics.sharedInstance.get
 				// calling async to download the image and setting in to the image
 				String imageBase64 = await Demographics.sharedInstance.downloadProfilePic();
 
@@ -237,7 +246,8 @@ namespace MyHealthVitals
 			//}
 		}
 		int state = 100;
-		public void SaveEcgState(int state) {
+		public void SaveEcgState(int state)
+		{
 			this.state = state;
 		}
 		bool Measure_Interruped = false;
@@ -245,17 +255,19 @@ namespace MyHealthVitals
 
 
 
-		 public void ShowConcetion(String message, Boolean isConnected) { 
-			Debug.WriteLine("ShowConcetion  mainpage  :"  );
+		public void ShowConcetion(String message, Boolean isConnected)
+		{
+			Debug.WriteLine("ShowConcetion  mainpage  :");
 			layoutLoading.IsVisible = false;
 			if (isConnected)
 			{
-               
+
 				isNavigated = true;
 			}
 			if (!isConnected && this.deviceName == "eBody-Scale")
 			{
-				getLatestWeight();
+				getLatestWeight(message);
+
 			}
 			else
 			{
@@ -270,11 +282,12 @@ namespace MyHealthVitals
 			{
 				if (this.deviceName == "eBody-Scale")
 				{
-					getLatestWeight();
+					getLatestWeight("");
 
 				}
-				else { 
-                    await DisplayAlert(this.deviceName, message, "OK");
+				else
+				{
+					await DisplayAlert(this.deviceName, message, "OK");
 				}
 				//	
 			}
@@ -287,8 +300,8 @@ namespace MyHealthVitals
 				{
 					vitalsData.ecg = new Reading(null, this.state, 10);
 					vitalsData.sendEcgToServer();
-				
-				// sending the Heart rate to server separately
+
+					// sending the Heart rate to server separately
 					vitalsData.bpm = new Reading(null, heartRate, 3);
 					vitalsData.bpm.Date = vitalsData.ecg.Date;
 					vitalsData.sendHeartRateToServer();
@@ -313,39 +326,47 @@ namespace MyHealthVitals
 					Measure_Interruped = true;
 					countECGPacket = 0;
 					ecgTime = 0;
-					//	updateECGEnded(0, 0);
-					reportDataList.Clear();
-					N = -1;
-					countDown();
-				}
-				else if (title.Equals("Blood Pressure Measure Error")) { 
-					lblDia.Text = "-";
-					lblSys.Text =  "-";
-					NIBPButton.Text = "NIBP Start";
 
+					reportDataList.Clear();
+					ecgReportcBtn.IsEnabled = false;
+					lineSerie.Points.Clear();
+					graphModel.InvalidatePlot(true);
+
+
+					EcgcountdownCancle();
+
+				}
+				else if (title.Equals("Blood Pressure Measure Error"))
+				{
+					lblDia.Text = "-";
+					lblSys.Text = "-";
+					NIBPButton.Text = "NIBP Start";
+					isBPMeasuring = false;
 				}
 			}
 
 		}
 
-		public async void updateGlucoseReading(decimal gluReading, string unit) {
+		public async void updateGlucoseReading(decimal gluReading, string unit)
+		{
 			//Conversion math mmol/L = mg/dL / 18
 
 			if (unit == "Mmol/L")
 			{
-				vitalsData.glucose = new Reading(null, Math.Round((decimal)gluReading *18, 1), 8);
-				vitalsData.glucose.MetricValue = Math.Round(gluReading,1);
+				vitalsData.glucose = new Reading(null, Math.Round((decimal)gluReading * 18, 1), 8);
+				vitalsData.glucose.MetricValue = Math.Round(gluReading, 1);
 			}
-			else {
-				vitalsData.glucose = new Reading(null,gluReading, 8);
+			else
+			{
+				vitalsData.glucose = new Reading(null, gluReading, 8);
 				vitalsData.glucose.MetricValue = gluReading;
 			}
 
 			var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n "
-			                             + "GLU:  "+vitalsData.glucose.MetricValue + unit, "Yes", "No");
+										 + "GLU:  " + vitalsData.glucose.MetricValue + unit, "Yes", "No");
 			if (!ret)
 			{
-				return; 
+				return;
 			}
 
 			vitalsData.sendToServer_Glucose();
@@ -362,42 +383,44 @@ namespace MyHealthVitals
 			System.Diagnostics.Debug.WriteLine("deviceName: " + deviceName);
 		}
 
-		async public void noticeEndOfReadingSpo2() {
+		async public void noticeEndOfReadingSpo2()
+		{
 
 			Debug.WriteLine("noticeEndOfReadingSpo2");
 			pulseTime = 0.0f;
-		    
+
 			initBpm = true;
-            initBpmWaveForm();
-			if (isupLoadedSPO2 ) 
+			initBpmWaveForm();
+			if (isupLoadedSPO2)
 			{
 				isupLoadedSPO2 = false;
 				return;
 			}
 
-			if (vitalsData != null && (vitalsData.spo2 != null || vitalsData.spo2 != null)) {
+			if (vitalsData != null && (vitalsData.spo2 != null || vitalsData.spo2 != null))
+			{
 				string message = (vitalsData.spo2 == null ? "" : "SpO2: " + vitalsData.spo2.EnglishValue) + (vitalsData.bpm == null ? "" : "  Bpm: " + vitalsData.bpm.EnglishValue);
-				var ret = await DisplayAlert("Measuring Result","Do you want to save the result?\n " + message, "Yes", "No");
+				var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
 				if (ret)
 				{
 					vitalsData.sendToServer_SPO2_PI_BPM();
 				}
 				else
-				{ 
+				{
 					Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 					{
 						lblBpm.Text = "-";
 						lblSpo2.Text = "-";
 						lblPerfusionIndex.Text = "-";
-					});				
+					});
 				}
 			}
 
-		
+
 
 			//lineSerie.Points.Clear();
-		    //graphModel.InvalidatePlot(true);
-				//	graphModel.DefaultXAxis.IsPanEnabled = false;
+			//graphModel.InvalidatePlot(true);
+			//	graphModel.DefaultXAxis.IsPanEnabled = false;
 		}
 
 		public async void updateTemperature(decimal temperature)
@@ -457,8 +480,8 @@ namespace MyHealthVitals
 		float xMin = 0.0f;
 		float ecgTime = 0.0f;
 		int countECGPacket = 0;
-	//	int countEcgReport = 0;
-	
+		//	int countEcgReport = 0;
+
 
 		List<int> reportDataList = new List<int>();
 		int heartRate = 0;
@@ -466,7 +489,7 @@ namespace MyHealthVitals
 		public void updateECGEnded(int bpm, int ecg)
 		{
 			countECGPacket = 0;
-		//	countEcgReport = 0;
+			//	countEcgReport = 0;
 			ecgTime = 0.0f;
 			heartRate = bpm;
 			if (state == 17) return;
@@ -477,47 +500,113 @@ namespace MyHealthVitals
 			graphModel.DefaultYAxis.Minimum = 0;
 			graphModel.DefaultYAxis.Maximum = 255;
 			graphModel.InvalidatePlot(true);
-
-			if (Measure_Interruped) { 
+			EcgcountdownCancle();
+			if (Measure_Interruped)
+			{
 				return;
 			}
 
 			ECG = ecg;
-	/*
-			Device.BeginInvokeOnMainThread(() =>
-			{
-				lblBpm.Text = bpm.ToString();
-			});
+			/*
+					Device.BeginInvokeOnMainThread(() =>
+					{
+						lblBpm.Text = bpm.ToString();
+					});
 
-		// sending the Heart rate to server separately
-			vitalsData.bpm = new Reading(null, bpm, 3);
-			vitalsData.sendHeartRateToServer();
-			ecgReportcBtn.IsEnabled = true;
+				// sending the Heart rate to server separately
+					vitalsData.bpm = new Reading(null, bpm, 3);
+					vitalsData.sendHeartRateToServer();
+					ecgReportcBtn.IsEnabled = true;
 
-			vitalsData.ecg = new Reading(null, ecg, 10);
-			vitalsData.sendEcgToServer();
+					vitalsData.ecg = new Reading(null, ecg, 10);
+					vitalsData.sendEcgToServer();
 
-			writeToTxt();
-*/
-     	//	updateECGEnded_Report();
+					writeToTxt();
+		*/
+			//	updateECGEnded_Report();
 		}
-		int N = 42;
-		private void countDown() {
-
+		int N= 0;
+		private  void countDown()
+		{
 			progressBar.IsVisible = true;
 
 			if (progressBar.AnimationIsRunning("SetProgress"))
-	        {
-	            progressBar.AbortAnimation("SetProgress");
-	        }
-	        else
-	        {
-	            progressBar.Animate("SetProgress",(arg) => { progressBar.Progress = arg; }, 42*60, 42*1000, Easing.Linear);
-	        }
+			{
+				progressBar.AbortAnimation("SetProgress");
+			}
+			else
+			{
+				progressBar.Animate("SetProgress", (arg) => { progressBar.Progress = arg;}, 0, 30000 , Easing.Linear);
+			}
 
 		}
+		private async Task ECGcountdown()
+		{
+#if false
+			N = 30;
+				Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+				{
+					if (N == -1) return false;
+					countDownLabel.Text = "Please keep measuring " + N + " seconds";
+					N--;
+					return true; // True = Repeat again, False = Stop the timer
+						});
+#endif
 
-		public void updateECGPacket(List<int> ecgPacket)
+			Device.BeginInvokeOnMainThread(() =>	countDown());
+
+			for (; N >= 0; N--)
+			 {
+				 countDownLabel.Text = "Please keep measuring " + N + " seconds";
+				 await Task.Delay(1000);
+			 }
+					
+		}
+		private void EcgcountdownCancle() {
+			N = -1;
+			Debug.WriteLine("EcgcountdownCancle timer="+timer);
+			if (timer!= null && timer.running)
+			{
+				timer.Stop();
+			//	timer = null;
+				Debug.WriteLine("timer = "+timer);
+			}
+			if (progressBar!= null && progressBar.AnimationIsRunning("SetProgress"))
+	        {
+	            progressBar.AbortAnimation("SetProgress");
+			}
+			//countDown();
+			progressBar.IsVisible = false;
+			countDownLabel.IsVisible = false;
+		}
+		CommonMethod.MySystemDeviceTimer timer;
+
+		private async Task initEcgCountdown() {
+			await Task.Run(() =>
+			{
+				if (timer == null)
+				{
+					Debug.WriteLine("timer   =============" + timer);
+
+					timer = new CommonMethod.MySystemDeviceTimer(TimeSpan.FromSeconds(12), async () =>
+								{
+									Debug.WriteLine("StartTsure_Interruped==" + Measure_Interruped);
+									if (!Measure_Interruped)
+									{
+
+										await ECGcountdown();
+									}
+									return;
+								});
+					timer.FireOnce();
+				}
+				else
+				{
+					timer.FireOnce();
+				}
+			});
+		}
+		public async void updateECGPacket(List<int> ecgPacket)
 		{
 			try
 			{
@@ -525,57 +614,58 @@ namespace MyHealthVitals
 					Measure_Interruped = false;
 					countECGPacket = 0;
 					ecgTime = 0;
+					N = -1;
 				}
 				if (countECGPacket > 90)
 				{
 					reportDataList.AddRange(ecgPacket);
 				}
 
-				if (countECGPacket == 0) { 
-					N = 42;
-                   Debug.WriteLine("countECGPacket   ============="+countECGPacket);
-					graphModel.LegendTitle = "ECG";
-
-					countDownLabel.IsVisible = true;
-
-					ecgReportcBtn.IsEnabled = false;
-					// reseting the graphmodel for ecg waveform
-					graphModel.DefaultXAxis.IsPanEnabled = false;
-					xMin = 0;
-					graphModel.DefaultXAxis.Minimum = 0;
-					graphModel.DefaultXAxis.Maximum = 6.0;
-
-					graphModel.DefaultYAxis.Minimum = 0;
-					graphModel.DefaultYAxis.Maximum = 255;
-
-					lineSerie.Points.Clear();
-				//	graphModel.DefaultXAxis.IsPanEnabled = false;
-					graphModel.InvalidatePlot(true);
-
-					Debug.WriteLine("countECGPacket   end ============="+countECGPacket);
-					Device.StartTimer(TimeSpan.FromSeconds(1), () =>
-					{
-						if (N == -1) return false;
-
-						countDownLabel.Text = "Please keep measuring " + N + " seconds";
-						N--;
-					    return true; // True = Repeat again, False = Stop the timer
-					});
-                    countDown();
-
-				}
-
-				countECGPacket++;
-
-				for (int i = 0; i < ecgPacket.Count; i++)
+				if (countECGPacket == 0)
 				{
-					ecgTime = ecgTime + 0.006666666667f;
-					lineSerie.Points.Add(new DataPoint(ecgTime, ecgPacket[i]));
-				}
+					N = 30;
+						Debug.WriteLine("countECGPacket   =============" + countECGPacket);
+						graphModel.LegendTitle = "ECG";
+						countDownLabel.Text = "Stabilizing reading, please continue.";
+						countDownLabel.IsVisible = true;
+						progressBar.IsVisible = false;
+
+
+					await initEcgCountdown();
+
+				
+						ecgReportcBtn.IsEnabled = false;
+						// reseting the graphmodel for ecg waveform
+						graphModel.DefaultXAxis.IsPanEnabled = false;
+						xMin = 0;
+						graphModel.DefaultXAxis.Minimum = 0;
+						graphModel.DefaultXAxis.Maximum = 6.0;
+
+						graphModel.DefaultYAxis.Minimum = 0;
+						graphModel.DefaultYAxis.Maximum = 255;
+
+						lineSerie.Points.Clear();
+						//	graphModel.DefaultXAxis.IsPanEnabled = false;
+						graphModel.InvalidatePlot(true);
+
+						Debug.WriteLine("countECGPacket   end =============" + countECGPacket);
+
+
+					}
+					countECGPacket++;
+
+
+				Device.BeginInvokeOnMainThread(() =>
+							{
+								for (int i = 0; i < ecgPacket.Count; i++)
+								{
+									ecgTime = ecgTime + 0.006666666667f;
+									lineSerie.Points.Add(new DataPoint(ecgTime, ecgPacket[i]));
+								}
 
 				// find the end and save the screen into pdf
 				if (ecgTime > graphModel.DefaultXAxis.Maximum)
-				{
+								{
 					//graphModel.PlotAreaBorderColor = OxyColors.Transparent;
 					//DependencyService.Get<IFileHelper>().saveToPdf(graphModel, "ecgReport_" + (countEcgReport++) + ".pdf");
 					//graphModel.PlotAreaBorderColor = OxyColors.Black;
@@ -583,18 +673,24 @@ namespace MyHealthVitals
 					//lineSerie.Points.Clear();
 
 					xMin = ecgTime;
-					graphModel.DefaultXAxis.Minimum = xMin;
-					graphModel.DefaultXAxis.Maximum = xMin + 6.0;
+									graphModel.DefaultXAxis.Minimum = xMin;
+									graphModel.DefaultXAxis.Maximum = xMin + 6.0;
 
-					graphModel.InvalidatePlot(true);
+									graphModel.InvalidatePlot(true);
 
 					//graphModel.TextColor = OxyColors.Transparent;
 					//graphModel.TitleColor = OxyColors.Transparent;
 					//graphModel.LegendTextColor = OxyColors.Transparent;
 				}
-				else {
-					graphModel.InvalidatePlot(true);
-				}
+								else
+								{
+									if (graphModel != null)
+									{
+										graphModel.InvalidatePlot(true);
+									}
+								}
+							});
+				
 			}
 			catch (Exception ex)
 			{
@@ -728,7 +824,15 @@ namespace MyHealthVitals
 					lblPerfusionIndex.Text = "...";
 				}
 			});
-			if (isBPMeasuring && !isupLoadedSPO2) { 
+			if (isBPMeasuring && !isupLoadedSPO2) {
+
+				if(this.deviceName.Equals("PC_300SNT"))
+				{
+					BLECentralManager.sharedInstance.spotServHandler.stopMeasuringSpo2();
+				}
+				else if(this.deviceName.Equals("PC-100")){
+					BLECentralManager.sharedInstance.pc100ServHandler.stopMeasuringSpo2();
+				}
 				isupLoadedSPO2 = true;
 				if (vitalsData != null && (vitalsData.spo2 != null || vitalsData.spo2 != null)) {
 					string message = (vitalsData.spo2 == null ? "" : "SpO2: " + vitalsData.spo2.EnglishValue) + (vitalsData.bpm == null ? "" : "  Bpm: " + vitalsData.bpm.EnglishValue);
@@ -739,7 +843,7 @@ namespace MyHealthVitals
 					}
 					else
 					{
-						isupLoadedSPO2 = false;
+					//	isupLoadedSPO2 = false;
 
 						Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 						{
@@ -818,6 +922,7 @@ namespace MyHealthVitals
 		void btnLogOutClicked(object sender, System.EventArgs e)
 		{
 			Debug.WriteLine(" log out");
+			BLECentralManager.sharedInstance.disConnectAll();
 			Demographics.sharedInstance.calibratedReadingList.Clear();
 			this.Navigation.PopModalAsync(true);
 		}
@@ -970,7 +1075,7 @@ namespace MyHealthVitals
 				Debug.WriteLine("exception nullpointer");
 			}
 		}
-		async void getLatestWeight()
+		async void getLatestWeight(string m)
 		{
 			string message = "Weight: " + (double)this.vitalsData.weight.EnglishValue + "Lbs / "
 			                  + ConvertLBToKG((double)this.vitalsData.weight.EnglishValue) + "Kg";
@@ -1025,10 +1130,11 @@ namespace MyHealthVitals
 			else {
 				
 				var myEmoji = "\U0001F61F";
-                await DisplayAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", "OK");
+				await DisplayAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", "OK");
 
 			}
-            this.vitalsData.sendToServerWeight();
+            this.vitalsData.sendToServerWeight(userHeight);
+			if(m != "") await DisplayAlert(deviceName, m, "OK");
 		}
 
 		public async void startECGReportPage()

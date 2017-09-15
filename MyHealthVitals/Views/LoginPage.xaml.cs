@@ -46,8 +46,12 @@ namespace MyHealthVitals
 			//var status = Reachability.   .InternetConnectionStatus();
 			try
 			{
+				Debug.WriteLine("name= " + username + " pw = " + password);
+				Debug.WriteLine("Credential.sharedInstance = "+Credential.sharedInstance);
 				//Credential cred = await Credential.sharedInstance.CallApiForLogin(txtUsername.Text.Trim(), txtPassword.Text.Trim());
 				Credential cred = await Credential.sharedInstance.CallApiForLogin(username, password);
+			
+				Debug.WriteLine("cred= " + cred);
 
 				Application.Current.Properties["_username"] = txtUsername.Text.Trim();
 				await Application.Current.SavePropertiesAsync();
@@ -86,13 +90,13 @@ namespace MyHealthVitals
 				}
 				else
 				{
-					this.ShowAlertForLogin("An Error has occurred.");
+					this.ShowAlertForLogin("An Error has occurred. ex.StatusCode="+ex.StatusCode);
 				}
 			}
 
-			catch (Exception)
+			catch (Exception e)
 			{
-				this.ShowAlertForLogin("An Error has occurred.");
+				this.ShowAlertForLogin("An Error has occurred. Exception="+e);
 			}
 			finally
 			{

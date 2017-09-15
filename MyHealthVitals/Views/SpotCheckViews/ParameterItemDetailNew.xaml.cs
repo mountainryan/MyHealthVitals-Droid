@@ -231,6 +231,7 @@ namespace MyHealthVitals
 							{
 								foreach (var val in logcalParameteritem.localhashmap[5])
 								{
+									Debug.WriteLine("val.BMI"+val.secondItem +" WEIGHT "+ val.firstItem);
 									data.Add(val);
 								};
 							}
@@ -261,7 +262,7 @@ namespace MyHealthVitals
 								var item = new ParameterDetailItem();
 								item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
 								item.firstItem = Math.Round((decimal)reading.weight.EnglishValue, 1) + "/" + Math.Round((decimal)reading.weight.MetricValue, 1);
-								Debug.WriteLine("firstItem = " + item.firstItem);
+							//	Debug.WriteLine("firstItem = " + item.firstItem + "SECONDItem = " + item.secondItem);
 								if (reading.bmi != null)
 								{
 									item.secondItem = Math.Round((decimal)reading.bmi.EnglishValue, 1).ToString();

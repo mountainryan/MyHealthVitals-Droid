@@ -23,6 +23,9 @@ namespace MyHealthVitals
 				Debug.WriteLine("value in ch = " + Int32.Parse(Convert.ToString(s, 2)).ToString("0000 0000"));
 			}*/
 
+		//	Debug.WriteLine("ch.Value[0] = " + ch.Value[0]);
+		//	Debug.WriteLine("ch.Value[1] = " + ch.Value[1]);
+			//Debug.WriteLine("ch.Value[0] = " + ch.Value[0]);
 			//token in NIBP result in pc-100
 			if ((int)ch.Value[0] == 0xFF)
 			{

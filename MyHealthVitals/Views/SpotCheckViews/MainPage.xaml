@@ -131,7 +131,7 @@
 								</StackLayout>
 							</StackLayout>
 							<BoxView HeightRequest="0.5" BackgroundColor="White" />
-							<Label x:Name = "countDownLabel" FontSize = "10" IsVisible = "false" Text = "Please keep measuring 44 seconds" Style="{DynamicResource styleLblReading}" />
+							<Label x:Name = "countDownLabel" FontSize = "10" IsVisible = "false" Text = "Stabilizing reading, please continue." Style="{DynamicResource styleLblReading}" />
 							<ProgressBar x:Name="progressBar" Progress="0" IsVisible = "false" />
 
 						</StackLayout>

@@ -50,8 +50,8 @@ namespace MyHealthVitals
 				//bleManager.ScanToConnectToSpotCheck(this);
 				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
 				//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
-
-				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
+				string readings = (3 - calibratedReadingList.Count) > 1 ? "more readings." : "more reading.";
+				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + readings;
 			}
 			else {
 				DisplayAlert("Calibration", "Readings taken are sufficient for calibration. If you want to take more readings, Please, delete the unwanted row and take reading again.", "OK");
@@ -109,7 +109,7 @@ namespace MyHealthVitals
 		async void btnSaveCLicked(object sender, System.EventArgs e)
 		{
 			layoutLoading.IsVisible = true;
-			lblLoadingMessage.Text = "Saving Calibrated Reading.";
+			lblLoadingMessage.Text = "Saving Calibrated Readings.";
 
 			try
 			{

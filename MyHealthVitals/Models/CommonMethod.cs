@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Threading;
+using Xamarin.Forms;
+
 namespace MyHealthVitals
 {
 	public class CommonMethod
@@ -8,6 +11,59 @@ namespace MyHealthVitals
 		private CommonMethod()
 		{
 		}
+
+
+		public class MySystemDeviceTimer
+		{
+			private readonly TimeSpan timespan;
+			private readonly Action callback;
+
+			private CancellationTokenSource cancellation;
+
+			public bool running { get; private set; }
+
+			public MySystemDeviceTimer(TimeSpan timespan, Action callback)
+			{
+				this.timespan = timespan;
+				this.callback = callback;
+				this.cancellation = new CancellationTokenSource();
+			}
+
+			public void Start()
+			{
+				running = true;
+				start(true);
+			}
+
+			private void start(bool continuous)
+			{
+				CancellationTokenSource cts = this.cancellation;    // safe copy
+				Device.StartTimer(this.timespan,
+					() =>
+					{
+						if (cts.IsCancellationRequested)
+						{
+							running = false;
+							return false;
+						}
+						this.callback.Invoke();
+						return continuous;
+					});
+			}
+
+			public void FireOnce()
+			{
+				running = true;
+				start(false);
+				running = false;
+			}
+
+			public void Stop()
+			{
+				Interlocked.Exchange(ref this.cancellation, new CancellationTokenSource()).Cancel();
+		 }
+		}
+
 
 
 		public string getExplanation(int state)

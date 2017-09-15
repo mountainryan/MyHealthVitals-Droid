@@ -106,6 +106,10 @@ namespace MyHealthVitals
 			//Debug.WriteLine(" log out");
 			//Demographics.sharedInstance.clearLocalStorageOnLogout();
 			//Demographics.sharedInstance.password = "";
+
+			BLECentralManager.sharedInstance.disConnectAll();
+
+
 			ParametersPageLocal.allReadings = null;
 			logcalParameteritem.localhashmap.Clear();
 			logcalParameteritem.localspirometerList.Clear();

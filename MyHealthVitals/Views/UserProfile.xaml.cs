@@ -73,8 +73,8 @@ namespace MyHealthVitals
 				lblBirthdate.Text = String.Format("{0:MM/dd/yyyy}", (DateTime)Demographics.sharedInstance.DateOfBirth);
 
 				lblAge.Text = (DateTime.Now.Year - 1 - ((DateTime)Demographics.sharedInstance.DateOfBirth).Year).ToString();
-				lblHeight.Text = Demographics.sharedInstance.Height;
-				lblWeight.Text = Demographics.sharedInstance.Weight;
+				lblHeight.Text = Demographics.sharedInstance.Height.Split('/')[0];
+				lblWeight.Text = Demographics.sharedInstance.Weight.Split('/')[0];
 
 				Regex regexObj = new Regex(@"[^\d]");
 				string officePhone3 = Demographics.sharedInstance.CellPhone ?? "";
