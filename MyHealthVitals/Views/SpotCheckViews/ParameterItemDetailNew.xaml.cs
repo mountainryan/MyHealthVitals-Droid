@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using MyHealthVitals;
 using Xamarin.Forms;
 
 namespace MyHealthVitals
@@ -16,9 +18,51 @@ namespace MyHealthVitals
 		public ParameterItemDetailNew()
 		{
 			InitializeComponent();
+		}
+
+		protected override void OnDisappearing()
+		{
+			base.OnDisappearing();
 
 		}
-		 
+
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+			Debug.WriteLine("ParameterItemDetailNew OnAppearing");
+			// callApi();
+			ListCellTwoItem.fileName = null;
+			itemList.ItemsSource = null;
+
+			foreach (var e in data)
+			{
+				if (e.date.Equals(ListCellTwoItem.itemDate))
+				{
+					Debug.WriteLine(e.date);
+					string fn = Regex.Replace(e.date, @"\s+", "");//dateTime.Trim(' ')
+					fn = Regex.Replace(fn, @"[/:]+", "");
+					bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fn + ".txt");
+					if (ret)
+					{
+						e.secondItem = "No Report";
+					}
+					else if (DependencyService.Get<IFileHelper>().checkFileExist(fn + "ECG.pdf"))
+					{
+						//count++;
+						e.secondItem = "Saved";
+					}
+					else
+					{
+						e.secondItem = "Emailed";
+					}
+					Debug.WriteLine("e.secondItem ="+ e.secondItem);
+					break;
+				}
+			}
+			itemList.ItemsSource = data;
+
+		}
+
 		public ParameterItemDetailNew(int id, Reading[] allReadings)
 		{
             InitializeComponent();
@@ -368,13 +412,13 @@ namespace MyHealthVitals
 							data.Add(item);
 						}
 
-						itemList.ItemsSource = data;
+					//	itemList.ItemsSource = data;
 						break;
 					default:
 						break;
 				}
 
-				itemList.ItemsSource = data;
+			//	itemList.ItemsSource = data;
 
 			}
 			catch (Exception)

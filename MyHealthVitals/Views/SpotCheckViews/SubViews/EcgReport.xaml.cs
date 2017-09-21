@@ -183,9 +183,6 @@ namespace MyHealthVitals
 				HorizontalAlignment = HorizontalAlignment.Center,
 				VerticalAlignment = VerticalAlignment.Middle,
 			});
-
-		
-
 		}
 
 		//close
@@ -214,18 +211,14 @@ namespace MyHealthVitals
 				graphModel_report.InvalidatePlot(true);
 				styleGraphModel(graphModel_report);
 			}
-
 			updateECGPacket_Report();
-
 
 		}
 
 
 		private void setGobackButton(){
 
-
 			//public ToolbarItem(string name, string icon, Action activated, ToolbarItemOrder order = ToolbarItemOrder.Default, int priority = 0);
-
 			var goBack = new ToolbarItem
 			{
 				//Icon = "settings32.png",
@@ -234,19 +227,28 @@ namespace MyHealthVitals
 			};
 			goBack.Clicked += async (object sender, EventArgs e) =>
 			{
-				var ret = await DisplayAlert("Save and Email", "Do you want to save and email the report before leaving", "Yes", "No");
-				if (ret)
+				string message = "";
+				if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt"))
 				{
-					btnSaveClicked(null, null);
+					message = "Do you want to save and email the report before leaving";
+					var ret = await DisplayAlert("Save and Email", message, "Yes", "No");
+					if (ret)
+					{
+						btnSaveClicked(null, null);
+					}
+					if (ParametersPageLocal.allReadings == null)
+				 	{
+						ParametersPageLocal.allReadings  = await Reading.GetAllReadingsFromService();
+					}
+					var newPage = new ParameterItemDetailNew(10, ParametersPageLocal.allReadings);
+				//	await this.Navigation.PushModalAsync(newPage);
+								//	this.Navigation.RemovePage(this);
 				}
-
 				await Navigation.PopModalAsync();
 			};
 			this.ToolbarItems.Add(goBack);
 
 		}
-
-
 
 		private void styleGraphModel(PlotModel graphModel)
 		{
