@@ -10,7 +10,8 @@ namespace MyHealthVitals
 	public partial class ListCellTwoItem : ViewCell
 	{
 	//	private const int V = 0x53A7DE;;
-		String fileName;
+		public static String fileName;
+		public static String itemDate;
 		public ListCellTwoItem()
 		{
 			InitializeComponent();
@@ -36,7 +37,7 @@ namespace MyHealthVitals
 			fileName = Regex.Replace(itemdate.Text, @"\s+", "");//dateTime.Trim(' ')
 			fileName = Regex.Replace(fileName, @"[/:]+", "");
 			Debug.WriteLine("OnLabelClicked.fileName==" + fileName);
-
+			itemDate = itemdate.Text;
 			if (secondItem.Text.Equals("No Report"))
 			{
 				//secondItem.TextColor = Color.Blue;
