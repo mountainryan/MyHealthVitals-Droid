@@ -69,6 +69,7 @@ namespace MyHealthVitals
 
 		public void connectToDevice(String deviceName, object controller)
 		{
+			Debug.WriteLine("connectToDevice");
 			scanningDeviceName = deviceName;
 
 			switch (deviceName)
@@ -144,6 +145,7 @@ namespace MyHealthVitals
 			{
 				if (device.Name == deviceName)
 				{
+					Debug.WriteLine("getCurrentDevice" + device.Name);
 					return device;
 				}
 			}
@@ -273,7 +275,7 @@ namespace MyHealthVitals
 
 		void Adapter_DisConnection(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
-				Debug.WriteLine(e.Device.Name + "  Adapter_DisConnection");
+			Debug.WriteLine(e.Device.Name + "  Adapter_DisConnection");
 			if (e.Device.Name == "PC_300SNT")
 			{
 				spotServHandler.uiController.ShowConcetion("PC-300 DisConnection.", false);
@@ -292,16 +294,40 @@ namespace MyHealthVitals
 				scaleServHandle.uiController.ShowConcetion("Scale DisConnection.", false);
 			}
 		}
-		public void disConnectAll(string exceptDevice = "")
+		public async void disConnectAll(string exceptDevice = "")
 		{
 			Debug.WriteLine("================DisconnectDeviceAsync=========================");
 			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices)
 			{
 				Debug.WriteLine(device.State);
+
+				if (device.Name == "PC_300SNT")
+				{
+					await spotServHandler.diconnectServices(device);
+				}
+				else if (device.Name == "BLE-MSA")
+				{
+					await spiroServHandler.diconnectServices(device);
+				}
+				else if (device.Name == "PC-100")
+				{
+					await pc100ServHandler.diconnectServices(device);
+				}
+				else if (device.Name == "eBody-Scale")
+				{
+					await scaleServHandle.diconnectServices(device);
+				}
+
 				if (!device.Name.Equals(exceptDevice))
-					CrossBluetoothLE.Current.Adapter.DisconnectDeviceAsync(device);
+					await CrossBluetoothLE.Current.Adapter.DisconnectDeviceAsync(device);
+
 				Debug.WriteLine("after " + device.State);
 			}
+			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices)
+			{
+				Debug.WriteLine(device.Name + "  " + device.State);
+			}
+
 		}
 	}
 }

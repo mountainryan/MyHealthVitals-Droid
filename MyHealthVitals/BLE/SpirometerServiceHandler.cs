@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
 
@@ -31,7 +32,31 @@ namespace MyHealthVitals
 				// after this it will call central manager and when device_connected event of the central manager fires then it will call again this class discoverServices()
 			}
 		}
+		public async Task diconnectServices(IDevice device)
+		{
+			//uiController = (BLEReadingUpdatableSpiroMeter)controller;
+			connectedDevice = device;
+			stopPolling();
+			var services = await connectedDevice.GetServicesAsync();
+			foreach (var s in services)
+			{
+				var characteristics = await s.GetCharacteristicsAsync();
+				foreach (var c in characteristics)
+				{
+					if (c.CanUpdate)
+					{
+						c.ValueUpdated -= C_ValueUpdated;
+						await c.StopUpdatesAsync();
+					}
 
+					if (c.CanWrite)
+					{
+						bmChar = c;
+					}
+				}
+			}
+
+		}
 		public async void discoverServices(IDevice device)
 		{
 			//uiController = (BLEReadingUpdatableSpiroMeter)controller;

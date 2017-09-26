@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Text;
+using System.Threading.Tasks;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
 
@@ -34,7 +36,37 @@ namespace MyHealthVitals
 		{
 			this.uiController = controller;
 		}
+		public async Task diconnectServices(IDevice device) 
+		{
+			Contract.Ensures(Contract.Result<Task>() != null);
+			this.connectedDevice = device;
+			//this.uiController = (IBluetoothCallBackUpdatable)controller;
 
+			var services = await connectedDevice.GetServicesAsync();
+			Debug.WriteLine("services ==== " + services.Count);
+
+			foreach (var s in services)
+			{
+				Debug.WriteLine("diconnect  Services====" + s);
+				var characteristics = await s.GetCharacteristicsAsync();
+				foreach (var c in characteristics)
+				{
+					//Debug.WriteLine(string.Format("Char UUID: {0}  Value: {1}", c.Uuid, c.Value));
+					//Debug.WriteLine("uuid: " + c.Uuid);
+
+					if (c.CanUpdate)
+					{
+						c.ValueUpdated -= C_ValueUpdated;
+						await c.StopUpdatesAsync();
+					}
+
+					if (c.CanWrite)
+					{
+						bmChar = c;
+					}
+				}
+			}
+		}
 		public async void discoverServices(IDevice device)
 		{
 			this.connectedDevice = device;
@@ -43,7 +75,7 @@ namespace MyHealthVitals
 			var services = await connectedDevice.GetServicesAsync();
 			foreach (var s in services)
 			{
-				Debug.WriteLine(s);
+				Debug.WriteLine("discoverServices===="+s);
 				var characteristics = await s.GetCharacteristicsAsync();
 				foreach (var c in characteristics)
 				{
@@ -148,9 +180,14 @@ namespace MyHealthVitals
 			// sys , dia and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 63 && (int)ch.Value[2] < 68)
 			{
-					Debug.WriteLine("NIBP related token. ch.Value.Length  = " + ch.Value.Length );
+				Debug.WriteLine("NIBP related token. ch.Value.Length  = " + ch.Value.Length );
+				Debug.WriteLine("ch.Value[2] = " + ch.Value[2]);
 				if (ch.Value.Length >= 9)
 				{
+					Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
+
+					Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
+
 					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], 0);
 
 				}
@@ -161,74 +198,106 @@ namespace MyHealthVitals
 				}
 
 
-					if (countMeasuringPressure == 0)
-					{
-						//uiController.ShowMessageOnUI("Measuring the Blood pressure...", true);
-						countMeasuringPressure++;
-					}
-
-					if (ch.Value.Length > 21)
-					{
-						uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
-						//uiController.ShowMessageOnUI("Boood pressure read succesfully.", true);
-						countMeasuringPressure = 0;
-					}
-					//if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
+				if (countMeasuringPressure == 0)
+				{
+					//uiController.ShowMessageOnUI("Measuring the Blood pressure...", true);
+					countMeasuringPressure++;
 				}
+
+				if (ch.Value.Length > 21)
+				{
+					Debug.WriteLine("ch.Value[4] = " + ch.Value[4]);
+					Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
+
+					Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
+					Debug.WriteLine("ch.Value[9] = " + ch.Value[9]);
+
+								
+					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
+					//uiController.ShowMessageOnUI("Boood pressure read succesfully.", true);
+					countMeasuringPressure = 0;
+				}
+					//if (ch.Value.Length == 8) uiController.updatingPressureMeanTime((int)ch.Value[6]);
+			}
 			// error in blood pressure reading
 			if (ch.Value.Length == 14)
 			{
 				String message = "";
-				Debug.WriteLine("ch.Value[8]" + ch.Value[5]);
+				Debug.WriteLine("ch.Value[5]" + ch.Value[5]);
 				Debug.WriteLine("127 & (int)ch.Value[5]" + (127 & (int)ch.Value[5]));
-
-				switch (127 & (int)ch.Value[5])
+				if ((int)ch.Value[5] >> 7 == 0)
 				{
-					case 0:
-						message = "NO pulse is detected.";
-						break;
-					case 1:
-						message = "the cuff pressure does not reach 30 mmhg within 7 seconds. Probably the cuff is not wrapped well.";
-						break;
-					case 2:
-						message = "Over pressure";
-						break;
-					case 3:
-						message = "no pulse detected";
-						break;
-					case 4:
-						message = "Too much motion artifects.";
-						break;
-					case 5:
-						message = "Invallid result is obtained.";
-						break;
-					case 6:
-						message = "Air leakage occured.";
-						break;
-					case 7:
-						message = "Self - checking failed, probably transducer or A/ D sampling error. ";
-						break;
-					case 8:
-						message = "Pressure error, probably valve can't open normally.";
-						break;
-					case 9:
-						message = "signal saturation, caused by movement or other reason yielding too big signal amplitude";
-						break;
-					case 10:
-						message = "Air leakage in airway leakage checking.";
-						break;
-					case 11:
-						message = "Hardware or software fault.";
-						break;
-					case 12:
-						message = "measurement exceeds the specified time limits, 120s for adults with cuff pressure over 200 mmHg, 90s for adults with cuff pressure under 200 mmhg; 90s for neonate";
-						break;
-					default:
-						return;
-						//message = "Unknow error.";
-						//break;
+					switch ((int)ch.Value[5])
+					{
+						case 0:
+							message = "NO pulse is detected.";
+							break;
+						case 1:
+							message = "the cuff pressure does not reach 30 mmhg within 7 seconds. Probably the cuff is not wrapped well.";
+							break;
+						case 2:
+							message = "invalid measurement result is obtained.";
+							break;
+						case 3:
+							message = "overpressure(>295mmHg) protection occurs.";
+							break;
+						case 4:
+							message = "Too much motion artifacts(caused by moving, talking etc. during measurement).";
+							break;
+						default:
+							break;
+					}
 				}
+				else if ((int)ch.Value[5] >> 7 == 1)
+				{
 
+					switch ((int)ch.Value[5] - 128)
+					{
+						case 0:
+						//	message = "NO pulse is detected.";
+							break;
+						case 1:
+							message = "the cuff pressure does not reach 30 mmhg within 7 seconds. Probably the cuff is not wrapped well. I'm writing more stuff to see how much data this box can hold. blah blah blah blah blah.... yes see more.";
+							break;
+						case 2:
+							message = "Over pressure.";
+							break;
+						case 3:
+							message = "no pulse detected.";
+							break;
+						case 4:
+							message = "Too much motion artifacts.";
+							break;
+						case 5:
+							message = "Invalid result is obtained.";
+							break;
+						case 6:
+							message = "Air leakage occured.";
+							break;
+						case 7:
+							message = "Self - checking failed, probably transducer or A/ D sampling error.";
+							break;
+						case 8:
+							message = "Pressure error, probably valve can't open normally.";
+							break;
+						case 9:
+							message = "Signal saturation, caused by movement or other reason yielding too big signal amplitude.";
+							break;
+						case 10:
+							message = "Air leakage in airway leakage checking.";
+							break;
+						case 11:
+							message = "Hardware or software fault.";
+							break;
+						case 12:
+							message = "measurement exceeds the specified time limits, 120s for adults with cuff pressure over 200 mmHg, 90s for adults with cuff pressure under 200 mmhg; 90s for neonate.";
+							break;
+						default:
+							return;
+							//message = "Unknow error.";
+							//break;
+					}
+				}
 				uiController.ShowMessageOnUI(message, true, "Blood Pressure Measure Error");
 			}
 
@@ -285,11 +354,12 @@ namespace MyHealthVitals
 					var status_bit1 = ((int)ch.Value[9] & (1 << 1)) != 0;
 					if (status_bit1)
 					{
-						Debug.WriteLine("end of the spo2 reading");
+						Debug.WriteLine("end of the spo2 reading preBMP="+preBMP);
 						if (preBMP != 0)
 						{
 							uiController.noticeEndOfReadingSpo2();
 							preBMP = 0;
+							return;
 						}
 					}
 					preBMP = (int)ch.Value[6];
@@ -447,7 +517,7 @@ namespace MyHealthVitals
 				// end of the ecg reading
 				if (token == 51)
 				{
-					Debug.WriteLine("total duration of ECG measurment: " + (t1.Subtract(DateTime.Now)).TotalMilliseconds);
+				//	Debug.WriteLine("total duration of ECG measurment: " + (t1.Subtract(DateTime.Now)).TotalMilliseconds);
 					isEcgStarted = false;
 
 					var data1 = (int)ch.Value[5];

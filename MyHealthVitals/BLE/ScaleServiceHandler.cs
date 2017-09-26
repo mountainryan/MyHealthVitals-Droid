@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
 using Plugin.BLE.Abstractions.EventArgs;
@@ -61,6 +62,30 @@ namespace MyHealthVitals
 					Debug.WriteLine("weight = " + weight);
 					this.uiController.updated_Weight((decimal)weight);
 				}*/
+			}
+		}
+		public async Task diconnectServices(IDevice device)
+		{
+			this.connectedDevice = device;
+			//this.uiController = (IBluetoothCallBackUpdatable)controller;
+
+			var services = await connectedDevice.GetServicesAsync();
+			foreach (var s in services)
+			{
+				var characteristics = await s.GetCharacteristicsAsync();
+				foreach (var c in characteristics)
+				{
+					if (c.CanUpdate)
+					{
+						c.ValueUpdated -= C_ValueUpdated;
+						await c.StopUpdatesAsync();
+					}
+
+					if (c.CanWrite)
+					{
+						bmChar = c;
+					}
+				}
 			}
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
 
@@ -63,6 +64,7 @@ namespace MyHealthVitals
 
 		public async void discoverServices(IDevice device)
 		{
+			Debug.WriteLine("discoverServices");
 			this.connectedDevice = device;
 			//this.uiController = (IBluetoothCallBackUpdatable)controller;
 
@@ -87,6 +89,34 @@ namespace MyHealthVitals
 					}
 				}
 			}
+		}
+		public async Task diconnectServices(IDevice device)
+		{
+			Debug.WriteLine("discoverServices");
+			this.connectedDevice = device;
+			//this.uiController = (IBluetoothCallBackUpdatable)controller;
+
+			var services = await connectedDevice.GetServicesAsync();
+			foreach (var s in services)
+			{
+				var characteristics = await s.GetCharacteristicsAsync();
+				foreach (var c in characteristics)
+				{
+					//Debug.WriteLine(string.Format("Char UUID: {0}  Value: {1}", c.Uuid, c.Value));
+					//Debug.WriteLine("uuid: " + c.Uuid);
+
+					if (c.CanUpdate)
+					{
+						c.ValueUpdated -= C_ValueUpdated;
+						await c.StopUpdatesAsync();
+					}
+
+					if (c.CanWrite)
+					{
+						bmChar = c;
+					}
+				}
+			}	
 		}
 
 		private void printUpdatedCharacteristics(ICharacteristic ch)
@@ -115,7 +145,6 @@ namespace MyHealthVitals
 		string gluUnit = "";
 		int glucoseResult = -1;
 
-		int tempReadingCount = 0;
 
 		public void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e)
 		{
@@ -174,7 +203,7 @@ namespace MyHealthVitals
 					var bit0 = (ch.Value[5] & (1 << 0));
 
 					var bit3_0 = ""+bit3+""+bit2+""+bit1+""+bit0;
-
+					Debug.WriteLine("ch.Value[5] "+ch.Value[5] );
 					var message = "";
 
 					if (bit7==1)
@@ -182,16 +211,16 @@ namespace MyHealthVitals
 						switch (Convert.ToInt32(bit3_0))
 						{
 							case 1:
-								message = "Pressure did not reach 30 mmHg in 7 seconds.";
+								message = "Pressure did not reach 30 mmHg in 7 seconds(cuff placed incorrectly)";
 								break;
 							case 2:
 								message = "Pressure over 295mmHg, device is self - protecting.";
 								break;
 							case 3:
-								message = "Can't detect pulse.";
+								message = "Cannot detect pulse.";
 								break;
 							case 4:
-								message = "Too many interferennce. Movements, Talking.";
+								message = "Too many interference(Movements, Talking..)";
 								break;
 							case 5:
 								message = "Result value incorrect.";
@@ -212,10 +241,10 @@ namespace MyHealthVitals
 						switch (Convert.ToInt32(bit3_0))
 						{
 							case 0:
-								message = "Can't detect pulse.";
+								message = "Cannot detect pulse.";
 								break;
 							case 1:
-								message = "Pressure did not reach 30 mmHg in 7 seconds.";
+								message = "Pressure did not reach 30 mmHg in 7 seconds(cuff placed incorrectly).";
 								break;
 							case 2:
 								message = "Result value incorrect.";
@@ -224,7 +253,7 @@ namespace MyHealthVitals
 								message = "Pressure over 295mmHg, device is self-protecting.";
 								break;
 							case 4:
-								message = "Too many interferennce. Movements, Talking.";
+								message = "Too many interference(Movements, Talking..)";
 								break;
 							case 15:
 								message = "Low Battery, measurement stopped.";
@@ -281,12 +310,12 @@ namespace MyHealthVitals
 				}
 			}
 
-
+			/*
 			Debug.WriteLine("ch.Value[2] = " + ch.Value[2]);
 			Debug.WriteLine("ch.Value[3] = " + ch.Value[3]);
 			Debug.WriteLine("ch.Value[4] = " + ch.Value[4]);
 			Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
-
+*/
 			// this token is for glucose reading
 			if ((int)ch.Value[2] == 115) 
 			{
