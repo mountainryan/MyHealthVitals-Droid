@@ -180,20 +180,20 @@ namespace MyHealthVitals
 			// sys , dia and bpm is available in spot check monitor
 			if ((int)ch.Value[2] > 63 && (int)ch.Value[2] < 68)
 			{
-				Debug.WriteLine("NIBP related token. ch.Value.Length  = " + ch.Value.Length );
-				Debug.WriteLine("ch.Value[2] = " + ch.Value[2]);
+				//Debug.WriteLine("NIBP related token. ch.Value.Length  = " + ch.Value.Length );
+				//Debug.WriteLine("ch.Value[2] = " + ch.Value[2]);
 				if (ch.Value.Length >= 9)
 				{
-					Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
+					//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
 
-					Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
+					//Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
 
 					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], 0);
 
 				}
 				else if (ch.Value.Length >= 7)
 				{
-					Debug.WriteLine("ch.Value[6]" + ch.Value[6]);
+					//Debug.WriteLine("ch.Value[6]" + ch.Value[6]);
 					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], 0, 0);
 				}
 
@@ -206,11 +206,11 @@ namespace MyHealthVitals
 
 				if (ch.Value.Length > 21)
 				{
-					Debug.WriteLine("ch.Value[4] = " + ch.Value[4]);
-					Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
+					//Debug.WriteLine("ch.Value[4] = " + ch.Value[4]);
+					//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
 
-					Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
-					Debug.WriteLine("ch.Value[9] = " + ch.Value[9]);
+					//Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
+					//Debug.WriteLine("ch.Value[9] = " + ch.Value[9]);
 
 								
 					uiController.SYS_DIA_BPM_updated((int)ch.Value[6], (int)ch.Value[8], (int)ch.Value[9]);
@@ -223,26 +223,26 @@ namespace MyHealthVitals
 			if (ch.Value.Length == 14)
 			{
 				String message = "";
-				Debug.WriteLine("ch.Value[5]" + ch.Value[5]);
-				Debug.WriteLine("127 & (int)ch.Value[5]" + (127 & (int)ch.Value[5]));
+				//Debug.WriteLine("ch.Value[5]" + ch.Value[5]);
+				//Debug.WriteLine("127 & (int)ch.Value[5]" + (127 & (int)ch.Value[5]));
 				if ((int)ch.Value[5] >> 7 == 0)
 				{
 					switch ((int)ch.Value[5])
 					{
 						case 0:
-							message = "NO pulse is detected.";
+							message = "No pulse detected.";
 							break;
 						case 1:
-							message = "the cuff pressure does not reach 30 mmhg within 7 seconds. Probably the cuff is not wrapped well.";
+							message = "The cuff pressure failed to reach 30mmHg within 7 seconds (check that cuff is not wrapped well).";
 							break;
 						case 2:
-							message = "invalid measurement result is obtained.";
+							message = "Invalid measurement result is obtained.";
 							break;
 						case 3:
-							message = "overpressure(>295mmHg) protection occurs.";
+							message = "Overpressure (>295mmHg) protection occurs.";
 							break;
 						case 4:
-							message = "Too much motion artifacts(caused by moving, talking etc. during measurement).";
+							message = "Too much motion (caused by moving, talking etc. during measurement).";
 							break;
 						default:
 							break;
@@ -253,44 +253,41 @@ namespace MyHealthVitals
 
 					switch ((int)ch.Value[5] - 128)
 					{
-						case 0:
-						//	message = "NO pulse is detected.";
-							break;
 						case 1:
-							message = "the cuff pressure does not reach 30 mmhg within 7 seconds. Probably the cuff is not wrapped well. I'm writing more stuff to see how much data this box can hold. blah blah blah blah blah.... yes see more.";
+							message = "The cuff pressure does not reach 30 mmhg within 7 seconds. Probably the cuff is not wrapped well. I'm writing more stuff to see how much data this box can hold. blah blah blah blah blah.... yes see more.";
 							break;
 						case 2:
-							message = "Over pressure.";
+							message = "Overpressure (>295mmHg) protection occurs.";
 							break;
 						case 3:
-							message = "no pulse detected.";
+							message = "No pulse detected.";
 							break;
 						case 4:
-							message = "Too much motion artifacts.";
+							message = "Too much motion (caused by moving, talking etc. during measurement).";
 							break;
 						case 5:
 							message = "Invalid result is obtained.";
 							break;
 						case 6:
-							message = "Air leakage occured.";
+							message = "Air leakage occurred.";
 							break;
 						case 7:
-							message = "Self - checking failed, probably transducer or A/ D sampling error.";
+							//message = "Self - checking failed, probably transducer or A/ D sampling error.";
 							break;
 						case 8:
-							message = "Pressure error, probably valve can't open normally.";
+							//message = "Pressure error, probably valve can't open normally.";
 							break;
 						case 9:
-							message = "Signal saturation, caused by movement or other reason yielding too big signal amplitude.";
+							//message = "Signal saturation, caused by movement or other reason yielding too big signal amplitude.";
 							break;
 						case 10:
-							message = "Air leakage in airway leakage checking.";
+							//message = "Air leakage in airway leakage checking.";
 							break;
 						case 11:
 							message = "Hardware or software fault.";
 							break;
 						case 12:
-							message = "measurement exceeds the specified time limits, 120s for adults with cuff pressure over 200 mmHg, 90s for adults with cuff pressure under 200 mmhg; 90s for neonate.";
+							//message = "measurement exceeds the specified time limits, 120s for adults with cuff pressure over 200 mmHg, 90s for adults with cuff pressure under 200 mmhg; 90s for neonate.";
 							break;
 						default:
 							return;
@@ -298,7 +295,11 @@ namespace MyHealthVitals
 							//break;
 					}
 				}
-				uiController.ShowMessageOnUI(message, true, "Blood Pressure Measure Error");
+                if (message != "")
+                {
+                    uiController.ShowMessageOnUI(message, true, "Blood Pressure Measure Error");
+                }
+				
 			}
 
 
@@ -336,6 +337,12 @@ namespace MyHealthVitals
 			//// spo2 , PI and bpm is available in spot check monitor
 			if ((int)ch.Value[2] >= 80 && (int)ch.Value[2] < 84)
 			{
+				//Debug.WriteLine("SpO2...");
+				//Debug.WriteLine("ch.Value[2] = " + ch.Value[2]);
+				//Debug.WriteLine("ch.Value[3] = " + ch.Value[3]);
+				//Debug.WriteLine("ch.Value[4] = " + ch.Value[4]);
+				//Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
+				//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
 				if ((int)ch.Value[2] == 82)
 				{
 					var waveformBpm = (int)ch.Value[6];
@@ -346,15 +353,89 @@ namespace MyHealthVitals
 				var token = (int)ch.Value[2];
 				var length = (int)ch.Value[3];
 
-				if (token == 83 && length == 7) {
-					Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
-					Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
-					Debug.WriteLine("ch.Value[9] = " + ch.Value[9]);
+				//Debug.WriteLine("getting waveform...");
+
+				if (token == 83 && length == 7)
+				{
+					//int rshift = ch.Value[6] >> 2;
+					//Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
+					//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
+					//Debug.WriteLine("ch.Value[6]>>2 = " + rshift);
+					//Debug.WriteLine("ch.Value[7] = " + ch.Value[7]);
+					//Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
+					//Debug.WriteLine("ch.Value[9] = " + ch.Value[9]);
+					//Debug.WriteLine("ch.Value[10] = " + ch.Value[10]);
+
+
+					//ch.Value[9] holds the status info
+					//D0 - probe disconnected (reserved)
+					//D1 - Probe off (probe disconnected or finger is out of probe
+					//D2 - Pulse Searching
+					//D3 - Searching too long (reserved)
+					//D4 - Motion detected (reserved)
+					//D5 - Low perfusion (reserved)
+					//D7-D6 - 00 Adult Mode, 01 Neonate Mode, 10 Veterinary Mode (reserved)
 
 					var status_bit1 = ((int)ch.Value[9] & (1 << 1)) != 0;
 					if (status_bit1)
 					{
-						Debug.WriteLine("end of the spo2 reading preBMP="+preBMP);
+						Debug.WriteLine("end of the spo2 reading preBMP=" + preBMP);
+						//display the error message on the screen
+						int errshift = ch.Value[9] >> 6;
+						int errval = (int)ch.Value[9] - (errshift * (int)Math.Pow(2, 6));
+						if ((ch.Value[5] == 0 || ch.Value[6] == 0) && errval != 2)
+						{
+
+							//Debug.WriteLine("errshift = " + errshift);
+							//Debug.WriteLine("errval = " + errval);
+							string message = "";
+							switch (errval)
+							{
+								case 1:
+									{
+										message = "Probe disconnected";
+										break;
+									}
+								case 2:
+									{
+										message = "Probe off (probe disconnected or finger is out of probe)";
+										break;
+									}
+								case 4:
+									{
+										message = "Looking for pulse";
+										break;
+									}
+								case 8:
+									{
+										message = "Search timeout";
+										break;
+									}
+								case 16:
+									{
+										message = "Motion detected";
+										break;
+									}
+								case 32:
+									{
+										message = "Low perfusion";
+										break;
+									}
+								default:
+									{
+										message = "Unknown error";
+										break;
+									}
+							}
+                            if (message != "")
+                            {
+                                uiController.ShowMessageOnUI(message, true, "SpO2 status");    
+                            }
+							
+						}
+
+
+
 						if (preBMP != 0)
 						{
 							uiController.noticeEndOfReadingSpo2();
@@ -365,9 +446,11 @@ namespace MyHealthVitals
 					preBMP = (int)ch.Value[6];
 					if (ch.Value[5] == 0 || ch.Value[6] == 0)
 					{
-						Debug.WriteLine("Invallid readings.");
+
+						Debug.WriteLine("Invalid readings.");
 					}
-					else { 
+					else
+					{
 						int lastSpo2 = (int)ch.Value[5];
 						int lastBPM = (int)ch.Value[6];
 
@@ -375,13 +458,13 @@ namespace MyHealthVitals
 					}
 				}
 				/*
-				if ((int)ch.Value[2] == 0x50 && (int)ch.Value[4] == 2)
-				{
-					int lastSpo2 = (int)ch.Value[5];
-					int lastBPM = (int)ch.Value[6];
-					uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
+                if ((int)ch.Value[2] == 0x50 && (int)ch.Value[4] == 2)
+                {
+                    int lastSpo2 = (int)ch.Value[5];
+                    int lastBPM = (int)ch.Value[6];
+                    uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 100);
 
-				}*/
+                }*/
 			}
 
 			// this token is for glucose reading
@@ -605,8 +688,9 @@ namespace MyHealthVitals
 								uiController.ShowMessageOnUI("Suspected irregular beat interval with baseline wander.", true, "Abnormal");
 								break;
 							}
-						case 16:
+						case 255:
 							{
+                                //needs to be yellow error box in iOS
 								uiController.ShowMessageOnUI("Poor Signal, measure again.", true, "Poor Signal");
 								break;
 							}

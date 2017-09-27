@@ -414,6 +414,8 @@ namespace MyHealthVitals
 						lblPerfusionIndex.Text = "-";
 					});
 				}
+				vitalsData.spo2 = null;
+				vitalsData.bpm = null;
 			}
 
 

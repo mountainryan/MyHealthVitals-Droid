@@ -23,6 +23,9 @@ namespace MyHealthVitals
 			{
 				Debug.WriteLine("PC-100 alrady in connected state.");
 			}
+
+
+
 			else
 			{
 				Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice );
@@ -144,7 +147,8 @@ namespace MyHealthVitals
 		decimal glucoseReadingVal = -1;
 		string gluUnit = "";
 		int glucoseResult = -1;
-
+		int last_status = 0;
+		int err_status = 1;
 
 		public void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e)
 		{
@@ -195,7 +199,7 @@ namespace MyHealthVitals
 				// error
 				if ((int)ch.Value[3] == 3)
 				{
-					var bit7 = (ch.Value[5] & (1 << 7));
+					var bit7 = (int)(ch.Value[5] >> 7);
 
 					var bit3 = (ch.Value[5] & (1 << 3));
 					var bit2 = (ch.Value[5] & (1 << 2));
@@ -211,16 +215,16 @@ namespace MyHealthVitals
 						switch (Convert.ToInt32(bit3_0))
 						{
 							case 1:
-								message = "Pressure did not reach 30 mmHg in 7 seconds(cuff placed incorrectly)";
+								message = "Pressure did not reach 30mmHg in 7 seconds (cuff placed incorrectly).";
 								break;
 							case 2:
-								message = "Pressure over 295mmHg, device is self - protecting.";
+								message = "Pressure over 295mmHg, device is self-protecting.";
 								break;
 							case 3:
 								message = "Cannot detect pulse.";
 								break;
 							case 4:
-								message = "Too many interference(Movements, Talking..)";
+								message = "Too many interference (Movement, Talking...)";
 								break;
 							case 5:
 								message = "Result value incorrect.";
@@ -229,7 +233,7 @@ namespace MyHealthVitals
 								message = "Air leakage.";
 								break;
 							case 15:
-								message = "Low Battery, measurement stopped.";
+								message = "Low battery, measurement stopped.";
 								break;
 						}
 
@@ -244,7 +248,7 @@ namespace MyHealthVitals
 								message = "Cannot detect pulse.";
 								break;
 							case 1:
-								message = "Pressure did not reach 30 mmHg in 7 seconds(cuff placed incorrectly).";
+								message = "Pressure did not reach 30mmHg in 7 seconds (cuff placed incorrectly).";
 								break;
 							case 2:
 								message = "Result value incorrect.";
@@ -253,10 +257,10 @@ namespace MyHealthVitals
 								message = "Pressure over 295mmHg, device is self-protecting.";
 								break;
 							case 4:
-								message = "Too many interference(Movements, Talking..)";
+								message = "Too many interference (Movements, Talking...)";
 								break;
 							case 15:
-								message = "Low Battery, measurement stopped.";
+								message = "Low battery, measurement stopped.";
 								break;
 						}
 
@@ -273,6 +277,16 @@ namespace MyHealthVitals
 			/// </summary>
 			/// 
 			/// 
+			if ((int)ch.Value[2] == 80 && (int)ch.Value[3] == 3)
+			{
+				//new reading
+				last_status = 0;
+				err_status = 1;
+			}
+
+			//Debug.WriteLine("err_status = " + err_status);
+			//Debug.WriteLine("last_status = " + last_status);
+
 			if ((int)ch.Value[2] == 82)
 			{
 				glucoseResult = -100;
@@ -283,33 +297,92 @@ namespace MyHealthVitals
 
 				this.uiController.updateBpmWaveform((int)ch.Value[6]);
 
-				if (waveformData == 0) {
+				if (waveformData == 0)
+				{
 					Debug.WriteLine("Wave form Data");
-				//	this.uiController.noticeEndOfReadingSpo2();
+					//  this.uiController.noticeEndOfReadingSpo2();
 				}
 			}
-		
 
-			if ((int)ch.Value[2] == 80 && (int)ch.Value[4] == 2) {
+			if ((int)ch.Value[2] == 80 && (int)ch.Value[4] == 2)
+			{
+				//Debug.WriteLine("err_status = " + err_status);
+				//Debug.WriteLine("last_status = " + last_status);
 				glucoseResult = -1;
-                    this.uiController.noticeEndOfReadingSpo2();
+				if (err_status == 1 && last_status != 0)
+				{
+					//display the last_status message
+					string message = "";
+					switch (last_status)
+					{
+						case 1:
+							{
+								message = "Probe disconnected";
+								break;
+							}
+						case 2:
+							{
+								message = "Detect probe";
+								break;
+							}
+						case 4:
+							{
+								message = "Looking for pulse";
+								break;
+							}
+						case 8:
+							{
+								message = "Search timeout";
+								break;
+							}
+						case 16:
+							{
+								message = "Detect movement";
+								break;
+							}
+						case 32:
+							{
+								message = "Low perfusion";
+								break;
+							}
+						default:
+							{
+								message = "Unknown error";
+								break;
+							}
+					}
+					uiController.ShowMessageOnUI(message, true, "SpO2 status");
+				}
+				this.uiController.noticeEndOfReadingSpo2();
 			}
 			if ((int)ch.Value[2] == 83 && (int)ch.Value[3] == 7)
 			{
+
 				if (ch.Value[5] == 0 || ch.Value[6] == 0)
 				{
-					Debug.WriteLine("Invallid readings.");
+					Debug.WriteLine("Invalid readings.");
+					//Debug.WriteLine("err_status (should be 1) = " + err_status);
+					if (err_status == 1)
+					{
+						int errshift = ch.Value[9] >> 6;
+						int errval = (int)ch.Value[9] - (errshift * (int)Math.Pow(2, 6));
+						last_status = errval;
+						//Debug.WriteLine("errshift = " + errshift);
+						//Debug.WriteLine("last_status = " + last_status);
+					}
 				}
-				else { 
+				else
+				{
 					int lastSpo2 = (int)ch.Value[5];
 					int lastBPM = (int)ch.Value[6];
 
+					err_status = 0;
+
 					Debug.WriteLine("this.uiController.SPO2_readingCompleted");
 
-					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8])/10);
+					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 10);
 				}
 			}
-
 			/*
 			Debug.WriteLine("ch.Value[2] = " + ch.Value[2]);
 			Debug.WriteLine("ch.Value[3] = " + ch.Value[3]);
