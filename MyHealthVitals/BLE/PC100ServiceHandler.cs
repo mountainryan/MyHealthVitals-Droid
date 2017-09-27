@@ -279,10 +279,18 @@ namespace MyHealthVitals
 			/// 
 			if ((int)ch.Value[2] == 80 && (int)ch.Value[3] == 3)
 			{
-				//new reading
+				//new reading, rest status, and values
 				last_status = 0;
 				err_status = 1;
+               
+
+
+
+                //this.uiController.BeginReadingSpo2();
 			}
+
+
+
 
 			//Debug.WriteLine("err_status = " + err_status);
 			//Debug.WriteLine("last_status = " + last_status);

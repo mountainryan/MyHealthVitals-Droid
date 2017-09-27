@@ -254,7 +254,7 @@ namespace MyHealthVitals
 					switch ((int)ch.Value[5] - 128)
 					{
 						case 1:
-							message = "The cuff pressure does not reach 30 mmhg within 7 seconds. Probably the cuff is not wrapped well. I'm writing more stuff to see how much data this box can hold. blah blah blah blah blah.... yes see more.";
+							message = "The cuff pressure failed to reach 30mmHg within 7 seconds (check that cuff is not wrapped well).";
 							break;
 						case 2:
 							message = "Overpressure (>295mmHg) protection occurs.";
@@ -429,7 +429,8 @@ namespace MyHealthVitals
 							}
                             if (message != "")
                             {
-                                uiController.ShowMessageOnUI(message, true, "SpO2 status");    
+                                uiController.ShowMessageOnUI(message, true, "SpO2 status");
+
                             }
 							
 						}
@@ -710,7 +711,7 @@ namespace MyHealthVitals
 
 			if ((int)ch.Value[2] > 111 && (int)ch.Value[2] < 115)
 			{
-				Debug.WriteLine("Temparature related token.");
+				Debug.WriteLine("Temperature related token.");
 
 				// from document it is written that the 5 byte is status and D4 is temperature probe is connected
 				//Byte temperatureStatus = ;

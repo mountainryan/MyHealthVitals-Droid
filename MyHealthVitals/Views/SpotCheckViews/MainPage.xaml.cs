@@ -383,6 +383,9 @@ namespace MyHealthVitals
 			System.Diagnostics.Debug.WriteLine("deviceName: " + deviceName);
 		}
 
+        //new method to reset spo2 values when it starts
+
+
 		async public void noticeEndOfReadingSpo2()
 		{
 
@@ -414,8 +417,7 @@ namespace MyHealthVitals
 						lblPerfusionIndex.Text = "-";
 					});
 				}
-				vitalsData.spo2 = null;
-				vitalsData.bpm = null;
+				
 			}
 
 

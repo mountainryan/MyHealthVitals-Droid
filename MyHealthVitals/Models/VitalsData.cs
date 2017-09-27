@@ -109,6 +109,8 @@ namespace MyHealthVitals
 				await bpm.PostReadingToService();
 				//if (isServiceCallSuccess) bpm.EnglishValue = 0;
 			}
+            spo2 = null;
+            bpm = null;
 		}
 
 		public async void sendToServer_Glucose()
