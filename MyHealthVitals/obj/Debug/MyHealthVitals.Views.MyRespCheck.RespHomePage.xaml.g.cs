@@ -11,7 +11,7 @@
 namespace MyHealthVitals {
     
     
-    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("/Users/rhiggs/Projects/MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml")]
+    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("/Users/ICUcare/Projects/MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml")]
     public partial class RespHomePage : global::Xamarin.Forms.ContentPage {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]

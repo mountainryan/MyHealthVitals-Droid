@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Linq;
 using System.Diagnostics;
+
 
 namespace MyHealthVitals
 {
@@ -34,7 +37,7 @@ namespace MyHealthVitals
 			if (allReadings == null || logcalParameteritem.localhashmap.Count() > 100)
 			{
 				logcalParameteritem.localhashmap.Clear();
-				allReadings = await Reading.GetAllReadingsFromService();
+				//allReadings = await Reading.GetAllReadingsFromService();
 			}
 			Debug.WriteLine("allReadings == " + allReadings);
 
@@ -52,30 +55,31 @@ namespace MyHealthVitals
 		}
 		async void Handle_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
 		{
-			//	var newPage = new ParameterItemDetail(((CategoryLocal)e.Item).id);
-			if (allReadings == null)
+            //	var newPage = new ParameterItemDetail(((CategoryLocal)e.Item).id);
+            if (allReadings == null)
+            {
+                layoutLoading.IsVisible = true;
+            }
+
+			
+            await Task.Delay(5).ContinueWith(_ =>
 			{
-				layoutLoading.IsVisible = true;
+                //PushData(e);
+                if (allReadings == null)
+                {
+                    int index = Task.WaitAny(Task_vars.tasks);
+                }
+
+			});
+
+			layoutLoading.IsVisible = false;
+
+			var newPage = new ParameterItemDetailNew(((CategoryLocal)e.Item).id, allReadings);
+
+			this.Navigation.PushAsync(newPage);
 		
-				allReadings =  await Reading.GetAllReadingsFromService();
-			//	Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(5000), () =>
-			//	{
-
-					layoutLoading.IsVisible = false;
-
-					var newPage = new ParameterItemDetailNew(((CategoryLocal)e.Item).id, allReadings);
-
-					this.Navigation.PushAsync(newPage);
-			///	   return false;
-			//	});
+				
 		}
-			else
-			{
 
-				var newPage = new ParameterItemDetailNew(((CategoryLocal)e.Item).id, allReadings);
-
-				this.Navigation.PushAsync(newPage);
-			}
-		}
 	}
 }

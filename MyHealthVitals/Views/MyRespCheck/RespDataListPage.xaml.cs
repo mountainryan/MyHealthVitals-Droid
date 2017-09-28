@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Linq;
 using Xamarin.Forms;
 
@@ -28,10 +29,16 @@ namespace MyHealthVitals
 						spirometerReadingList.Add(item);
 					}
 				}
-				if (ParametersPageLocal.allReadings == null) { 
-					ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
-				}
+				
+				await Task.Delay(5).ContinueWith(_ =>
+				{
+					//PushData(e);
+					if (ParametersPageLocal.allReadings == null)
+					{
+						int index = Task.WaitAny(Task_vars.tasks);
+					}
 
+				});
 
 				var allCategoryReading = from reading in ParametersPageLocal.allReadings 
 										 where reading.CategoryId == 9
