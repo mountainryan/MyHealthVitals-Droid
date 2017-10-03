@@ -109,8 +109,8 @@ namespace MyHealthVitals
 
 			try
 			{
-				Reading fevReading = new Reading("FEV1", currReading.Fev1, 9);
-				Reading pefReading = new Reading("PEF", currReading.Pef, 9);
+				Reading fevReading = new Reading("FEV1", currReading.Fev1, 9, false, null, null);
+				Reading pefReading = new Reading("PEF", currReading.Pef, 9, false, null, null);
 				logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, currReading.Pef, currReading.Fev1));
 
 				await pefReading.PostReadingToService();

@@ -11,7 +11,7 @@ namespace MyHealthVitals
 						String FindingDetails, String HeartRate, String TestDuration = "30s");
 		List<string> readFromTxt(String fileName);
 		void saveTotxt(List<int> ecgModel, string title, string subtitle, String fileName);
-		bool saveToPdf(OxyPlot.PlotModel ecgModel, String fileName, string name);
+		byte[] saveToPdf(OxyPlot.PlotModel ecgModel, String fileName, string name);
 		Task<bool> sentToEmail(string fileName);
 		bool checkFileExist(string fileName);
 		Task<bool> setEmailClient();

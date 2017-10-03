@@ -1,18 +1,22 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workbench ActiveDocument="Projects Status">
     <Files>
-      <File FileName="MyHealthVitals/BLE/PC100ServiceHandler.cs" Line="1" Column="1" />
-      <File FileName="iOS/Entitlements.plist" />
-      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/headerWithOneTitle.xaml" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellOneItem.xaml" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Models/Credential.cs" Line="21" Column="1" />
-      <File FileName="iOS/Helpers/FileHelperIos.cs" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Models/HttpStatusException.cs" Line="1" Column="1" />
-      <File FileName="MyHealthVitals/Models/Demographic.cs" Line="15" Column="3" />
-      <File FileName="iOS/Info.plist" />
-      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="18" Column="18" />
+      <File FileName="iOS/Helpers/FileHelperIos.cs" Line="189" Column="52" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/EcgReport.xaml.cs" Line="403" Column="54" />
+      <File FileName="MyHealthVitals/Models/Reading.cs" Line="77" Column="9" />
+      <File FileName="MyHealthVitals/Models/VitalsData.cs" Line="157" Column="27" />
+      <File FileName="MyHealthVitals/Models/Credential.cs" Line="10" Column="28" />
+      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="609" Column="33" />
+      <File FileName="MyHealthVitals/Views/LoginPage.xaml.cs" Line="19" Column="43" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespDataListPage.xaml.cs" Line="79" Column="5" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="303" Column="109" />
+      <File FileName="MyHealthVitals/Models/ParameterDetailItem.cs" Line="6" Column="15" />
+      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="79" Column="43" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespCalibrationPage.xaml.cs" Line="124" Column="89" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="112" Column="62" />
+      <File FileName="MyHealthVitals/Models/IBluetoothCallBackUpdatable.cs" Line="23" Column="8" />
+      <File FileName="MyHealthVitals/PlatformInterfaces/IFileHelper.cs" Line="18" Column="3" />
+      <File FileName="MyHealthVitals/Views/DeviceListPage.xaml.cs" Line="129" Column="36" />
       <File FileName="Projects Status" />
     </Files>
     <Pads>
@@ -20,9 +24,27 @@
         <State name="__root__">
           <Node name="MyHealthVitals" expanded="True" selected="True">
             <Node name="MyHealthVitals" expanded="True">
+              <Node name="Packages" expanded="True" />
               <Node name="BLE" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="PlatformInterfaces" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="MyRespCheck" expanded="True">
+                  <Node name="RespDataListPage.xaml" expanded="True" />
+                </Node>
+                <Node name="SpotCheckViews" expanded="True">
+                  <Node name="SubViews" expanded="True">
+                    <Node name="EcgReport.xaml" expanded="True" />
+                  </Node>
+                  <Node name="MainPage.xaml" expanded="True" />
+                </Node>
+                <Node name="DeviceListPage.xaml" expanded="True" />
+                <Node name="LoginPage.xaml" expanded="True" />
+              </Node>
             </Node>
-            <Node name="MyHealthVitals.iOS" expanded="True" />
+            <Node name="MyHealthVitals.iOS" expanded="True">
+              <Node name="Helpers" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
@@ -31,10 +53,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/rhiggs/Projects/MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" relfile="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" line="15" column="1" />
+      <Breakpoint file="/Users/ICUcare/Projects/MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" relfile="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" line="15" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.15ee9ccde11747ba3c033828466a83ff65bd0538" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.2ae7c89ea288defaed4f051ff84a1a588d6e1032" />
 </Properties>

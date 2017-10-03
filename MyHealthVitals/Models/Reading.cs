@@ -20,9 +20,12 @@ namespace MyHealthVitals
 		public decimal? EnglishValue { get; set; }
 		public decimal? MetricValue { get; set; }
 		public string ValueType { get; set; }
+        //added 2 new fields
+        public string Narrative { get; set; }
+        public string MrnFileId { get; set; } //need to handle this being a string in the emhr api
 
 
-		public Reading(String valueType, decimal englishVal, long catId)
+		public Reading(String valueType, decimal englishVal, long catId, bool Abn, string Narr, string FileId)
 		{
 
 			this.ValueType = valueType;
@@ -33,12 +36,19 @@ namespace MyHealthVitals
 			this.Source = "Device";
 			this.Date = DateTime.Now;
 
+            //for ecg readings
+            this.Abnormal = Abn;
+            this.Narrative = Narr;
+            this.MrnFileId = FileId;
 		}
 
 		//public void getCelcious
 
 		public async Task<bool> PostReadingToService()
 		{
+            //this.Narrative = Task_vars.ecgmessage;
+            Debug.WriteLine("ecgmessage: " + Task_vars.ecgmessage);
+            Debug.WriteLine("ecgmessage sent: "+this.Narrative);
 			//var item = await Client.PostAsync(credential, $"api/v1/Patient/{credential.Mrn}/HomeHealth/Reading", this);
 			//Id = item.Id;
 			//Abnormal = item.Abnormal;
@@ -49,9 +59,10 @@ namespace MyHealthVitals
 
 			// converting the this reading into string to send it to the service as application/json
 			var content = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
+            Debug.WriteLine("json stuff: "+ content.ToString());
 
 			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
-
+            Debug.WriteLine("sent to :"+serviceUri.ToString());
 
 			var response = await client.PostAsync(serviceUri, content);
 
@@ -80,11 +91,13 @@ namespace MyHealthVitals
 				Debug.WriteLine("GetAllReadingsFromService response.IsSuccessStatusCode= "+response.IsSuccessStatusCode);
 				if (response.IsSuccessStatusCode)
 				{
+                    Debug.WriteLine("Got readings successfully.");
 					var content = await response.Content.ReadAsStringAsync();
 					Debug.WriteLine(JsonConvert.DeserializeObject<Reading[]>(content));
 					return JsonConvert.DeserializeObject<Reading[]>(content);
 				}
 				else {
+                    Debug.WriteLine("Failed to get readings.");
 					return null; ;
 				}
 			}
@@ -94,5 +107,9 @@ namespace MyHealthVitals
 				return null;
 			}
 		}
+		
 	}
+	
+
+	
 }

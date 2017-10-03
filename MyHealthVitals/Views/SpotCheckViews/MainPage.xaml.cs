@@ -298,11 +298,18 @@ namespace MyHealthVitals
 				Debug.WriteLine("ret === " + ret);
 				if (ret)
 				{
-					vitalsData.ecg = new Reading(null, this.state, 10);
+                    if (title.Equals("Normal"))
+                    {
+                        vitalsData.ecg = new Reading(null, this.state, 10, false, Task_vars.ecgmessage, null);
+                    }else{
+                        //Abnormal
+                        vitalsData.ecg = new Reading(null, this.state, 10, true, Task_vars.ecgmessage, null);
+                    }
+					
 					vitalsData.sendEcgToServer();
 
 					// sending the Heart rate to server separately
-					vitalsData.bpm = new Reading(null, heartRate, 3);
+					vitalsData.bpm = new Reading(null, heartRate, 3, false, null, null);
 					vitalsData.bpm.Date = vitalsData.ecg.Date;
 					vitalsData.sendHeartRateToServer();
 					writeToTxt();
@@ -353,12 +360,12 @@ namespace MyHealthVitals
 
 			if (unit == "Mmol/L")
 			{
-				vitalsData.glucose = new Reading(null, Math.Round((decimal)gluReading * 18, 1), 8);
+				vitalsData.glucose = new Reading(null, Math.Round((decimal)gluReading * 18, 1), 8, false, null, null);
 				vitalsData.glucose.MetricValue = Math.Round(gluReading, 1);
 			}
 			else
 			{
-				vitalsData.glucose = new Reading(null, gluReading, 8);
+				vitalsData.glucose = new Reading(null, gluReading, 8, false, null, null);
 				vitalsData.glucose.MetricValue = gluReading;
 			}
 
@@ -430,7 +437,7 @@ namespace MyHealthVitals
 		public async void updateTemperature(decimal temperature)
 		{
 
-			vitalsData.temperature = new Reading(null, temperature, 4);
+			vitalsData.temperature = new Reading(null, temperature, 4, false, null, null);
 			if (vitalsData != null && vitalsData.temperature != null)
 			{
 				string message = "Temperature: " + temperature.ToString() + "°C / " + ConvertFahrenheitToCelsius((double)this.vitalsData.temperature.EnglishValue) + "°F";
@@ -459,7 +466,7 @@ namespace MyHealthVitals
 		}
 		public void updated_Weight(decimal weight)
 		{
-			this.vitalsData.weight = new Reading(null, weight, 5);
+			this.vitalsData.weight = new Reading(null, weight, 5, false, null, null);
 
 
 			Device.BeginInvokeOnMainThread(() =>
@@ -798,8 +805,8 @@ namespace MyHealthVitals
 		{
 			Debug.WriteLine("SPO2_readingCompleted");
 			if (isupLoadedSPO2) return;
-			this.vitalsData.spo2 = new Reading(null, sp02,2);
-			this.vitalsData.bpm = new Reading(null, bpm,3);
+			this.vitalsData.spo2 = new Reading(null, sp02,2, false, null, null);
+			this.vitalsData.bpm = new Reading(null, bpm,3, false, null, null);
 			//this.vitalsData.bpSys = new Reading("Perfusion Index", perfusionIndex,2);
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -891,9 +898,9 @@ namespace MyHealthVitals
 				var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
 				if (ret)
 				{
-					this.vitalsData.bpDia = new Reading("Diastolic", bpdia, 1);
-					this.vitalsData.bpSys = new Reading("Systolic", bpsys, 1);
-					this.vitalsData.bpm = new Reading(null, bpm, 3);
+					this.vitalsData.bpDia = new Reading("Diastolic", bpdia, 1, false, null, null);
+					this.vitalsData.bpSys = new Reading("Systolic", bpsys, 1, false, null, null);
+					this.vitalsData.bpm = new Reading(null, bpm, 3, false, null, null);
 					vitalsData.sendToServer_SYS_DIA();
 				}
 				else

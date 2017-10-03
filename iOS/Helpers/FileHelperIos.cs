@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using MimeKit;
 using MailKit;
 using MailKit.Net.Smtp;
@@ -35,203 +36,258 @@ using iTextSharp.text.html.simpleparser;
 
 namespace MyHealthVitals.iOS
 {
-	public class FileHelperIos : IFileHelper
-	{
+    public class FileHelperIos : IFileHelper
+    {
 
 
-		String Patient;
-		String DOB;
-		String Finding;
-		String Recorded;
-		String FindingDetails;
-		String TestDuration;
-		String HeartRate;
+        String Patient;
+        String DOB;
+        String Finding;
+        String Recorded;
+        String FindingDetails;
+        String TestDuration;
+        String HeartRate;
 
 
-		String filePath = null;
-		String filePathNEW = null;
-		string name;
-		static MimeMessage message = null;// = new MimeMessage();
-		MailKit.Net.Smtp.SmtpClient client = null;// = new MailKit.Net.Smtp.SmtpClient();
-												  //		client.Connect("smtp.gmail.com", 587, false);
+        String filePath = null;
+        String filePathNEW = null;
+        string name;
+        static MimeMessage message = null;// = new MimeMessage();
+        MailKit.Net.Smtp.SmtpClient client = null;// = new MailKit.Net.Smtp.SmtpClient();
+                                                  //		client.Connect("smtp.gmail.com", 587, false);
 
-		//	string emaiAddress,   
+        //	string emaiAddress,   
 
-		public void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
-							   String FindingDetails, String HeartRate, String TestDuration = "30s")
-		{
-			this.Patient = Patient;
-			this.DOB = DOB;
-			this.Finding = Finding;
-			this.Recorded = Recorded;
-			this.FindingDetails = FindingDetails;
-			this.TestDuration = TestDuration;
-			this.HeartRate = HeartRate;
-		}
+        public void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
+                               String FindingDetails, String HeartRate, String TestDuration = "30s")
+        {
+            this.Patient = Patient;
+            this.DOB = DOB;
+            this.Finding = Finding;
+            this.Recorded = Recorded;
+            this.FindingDetails = FindingDetails;
+            this.TestDuration = TestDuration;
+            this.HeartRate = HeartRate;
+        }
 
-		public void saveTotxt(List<int> ecgList, string title, string subtitle, String fileName)
-		{
-			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-			filePath = Path.Combine(documentsPath, fileName + ".txt");
-			using (var streamWriter = new StreamWriter(filePath, true))
+        public void saveTotxt(List<int> ecgList, string title, string subtitle, String fileName)
+        {
+            var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            filePath = Path.Combine(documentsPath, fileName + ".txt");
+
+            using (var streamWriter = new StreamWriter(filePath, true))
+            {
+                streamWriter.Write(Patient + ";");
+                streamWriter.Write(DOB + ";");
+                streamWriter.Write(Finding + ";");
+                streamWriter.Write(Recorded + ";");
+                streamWriter.Write(FindingDetails + ";");
+                streamWriter.Write(TestDuration + ";");
+                streamWriter.Write(HeartRate + ";");
+                foreach (int val in ecgList)
+                {
+                    streamWriter.Write(val);
+                    streamWriter.Write(";");
+                }
+
+            }
+            //		await setEmailClient();
+        }
+        public List<string> readFromTxt(String fileName)
+        {
+            List<string> result = new List<string>();
+            var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            filePath = Path.Combine(documentsPath, fileName + ".txt");
+            string readresult = null;
+            using (var streamReader = new StreamReader(filePath))
+            {
+                readresult = streamReader.ReadToEnd();
+            }
+            String[] ecgdata = readresult.Split(new char[] { ';' });
+
+            this.Patient = ecgdata[0];
+            this.DOB = ecgdata[1];
+            this.Finding = ecgdata[2];
+            this.Recorded = ecgdata[3];
+            this.FindingDetails = ecgdata[4];
+            this.TestDuration = ecgdata[5];
+            this.HeartRate = ecgdata[6];
+
+            for (int i = 7; i < ecgdata.Length - 1; i++)
+            {
+                result.Add(ecgdata[i]);
+            }
+            return result;
+        }
+        String fileName = "";
+        String fileNameECG = "";
+        //	#undef k;
+
+
+        public byte[] saveToPdf(PlotModel ecgModel, String fileName, string name)
+        {
+            ecgModel.Annotations.Clear();
+
+
+
+            this.name = name;
+            this.fileName = fileName + ".pdf";
+            this.fileNameECG = fileName + "ECG.pdf";
+            var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            filePath = Path.Combine(documentsPath, fileName + ".pdf");
+            Debug.WriteLine("pdf filepath: " + filePath.ToString());
+            filePathNEW = Path.Combine(documentsPath, fileName + "ECG.pdf");
+
+            using (var stream = File.Create(filePath))
+            {
+                var pdfExporter = new PdfExporter();
+                pdfExporter.Height = 1120;
+                pdfExporter.Width = 780;
+                pdfExporter.Export(ecgModel, stream);
+            }
+            if (checkFileExist(fileName + ".txt"))
+            {
+                File.Delete(Path.Combine(documentsPath, fileName + ".txt"));
+            }
+            byte[] result = editPDF(fileName);
+            showDialog();
+
+            return result;
+        }
+
+
+
+        private byte[] editPDF(string fileName)
+        {
+
+            var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            filePath = Path.Combine(documentsPath, fileName + ".pdf");
+            filePathNEW = Path.Combine(documentsPath, fileName + "ECG.pdf");
+            string oldFile = filePath;// "oldFile.pdf";
+            string newFile = filePathNEW;// "newFile.pdf";
+
+            /// open the reader
+            PdfReader reader = new PdfReader(oldFile);
+            iTextSharp.text.Rectangle size = reader.GetPageSizeWithRotation(1);
+            Document document = new Document(size);
+
+            // open the writer
+            FileStream fs = new FileStream(newFile, FileMode.Create, FileAccess.Write);
+            PdfWriter writer = PdfWriter.GetInstance(document, fs);
+            document.Open();
+
+            // the pdf content
+            PdfContentByte cb = writer.DirectContent;
+
+            // select the font properties
+            BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            //HELVETICA_BOLD
+            cb.SetFontAndSize(bf, 11);
+
+            String[] Patient_Name = Patient.Split();
+            string Pat_Name = "";
+			for (int i = 0; i <= Patient_Name.Length-1; i++)
 			{
-				streamWriter.Write(Patient + ";");
-				streamWriter.Write(DOB + ";");
-				streamWriter.Write(Finding + ";");
-				streamWriter.Write(Recorded + ";");
-				streamWriter.Write(FindingDetails + ";");
-				streamWriter.Write(TestDuration + ";");
-				streamWriter.Write(HeartRate + ";");
-				foreach (int val in ecgList)
-				{
-					streamWriter.Write(val);
-					streamWriter.Write(";");
-				}
-
+                if (Patient_Name[i] != "")
+                {
+                    Pat_Name += Patient_Name[i] + "_";    
+                }
 			}
-			//		await setEmailClient();
-		}
-		public List<string> readFromTxt(String fileName)
-		{
-			List<string> result = new List<string>();
-			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-			filePath = Path.Combine(documentsPath, fileName + ".txt");
-			string readresult = null;
-			using (var streamReader = new StreamReader(filePath))
-			{
-				readresult = streamReader.ReadToEnd();
-			}
-			String[] ecgdata = readresult.Split(new char[] { ';' });
+            //remove last _
+            Pat_Name = Pat_Name.Substring(0, Pat_Name.Length - 1);
+            Task_vars.patient_name = Pat_Name;
+            //Task_vars.patient_name = Patient.Replace(' ','_');
 
-			this.Patient = ecgdata[0];
-			this.DOB = ecgdata[1];
-			this.Finding = ecgdata[2];
-			this.Recorded = ecgdata[3];
-			this.FindingDetails = ecgdata[4];
-			this.TestDuration = ecgdata[5];
-			this.HeartRate = ecgdata[6];
+            // write the text in the pdf content
+            cb.BeginText();
+            string text = "Patient:  " + Patient;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 35, 1070, 0);
+            cb.EndText();
 
-			for (int i = 7; i < ecgdata.Length - 1; i++)
-			{
-				result.Add(ecgdata[i]);
-			}
-			return result;
-		}
-		String fileName = "";
-		String fileNameECG = "";
-		//	#undef k;
+            cb.BeginText();
+            text = "Finding:  " + Finding;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 35, 1050, 0);
+            cb.EndText();
+
+            cb.BeginText();
+            text = "Heart Rate:  " + HeartRate;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 35, 1030, 0);
+            cb.EndText();
 
 
-		public bool saveToPdf(PlotModel ecgModel, String fileName, string name)
-		{
-			ecgModel.Annotations.Clear();
+            cb.BeginText();
+            text = "DOB:   " + DOB + "                  Duration: " + TestDuration;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 260, 1070, 0);
+            cb.EndText();
 
 
+            cb.BeginText();
+            text = "Finding Result Details: " + FindingDetails;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 260, 1050, 0);
+            cb.EndText();
 
-			this.name = name;
-			this.fileName = fileName + ".pdf";
-			this.fileNameECG = fileName + "ECG.pdf";
-			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-			filePath = Path.Combine(documentsPath, fileName + ".pdf");
-			filePathNEW = Path.Combine(documentsPath, fileName + "ECG.pdf");
+            cb.BeginText();
+            text = "Recorded:  " + Recorded;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 260, 1030, 0);
+            cb.EndText();
+            Stream inputImageStream = new FileStream("ICULogo.png", FileMode.Open, FileAccess.Read, FileShare.Read);
+            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(inputImageStream);
+            image.ScaleAbsolute(100, 50);
 
-			using (var stream = File.Create(filePath))
-			{
-				var pdfExporter = new PdfExporter();
-				pdfExporter.Height = 1120;
-				pdfExporter.Width = 780;
-				pdfExporter.Export(ecgModel, stream);
-			}
-			if (checkFileExist(fileName + ".txt"))
-			{
-				File.Delete(Path.Combine(documentsPath, fileName + ".txt"));
-			}
-			editPDF(fileName);
-			showDialog();
+            image.SetAbsolutePosition(650, 1030);
+            cb.AddImage(image);
 
-			return true;		}
+            // create the new page and add it to the pdf
+            PdfImportedPage page = writer.GetImportedPage(reader, 1);
+            cb.AddTemplate(page, 0, 0);
 
+            // close the streams and voilá the file should be changed :)
+            document.Close();
+            fs.Close();
+            writer.Close();
+            reader.Close();
+            File.Delete(filePath);
+            Task_vars.ecgfilename = fileName + ".pdf";
+            Task_vars.ecgfilepath = filePathNEW;
+            FileInfo ecg_file = new FileInfo(filePathNEW);
+            Task_vars.ecgfilelength = ecg_file.Length;
 
+            //Task_vars.ecgfilename = "test.txt";
+            //return SendTest();
 
-		private void editPDF(string fileName)
-		{
+            Debug.WriteLine("ECG pdf file path: " + filePathNEW);
 
-			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-			filePath = Path.Combine(documentsPath, fileName + ".pdf");
-			filePathNEW = Path.Combine(documentsPath, fileName + "ECG.pdf");
-			string oldFile = filePath;// "oldFile.pdf";
-			string newFile = filePathNEW;// "newFile.pdf";
-
-			/// open the reader
-			PdfReader reader = new PdfReader(oldFile);
-			iTextSharp.text.Rectangle size = reader.GetPageSizeWithRotation(1);
-			Document document = new Document(size);
-
-			// open the writer
-			FileStream fs = new FileStream(newFile, FileMode.Create, FileAccess.Write);
-			PdfWriter writer = PdfWriter.GetInstance(document, fs);
-			document.Open();
-
-			// the pdf content
-			PdfContentByte cb = writer.DirectContent;
-
-			// select the font properties
-			BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-			//HELVETICA_BOLD
-			cb.SetFontAndSize(bf, 11);
-
-			// write the text in the pdf content
-			cb.BeginText();
-			string text = "Patient:  " + Patient;
-			cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 35, 1070, 0);
-			cb.EndText();
-
-			cb.BeginText();
-			text = "Finding:  " + Finding;
-			cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 35, 1050, 0);
-			cb.EndText();
-
-			cb.BeginText();
-			text = "Heart Rate:  " + HeartRate;
-			cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 35, 1030, 0);
-			cb.EndText();
+            return FileRead(filePathNEW);
 
 
-			cb.BeginText();
-			text = "DOB:   " + DOB + "                  Duration: " + TestDuration;
-			cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 260, 1070, 0);
-			cb.EndText();
+            //      FileUpload(filePathNEW, fileName);
+        }
+
+        public byte[] SendTest()
+        {
+            //string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+		    //string testfilePath = Path.Combine(documentsPath, "test.txt");
+            var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+		    var testfilePath = Path.Combine(documentsPath, "test.txt");
+
+			string[] lines = { "First line", "Second line" };
+			System.IO.File.WriteAllLines(@testfilePath, lines);
+
+            Task_vars.ecgfilelength = testfilePath.Length;
+
+            Debug.WriteLine("Test file path: " + testfilePath);
+
+            return File.ReadAllBytes(testfilePath);
+        }
 
 
-			cb.BeginText();
-			text = "Finding Result Details: " + FindingDetails;
-			cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 260, 1050, 0);
-			cb.EndText();
+        public byte[] FileRead(string filepath)
+        {
+            //var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+            //Category = "ECG";
+            return File.ReadAllBytes(filepath);
 
-			cb.BeginText();
-			text = "Recorded:  " + Recorded;
-			cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 260, 1030, 0);
-			cb.EndText();
-			Stream inputImageStream = new FileStream("ICULogo.png", FileMode.Open, FileAccess.Read, FileShare.Read);
-			iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(inputImageStream);
-			image.ScaleAbsolute(100, 50);
-
-			image.SetAbsolutePosition(650, 1030);
-			cb.AddImage(image);
-
-			// create the new page and add it to the pdf
-			PdfImportedPage page = writer.GetImportedPage(reader, 1);
-			cb.AddTemplate(page, 0, 0);
-
-			// close the streams and voilá the file should be changed :)
-			document.Close();
-			fs.Close();
-			writer.Close();
-			reader.Close();
-			File.Delete(filePath);
-		}
-
-
+        }
 
 		public bool checkFileExist(string fileName)
 		{
@@ -248,7 +304,7 @@ namespace MyHealthVitals.iOS
 			//await setEmailClient();
 			System.Diagnostics.Debug.WriteLine("showDialog");
 
-			string message = "If yes,please enter an email address.";
+			string message = "If yes, please enter an email address.";
 			UIAlertView alert = new UIAlertView("Email this report", message, null, "NO", "YES");
 			//		alert.Message =
 			alert.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
@@ -359,7 +415,7 @@ namespace MyHealthVitals.iOS
 
 			// Now we just need to set the message body and we're done
 			message.Body = builder.ToMessageBody();
-			String toastText = "Your ECG Report has been send to " + addressEmail;
+			String toastText = "Your ECG Report has been sent to " + addressEmail;
 			System.Diagnostics.Debug.WriteLine(" SendMail  SmtpClient ");
 
 			using (client)//var client = new MailKit.Net.Smtp.SmtpClient())
@@ -374,7 +430,7 @@ namespace MyHealthVitals.iOS
 					UIAlertView alert = new UIAlertView();
 
 					alert.AddButton("OK");
-					alert.Message = "The emai client connection is unsuccessful, plase check wifi or data connection.";
+					alert.Message = "The email client connection is unsuccessful, please check wifi or data connection.";
 					alert.AlertViewStyle = UIAlertViewStyle.Default;// = UIAlertViewStyle.PlainTextInput;
 					alert.Show();
 					return false;

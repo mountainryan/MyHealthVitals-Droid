@@ -62,7 +62,7 @@ namespace MyHealthVitals
             }
 
 			
-            await Task.Delay(5).ContinueWith(_ =>
+            await Task.Delay(1).ContinueWith(_ =>
 			{
                 //PushData(e);
                 if (allReadings == null)

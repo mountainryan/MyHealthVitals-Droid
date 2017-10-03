@@ -8,10 +8,25 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using OxyPlot.Annotations;
 using System.Reflection;
+using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
+using Polly;
 
 namespace MyHealthVitals
 {
+    public class FileData
+    {
+        public long? Id { get; set; }
+        public string Category { get; set; }
+        public byte[] Content { get; set; }
+        public string Name { get; set; }
+        public DateTime? ServiceDate { get; set; }
+        public long Size { get; set; }
+        public DateTime? UploadDate { get; set; }
+    }
 	
 	public partial class EcgReport : ContentPage
 	{
@@ -341,9 +356,10 @@ namespace MyHealthVitals
 				});
 				Device.BeginInvokeOnMainThread(() =>
 				{
-					bool ret = DependencyService.Get<IFileHelper>().saveToPdf(graphModel_report, fileName, patientName);
-
-					if (ret)
+                    byte[] retdata = DependencyService.Get<IFileHelper>().saveToPdf(graphModel_report, fileName, patientName);
+                    Task_vars.ecgcontent = retdata;
+                    FileUpload();
+					if (retdata != null && retdata.Length > 0)
 					{
 						Debug.WriteLine("save to pdf ret = true");
 						reportButton.IsEnabled = false;
@@ -366,6 +382,187 @@ namespace MyHealthVitals
 			}
 */
 		}
+		public void FileUpload()
+		{
+            //var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+            FileData ecgfile = new FileData();
 
+            //ecgfile.Id = 2643;
+
+            //PDF File Path: /var/mobile/Containers/Data/Application/EC012C73-B1C2-495E-A4A3-C126B54E00A0/Documents/100320170917AM.pdf
+            //Test File Path: /var/mobile/Containers/Data/Application/EC012C73-B1C2-495E-A4A3-C126B54E00A0/Documents/test.txt
+
+            //build the file name
+            String filedate = Task_vars.ecgdate.ToString("MMddyyyy_HHmm")+".pdf";
+            String file_name = Task_vars.patient_name + "_ECGReport_" + filedate;
+
+            ecgfile.Category = "Cardiology (ECG, EKGs, Stress Test, etc.)";
+            ecgfile.Content = Task_vars.ecgcontent;
+            ecgfile.Name = file_name;
+            ecgfile.ServiceDate = Task_vars.ecgdate;
+            //FileInfo Finfo = new FileInfo(filepath)
+            ecgfile.Size = Task_vars.ecgfilelength;
+            ecgfile.UploadDate = DateTime.Now;
+
+            var msg = PostFileToService(Credential.BASE_URL_TEST + $"/Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
+            //var msg = PostFileToService(Credential.BASE_URL_TEST + $"Patient/574/File", ecgfile);
+
+            //FPostAsync(Credential.BASE_URL_TEST + $"api/v1/Patient/{Credential.sharedInstance.Mrn}/File", ecgfile, 1);
+			
+
+		}
+
+		public async Task PostFileToService(string url, object arg)
+		{
+			//this.Narrative = Task_vars.ecgmessage;
+			//Debug.WriteLine("ecgmessage: " + Task_vars.ecgmessage);
+			//Debug.WriteLine("ecgmessage sent: " + this.Narrative);
+			//var item = await Client.PostAsync(credential, $"api/v1/Patient/{credential.Mrn}/HomeHealth/Reading", this);
+			//Id = item.Id;
+			//Abnormal = item.Abnormal;
+			//EnglishValue = item.EnglishValue;
+			Debug.WriteLine("PostFileToService");
+			HttpClient client = new HttpClient();
+            //client.Timeout = new TimeSpan(0, timeout.Value, 0);
+			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
+
+			// converting the this reading into string to send it to the service as application/json
+			var content = new StringContent(JsonConvert.SerializeObject(arg), Encoding.UTF8, "application/json");
+			Debug.WriteLine("json stuff: " + content.ToString());
+
+			var serviceUri = url;
+			Debug.WriteLine("sent to :" + serviceUri.ToString());
+
+			var response = await client.PostAsync(serviceUri, content);
+
+			if (response.IsSuccessStatusCode)
+			{
+				Debug.WriteLine("Successful file upload! Woohoo!");
+				return;
+			}
+			else
+			{
+				//what did it return
+				Debug.WriteLine("Response: " + response.StatusCode);
+
+			}
+			var message = await DoWithRetryAsync(() => response.Content.ReadAsStringAsync());
+			//var message = await response.Content.ReadAsStringAsync();
+			Debug.WriteLine("file error message: " + message);
+			throw new HttpStatusException(response.StatusCode, message);
+		}
+
+		
+
+		public static async Task FPostAsync(string url, object arg = null, int? timeout = null)
+		{
+            Debug.WriteLine("url: " + url);
+            Debug.WriteLine("MRN: " + Credential.sharedInstance.Mrn.ToString());
+			if (arg == null)
+			{
+				Debug.WriteLine("File arg was null!");
+			}
+			else
+			{
+				Debug.WriteLine("File arg was not null!");
+			}
+            var client = new HttpClient(); // { BaseAddress = new Uri(url) };
+            Debug.WriteLine("client: "+client.ToString());
+            //if (timeout.HasValue) client.Timeout = new TimeSpan(0, timeout.Value, 0);
+
+            client.Timeout = new TimeSpan(0, 0, 20);
+
+            if (!string.IsNullOrEmpty(Credential.sharedInstance.Token)) client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
+
+            //var test_content = new StringContent(JsonConvert.SerializeObject(arg), Encoding.UTF8, "application/json");
+            //string output = JsonConvert.SerializeObject(arg);
+            //Debug.WriteLine("Json stuff: "+ output);
+            //Debug.WriteLine("Json decode: "+ JsonConvert.DeserializeObject(test_content.ToString()).ToString());
+
+            Debug.WriteLine("I made it!");
+
+            var content = arg != null ? new StringContent(JsonConvert.SerializeObject(arg), Encoding.UTF8, "application/json") : null;
+			//var response = await DoWithRetryAsync(() => client.PostAsync(url, content));
+
+            var response = await client.PostAsync(url, content);
+			if (response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine("Successful file upload! Woohoo!");
+                return;   
+            }else{
+                //what did it return
+                Debug.WriteLine("Response: " + response.StatusCode);
+
+            }
+            var message = await DoWithRetryAsync(() => response.Content.ReadAsStringAsync());
+			//var message = await response.Content.ReadAsStringAsync();
+			Debug.WriteLine("file error message: " + message);
+			throw new HttpStatusException(response.StatusCode, message);
+		}
+
+        /*
+		public static async Task<T> PostAsync<T>(string url, T arg, int? timeout = null)
+		{
+            Debug.WriteLine("url: " + url);
+			var client = new HttpClient() { BaseAddress = new Uri(url) };
+			if (timeout.HasValue) client.Timeout = new TimeSpan(0, timeout.Value, 0);
+			if (!string.IsNullOrEmpty(Credential.sharedInstance.Token)) client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
+
+			var content = new StringContent(JsonConvert.SerializeObject(arg), Encoding.UTF8, "application/json");
+			var response = await DoWithRetryAsync(() => client.PostAsync(url, content));
+			if (!response.IsSuccessStatusCode)
+			{
+				var message = await DoWithRetryAsync(() => response.Content.ReadAsStringAsync());
+				throw new HttpStatusException(response.StatusCode, message);
+			}
+
+			var json = await DoWithRetryAsync(() => response.Content.ReadAsStringAsync());
+			return JsonConvert.DeserializeObject<T>(json);
+		}
+
+		public static async Task<TR> PostAsync<T, TR>(string url, T arg, int? timeout = null)
+		{
+            Debug.WriteLine("url: " + url);
+			var client = new HttpClient() { BaseAddress = new Uri(url) };
+			if (timeout.HasValue) client.Timeout = new TimeSpan(0, timeout.Value, 0);
+			if (!string.IsNullOrEmpty(Credential.sharedInstance.Token)) client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
+
+			var content = new StringContent(JsonConvert.SerializeObject(arg), Encoding.UTF8, "application/json");
+			var response = await DoWithRetryAsync(() => client.PostAsync(url, content));
+			if (!response.IsSuccessStatusCode)
+			{
+				var message = await DoWithRetryAsync(() => response.Content.ReadAsStringAsync());
+				throw new HttpStatusException(response.StatusCode, message);
+			}
+
+			var json = await DoWithRetryAsync(() => response.Content.ReadAsStringAsync());
+			return JsonConvert.DeserializeObject<TR>(json);
+		}
+
+		public static async Task<T> PutAsync<T>(string url, T arg, int? timeout = null)
+		{
+            Debug.WriteLine("url: " + url);
+			var client = new HttpClient() { BaseAddress = new Uri(url) };
+			if (timeout.HasValue) client.Timeout = new TimeSpan(0, timeout.Value, 0);
+			if (!string.IsNullOrEmpty(Credential.sharedInstance.Token)) client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
+
+			var content = new StringContent(JsonConvert.SerializeObject(arg), Encoding.UTF8, "application/json");
+			var response = await DoWithRetryAsync(() => client.PutAsync(url, content));
+			if (!response.IsSuccessStatusCode)
+			{
+				var message = await DoWithRetryAsync(() => response.Content.ReadAsStringAsync());
+				throw new HttpStatusException(response.StatusCode, message);
+			}
+
+			var json = await DoWithRetryAsync(() => response.Content.ReadAsStringAsync());
+			return JsonConvert.DeserializeObject<T>(json);
+		}
+        */
+		private static Task<T> DoWithRetryAsync<T>(Func<Task<T>> procedure)
+		{
+			return Policy.Handle<WebException>()
+				.WaitAndRetryAsync(5, attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)))
+				.ExecuteAsync(procedure);
+		}
 	}
 }

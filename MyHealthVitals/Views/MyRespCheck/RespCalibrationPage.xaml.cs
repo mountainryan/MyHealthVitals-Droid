@@ -121,8 +121,8 @@ namespace MyHealthVitals
 
 				Demographics.sharedInstance.saveCalibratedReadig(highestReading);
 
-				Reading fevReading = new Reading("FEV1", highestReading.Fev1, 9);
-				Reading pefReading = new Reading("PEF", highestReading.Pef, 9);
+				Reading fevReading = new Reading("FEV1", highestReading.Fev1, 9, false, null, null);
+				Reading pefReading = new Reading("PEF", highestReading.Pef, 9, false, null, null);
 
 
 				logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, highestReading.Pef, highestReading.Fev1));

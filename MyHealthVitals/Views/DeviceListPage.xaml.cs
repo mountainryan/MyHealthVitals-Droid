@@ -126,7 +126,7 @@ namespace MyHealthVitals
 		public void navigateToMainPage() { 
 			var newScreen = new MainPage(activeDeviceName);
 			newScreen.isFromDeviecList = true;
-			newScreen.Title = "Main Screeen";
+			newScreen.Title = "Main Screen";
 			this.Navigation.PushAsync(newScreen);
 		}
 

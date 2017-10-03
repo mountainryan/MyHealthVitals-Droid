@@ -18,6 +18,7 @@ namespace MyHealthVitals
 		public Reading ecg;
 		public Reading weight;
 		public Reading bmi;
+
 		private void addDataTolocal(ParameterDetailItem pdi)
 		{
 			Dictionary<int, List<ParameterDetailItem>> dic = logcalParameteritem.localhashmap;
@@ -71,7 +72,7 @@ namespace MyHealthVitals
 						float bmivalue = calculateBMI((float)height, (float)weight.EnglishValue);
 						pdi.secondItem = Convert.ToString(bmivalue);
 						//BMI = weight (lb) ÷ height2 (in2) × 703
-						bmi = new Reading(null, (decimal)bmivalue, 7);
+						bmi = new Reading(null, (decimal)bmivalue, 7, false, null, null);
 						bmi.Date = weight.Date;
 					}
                     addDataTolocal(pdi);
@@ -153,6 +154,7 @@ namespace MyHealthVitals
 				ParameterDetailItem pdi = new ParameterDetailItem();
 				pdi.categoryId = ecg.CategoryId;
 				pdi.date =ecg.Date.ToString("MM/dd/yyyy hh:mm tt");
+                Task_vars.ecgdate = ecg.Date;
 				pdi.firstItem = ecg.EnglishValue.ToString();
 				addDataTolocal(pdi);
 

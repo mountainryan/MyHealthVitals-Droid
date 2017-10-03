@@ -75,7 +75,7 @@ namespace MyHealthVitals
 			var services = await connectedDevice.GetServicesAsync();
 			foreach (var s in services)
 			{
-				Debug.WriteLine("discoverServices===="+s);
+                Debug.WriteLine("discoverServices===="+s.Device.Name);
 				var characteristics = await s.GetCharacteristicsAsync();
 				foreach (var c in characteristics)
 				{
@@ -607,101 +607,120 @@ namespace MyHealthVitals
 					var data1 = (int)ch.Value[5];
 					uiController.SaveEcgState(data1);
 					uiController.updateECGEnded((int)ch.Value[7], data1);
-
+                    //string ecgmessage = "";
 					switch (data1)
 					{
 						case 0:
 							{
+                                Task_vars.ecgmessage = "No irregularity found.";
 								uiController.ShowMessageOnUI("No irregularity found.", true,"Normal");
 								break;
 							}
 						case 1:
 							{
+                                Task_vars.ecgmessage = "Suspected a little fast beat.";
 								uiController.ShowMessageOnUI("Suspected a little fast beat.", true, "Abnormal");
 								break;
 							}
 						case 2:
 							{
+                                Task_vars.ecgmessage = "Suspected fast beat.";
 								uiController.ShowMessageOnUI("Suspected fast beat.", true, "Abnormal");
 								break;
 							}
 						case 3:
 							{
+                                Task_vars.ecgmessage = "Suspected short run of fast beat.";
 								uiController.ShowMessageOnUI("Suspected short run of fast beat.", true, "Abnormal");
 								break;
 							}
 						case 4:
 							{
+                                Task_vars.ecgmessage = "Suspected a little slow beat.";
 								uiController.ShowMessageOnUI("Suspected a little slow beat.", true, "Abnormal");
 								break;
 							}
 						case 5:
 							{
+                                Task_vars.ecgmessage = "Suspected occasional short beat interval.";
 								uiController.ShowMessageOnUI("Suspected occasional short beat interval.", true, "Abnormal");
 								break;
 							}
 						case 6:
 							{
+                                Task_vars.ecgmessage = "Suspected occasional short beat interval.";
 								uiController.ShowMessageOnUI("Suspected occasional short beat interval.", true, "Abnormal");
 								break;
 							}
 						case 7:
 							{
+                                Task_vars.ecgmessage = "Suspected irregular beat interval.";
 								uiController.ShowMessageOnUI("Suspected irregular beat interval.", true, "Abnormal");
 								break;
 							}
 						case 8:
 							{
+                                Task_vars.ecgmessage = "Suspected fast beat with short beat interval.";
 								uiController.ShowMessageOnUI("Suspected fast beat with short beat interval.", true, "Abnormal");
 								break;
 							}
 						case 9:
 							{
-								uiController.ShowMessageOnUI("Suspected slow beat with short beat interva.", true, "Abnormal");								break;
+                                Task_vars.ecgmessage = "Suspected slow beat with short beat interval.";
+								uiController.ShowMessageOnUI("Suspected slow beat with short beat interval.", true, "Abnormal");								
+                                break;
 							}
 						case 10:
 							{
+                                Task_vars.ecgmessage = "Suspected slow beat with irregular beat interval.";
 								uiController.ShowMessageOnUI("Suspected slow beat with irregular beat interval.", true, "Abnormal");
 								break;
 							}
 						case 11:
 							{
+                                Task_vars.ecgmessage = "Waveform baseline wander.";
 								uiController.ShowMessageOnUI("Waveform baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 12:
 							{
+                                Task_vars.ecgmessage = "Suspected fast beat with baseline wander.";
 								uiController.ShowMessageOnUI("Suspected fast beat with baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 13:
 							{
+                                Task_vars.ecgmessage = "Suspected slow beat with baseline wander.";
 								uiController.ShowMessageOnUI("Suspected slow beat with baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 14:
 							{
+                                Task_vars.ecgmessage = "Suspected occasional short beat interval with baseline wander.";
 								uiController.ShowMessageOnUI("Suspected occasional short beat interval with baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 15:
 							{
+                                Task_vars.ecgmessage = "Suspected irregular beat interval with baseline wander.";
 								uiController.ShowMessageOnUI("Suspected irregular beat interval with baseline wander.", true, "Abnormal");
 								break;
 							}
 						case 255:
 							{
+                                Task_vars.ecgmessage = "Poor signal, measure again.";
                                 //needs to be yellow error box in iOS
-								uiController.ShowMessageOnUI("Poor Signal, measure again.", true, "Poor Signal");
+								uiController.ShowMessageOnUI("Poor signal, measure again.", true, "Poor Signal");
 								break;
 							}
 						default:
 							{
+                                Task_vars.ecgmessage = "";
 								uiController.ShowMessageOnUI("No Result Found.", true, "Abnormal");
 								break;
 							}
 					}
-
+                    //uiController.ShowMessageOnUI(Task_vars.ecgmessage, true, "Abnormal");
 					//Debug.WriteLine("bpm reslt of ecg: " + );  bpm  , ecg
 
 				}

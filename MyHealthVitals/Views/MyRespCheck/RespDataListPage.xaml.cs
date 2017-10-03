@@ -30,7 +30,7 @@ namespace MyHealthVitals
 					}
 				}
 				
-				await Task.Delay(5).ContinueWith(_ =>
+				await Task.Delay(1).ContinueWith(_ =>
 				{
 					//PushData(e);
 					if (ParametersPageLocal.allReadings == null)
@@ -43,7 +43,7 @@ namespace MyHealthVitals
 				var allCategoryReading = from reading in ParametersPageLocal.allReadings 
 										 where reading.CategoryId == 9
 										 select reading;
-
+                          
 				var spReadings = from spSet in
 				   (from reading in allCategoryReading
 					group reading by reading.Date)

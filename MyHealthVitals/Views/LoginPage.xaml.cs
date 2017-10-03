@@ -10,6 +10,13 @@ namespace MyHealthVitals
 	public class Task_vars
 	{
 		public static Task[] tasks = new Task[1];
+        public static string ecgmessage = "";
+        public static DateTime ecgdate;
+        public static Byte[] ecgcontent;
+        public static string ecgfilename;
+        public static string ecgfilepath;
+        public static long ecgfilelength;
+        public static string patient_name;
 	}
     public partial class LoginPage : ContentPage
     {
