@@ -78,7 +78,7 @@
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchArch>ARMv7, ARMv7s, ARM64</MtouchArch>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <PlatformTarget>x86</PlatformTarget>
@@ -170,6 +170,8 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%401x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%402x.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\1024X1024.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -215,6 +217,9 @@
       <Version>1.6</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ITunesArtwork Include="iTunesArtwork%402x" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.4.0.282\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.4.0.282\build\netstandard1.0\Xamarin.Forms.targets')" />

@@ -404,10 +404,10 @@ namespace MyHealthVitals
             ecgfile.Size = Task_vars.ecgfilelength;
             ecgfile.UploadDate = DateTime.Now;
 
-            var msg = PostFileToService(Credential.BASE_URL_TEST + $"/Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
+            //var msg = PostFileToService(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
             //var msg = PostFileToService(Credential.BASE_URL_TEST + $"Patient/574/File", ecgfile);
 
-            //FPostAsync(Credential.BASE_URL_TEST + $"api/v1/Patient/{Credential.sharedInstance.Mrn}/File", ecgfile, 1);
+            FPostAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile, 1);
 			
 
 		}
@@ -470,7 +470,8 @@ namespace MyHealthVitals
             Debug.WriteLine("client: "+client.ToString());
             //if (timeout.HasValue) client.Timeout = new TimeSpan(0, timeout.Value, 0);
 
-            client.Timeout = new TimeSpan(0, 0, 20);
+            client.Timeout = new TimeSpan(0, 5, 0); //5 minute timeout
+
 
             if (!string.IsNullOrEmpty(Credential.sharedInstance.Token)) client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
@@ -484,7 +485,7 @@ namespace MyHealthVitals
             var content = arg != null ? new StringContent(JsonConvert.SerializeObject(arg), Encoding.UTF8, "application/json") : null;
 			//var response = await DoWithRetryAsync(() => client.PostAsync(url, content));
 
-            var response = await client.PostAsync(url, content);
+            var response = await DoWithRetryAsync(() => client.PostAsync(url, content));
 			if (response.IsSuccessStatusCode)
             {
                 Debug.WriteLine("Successful file upload! Woohoo!");

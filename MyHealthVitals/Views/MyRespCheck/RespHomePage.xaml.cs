@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Xamarin.Forms;
+using System.Diagnostics;
 
 namespace MyHealthVitals
 {
@@ -46,6 +47,7 @@ namespace MyHealthVitals
 		public void updateCaller(SpirometerReading reading)
 		{
 			currReading = reading;
+            Debug.WriteLine("Normal reading.");
 
 			if (reading !=null)
 			{
@@ -105,18 +107,25 @@ namespace MyHealthVitals
 
 		async void btnSaveClicked(object sender, System.EventArgs e)
 		{
-			layoutLoading.IsVisible = true;
+			//layoutLoading.IsVisible = true;
 
 			try
 			{
 				Reading fevReading = new Reading("FEV1", currReading.Fev1, 9, false, null, null);
 				Reading pefReading = new Reading("PEF", currReading.Pef, 9, false, null, null);
+                pefReading.Date = fevReading.Date;
 				logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, currReading.Pef, currReading.Fev1));
 
-				await pefReading.PostReadingToService();
-				await fevReading.PostReadingToService();
+				//await pefReading.PostReadingToService();
+				//await fevReading.PostReadingToService();
+
+				pefReading.PostReadingToService();
+				fevReading.PostReadingToService();
 
 				clearReadingDisplay();
+
+                //saved pop up
+                await DisplayAlert("Reading", "Reading saved.", "OK");
 			}
 			catch (Exception ex)
 			{

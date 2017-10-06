@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
+using System.Diagnostics;
 
 namespace MyHealthVitals
 {
@@ -67,7 +68,7 @@ namespace MyHealthVitals
 		// call back methods
 		public void updateCaller(SpirometerReading currReading)
 		{
-
+            Debug.WriteLine("Calibration reading.");
 			//var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
 
 			currReading.index = calibratedReadingList.Count;
@@ -144,7 +145,7 @@ namespace MyHealthVitals
 		{
 			var btn = (Xamarin.Forms.Button)sender;
 
-			System.Diagnostics.Debug.WriteLine((int)btn.CommandParameter);
+			System.Diagnostics.Debug.WriteLine("Remove calibrated item "+(int)btn.CommandParameter);
 
 			calibratedReadingList.RemoveAt((int)btn.CommandParameter);
 

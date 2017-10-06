@@ -1,36 +1,16 @@
 ﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workbench ActiveDocument="Projects Status">
     <Files>
-      <File FileName="MyHealthVitals/Models/Credential.cs" Line="23" Column="9" />
       <File FileName="Projects Status" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="MyHealthVitals" expanded="True">
+          <Node name="MyHealthVitals" expanded="True" selected="True">
             <Node name="MyHealthVitals" expanded="True">
-              <Node name="BLE" expanded="True" />
               <Node name="Models" expanded="True" />
-              <Node name="PlatformInterfaces" expanded="True" />
-              <Node name="Views" expanded="True">
-                <Node name="MyRespCheck" expanded="True">
-                  <Node name="RespDataListPage.xaml" expanded="True" />
-                </Node>
-                <Node name="SpotCheckViews" expanded="True">
-                  <Node name="SubViews" expanded="True">
-                    <Node name="EcgReport.xaml" expanded="True" />
-                  </Node>
-                  <Node name="MainPage.xaml" expanded="True" />
-                </Node>
-                <Node name="DeviceListPage.xaml" expanded="True" />
-                <Node name="LoginPage.xaml" expanded="True" />
-              </Node>
             </Node>
-            <Node name="MyHealthVitals.iOS" expanded="True">
-              <Node name="Helpers" expanded="True">
-                <Node name="FileHelperIos.cs" selected="True" />
-              </Node>
-            </Node>
+            <Node name="MyHealthVitals.iOS" expanded="True" />
           </Node>
         </State>
       </Pad>
@@ -38,11 +18,9 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/ICUcare/Projects/MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" relfile="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" line="15" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.2ae7c89ea288defaed4f051ff84a1a588d6e1032" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.15ee9ccde11747ba3c033828466a83ff65bd0538" />
 </Properties>

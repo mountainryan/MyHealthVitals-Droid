@@ -14,7 +14,7 @@
 							</StackLayout>
 						</StackLayout>
 						<Label WidthRequest="76" XAlign="Start" Text="PEF(L/min)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
-						<Label WidthRequest="76" XAlign="Center" Text="PEF(L/min)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
+						<Label WidthRequest="76" XAlign="Center" Text="FEV1(L)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
 					</StackLayout>
 					
 					<local:CustomListView BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="150" x:Name="listView" >

@@ -14,9 +14,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.icucare.myhealthvitals</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2017.9.1</string>
+	<string>2017.10.14</string>
 	<key>CFBundleVersion</key>
-	<string>2017.9.1</string>
+	<string>2017.10.14</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -30,6 +30,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+		<string>arm64</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
@@ -44,5 +45,7 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>XSLaunchImageAssets</key>
+	<string>Assets.xcassets/LaunchImage.launchimage</string>
 </dict>
 </plist>

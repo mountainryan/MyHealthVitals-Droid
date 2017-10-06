@@ -594,7 +594,7 @@ namespace MyHealthVitals
 					Debug.WriteLine("ch.Value[3] :" + ch.Value[3] + "ch.Value[4] " + ch.Value[4] + "ch.Value[5] :" + ch.Value[5]);
 					if (ch.Value[4] == 2 && ch.Value[5] == 36)
 					{
-						uiController.ShowMessageOnUI("You have not finished your ECG measure.", true, "Measure Interruped");
+						uiController.ShowMessageOnUI("You have not finished your ECG measure.", true, "Measure Interrupted");
 					}
 				}
 
