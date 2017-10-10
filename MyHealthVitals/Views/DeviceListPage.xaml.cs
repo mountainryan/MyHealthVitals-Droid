@@ -120,7 +120,10 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 			gifWebView.Source = DependencyService.Get<IBaseUrl>().Get() + "/gifContainer.html";
-			//DependencyService.Get<ICBCentralManager>().ConnectToDevice((IBluetoothCallBackUpdatable)this);
+			if (Device.Idiom == TargetIdiom.Tablet) {
+				W1.WidthRequest *= 2;
+				W2.WidthRequest *= 2;
+			}
 		}
 
 		public void navigateToMainPage() { 
