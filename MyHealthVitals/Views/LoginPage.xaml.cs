@@ -49,8 +49,8 @@ namespace MyHealthVitals
         {
             base.OnAppearing();
 
-            scrollView.HeightRequest = this.Content.Bounds.Size.Height - layoutImgContainer.Height - layoutLoginContainer.Height - 40;
-        }
+		//	scrollView.HeightRequest = this.Content.Bounds.Size.Height - layoutImgContainer.Height - layoutLoginContainer.Height - 40;
+		}
 
         public async void doLogin(string username, string password)
         {

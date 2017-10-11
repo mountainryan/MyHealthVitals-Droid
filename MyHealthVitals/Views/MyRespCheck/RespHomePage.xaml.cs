@@ -14,6 +14,56 @@ namespace MyHealthVitals
 		public RespHomePage()
 		{
 			InitializeComponent();
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				layoutContainer.Spacing *= 2;
+				imgProfile.WidthRequest *= 2;
+				imgProfile.HeightRequest *= 2;
+
+				lblName.FontSize *= 1.5;
+				lblEmail.FontSize *= 1.5;
+				lblClickMessage.FontSize *= 1.5;
+
+				lbldata.WidthRequest *= 2;
+				/*	lblpef.WidthRequest *= 2;
+					lblfev.WidthRequest *= 2;
+					lblPefReading.WidthRequest *= 2;
+					lblFevReading.WidthRequest *= 2;
+					lblDateReading.WidthRequest *= 2;
+	*/
+				lblfev.FontSize *= 1.5;
+				lblpef.FontSize *= 1.5;
+				lbldata.FontSize *= 1.5;
+				lblPefReading.FontSize *= 1.5;
+				lblFevReading.FontSize *= 1.5;
+				lblDateReading.FontSize *= 1.5;
+
+				layoutButton1.Spacing *= 2;
+				B1.FontSize *= 1.5;
+				B2.FontSize *= 1.5;
+				B1.WidthRequest *= 2;
+				B2.WidthRequest *= 2;
+
+				layoutMiddle.HeightRequest *= 2;
+				box.HeightRequest *= 2;
+				layoutbox.HeightRequest *= 2;
+				layoutbox.Spacing *= 2;
+
+				lablebox.FontSize *= 1.5;
+				layoutval.Spacing *= 2;
+				lblDate.FontSize *= 1.5;
+				lblPef.FontSize *= 1.5;
+				lblFev1.FontSize *= 1.5;
+
+				layoutButton2.Spacing *= 2;
+				B3.WidthRequest *= 2;
+				B4.WidthRequest *= 2;
+				B3.FontSize *= 1.5;
+				B4.FontSize *= 1.5;
+				save.FontSize *= 1.5;
+				save.HeightRequest = layoutbox.HeightRequest / 2;
+				save.WidthRequest = box.WidthRequest;
+			}
 
 			var tapGestureRecognizer = new TapGestureRecognizer();
 			tapGestureRecognizer.Tapped += (s, e) =>
@@ -28,8 +78,8 @@ namespace MyHealthVitals
 			gifWebView.Source = DependencyService.Get<IBaseUrl>().Get() + "/gifContainer.html";
 
 			callAPiToDisplayGetDemographics();
-		}
 
+	   }
 		protected override void OnDisappearing()
 		{
 			base.OnDisappearing();

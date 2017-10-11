@@ -18,7 +18,19 @@ namespace MyHealthVitals
 		public RespGraphPageNew()
 		{
 			InitializeComponent();
-                CallAPiGetReadings();
+			if (Device.Idiom == TargetIdiom.Tablet) {
+				layoutPefContainer.WidthRequest *= 2;
+				layoutPefContainer.HeightRequest *= 2;
+				layoutFevContainer.WidthRequest *= 2;
+				layoutFevContainer.HeightRequest *= 2;
+				layoutL2.WidthRequest *= 2;
+				layoutL1.WidthRequest *= 2;
+				layoutN2.Spacing *= 2;
+				layoutN1.Spacing *= 2;
+			}
+
+
+            CallAPiGetReadings();
 				//layoutContainer.IsVisible = false;
 		}
 		void btnNextClicked(object sender, System.EventArgs e)
@@ -48,9 +60,21 @@ namespace MyHealthVitals
 					lblPef.Text = currReading.pefString;
 					lblFev1.Text = currReading.fev1String;
 					lblDate.Text = currReading.dateString;
-					boxFev.HeightRequest = layoutFevContainer.Height * (double)currReading.Fev1 / 9;
-					boxPef.HeightRequest = layoutPefContainer.Height * (double)currReading.Pef / 900;
 
+					if (layoutFevContainer.Height < 0 || layoutPefContainer.Height < 0)
+					{
+						int height = 300;
+						if (Device.Idiom == TargetIdiom.Tablet) {
+							height *= 2;
+						}
+						boxFev.HeightRequest = height * (double)currReading.Fev1 / 9;
+						boxPef.HeightRequest = height * (double)currReading.Pef / 900;
+					}
+					else
+					{
+						boxFev.HeightRequest = layoutFevContainer.Height * (double)currReading.Fev1 / 9;
+						boxPef.HeightRequest = layoutPefContainer.Height * (double)currReading.Pef / 900;
+					}
 					boxFev.BackgroundColor = Color.FromHex(currReading.color);
 					boxPef.BackgroundColor = Color.FromHex(currReading.color);
 				});
