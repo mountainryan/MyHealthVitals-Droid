@@ -21,7 +21,29 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 			// initial rendering previously saved data
-
+			if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					layout.Spacing *= 2;
+					imgProfile.WidthRequest *= 2;
+					imgProfile.HeightRequest *= 2;
+					lblName.FontSize *= 1.5;
+					lblEmail.FontSize *= 1.5;
+					lblGender.FontSize *= 1.5;
+					lblBirthdate.FontSize *= 1.5;
+					lblAge.FontSize *= 1.5;
+					lblHeight.FontSize *= 1.5;
+					lblWeight.FontSize *= 1.5;
+					lblMobileNo.FontSize *= 1.5;
+				gender.FontSize *= 1.5;
+				bid.FontSize *= 1.5;
+				age.FontSize *= 1.5;
+				height.FontSize *= 1.5;
+				weight.FontSize *= 1.5;
+				mobileno.FontSize *= 1.5;
+					rem.FontSize *= 1.5;
+					auto.FontSize *= 1.5;
+					save.FontSize *= 1.5;
+				}
 			switchAutoLogin.IsToggled = Demographics.sharedInstance.isAutoLogin;
 			switchRemUsername.IsToggled = Demographics.sharedInstance.isRememberUsername;
 

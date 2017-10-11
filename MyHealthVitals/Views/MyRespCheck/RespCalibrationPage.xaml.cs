@@ -17,24 +17,32 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 
-			////calibratedReadingList.
-			//var reading0 = new SpirometerReading(DateTime.Now, 420, 3.1m);
-			//reading0.index = calibratedReadingList.Count;
-			//calibratedReadingList.Add(reading0);
-
-			//var reading1 = new SpirometerReading(DateTime.Now, 300, 3.4m);
-			//reading1.index = calibratedReadingList.Count;
-			//calibratedReadingList.Add(reading1);
-
-			//var reading2 = new SpirometerReading(DateTime.Now, 300, 3.5m);
-			//reading2.index = calibratedReadingList.Count;
-			//calibratedReadingList.Add(reading2);
-
-			//////calibratedReadingList.CollectionChanged += (sender, e) => { 
-			//////};
-			//listView.ItemsSource = calibratedReadingList;
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				
+					layout.Spacing *= 2;
+					label.FontSize *= 1.5;
+					layoutButton.Spacing *= 2;
+					button.HeightRequest *= 2;
+					button.FontSize *= 1.5;
+					labelpef.WidthRequest *= 2;
+					labelfev1.WidthRequest *= 2;
+					labelpef.FontSize *= 1.5;
+					labelfev1.FontSize *= 1.5;
+					listView.HeightRequest *= 2;
+			/*		layoutlist.Spacing *= 2;
+					label1.WidthRequest *= 2;
+					label1.FontSize *= 1.5;
+					label2.WidthRequest *= 2;
+					label2.FontSize *= 1.5;
+					label3.WidthRequest *= 2;
+					label3.FontSize *= 1.5;
+					buttonDel.WidthRequest *= 2;
+					buttonDel.HeightRequest *= 2;
+					buttonDel.FontSize *= 1.5;
+				*/	save.FontSize *= 1.5;
+			}
 		}
-
 		protected override void OnDisappearing()
 		{
 			base.OnDisappearing();

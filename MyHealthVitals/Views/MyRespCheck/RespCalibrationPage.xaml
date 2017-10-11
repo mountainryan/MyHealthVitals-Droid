@@ -4,17 +4,17 @@
 		<RelativeLayout>
 			<!--Heading view start here-->
 			<ScrollView RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
-				<StackLayout Spacing="12">
-					<Label FontSize="14" TextColor="White" Margin="10,5,10,5" XAlign="Center" Text="User needs to establish their personal Normal PEF, FEV1 Values. This is accomplished by taking three valid readings in sequence. The system will use the highest readings of the three to determine your Normal Values. These values along with your gender, height and age will be used to calculate a reference value. This value will be shown in the form of a color bar chart on the Main Screen at the conclusion of each subsequent readings." />
+				<StackLayout x:Name = "layout" Spacing="12">
+					<Label x:Name = "label" FontSize="14" TextColor="White" Margin="10,5,10,5" XAlign="Center" Text="User needs to establish their personal Normal PEF, FEV1 Values. This is accomplished by taking three valid readings in sequence. The system will use the highest readings of the three to determine your Normal Values. These values along with your gender, height and age will be used to calculate a reference value. This value will be shown in the form of a color bar chart on the Main Screen at the conclusion of each subsequent readings." />
 					<!--Table view heading	-->
-					<StackLayout Orientation="Horizontal" Spacing="10" Margin="15,0,0,0">
+					<StackLayout x:Name = "layoutButton" Orientation="Horizontal" Spacing="10" Margin="15,0,0,0">
 						<StackLayout BackgroundColor="Yellow" Padding="1">
 							<StackLayout Padding="0" BackgroundColor="{StaticResource colorBlackBg}">
-								<Button Clicked="btnCalibrateClicked" Text="Re-calibrate" HeightRequest="34" Margin="10,0,10,0" TextColor="Yellow" />
+								<Button x:Name = "button" Clicked="btnCalibrateClicked"  BackgroundColor = "Transparent" Text="Re-calibrate" HeightRequest="35" Margin="10,0,10,0" TextColor="Yellow" />
 							</StackLayout>
 						</StackLayout>
-						<Label WidthRequest="76" XAlign="Start" Text="PEF(L/min)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
-						<Label WidthRequest="76" XAlign="Center" Text="FEV1(L)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
+						<Label x:Name = "labelpef" WidthRequest="76" XAlign="Start" Text="PEF(L/min)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
+						<Label x:Name = "labelfev1" WidthRequest="76" XAlign="Center" Text="FEV1(L)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
 					</StackLayout>
 					
 					<local:CustomListView BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="150" x:Name="listView" >
@@ -31,7 +31,7 @@
 							</DataTemplate>
 						</local:CustomListView.ItemTemplate>
 					</local:CustomListView>
-					<Button Text="SAVE" Clicked="btnSaveCLicked" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White" Margin="3,4,3,30" />
+					<Button x:Name = "save" Text="SAVE" Clicked="btnSaveCLicked" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White" Margin="3,4,3,30" />
 				</StackLayout>
 			</ScrollView>
 			<!--Last line-->

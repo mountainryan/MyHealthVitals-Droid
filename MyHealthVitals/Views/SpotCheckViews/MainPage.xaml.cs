@@ -40,7 +40,12 @@ namespace MyHealthVitals
 
 			this.deviceName = deviceName;
 			InitializeComponent();
-
+			if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					imgProfile.WidthRequest *= 2;
+					imgProfile.HeightRequest *= 2;
+					lblName.FontSize *= 1.5;
+				}
 			var tapGestureRecognizer = new TapGestureRecognizer();
 			tapGestureRecognizer.Tapped += (s, e) =>
 			{

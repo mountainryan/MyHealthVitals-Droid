@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns:controls="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions" BackgroundColor="{StaticResource colorBlackBg}" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.UserProfile">
 	<ContentPage.Content>
-		<ScrollView>
+	<RelativeLayout>
+			<!--Heading view start here-->
+			<ScrollView RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
+
 			<StackLayout>
 				<StackLayout Orientation="Horizontal">
 					<Image x:Name="imgProfile" Margin="12" Source="imgUserPH.png" Aspect="AspectFill" HeightRequest="96" WidthRequest="80">
@@ -11,45 +14,51 @@
 						<Label FontSize="14" x:Name="lblEmail" Style="{DynamicResource styleLblReading}" Text=" " />
 					</StackLayout>
 				</StackLayout>
-				<StackLayout Spacing="25" Padding="15">
+				<StackLayout x:Name = "layout" Spacing="25" Padding="15" >
 					<StackLayout Orientation="Horizontal">
-						<Label Style="{DynamicResource UserProfileLabel}" Text="Gender" />
+						<Label x:Name= "gender" Style="{DynamicResource UserProfileLabel}" Text="Gender" />
 						<Label x:Name="lblGender" Style="{DynamicResource UserProfileLabel}"  Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
-						<Label Style="{DynamicResource UserProfileLabel}" Text="Birthdate" />
+						<Label x:Name = "bid" Style="{DynamicResource UserProfileLabel}" Text="Birthdate" />
 						<Label x:Name="lblBirthdate" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
-						<Label Style="{DynamicResource UserProfileLabel}" Text="Age" />
+						<Label x:Name ="age" Style="{DynamicResource UserProfileLabel}" Text="Age" />
 						<Label x:Name="lblAge" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
-						<Label Style="{DynamicResource UserProfileLabel}" Text="Height" />
+						<Label x:Name = "height" Style="{DynamicResource UserProfileLabel}" Text="Height" />
 						<Label x:Name="lblHeight" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
-						<Label Style="{DynamicResource UserProfileLabel}" Text="Weight" />
+						<Label x:Name = "weight" Style="{DynamicResource UserProfileLabel}" Text="Weight" />
 						<Label x:Name="lblWeight" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
-						<Label Style="{DynamicResource UserProfileLabel}" Text="Mobile No." />
+						<Label x:Name = "mobileno" Style="{DynamicResource UserProfileLabel}" Text="Mobile No." />
 						<Label x:Name="lblMobileNo" Style="{DynamicResource UserProfileLabel}" Text=" " HorizontalOptions="EndAndExpand" />
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
-						<Label Style="{DynamicResource UserProfileLabel}" Text="Remember Username" />
+						<Label x:Name = "rem" Style="{DynamicResource UserProfileLabel}" Text="Remember Username" />
 						<Switch x:Name="switchRemUsername" HorizontalOptions="EndAndExpand">
 						</Switch>
 					</StackLayout>
 					<StackLayout Orientation="Horizontal">
-						<Label Style="{DynamicResource UserProfileLabel}" Text="Auto Login" />
+						<Label x:Name = "auto" Style="{DynamicResource UserProfileLabel}" Text="Auto Login" />
 						<Switch x:Name="switchAutoLogin" HorizontalOptions="EndAndExpand">
 						</Switch>
 					</StackLayout>
-					<Button Clicked="btnSaveClicked" Text="SAVE" Font="16" BackgroundColor="{StaticResource colorThemeBlue}" TextColor="White">
-					</Button>
 				</StackLayout>
 			</StackLayout>
 		</ScrollView>
+					<!--Last line-->
+			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="100" Spacing ="20" Margin="15,-100,15,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" >
+				<Button x:Name = "save" Clicked="btnSaveClicked" Text="SAVE"  TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" />
+
+				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2017" XAlign="Center" FontSize="12" Margin="0,0,0,4">
+				</Label>
+			</StackLayout>
+			</RelativeLayout>
 	</ContentPage.Content>
 </ContentPage>

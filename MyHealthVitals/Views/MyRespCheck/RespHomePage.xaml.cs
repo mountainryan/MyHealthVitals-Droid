@@ -38,7 +38,8 @@ namespace MyHealthVitals
 				lblFevReading.FontSize *= 1.5;
 				lblDateReading.FontSize *= 1.5;
 
-				layoutButton1.Spacing *= 2;
+				layoutButton1.Spacing *= 4;
+				layoutButton1.Margin = new Thickness(45,0,40,0); 
 				B1.FontSize *= 1.5;
 				B2.FontSize *= 1.5;
 				B1.WidthRequest *= 2;
@@ -55,14 +56,15 @@ namespace MyHealthVitals
 				lblPef.FontSize *= 1.5;
 				lblFev1.FontSize *= 1.5;
 
-				layoutButton2.Spacing *= 2;
+				layoutButton2.Margin = new Thickness(45,0,40,0); 
+				layoutButton2.Spacing *= 4;
 				B3.WidthRequest *= 2;
 				B4.WidthRequest *= 2;
 				B3.FontSize *= 1.5;
 				B4.FontSize *= 1.5;
 				save.FontSize *= 1.5;
-				save.HeightRequest = layoutbox.HeightRequest / 2;
 				save.WidthRequest = box.WidthRequest;
+				save.Margin = new Thickness(45,0,40,0); 
 			}
 
 			var tapGestureRecognizer = new TapGestureRecognizer();

@@ -119,10 +119,16 @@ namespace MyHealthVitals
 		public DeviceListPage()
 		{
 			InitializeComponent();
+
 			gifWebView.Source = DependencyService.Get<IBaseUrl>().Get() + "/gifContainer.html";
 			if (Device.Idiom == TargetIdiom.Tablet) {
-				W1.WidthRequest *= 2;
-				W2.WidthRequest *= 2;
+				Spiromter.WidthRequest *= 2;
+				PC100.WidthRequest *= 2;
+			//	var image = new Image { Source = "PC100MonitorBIG.png" };
+				PC100.Image = (FileImageSource)ImageSource.FromFile("PC100MonitorPad.png");
+				PC300.Image = (FileImageSource)ImageSource.FromFile("PC300MonitorPad.png");
+				weightScales.Image = (FileImageSource)ImageSource.FromFile("WeightScalesPad.png");
+				Spiromter.Image = (FileImageSource)ImageSource.FromFile("SpiromterPad.png");
 			}
 		}
 

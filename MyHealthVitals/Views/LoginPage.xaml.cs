@@ -23,7 +23,20 @@ namespace MyHealthVitals
         public LoginPage()
         {
             InitializeComponent();
-
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				//layout.WidthRequest = 350;
+				layout.Margin = new Thickness(160,10,10,10);
+				layout.HorizontalOptions = LayoutOptions.Center;
+				txtUsername.WidthRequest = 300;
+				txtUsername.HeightRequest += 10;
+				txtPassword.WidthRequest = 300;
+				txtPassword.HeightRequest += 10;
+				txtUsername.HorizontalOptions = LayoutOptions.Center;
+				txtPassword.HorizontalOptions = LayoutOptions.Center;
+				btnLogin.HeightRequest = 30;//txtPassword.HeightRequest + txtUsername.HeightRequest   ;
+				Debug.WriteLine("btnLogin.HeightRequest==="+btnLogin.HeightRequest);
+			}
             if (Demographics.sharedInstance.isAutoLogin)
             {
                 txtUsername.Text = Demographics.sharedInstance.username;
