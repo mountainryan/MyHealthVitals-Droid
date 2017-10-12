@@ -289,9 +289,19 @@ namespace MyHealthVitals
 
 		void btnViewDataListClicked(object sender, System.EventArgs e)
 		{
-			var newPage = new RespDataListPage();
-			newPage.Title = "Data List Screen";
-			this.Navigation.PushAsync(newPage);
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				var newPage = new RespDataListPagePad();
+				newPage.Title = "Data List Screen";
+            	this.Navigation.PushAsync(newPage);
+			}
+			else
+			{
+				var newPage = new RespDataListPage();
+				newPage.Title = "Data List Screen";
+				this.Navigation.PushAsync(newPage);
+			}
+			
 		}
 	}
 }

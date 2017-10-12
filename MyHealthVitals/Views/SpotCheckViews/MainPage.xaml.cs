@@ -41,6 +41,9 @@ namespace MyHealthVitals
 			this.deviceName = deviceName;
 			InitializeComponent();
 			resizeUI();
+			btnLbs.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
+
+
 			var tapGestureRecognizer = new TapGestureRecognizer();
 			tapGestureRecognizer.Tapped += (s, e) =>
 			{
@@ -1246,6 +1249,10 @@ namespace MyHealthVitals
 				ecgReportcBtnPad.FontSize *= 1.5;
 				layoutButton.IsVisible = false;
 				layoutButtonPad.IsVisible = true;
+				btnFareinheit.FontSize *= 1.5;
+				btnCelcious.FontSize *= 1.5;
+			//	btnLbs.FontSize *= 1.5;
+			//	btnKgs.FontSize *= 1.5;
 			}
 		}
 	}

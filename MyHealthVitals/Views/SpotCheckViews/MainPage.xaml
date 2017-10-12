@@ -97,9 +97,9 @@
 								<StackLayout x:Name = "layout11" WidthRequest="72">
 									<Label  x:Name = "lblTEMP" Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
 									<StackLayout Orientation="Horizontal" Padding="2">
-										<StackLayout Orientation="Horizontal" Padding="2">
-											<Button TextColor="Gray" Clicked="btnFareinheitClicked" HeightRequest="20" x:Name="btnFareinheit" Text="°F" />
-											<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" HeightRequest="20" Text="°C" />
+										<StackLayout Orientation="Horizontal">
+											<Button TextColor="Gray" Clicked="btnFareinheitClicked" BackgroundColor = "Transparent"  x:Name="btnFareinheit" Text="°F" />
+											<Button Clicked="btnCelciusClicked" x:Name="btnCelcious" BackgroundColor = "Transparent" Text="°C" />
 										</StackLayout>
 									</StackLayout>
 								</StackLayout>
@@ -119,10 +119,10 @@
 									<Label x:Name="lblGlucose" Text="-" Style="{DynamicResource styleLblReading}" />
 								</StackLayout>
 								<StackLayout x:Name = "layout15" WidthRequest="72">
-									<Label x:Name = "lblWEIT" Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />
-									<StackLayout Orientation="Horizontal" Padding="2">
-										<Button Clicked="btnLbsClicked" x:Name="btnLbs" HeightRequest="20" Text="Lbs" />
-										<Button TextColor="Gray" Clicked="btnKgsClicked" HeightRequest="20" x:Name="btnKgs" Text="Kgs" />
+									<Label x:Name = "lblWEIT" Style="{DynamicResource styleLblNumeric}"  Text="WEIGHT" />
+									<StackLayout Orientation="Horizontal"  WidthRequest="100" > 
+										<Button Clicked="btnLbsClicked" x:Name="btnLbs"   Text="Lbs" />
+										<Button TextColor="Gray" Clicked="btnKgsClicked"  x:Name="btnKgs"   Text="Kgs" />
 									</StackLayout>
 								</StackLayout>
 								<StackLayout x:Name = "layout16" WidthRequest="72">
