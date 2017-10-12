@@ -48,54 +48,54 @@
 						<StackLayout x:Name="layoutContainer" Spacing="7">
 							<BoxView HeightRequest="0.5" BackgroundColor="White" />
 							<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
-								<StackLayout WidthRequest="72">
-									<Label Style="{DynamicResource styleLblNumeric}" Text="SYS" />
-									<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
+								<StackLayout x:Name = "layout1" WidthRequest="72">
+									<Label x:Name = "lblSYS" Style="{DynamicResource styleLblNumeric}" Text="SYS" />
+									<Label x:Name = "lblmmHg" Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
+								<StackLayout  x:Name = "layout2" WidthRequest="72">
 									<Label FontSize="13" Text=" " />
 									<Label x:Name="lblSys" Style="{DynamicResource styleLblReading}" Text="-" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
-									<Label Style="{DynamicResource styleLblNumeric}" Text="DIA" />
-									<Label Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
+								<StackLayout x:Name = "layout3" WidthRequest="72">
+									<Label x:Name = "lblDIA" Style="{DynamicResource styleLblNumeric}" Text="DIA" />
+									<Label x:Name = "lblmm" Style="{DynamicResource styleLblNumeric}" Text="mmHg" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
+								<StackLayout x:Name = "layout4" WidthRequest="72">
 									<Label Text=" " FontSize="13" />
 									<Label x:Name="lblDia" Style="{DynamicResource styleLblReading}" Text="-" />
 								</StackLayout>
 							</StackLayout>
 							<BoxView HeightRequest="0.5" BackgroundColor="White" />
 							<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
-								<StackLayout WidthRequest="72">
-									<Label Style="{DynamicResource styleLblNumeric}" Text="SpO2" />
-									<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
+								<StackLayout x:Name = "layout5" WidthRequest="72">
+									<Label x:Name = "lblSPO2" Style="{DynamicResource styleLblNumeric}" Text="SpO2" />
+									<Label x:Name = "lblpct" Style="{DynamicResource styleLblNumeric}" Text="%" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
+								<StackLayout x:Name = "layout6" WidthRequest="72">
 									<Label FontSize="13" Text=" " />
 									<Label x:Name="lblSpo2" Style="{DynamicResource styleLblReading}" Text="-" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
-									<Label Style="{DynamicResource styleLblNumeric}" Text="PR" />
-									<Label Style="{DynamicResource styleLblNumeric}" Text="bpm" />
+								<StackLayout x:Name = "layout7" WidthRequest="72">
+									<Label x:Name = "lblPR" Style="{DynamicResource styleLblNumeric}" Text="PR" />
+									<Label x:Name = "lblBPM" Style="{DynamicResource styleLblNumeric}" Text="bpm" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
+								<StackLayout x:Name = "layout8" WidthRequest="72">
 									<Label FontSize="13" Text=" " />
 									<Label Style="{DynamicResource styleLblReading}" x:Name="lblBpm" Text="-" />
 								</StackLayout>
 							</StackLayout>
 							<BoxView HeightRequest="0.5" BackgroundColor="White" />
 							<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
-								<StackLayout WidthRequest="72">
-									<Label Style="{DynamicResource styleLblNumeric}" Text="PI" />
-									<Label Style="{DynamicResource styleLblNumeric}" Text="%" />
+								<StackLayout x:Name = "layout9" WidthRequest="72">
+									<Label x:Name = "lblPI"  Style="{DynamicResource styleLblNumeric}" Text="PI" />
+									<Label x:Name = "lblPIPCT" Style="{DynamicResource styleLblNumeric}" Text="%" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
+								<StackLayout x:Name = "layout10" WidthRequest="72">
 									<Label FontSize="13" Text=" " />
 									<Label x:Name="lblPerfusionIndex" Style="{DynamicResource styleLblReading}" Text="-" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
-									<Label Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
+								<StackLayout x:Name = "layout11" WidthRequest="72">
+									<Label  x:Name = "lblTEMP" Style="{DynamicResource styleLblNumeric}" Text="TEMP" />
 									<StackLayout Orientation="Horizontal" Padding="2">
 										<StackLayout Orientation="Horizontal" Padding="2">
 											<Button TextColor="Gray" Clicked="btnFareinheitClicked" HeightRequest="20" x:Name="btnFareinheit" Text="°F" />
@@ -103,29 +103,29 @@
 										</StackLayout>
 									</StackLayout>
 								</StackLayout>
-								<StackLayout WidthRequest="72">
+								<StackLayout x:Name = "layout12" WidthRequest="72">
 									<Label Text=" " FontSize="15" />
 									<Label x:Name="lblTemperature" Style="{DynamicResource styleLblReading}" Text="-" />
 								</StackLayout>
 							</StackLayout>
 							<BoxView HeightRequest="0.5" BackgroundColor="White" />
 							<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
-								<StackLayout WidthRequest="72">
-									<Label Text="GLU" Style="{DynamicResource styleLblNumeric}" />
+								<StackLayout x:Name = "layout13" WidthRequest="72">
+									<Label x:Name = "lblGLU" Text="GLU" Style="{DynamicResource styleLblNumeric}" />
 									<Label x:Name="lblUnitGlucose" Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
+								<StackLayout x:Name = "layout14" WidthRequest="72">
 									<Label Text=" " FontSize="13" Style="{DynamicResource styleLblReading}" />
 									<Label x:Name="lblGlucose" Text="-" Style="{DynamicResource styleLblReading}" />
 								</StackLayout>
-								<StackLayout WidthRequest="72">
-									<Label Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />
+								<StackLayout x:Name = "layout15" WidthRequest="72">
+									<Label x:Name = "lblWEIT" Style="{DynamicResource styleLblNumeric}" Text="WEIGHT" />
 									<StackLayout Orientation="Horizontal" Padding="2">
 										<Button Clicked="btnLbsClicked" x:Name="btnLbs" HeightRequest="20" Text="Lbs" />
 										<Button TextColor="Gray" Clicked="btnKgsClicked" HeightRequest="20" x:Name="btnKgs" Text="Kgs" />
 									</StackLayout>
 								</StackLayout>
-								<StackLayout WidthRequest="72">
+								<StackLayout x:Name = "layout16" WidthRequest="72">
 									<Label FontSize="15" Text=" "/>
 									<Label x:Name = "lblWeight" Text="-" Style="{DynamicResource styleLblReading}" />
 								</StackLayout>
@@ -138,7 +138,7 @@
 
 						<oxy:PlotView BackgroundColor="White" x:Name="plotView" Margin="10" HeightRequest="150" HorizontalOptions="FillAndExpand" Model="{Binding graphModel}" />
 
-						<StackLayout Orientation="Horizontal" Margin="10,5,10,5">
+						<StackLayout x:Name="layoutButton" Orientation="Horizontal" Margin="10,5,10,5">
 							<Button x:Name = "NIBPButton" Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
 							</Button>
 							<Button Clicked="btnEcgReportClicked" x:Name="ecgReportcBtn" IsEnabled="false" Text="ECG Report" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
@@ -146,6 +146,12 @@
 						</StackLayout>
 					</StackLayout>
 				</ScrollView>
+			</StackLayout>
+			<StackLayout x:Name = "layoutButtonPad" IsVisible = "false" BackgroundColor="{StaticResource colorBlackBg}"  Orientation="Horizontal" Spacing ="20" Margin="15,-80,15,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" >
+				<Button x:Name = "NIBPButtonPad" Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
+				</Button>
+				<Button Clicked="btnEcgReportClicked" x:Name="ecgReportcBtnPad"   IsEnabled="false" Text="ECG Report" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
+				</Button>
 			</StackLayout>
 			<RelativeLayout x:Name="layoutLoading" IsVisible="false"  Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">

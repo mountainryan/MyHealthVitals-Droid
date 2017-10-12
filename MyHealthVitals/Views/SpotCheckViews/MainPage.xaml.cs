@@ -40,12 +40,7 @@ namespace MyHealthVitals
 
 			this.deviceName = deviceName;
 			InitializeComponent();
-			if (Device.Idiom == TargetIdiom.Tablet)
-				{
-					imgProfile.WidthRequest *= 2;
-					imgProfile.HeightRequest *= 2;
-					lblName.FontSize *= 1.5;
-				}
+			resizeUI();
 			var tapGestureRecognizer = new TapGestureRecognizer();
 			tapGestureRecognizer.Tapped += (s, e) =>
 			{
@@ -1192,6 +1187,66 @@ namespace MyHealthVitals
 			
 			DependencyService.Get<IFileHelper>().saveTotxt(reportDataList, null, null, fileName);
 			reportDataList.Clear();
+		}
+
+		private void resizeUI()
+		{ 
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				imgProfile.WidthRequest *= 2;
+				imgProfile.HeightRequest *= 2;
+				lblName.FontSize *= 1.5;
+				lblEmail.FontSize *= 1.5;
+				lblClickMessage.FontSize *= 1.5;
+
+				layoutContainer.Spacing *= 2;
+				lblSYS.FontSize *= 1.5;
+				lblmmHg.FontSize *= 1.5;
+				lblDIA.FontSize *= 1.5;
+				lblmm.FontSize *= 1.5;
+				lblSys.FontSize *= 1.5;
+				lblDia.FontSize *= 1.5;
+				lblSpo2.FontSize *= 1.5;
+				lblSPO2.FontSize *= 1.5;
+				lblpct.FontSize *= 1.5;
+				lblPR.FontSize *= 1.5;
+				lblBPM.FontSize *= 1.5;
+				lblBpm.FontSize *= 1.5;
+
+				lblPI.FontSize *= 1.5;
+				lblPIPCT.FontSize *= 1.5;
+				lblPerfusionIndex.FontSize *= 1.5;
+				lblTEMP.FontSize *= 1.5;
+				lblGLU.FontSize *= 1.5;
+				lblUnitGlucose.FontSize *= 1.5;
+				lblGlucose.FontSize *= 1.5;
+				lblWeight.FontSize *= 1.5;
+				lblWEIT.FontSize *= 1.5;
+
+				countDownLabel.FontSize *= 1.5;
+				layout1.WidthRequest *= 2;
+				layout2.WidthRequest *= 2;
+				layout3.WidthRequest *= 2;
+				layout4.WidthRequest *= 2;
+				layout5.WidthRequest *= 2;
+				layout6.WidthRequest *= 2;
+				layout7.WidthRequest *= 2;
+				layout8.WidthRequest *= 2;
+				layout9.WidthRequest *= 2;
+				layout10.WidthRequest *= 2;
+				layout11.WidthRequest *= 2;
+				layout12.WidthRequest *= 2;
+				layout13.WidthRequest *= 2;
+				layout14.WidthRequest *= 2;
+				layout15.WidthRequest *= 2;
+				layout16.WidthRequest *= 2;
+
+				plotView.HeightRequest *= 2;
+				NIBPButtonPad.FontSize *= 1.5;
+				ecgReportcBtnPad.FontSize *= 1.5;
+				layoutButton.IsVisible = false;
+				layoutButtonPad.IsVisible = true;
+			}
 		}
 	}
 }

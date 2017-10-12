@@ -124,6 +124,11 @@ namespace MyHealthVitals
 			if (Device.Idiom == TargetIdiom.Tablet) {
 				Spiromter.WidthRequest *= 2;
 				PC100.WidthRequest *= 2;
+				btn300.WidthRequest *= 1.2;
+				btnspi.FontSize *= 1.2;
+				btn300.FontSize *= 1.2;
+				btn100.FontSize *= 1.2;
+				btnweight.FontSize *= 1.2;
 			//	var image = new Image { Source = "PC100MonitorBIG.png" };
 				PC100.Image = (FileImageSource)ImageSource.FromFile("PC100MonitorPad.png");
 				PC300.Image = (FileImageSource)ImageSource.FromFile("PC300MonitorPad.png");
