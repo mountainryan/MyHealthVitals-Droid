@@ -1017,10 +1017,18 @@ namespace MyHealthVitals
 				lashEcgFile = fileName;
 			}
 
-		    var newPage = new ParametersPageLocal();
-			//var newPage = new ParametersPage();
-			newPage.Title = "Parameter List Screen";
-			this.Navigation.PushAsync(newPage);
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				var newPage = new ParametersPageLocalPad();
+				newPage.Title = "Parameter List Screen";
+				this.Navigation.PushAsync(newPage);
+			}
+			else
+			{
+				var newPage = new ParametersPageLocal();
+				newPage.Title = "Parameter List Screen";
+				this.Navigation.PushAsync(newPage);
+			}
 		}
 
 		void btnViewProfileClicked(object sender, System.EventArgs e)

@@ -35,28 +35,17 @@
 				
 				<local:CustomListView Margin="0,3,0,0" SeparatorVisibility="None" x:Name="listView" BackgroundColor="{StaticResource colorBlackBg}">
 					<local:CustomListView.ItemTemplate>
-						
 						<DataTemplate>
 							<ViewCell>
-
 								<StackLayout VerticalOptions="Fill" Spacing="0" Padding="0" Margin="0">
-					<StackLayout Padding="10" HeightRequest="40" Spacing="0"  VerticalOptions="CenterAndExpand"  Orientation="Horizontal">
-						<Label WidthRequest="154"  VerticalOptions="CenterAndExpand" YAlign="Center" FontSize="14" TextColor="White" Text="{Binding dateString}" />
-						<Label YAlign="Center" WidthRequest="74"  HorizontalTextAlignment="Center" TextColor="White" FontSize="14" Text="{Binding pefString}" />
-						<Label YAlign="Center" WidthRequest="46" HorizontalTextAlignment="Center" TextColor="White" FontSize="14" Text="{Binding fev1String}" />
-						<Button Margin="10,0,0,0" VerticalOptions="Center" BackgroundColor="{Binding color}" HeightRequest="22" WidthRequest="22" BorderRadius="11" />
-					</StackLayout>
-					<BoxView HeightRequest="0.5" BackgroundColor="White" />
-				</StackLayout>
-								<!--<StackLayout VerticalOptions="Fill" Spacing="0" Padding="0" Margin="0">
-									<StackLayout Padding="10,0,10,0" Orientation="Horizontal">
-										<Label YAlign="Center" FontSize="14" WidthRequest="170" TextColor="White" Text="{Binding dateString}" />
-										<Label YAlign="Center" WidthRequest="66" HorizontalTextAlignment="Center" TextColor="White" FontSize="14" Text="{Binding pefString}" />
-										<Label YAlign="Center" WidthRequest="58" HorizontalTextAlignment="Center" TextColor="White" FontSize="14" Text="{Binding fev1String}" />
-										<Button Margin="1,0,0,0" VerticalOptions="Center" BackgroundColor="{Binding color}" HeightRequest="22" WidthRequest="22" BorderRadius="11" />
+									<StackLayout Padding="10" HeightRequest="40" Spacing="0"  VerticalOptions="CenterAndExpand"  Orientation="Horizontal">
+										<Label WidthRequest="154"  VerticalOptions="CenterAndExpand" YAlign="Center" FontSize="14" TextColor="White" Text="{Binding dateString}" />
+										<Label YAlign="Center" WidthRequest="74"  HorizontalTextAlignment="Center" TextColor="White" FontSize="14" Text="{Binding pefString}" />
+										<Label YAlign="Center" WidthRequest="46" HorizontalTextAlignment="Center" TextColor="White" FontSize="14" Text="{Binding fev1String}" />
+										<Button Margin="10,0,0,0" VerticalOptions="Center" BackgroundColor="{Binding color}" HeightRequest="22" WidthRequest="22" BorderRadius="11" />
 									</StackLayout>
-									<BoxView Margin="0,12,0,0" HeightRequest="0.5" BackgroundColor="White" />
-								</StackLayout>-->
+									<BoxView HeightRequest="0.5" BackgroundColor="White" />
+								</StackLayout>
 							</ViewCell>
 						</DataTemplate>
 					</local:CustomListView.ItemTemplate>

@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace MyHealthVitals
 {
-	public partial class ParametersPageLocal : ContentPage
+	public partial class ParametersPageLocalPad : ContentPage
 	{
 		class CategoryLocal
 		{
@@ -24,12 +24,12 @@ namespace MyHealthVitals
 		}
 		ObservableCollection<CategoryLocal> categories_local = new ObservableCollection<CategoryLocal>();
 		public static Reading[] allReadings;
-		public ParametersPageLocal()
+		public ParametersPageLocalPad()
 		{
 			InitializeComponent();
 
 			sycnwithCloud();
-		
+
 		}
 
 		public async void sycnwithCloud()
@@ -56,20 +56,20 @@ namespace MyHealthVitals
 		}
 		async void Handle_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
 		{
-            //	var newPage = new ParameterItemDetail(((CategoryLocal)e.Item).id);
-            if (allReadings == null)
-            {
-                layoutLoading.IsVisible = true;
-            }
-
-			
-            await Task.Delay(1).ContinueWith(_ =>
+			//	var newPage = new ParameterItemDetail(((CategoryLocal)e.Item).id);
+			if (allReadings == null)
 			{
-                //PushData(e);
-                if (allReadings == null)
-                {
-                    int index = Task.WaitAny(Task_vars.tasks);
-                }
+				layoutLoading.IsVisible = true;
+			}
+
+
+			await Task.Delay(1).ContinueWith(_ =>
+			{
+				//PushData(e);
+				if (allReadings == null)
+				{
+					int index = Task.WaitAny(Task_vars.tasks);
+				}
 
 			});
 
@@ -78,8 +78,8 @@ namespace MyHealthVitals
 			var newPage = new ParameterItemDetailNew(((CategoryLocal)e.Item).id, allReadings);
 
 			this.Navigation.PushAsync(newPage);
-		
-				
+
+
 		}
 
 	}
