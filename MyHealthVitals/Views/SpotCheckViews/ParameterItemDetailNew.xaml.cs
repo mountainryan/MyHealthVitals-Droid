@@ -18,7 +18,13 @@ namespace MyHealthVitals
 		public ParameterItemDetailNew()
 		{
 			InitializeComponent();
+			if (Device.Idiom == TargetIdiom.Tablet) 
+			{
+				label.FontSize *= 1.5;
+				label.Margin = new Thickness(20);
+			}
 		}
+
 
 		protected override void OnDisappearing()
 		{

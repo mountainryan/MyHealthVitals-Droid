@@ -1020,6 +1020,7 @@ namespace MyHealthVitals
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
 				var newPage = new ParametersPageLocalPad();
+			//	var newPage = new ParametersPageLocal();
 				newPage.Title = "Parameter List Screen";
 				this.Navigation.PushAsync(newPage);
 			}

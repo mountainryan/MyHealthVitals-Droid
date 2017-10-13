@@ -15,6 +15,16 @@ namespace MyHealthVitals
 		public ListCellTwoItem()
 		{
 			InitializeComponent();
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				itemdate.FontSize *= 1.5;
+				itemdate.WidthRequest *= 2;
+				firstItem.FontSize *= 1.5;
+				firstItem.WidthRequest *= 2;
+				secondItem.FontSize *= 1.5;
+				secondItem.WidthRequest *= 2;
+				underline.WidthRequest *= 2;
+			}
 			secondItem.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnLabelClicked()));
 	
 		}

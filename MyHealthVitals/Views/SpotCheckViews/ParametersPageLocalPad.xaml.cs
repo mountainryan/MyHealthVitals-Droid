@@ -23,11 +23,11 @@ namespace MyHealthVitals
 			}
 		}
 		ObservableCollection<CategoryLocal> categories_local = new ObservableCollection<CategoryLocal>();
-		public static Reading[] allReadings;
+		private  Reading[] allReadings;
 		public ParametersPageLocalPad()
 		{
 			InitializeComponent();
-
+			this.allReadings = ParametersPageLocal.allReadings;
 			sycnwithCloud();
 
 		}

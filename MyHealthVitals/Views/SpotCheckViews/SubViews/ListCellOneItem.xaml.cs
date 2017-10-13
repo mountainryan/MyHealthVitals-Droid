@@ -11,6 +11,13 @@ namespace MyHealthVitals
 		public ListCellOneItem()
 		{
 			InitializeComponent();
+			if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					itemdate.FontSize *= 1.5;
+					itemdate.WidthRequest *= 2;
+					item.FontSize *= 1.5;
+					item.WidthRequest *= 2;
+				}
 		}
 
 	}
