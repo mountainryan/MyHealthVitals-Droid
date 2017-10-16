@@ -121,8 +121,8 @@
 								<StackLayout x:Name = "layout15" WidthRequest="72">
 									<Label x:Name = "lblWEIT" Style="{DynamicResource styleLblNumeric}"  Text="WEIGHT" />
 									<StackLayout Orientation="Horizontal"  WidthRequest="100" > 
-										<Button Clicked="btnLbsClicked" x:Name="btnLbs"   Text="Lbs" />
-										<Button TextColor="Gray" Clicked="btnKgsClicked"  x:Name="btnKgs"   Text="Kgs" />
+										<Button Clicked="btnLbsClicked" x:Name="btnLbs"   Text="Lbs" BackgroundColor = "Transparent"/>
+										<Button TextColor="Gray" Clicked="btnKgsClicked"  x:Name="btnKgs"   Text="Kgs" BackgroundColor = "Transparent"/>
 									</StackLayout>
 								</StackLayout>
 								<StackLayout x:Name = "layout16" WidthRequest="72">

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MyHealthVitals.Droid</RootNamespace>
     <AssemblyName>MyHealthVitals.Droid</AssemblyName>
-    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -98,6 +98,22 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\packages\Xamarin.Forms.2.3.4.270\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle">
+      <HintPath>..\packages\MimeKit.1.18.1\lib\MonoAndroid10\BouncyCastle.dll</HintPath>
+    </Reference>
+    <Reference Include="MimeKit">
+      <HintPath>..\packages\MimeKit.1.18.1\lib\MonoAndroid10\MimeKit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="MailKit">
+      <HintPath>..\packages\MailKit.1.18.1.1\lib\MonoAndroid10\MailKit.dll</HintPath>
+    </Reference>
+    <Reference Include="iTextSharpLGPL-MonoForAndroid">
+      <HintPath>..\packages\Xam.iTextSharpLGPL.0.1.0\lib\MonoAndroid10\iTextSharpLGPL-MonoForAndroid.dll</HintPath>
+    </Reference>
+    <Reference Include="XamiTextSharpLGPL.Droid">
+      <HintPath>..\packages\Xam.iTextSharpLGPL.0.1.0\lib\MonoAndroid10\XamiTextSharpLGPL.Droid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -74,6 +74,9 @@
     <EmbeddedResource Include="Views\MyRespCheck\RespGraphPageNew.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\MyRespCheck\RespDataListPagePad.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -123,6 +126,9 @@
     <Compile Include="Models\SpirometerReading.cs" />
     <Compile Include="Views\MyRespCheck\RespDataListPage.xaml.cs">
       <DependentUpon>RespDataListPage.xaml</DependentUpon>
+    </Compile>
+	<Compile Include="Views\MyRespCheck\RespDataListPagePad.xaml.cs">
+      <DependentUpon>RespDataListPagePad.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyRespCheck\RespCalibrationPage.xaml.cs">
       <DependentUpon>RespCalibrationPage.xaml</DependentUpon>

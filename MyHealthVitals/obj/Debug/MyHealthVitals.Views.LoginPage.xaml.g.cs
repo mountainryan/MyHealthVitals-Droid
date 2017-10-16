@@ -21,6 +21,9 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.StackLayout layoutLoginContainer;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.StackLayout layout;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::MyHealthVitals.MyEntry txtUsername;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
@@ -43,6 +46,7 @@ namespace MyHealthVitals {
             global::Xamarin.Forms.Xaml.Extensions.LoadFromXaml(this, typeof(LoginPage));
             layoutImgContainer = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutImgContainer");
             layoutLoginContainer = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutLoginContainer");
+            layout = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layout");
             txtUsername = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyEntry>(this, "txtUsername");
             txtPassword = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyEntry>(this, "txtPassword");
             btnLogin = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Button>(this, "btnLogin");

@@ -43,7 +43,6 @@ namespace MyHealthVitals
 			resizeUI();
 			btnLbs.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
 
-
 			var tapGestureRecognizer = new TapGestureRecognizer();
 			tapGestureRecognizer.Tapped += (s, e) =>
 			{
