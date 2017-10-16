@@ -1,41 +1,15 @@
 ﻿<Properties StartupConfiguration="{D46CA70E-D643-4A29-9B54-FC25DAE9558A}|Default" GitUserInfo="UsingGIT">
-  <MonoDevelop.Ide.Workbench ActiveDocument="forAndroid Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Projects Status">
     <Files>
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml" Line="65" Column="18" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="65" Column="22" />
-      <File FileName="forAndroid Status" />
+      <File FileName="Projects Status" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="MyHealthVitals" expanded="True">
-            <Node name="MyHealthVitals" expanded="True" selected="True">
-              <Node name="Models" expanded="True" />
-              <Node name="Views" expanded="True">
-                <Node name="MyRespCheck" expanded="True">
-                  <Node name="RespGraphPageNew.xaml" expanded="True" />
-                  <Node name="RespHomePage.xaml" expanded="True" />
-                </Node>
-                <Node name="SpotCheckViews" expanded="True" />
-                <Node name="DeviceListPage.xaml" expanded="True" />
-                <Node name="LoginPage.xaml" expanded="True" />
-              </Node>
-              <Node name="App.xaml" expanded="True" />
-            </Node>
-            <Node name="MyHealthVitals.Droid" expanded="True">
-              <Node name="Resources" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_x86" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.9365C8E5-5E3A-4642-A549-F081501F15A1" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.11F233EF-1276-46D8-9D10-67178FDC94A1" />
 </Properties>
