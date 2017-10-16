@@ -78,8 +78,15 @@ namespace MyHealthVitals
 		public void setSavereportbutton()
 		{
 			lineSerie.Points.Clear();
-
-			ecgReportcBtn.IsEnabled = false;
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				ecgReportcBtnPad.IsEnabled = false;
+			}
+			else
+			{
+				ecgReportcBtn.IsEnabled = false;
+			}
+			//ecgReportcBtn.IsEnabled = false;
 		}
 
 
@@ -264,7 +271,7 @@ namespace MyHealthVitals
 		public void ShowConcetion(String message, Boolean isConnected)
 		{
 
-			Debug.WriteLine("ShowConcetion  mainpage  :");
+			Debug.WriteLine("ShowConcetion  mainpage  : "+message);
 			//Xamarin.Forms.Device.BeginInvokeOnMainThread();
 			Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
@@ -282,7 +289,11 @@ namespace MyHealthVitals
 				}
 				else
 				{
-					DisplayAlert(deviceName, message, "OK");
+                    if (this.deviceName != "eBody-Scale")
+                    {
+                        DisplayAlert(deviceName, message, "OK");
+                    }
+					
 				}
 			}));
 		}
@@ -290,7 +301,7 @@ namespace MyHealthVitals
 		async public void ShowMessageOnUI(string message, Boolean isConnected, string title = null)
 		{
 
-
+            Debug.WriteLine("ShowMessageOnUI : "+ message);
 			if (title == null)
 			{
 				if (this.deviceName == "eBody-Scale")
@@ -333,13 +344,29 @@ namespace MyHealthVitals
 						vitalsData.bpm.Date = vitalsData.ecg.Date;
 						vitalsData.sendHeartRateToServer();
 						writeToTxt();
-						ecgReportcBtn.IsEnabled = true;
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							ecgReportcBtnPad.IsEnabled = true;
+						}
+						else
+						{
+							ecgReportcBtn.IsEnabled = true;
+						}
+						//ecgReportcBtn.IsEnabled = true;
 
 					}
 					else
 					{
 						reportDataList.Clear();
-						ecgReportcBtn.IsEnabled = false;
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							ecgReportcBtnPad.IsEnabled = false;
+						}
+						else
+						{
+							ecgReportcBtn.IsEnabled = false;
+						}
+						//ecgReportcBtn.IsEnabled = false;
 						lineSerie.Points.Clear();
 						graphModel.InvalidatePlot(true);
 
@@ -358,7 +385,15 @@ namespace MyHealthVitals
 						ecgTime = 0;
 
 						reportDataList.Clear();
-						ecgReportcBtn.IsEnabled = false;
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							ecgReportcBtnPad.IsEnabled = false;
+						}
+						else
+						{
+							ecgReportcBtn.IsEnabled = false;
+						}
+						//ecgReportcBtn.IsEnabled = false;
 						lineSerie.Points.Clear();
 						graphModel.InvalidatePlot(true);
 
@@ -680,8 +715,13 @@ namespace MyHealthVitals
 
 					await initEcgCountdown();
 
-
-					ecgReportcBtn.IsEnabled = false;
+                    if (Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        ecgReportcBtnPad.IsEnabled = false;
+                    }else{
+                        ecgReportcBtn.IsEnabled = false;
+                    }
+					
 					// reseting the graphmodel for ecg waveform
 					graphModel.DefaultXAxis.IsPanEnabled = false;
 					xMin = 0;
@@ -1152,6 +1192,7 @@ namespace MyHealthVitals
 		}
 		async void getLatestWeight(string m)
 		{
+            Debug.WriteLine("latest weight msg:"+m);
 			string message = "Weight: " + (double)this.vitalsData.weight.EnglishValue + "Lbs / "
 							  + ConvertLBToKG((double)this.vitalsData.weight.EnglishValue) + "Kg";
 			var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
@@ -1315,8 +1356,14 @@ namespace MyHealthVitals
 				layoutButtonPad.IsVisible = true;
 				btnFareinheit.FontSize *= 1.5;
 				btnCelcious.FontSize *= 1.5;
-			//	btnLbs.FontSize *= 1.5;
-			//	btnKgs.FontSize *= 1.5;
+                //	btnLbs.FontSize *= 1.5;
+                //	btnKgs.FontSize *= 1.5;
+                //layoutButton.BackgroundColor = layoutButtonPad.BackgroundColor;
+                //layoutButton.Spacing = layoutButtonPad.Spacing;
+                //layoutButton.Margin = layoutButtonPad.Margin;
+                //layoutButton.RelativeLayout.YConstraint = layoutButtonPad.RelativeLayout.YConstraint;
+                //layoutButton.Spacing = layoutButtonPad.Spacing;
+				//<StackLayout x:Name = "layoutButtonPad" IsVisible = "false" BackgroundColor="{StaticResource colorBlackBg}"  Orientation="Horizontal" Spacing ="20" Margin="15,-80,15,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" >
 			}
 		}
 	}

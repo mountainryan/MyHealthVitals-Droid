@@ -151,6 +151,7 @@
     <Compile Include="Views\MyRespCheck\RespGraphPageNew.xaml.cs">
       <DependentUpon>RespGraphPageNew.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomEntryRenderer_Droid.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http">

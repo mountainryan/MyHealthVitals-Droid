@@ -12,7 +12,7 @@ namespace MyHealthVitals
 		public ICharacteristic bmChar;
 		public IDevice connectedDevice;
 		public IBluetoothCallBackUpdatable uiController;
-
+        //
 
 		public void C_ValueUpdated(object sender, CharacteristicUpdatedEventArgs e)
 		{

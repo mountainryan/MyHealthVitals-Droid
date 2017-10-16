@@ -122,14 +122,16 @@ namespace MyHealthVitals
 			}
 		}
 
-		public void updateDeviceStateOnUI(String message, bool isConnected) {
+		public void updateDeviceStateOnUI(String message, bool isConnected) 
+        {
 
 			Device.BeginInvokeOnMainThread(() =>
-				{
+			{
 				layoutLoadingTakeReading.IsVisible = false;
-				});
+                DisplayAlert("Spirometer", message, "OK");
+			});
 
-			DisplayAlert("Spirometer", message, "OK");
+			
 		}
 
 		void btnTakeReadingClicked(object sender, System.EventArgs e)
