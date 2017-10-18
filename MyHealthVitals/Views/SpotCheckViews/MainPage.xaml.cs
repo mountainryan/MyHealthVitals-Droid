@@ -167,12 +167,14 @@ namespace MyHealthVitals
 						}
 					}
 				}
-				catch
+				catch (Exception ex)
 				{
+                    Debug.WriteLine("try to connect BLE failed: "+ex.Message);
 					layoutLoading.IsVisible = true;
 					BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
-					BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
-					BLECentralManager.sharedInstance.checkIfDeviceScanned(deviceName);
+					//BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+					//BLECentralManager.sharedInstance.checkIfDeviceScanned(deviceName);
+
 				}
 
 
@@ -279,20 +281,20 @@ namespace MyHealthVitals
 				layoutLoading.IsVisible = false;
 				if (isConnected)
 				{
-
+                    setWeight = false;
 					isNavigated = true;
 				}
 				if (!isConnected && this.deviceName == "eBody-Scale")
 				{
-					getLatestWeight(message);
-
+					//getLatestWeight(message);
+                    await DisplayAlert(deviceName, message, "OK");
 				}
 				else
 				{
-                    if (this.deviceName != "eBody-Scale")
-                    {
-                        DisplayAlert(deviceName, message, "OK");
-                    }
+                    //if (this.deviceName != "eBody-Scale")
+                    //{
+                        await DisplayAlert(deviceName, message, "OK");
+                    //}
 					
 				}
 			}));
@@ -306,7 +308,7 @@ namespace MyHealthVitals
 			{
 				if (this.deviceName == "eBody-Scale")
 				{
-					getLatestWeight("");
+					//getLatestWeight("");
 
 				}
 				else
@@ -401,11 +403,17 @@ namespace MyHealthVitals
 						EcgcountdownCancle();
 
 					}
-					else if (title.Equals("Blood Pressure Measure Error"))
+					else if (title.Equals("Blood Pressure Measure Error") || message=="Device is not connected. Please connect and try again.")
 					{
 						lblDia.Text = "-";
 						lblSys.Text = "-";
-						NIBPButton.Text = "NIBP Start";
+                        if (Device.Idiom == TargetIdiom.Tablet)
+                        {
+                            NIBPButtonPad.Text = "NIBP Start";
+                        }else{
+                            NIBPButton.Text = "NIBP Start";
+                        }
+						
 						isBPMeasuring = false;
 					}
 				}));
@@ -529,12 +537,13 @@ namespace MyHealthVitals
 			}
 
 		}
+        bool setWeight = false;
 		public void updated_Weight(decimal weight)
 		{
 			this.vitalsData.weight = new Reading(null, weight, 5, false, null, null);
 
 
-			Device.BeginInvokeOnMainThread(() =>
+			Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
 				if (!isKg)
 				{
@@ -545,7 +554,14 @@ namespace MyHealthVitals
 				{
 					lblWeight.Text = ConvertLBToKG((double)weight).ToString();
 				}
-			});
+				if (!setWeight)
+				{
+					setWeight = true;
+					getLatestWeight("");
+				}
+            }));
+
+
 		}
 
 
@@ -1113,11 +1129,23 @@ namespace MyHealthVitals
 				fileName = Regex.Replace(fileName, @"[/:]+", "");
 				lashEcgFile = fileName;
 			}
-
-			var newPage = new ParametersPageLocal();
-			//var newPage = new ParametersPage();
-			newPage.Title = "Parameter List Screen";
-			this.Navigation.PushAsync(newPage);
+           
+            if (Device.Idiom == TargetIdiom.Tablet)
+            {
+                Debug.WriteLine("Went to Pad page!");
+                var newPage = new ParametersPageLocalPad();
+				//var newPage = new ParametersPage();
+				newPage.Title = "Parameter List Screen";
+				this.Navigation.PushAsync(newPage);
+            }else{
+                Debug.WriteLine("Went to phone page!");
+                var newPage = new ParametersPageLocal();
+				//var newPage = new ParametersPage();
+				newPage.Title = "Parameter List Screen";
+				this.Navigation.PushAsync(newPage);
+            }
+			
+			
 		}
 
 		void btnViewProfileClicked(object sender, System.EventArgs e)
@@ -1325,6 +1353,7 @@ namespace MyHealthVitals
 				lblPIPCT.FontSize *= 1.5;
 				lblPerfusionIndex.FontSize *= 1.5;
 				lblTEMP.FontSize *= 1.5;
+                lblTemperature.FontSize *= 1.5;
 				lblGLU.FontSize *= 1.5;
 				lblUnitGlucose.FontSize *= 1.5;
 				lblGlucose.FontSize *= 1.5;

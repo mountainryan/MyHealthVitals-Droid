@@ -6,15 +6,15 @@
 		<Label Style="{DynamicResource styleLblNumeric}" FontSize="21" Margin="20" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Reading's" 
 				></Label>
 		<BoxView HeightRequest="0.5" BackgroundColor="White" />
-		<ListView x:Name="parameterListView" ItemTapped="Handle_ItemTapped"  SeparatorVisibility="None" BackgroundColor="{StaticResource colorBlackBg}">
+		<ListView x:Name="parameterListView" HasUnevenRows="true" ItemTapped="Handle_ItemTapped" SeparatorVisibility="None" BackgroundColor="{StaticResource colorBlackBg}">
 		    <ListView.ItemTemplate>
 		      <DataTemplate>
 		     	 <ViewCell>
 					<StackLayout VerticalOptions="Fill" Spacing="0" Padding="0" Margin="0">
-						<StackLayout VerticalOptions="Fill" HeightRequest="40" Padding="2" Orientation="Horizontal">
-							<Label VerticalOptions="Center" FontSize = "19" Margin="14,0,0,0" Text="{Binding Name}" TextColor="White" />
-							<Image VerticalOptions="Center" HorizontalOptions="EndAndExpand" HeightRequest="30" WidthRequest="30" Source="imgArrow.png">
-							</Image>
+						<StackLayout VerticalOptions="Fill" HeightRequest="70" Padding="2" Orientation="Horizontal">
+							<Label VerticalOptions="Center" FontSize="40" Margin="14,0,0,0" HeightRequest="60" Text="{Binding Name}" TextColor="White" ></Label>
+                            <Image VerticalOptions="Center" HorizontalOptions="EndAndExpand" HeightRequest="60" WidthRequest="30" Source="imgArrow.png"></Image>
+                             <!--           <Image VerticalOptions="Center" HorizontalOptions="EndAndExpand" HeightRequest="60" WidthRequest="30" Source="imgArrow.png"> -->
 						</StackLayout>
 						<BoxView Margin="0,2,0,0" HeightRequest="0.5" BackgroundColor="White" />
 					</StackLayout>

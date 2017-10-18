@@ -52,6 +52,8 @@ namespace MyHealthVitals
 
 			parameterListView.ItemsSource = categories_local;
 			layoutLoading.IsVisible = false;
+            //set the height of these elements on screen
+
 
 		}
 		async void Handle_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)

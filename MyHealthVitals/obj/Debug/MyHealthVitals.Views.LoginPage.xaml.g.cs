@@ -24,10 +24,10 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.StackLayout layout;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::MyHealthVitals.MyEntry txtUsername;
+        private global::Xamarin.Forms.Entry txtUsername;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::MyHealthVitals.MyEntry txtPassword;
+        private global::Xamarin.Forms.Entry txtPassword;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Button btnLogin;
@@ -47,8 +47,8 @@ namespace MyHealthVitals {
             layoutImgContainer = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutImgContainer");
             layoutLoginContainer = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutLoginContainer");
             layout = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layout");
-            txtUsername = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyEntry>(this, "txtUsername");
-            txtPassword = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyEntry>(this, "txtPassword");
+            txtUsername = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Entry>(this, "txtUsername");
+            txtPassword = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Entry>(this, "txtPassword");
             btnLogin = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Button>(this, "btnLogin");
             scrollView = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.ScrollView>(this, "scrollView");
             layoutLoading = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.RelativeLayout>(this, "layoutLoading");

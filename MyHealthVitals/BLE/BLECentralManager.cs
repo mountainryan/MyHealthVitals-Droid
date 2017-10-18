@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using Plugin.BLE.Abstractions.Contracts;
+using Plugin.BLE.Abstractions.Exceptions;
 namespace MyHealthVitals
 {
 	public interface IBLEDeviceServiceHandler
@@ -56,7 +57,7 @@ namespace MyHealthVitals
 			CrossBluetoothLE.Current.Adapter.ScanTimeoutElapsed += Adapter_ScanTimeoutElapsed;
 			CrossBluetoothLE.Current.Adapter.DeviceConnectionLost += Adapter_DeviceConnectionLost;
 		//	CrossBluetoothLE.Current.Adapter.DeviceDisconnected += Adapter_DisConnection;
-		
+		    
 			//connec
 
 			Debug.WriteLine("bluetooth adapter initialized.");
@@ -173,18 +174,82 @@ namespace MyHealthVitals
 		private void Adapter_DeviceDiscovered(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
 			Debug.WriteLine(string.Format("Device Found : {0}", e.Device.Name));
-
+            //scan for devices
 			if (e.Device.Name == scanningDeviceName)
 			{
 				Debug.WriteLine(string.Format("StopScanningForDevicesAsync"));
+				
+				try
+				{
+					CrossBluetoothLE.Current.Adapter.StopScanningForDevicesAsync();
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine("BLE stop scanning ex msg: " + ex.Message);
+				}
 
-				CrossBluetoothLE.Current.Adapter.StopScanningForDevicesAsync();
-				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device);
+				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+				{
+					try
+					{
+						await CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device);
+					}
+					catch (DeviceConnectionException ex)
+					{
+						Debug.WriteLine("BLE connect DCE ex msg: " + ex.Message);
+                        Debug.WriteLine("e.Device.Name = " + e.Device.Name);
+                        //send error message to screen if callback error 133 = "GattCallback error: 133"
+                        SendConnError(e.Device.Name);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine("BLE connect basic ex msg: " + ex.Message);
+					}
+
+				}));
+                    
+				
+				
+				
+
 
 				//CrossBluetoothLE.Current.Adapter.fail
 				//CrossBluetoothLE.Current.Adapter.ConnectedDevices
 			}
+            //var BLE_status = CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device).Status;
+            //Debug.WriteLine("BLE status : "+BLE_status.ToString());
+            var ble_state = CrossBluetoothLE.Current.State;
+            Debug.WriteLine("BLE state : "+ble_state);
 		}
+
+        public void SendConnError (string DeviceName)
+        {
+            switch (DeviceName)
+            {
+                case "BLE-MSA":
+                    {
+                        //can't show spirometer message
+                        //spiroServHandler.uiController.ShowConcetion("Spirometer Connection Lost.", false);
+                        break;
+                    }
+                case "PC_300SNT":
+                    {
+                        spotServHandler.uiController.ShowConcetion("Failed to connect to PC-300.", false);
+                        break;
+                    }
+                case "PC-100":
+                    {
+                        pc100ServHandler.uiController.ShowConcetion("Failed to connect to PC-100.", false);
+                        break;
+                    }
+                case "eBody-Scale":
+                    {
+                        scaleServHandle.uiController.ShowConcetion("Failed to connect to eBody-Scale.", false);
+                        break;
+                    }
+                default:break;
+            }
+        }
 
 		private void Adapter_DeviceConnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
@@ -201,20 +266,27 @@ namespace MyHealthVitals
 
 				case "PC_300SNT":
 					{
+                        Debug.WriteLine("PC_300SNT device id = "+e.Device.Id.ToString());
+                             
 						spotServHandler.discoverServices(e.Device);
 						spotServHandler.uiController.ShowConcetion("Connected.", true);
 						break;
 					}
 				case "PC-100":
 					{
+                        Debug.WriteLine("PC-100 device id = " + e.Device.Id.ToString());
 						pc100ServHandler.discoverServices(e.Device);
 						pc100ServHandler.uiController.ShowConcetion("Connected.", true);
 						break;
 					}
 				case "eBody-Scale":
-					scaleServHandle.discoverServices(e.Device);
-					scaleServHandle.uiController.ShowConcetion("Connected.", true);
-					break;
+                    {
+                        Debug.WriteLine("eBody-Scale device id = " + e.Device.Id.ToString());
+						scaleServHandle.discoverServices(e.Device);
+						scaleServHandle.uiController.ShowConcetion("Connected.", true);
+						break;
+                    }
+					
 				default:
 					break;
 			}
@@ -227,24 +299,31 @@ namespace MyHealthVitals
 			Debug.WriteLine(e.Device.Name + "  Adapter_DeviceConnectionLost");
 			//	if (!connectedDevices.Contains(e.Device)) return;
 			//	connectedDevices.Remove(e.Device);
-
-			if (e.Device.Name == "PC_300SNT")
-			{
-				spotServHandler.uiController.ShowConcetion("PC-300 Connection Lost.", false);
-			}
-			else if (e.Device.Name == "BLE-MSA")
-			{
-				spiroServHandler.stopPolling();
-				spiroServHandler.uiController.updateDeviceStateOnUI("Spirometer Connection Lost.", false);
-			}
-			else if (e.Device.Name == "PC-100")
-			{
-				pc100ServHandler.uiController.ShowConcetion("PC-100 Connection Lost.", false);
-			}
-			else if (e.Device.Name == "eBody-Scale")
-			{
-				scaleServHandle.uiController.ShowConcetion("Scale Connection Lost.", false);
-			}
+            try
+            {
+				if (e.Device.Name == "PC_300SNT")
+				{
+					spotServHandler.uiController.ShowConcetion("PC-300 Connection Lost.", false);
+				}
+				else if (e.Device.Name == "BLE-MSA")
+				{
+					spiroServHandler.stopPolling();
+					spiroServHandler.uiController.updateDeviceStateOnUI("Spirometer Connection Lost.", false);
+				}
+				else if (e.Device.Name == "PC-100")
+				{
+					pc100ServHandler.uiController.ShowConcetion("PC-100 Connection Lost.", false);
+				}
+				else if (e.Device.Name == "eBody-Scale")
+				{
+					scaleServHandle.uiController.ShowConcetion("Scale Connection Lost.", false);
+				}
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Connection lost exception : "+ex.Message);
+            }
+			
 		}
 
 		void Adapter_ScanTimeoutElapsed(object sender, EventArgs e)

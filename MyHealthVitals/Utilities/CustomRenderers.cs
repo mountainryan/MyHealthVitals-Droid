@@ -10,12 +10,14 @@ namespace MyHealthVitals
 		
 	}
 
-	public class MyEntry : Entry { 
-		
+	public class MyEntry : Entry {
+        
 	}
 
 	public class MyButton : Button { 
 	
 	}
+
+
 
 }

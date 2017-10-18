@@ -86,6 +86,7 @@ namespace MyHealthVitals
 					{
 						c.ValueUpdated += C_ValueUpdated;
 						await c.StartUpdatesAsync();
+                        //problem here on Android
 					}
 
 					if (c.CanWrite)

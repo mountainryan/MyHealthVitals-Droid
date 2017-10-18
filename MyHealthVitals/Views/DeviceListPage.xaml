@@ -21,7 +21,7 @@
 					<StackLayout >
 						<Button x:Name = "Spiromter" Clicked="btnSpirometerClicked" WidthRequest ="150" BackgroundColor = "Transparent" Image="Spiromter.png" />
 
-						<local:MyButton x:Name="btnspi" Clicked="btnSpirometerClicked"  BackgroundColor = "Transparent" Font="Middle" TextColor="White"  Text="Spirometer" />
+						<local:MyButton x:Name="btnspi" Clicked="btnSpirometerClicked"  BackgroundColor = "Transparent" Font="Left" TextColor="White"  Text="Spirometer" />
 					</StackLayout>
 					<StackLayout >
 						<Button x:Name = "PC100" Clicked="btnPC100Clicked" WidthRequest ="150" BackgroundColor = "Transparent" Image="PC100Monitor.png" />

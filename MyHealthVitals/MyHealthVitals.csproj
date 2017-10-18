@@ -77,6 +77,9 @@
     <EmbeddedResource Include="Views\MyRespCheck\RespDataListPagePad.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\SpotCheckViews\ParametersPageLocalPad.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -145,6 +148,9 @@
     <Compile Include="Views\SpotCheckViews\ParametersPageLocal.xaml.cs">
       <DependentUpon>ParametersPageLocal.xaml</DependentUpon>
     </Compile>
+	<Compile Include="Views\SpotCheckViews\ParametersPageLocalPad.xaml.cs">
+      <DependentUpon>ParametersPageLocalPad.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SpotCheckViews\ParameterItemDetailNew.xaml.cs">
       <DependentUpon>ParameterItemDetailNew.xaml</DependentUpon>
     </Compile>
@@ -192,6 +198,12 @@
     </Reference>
     <Reference Include="Polly">
       <HintPath>..\packages\Polly.5.0.3\lib\netstandard1.0\Polly.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Platform">
+      <HintPath>..\packages\MvvmCross.Platform.4.1.0\lib\portable-net45+win+wpa81+wp80\MvvmCross.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.BLE">
+      <HintPath>..\packages\MvvmCross.Plugin.BLE.1.3.0\lib\portable-net45+win8+wpa81+wp8\MvvmCross.Plugins.BLE.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

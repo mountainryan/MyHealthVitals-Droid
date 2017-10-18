@@ -15,7 +15,7 @@ using Xamarin.Forms;
 
 namespace MyHealthVitals.Droid
 {
-[Activity(Label = "MyHealth\nVitals", Theme = "@style/Splash", MainLauncher = false, NoHistory = true)]
+[Activity(Label = "MyHealth\nVitals", Theme = "@style/Splash", MainLauncher = true, NoHistory = true)]
 	public class Splash :Activity
 	{
 		protected override void OnCreate(Bundle savedInstanceState)

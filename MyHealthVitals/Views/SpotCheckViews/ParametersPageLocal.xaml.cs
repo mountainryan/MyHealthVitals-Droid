@@ -27,7 +27,7 @@ namespace MyHealthVitals
 		public ParametersPageLocal()
 		{
 			InitializeComponent();
-
+            //sync data with cl
 			sycnwithCloud();
 		
 		}

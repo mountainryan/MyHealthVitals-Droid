@@ -6,7 +6,7 @@
 		<Label Style="{DynamicResource styleLblNumeric}" FontSize="17" Margin="10" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Reading's" 
 				></Label>
 		<BoxView HeightRequest="0.5" BackgroundColor="White" />
-		<ListView x:Name="parameterListView" ItemTapped="Handle_ItemTapped"  SeparatorVisibility="None" BackgroundColor="{StaticResource colorBlackBg}">
+		<ListView x:Name="parameterListView" ItemTapped="Handle_ItemTapped" HasUnevenRows="true" SeparatorVisibility="None" BackgroundColor="{StaticResource colorBlackBg}">
 		    <ListView.ItemTemplate>
 		      <DataTemplate>
 		     	 <ViewCell>
