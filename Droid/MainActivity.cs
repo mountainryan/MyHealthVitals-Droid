@@ -25,6 +25,8 @@ namespace MyHealthVitals.Droid
 			OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();
 
 			LoadApplication(new App());
+
+
 		}
 	}
 }

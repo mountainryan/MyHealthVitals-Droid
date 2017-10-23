@@ -3,7 +3,7 @@
 	<ContentPage.Content>
 	<RelativeLayout BackgroundColor="{StaticResource colorBlackBg}">
 		<StackLayout Spacing="0" BackgroundColor="{StaticResource colorBlackBg}">
-		<Label Style="{DynamicResource styleLblNumeric}" FontSize="21" Margin="20" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Reading's" 
+		<Label Style="{DynamicResource styleLblNumeric}" FontSize="21" Margin="20" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Readings" 
 				></Label>
 		<BoxView HeightRequest="0.5" BackgroundColor="White" />
 		<ListView x:Name="parameterListView" HasUnevenRows="true" ItemTapped="Handle_ItemTapped" SeparatorVisibility="None" BackgroundColor="{StaticResource colorBlackBg}">

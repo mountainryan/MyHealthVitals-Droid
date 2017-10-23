@@ -1,15 +1,14 @@
 ﻿<Properties StartupConfiguration="{D46CA70E-D643-4A29-9B54-FC25DAE9558A}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workbench ActiveDocument="Projects Status">
     <Files>
-      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="286" Column="49" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="1061" Column="29" />
-      <File FileName="MyHealthVitals/BLE/ScaleServiceHandler.cs" Line="41" Column="49" />
-      <File FileName="MyHealthVitals/Models/Demographic.cs" Line="294" Column="4" />
-      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="108" Column="33" />
-      <File FileName="Droid/Properties/AndroidManifest.xml" Line="10" Column="5" />
-      <File FileName="MyHealthVitals/Models/Reading.cs" Line="20" Column="45" />
-      <File FileName="MyHealthVitals/BLE/PC100ServiceHandler.cs" Line="49" Column="35" />
-      <File FileName="MyHealthVitals/Models/Credential.cs" Line="17" Column="50" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/EcgReport.xaml" Line="15" Column="74" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/EcgReport.xaml.cs" Line="376" Column="5" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="104" Column="24" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="724" Column="47" />
+      <File FileName="Droid/Helpers/FileHelperAndroid.cs" Line="355" Column="4" />
+      <File FileName="MyHealthVitals/Models/Credential.cs" Line="37" Column="42" />
+      <File FileName="Droid/MainActivity.cs" Line="30" Column="4" />
+      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="216" Column="26" />
       <File FileName="Projects Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
@@ -18,7 +17,7 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.a0162631" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.11F233EF-1276-46D8-9D10-67178FDC94A1" />
 </Properties>

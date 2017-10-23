@@ -77,10 +77,16 @@ namespace MyHealthVitals
 
 			layoutLoading.IsVisible = false;
 
-			var newPage = new ParameterItemDetailNew(((CategoryLocal)e.Item).id, allReadings);
-
-			this.Navigation.PushAsync(newPage);
-
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				var newPage = new ParameterItemDetailNew(((CategoryLocal)e.Item).id, allReadings);
+				await this.Navigation.PushAsync(newPage);
+			}
+			else
+			{
+				var newPage = new ParameterItemDetailNew(((CategoryLocal)e.Item).id, allReadings);
+				await this.Navigation.PushAsync(newPage);
+			}
 
 		}
 

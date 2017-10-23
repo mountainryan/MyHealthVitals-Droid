@@ -17,7 +17,10 @@ namespace MyHealthVitals
 	public class MyButton : Button { 
 	
 	}
+	public class CircleResp : Button
+	{
 
+	}
 
 
 }

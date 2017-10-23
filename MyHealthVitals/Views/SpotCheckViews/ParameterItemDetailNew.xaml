@@ -9,7 +9,7 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 		<StackLayout BackgroundColor="{StaticResource colorBlackBg}">
-				<Label x:Name = "label"  TextColor="White" FontSize="16" FontAttributes="Bold" Margin="10" HorizontalTextAlignment="Center" Text="Most Recent Reading's" >
+				<Label x:Name = "label"  TextColor="White" FontSize="30" FontAttributes="Bold" Margin="10" HorizontalTextAlignment="Center" Text="Most Recent Readings" >
 				</Label>
 				<StackLayout x:Name="headerContainer">
 					

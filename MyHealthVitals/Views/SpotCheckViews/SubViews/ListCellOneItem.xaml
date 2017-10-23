@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.ListCellOneItem">
-	<RelativeLayout>
-		<StackLayout VerticalOptions="Fill" HorizontalOptions = "FillAndExpand" Spacing="0">
-			<StackLayout Spacing="0" VerticalOptions="Fill" BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" HeightRequest="44">
-				<Label x:Name = "itemdate" Margin="8,0,0,0" VerticalTextAlignment="Center" WidthRequest="150" FontSize="14" TextColor="White" Text="{Binding date}">
-				</Label>
-				<Label x:Name = "item" Style="{DynamicResource SignupHeaderLabel}" VerticalOptions="Center" FontSize="14" HorizontalTextAlignment="Center" WidthRequest="150" TextColor="White" Text="{Binding firstItem}">
-				</Label>
-			</StackLayout>
-			<BoxView HeightRequest="0.5" HorizontalOptions = "FillAndExpand" BackgroundColor="White" />
-		</StackLayout>
-	</RelativeLayout>
+    
+        <StackLayout x:Name="layoutholder" HeightRequest="70" VerticalOptions="Fill" HorizontalOptions = "FillAndExpand" Spacing="0">
+            <StackLayout Spacing="0" Margin="0,0,0,15" VerticalOptions="Center" BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" HeightRequest="44">
+                <Label x:Name = "itemdate" Margin="8,0,0,0" VerticalTextAlignment="Center" WidthRequest="190" FontSize="16" TextColor="White" Text="{Binding date}">
+                </Label>
+                <Label x:Name = "item" Style="{DynamicResource SignupHeaderLabel}" VerticalOptions="Center" FontSize="16" HorizontalTextAlignment="Center" WidthRequest="180" TextColor="White" Text="{Binding firstItem}">
+                </Label>
+            </StackLayout>
+            <BoxView  HeightRequest="0.5" HorizontalOptions = "FillAndExpand" BackgroundColor="White" />
+        </StackLayout>
+    
 </ViewCell>

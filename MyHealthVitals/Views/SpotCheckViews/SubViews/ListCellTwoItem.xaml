@@ -1,17 +1,17 @@
 <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.ListCellTwoItem">
-	<RelativeLayout>
-		<StackLayout VerticalOptions="Fill" HorizontalOptions = "FillAndExpand" Spacing="0">
-			<StackLayout Spacing="0" VerticalOptions="Fill" BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" HeightRequest="44">
-				<Label x:Name = "itemdate" Margin="8,0,0,0" VerticalTextAlignment="Center" WidthRequest="166" FontSize="13" TextColor="White" Text="{Binding date}"></Label>
-				<Label x:Name = "firstItem" VerticalTextAlignment="Center"  FontSize="14" HorizontalTextAlignment="Center" WidthRequest="78" TextColor="White" Text="{Binding firstItem}" ></Label>
-				 <StackLayout Padding="0" VerticalOptions="Center">
-					<Label x:Name = "secondItem" VerticalTextAlignment="Center" FontSize="14" HorizontalTextAlignment="Center" WidthRequest="74" TextColor="{StaticResource colorThemeBlue}" Text="{Binding secondItem}"  Style="{DynamicResource SignupHeaderLabel}" ></Label>
-	      		 	 <BoxView x:Name = "underline" BackgroundColor="{StaticResource colorThemeBlue}" IsVisible = "false" WidthRequest="50" HeightRequest="1" Margin="0,-4,0,0" />
-	     		 </StackLayout>
-	     	    </StackLayout>
-			<BoxView HeightRequest="0.5" HorizontalOptions = "FillAndExpand" BackgroundColor="White" />
-		</StackLayout>
-	</RelativeLayout>
+
+        <StackLayout x:Name="layoutholder" HeightRequest="70" VerticalOptions="Fill" HorizontalOptions = "FillAndExpand" Spacing="0">
+            <StackLayout Spacing="0" Margin="0,0,0,15" VerticalOptions="Center" BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" HeightRequest="44">
+                <Label x:Name = "itemdate" Margin="8,0,0,0" VerticalTextAlignment="Center" WidthRequest="200" FontSize="16" TextColor="White" Text="{Binding date}"></Label>
+                <Label x:Name = "firstItem" VerticalTextAlignment="Center"  FontSize="16" HorizontalTextAlignment="Center" WidthRequest="90" TextColor="White" Text="{Binding firstItem}" ></Label>
+                 <StackLayout Padding="0" VerticalOptions="Center">
+                    <Label x:Name = "secondItem" VerticalTextAlignment="Center" FontSize="16" HorizontalTextAlignment="Center" WidthRequest="90" TextColor="{StaticResource colorThemeBlue}" Text="{Binding secondItem}"  Style="{DynamicResource SignupHeaderLabel}" ></Label>
+                    <BoxView x:Name = "underline" BackgroundColor="{StaticResource colorThemeBlue}" IsVisible = "false" WidthRequest="50" HeightRequest="1" Margin="0,-4,0,0" />
+                  </StackLayout>
+            </StackLayout>
+            <BoxView  HeightRequest="0.5" HorizontalOptions = "FillAndExpand" BackgroundColor="White" />
+        </StackLayout>
+    
 </ViewCell>
 
 

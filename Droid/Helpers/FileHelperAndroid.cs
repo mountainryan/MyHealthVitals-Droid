@@ -11,6 +11,7 @@ using System.Diagnostics;
 using MimeKit;
 using MailKit;
 using MailKit.Net.Smtp;
+using Android.Widget;
 
 using Xamarin.Forms;
 //using ToastIOS;
@@ -33,8 +34,10 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
 
-using Android.App;
+//using Android.OS;
+//using Android.App;
 using Android.Content;
+//using Xamarin.Forms;
 
 [assembly: Xamarin.Forms.Dependency(typeof(BaseUrl_Android))]
 
@@ -163,6 +166,42 @@ namespace MyHealthVitals.Droid
 			return result;
 		}
 
+		public string retGif()
+		{
+			var assetManager = Xamarin.Forms.Forms.Context.Assets;
+			string html;
+			using (var streamReader = new StreamReader(assetManager.Open("gifContainer.html")))
+			{
+				html = streamReader.ReadToEnd();
+
+			}
+			return html;
+		}
+
+		public void copyAsset()
+		{
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			filePath = Path.Combine(documentsPath, "loading.gif");
+			//Debug.WriteLine("pdf filepath: " + filePath.ToString());
+			//filePathNEW = Path.Combine(documentsPath, fileName + "ECG.pdf");
+
+			if (checkFileExist(filePath))
+			{
+				File.Delete(filePath);
+			}
+			using (var asset = Android.App.Application.Context.Assets.Open("loading.gif"))
+			using (var dest = File.Create(filePath))
+				asset.CopyTo(dest);
+			if (checkFileExist(filePath))
+			{
+				Debug.WriteLine("GIF file exists");
+			}
+			else 
+			{
+				Debug.WriteLine("GIF file does NOT exist");
+			}
+			Task_vars.gifpath = filePath;
+		}
 
 
 		private byte[] editPDF(string fileName, Context c)
@@ -311,56 +350,135 @@ namespace MyHealthVitals.Droid
 
 			return File.Exists(filePath);
 		}
-		//  String emailContent = "Hi  " + "\n\n\tThe above named party has sent you a copy of his most recent ECG.\n\n-- ISeeYouCare";
 
+		public static void Email(Context context, string emailTo, string emailCC, string subject, string emailText, string filelocation)
+		{
+
+			var email = new Intent(Intent.ActionSendMultiple);
+			email.SetType("text/plain");
+			email.PutExtra(Intent.ExtraEmail, new string[] { emailTo });
+			email.PutExtra(Intent.ExtraCc, new string[] { emailCC });
+            email.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse("file://" + filelocation));
+			email.PutExtra(Intent.ExtraSubject, subject);
+            email.PutExtra(Intent.ExtraText, emailText);
+			context.StartActivity(Intent.CreateChooser(email, "Send mail..."));
+		}
+
+		//  String emailContent = "Hi  " + "\n\n\tThe above named party has sent you a copy of his most recent ECG.\n\n-- ISeeYouCare";
+        //private static Page page;
 		public async Task<bool> ShowDialog()
 		{
-			/*
-            //await setEmailClient();
-            System.Diagnostics.Debug.WriteLine("showDialog");
-
-            string message = "If yes, please enter an email address.";
-            UIAlertView alert = new UIAlertView("Email this report", message, null, "NO", "YES");
-            //      alert.Message =
-            alert.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
-
-            alert.ShouldEnableFirstOtherButton = (UIAlertView alertView) =>
-            {
-                var txt = alertView.GetTextField(0).Text;
-                return txt.Length > 6 && txt.Contains("@");
-            };
-            UITextField alertTextField = alert.GetTextField(0);
-            alertTextField.KeyboardType = UIKeyboardType.EmailAddress;
-            alert.Show();
-            alert.Clicked += async (object s, UIButtonEventArgs ev) =>
-            {
-                System.Diagnostics.Debug.WriteLine("EV.BUTTON INDEX " + ev.ButtonIndex);
-
-                if (ev.ButtonIndex == 1)
+            
+            var popup = new EntryPopup("Email this report? If yes, please enter email address", string.Empty, "OK", "Cancel");
+			popup.PopupClosed += (o, closedArgs) => {
+                if (closedArgs.Button == "OK")
                 {
-                    var internetStatus = Reachability.IsNetworkAvailable();
+                    //use it as closedArgs.Text
+                    Debug.WriteLine("my text: " + closedArgs.Text);
+                    var input = closedArgs.Text;
+					//send the email
 
-                    System.Diagnostics.Debug.WriteLine("internetStatus" + internetStatus);
-                    if (!internetStatus)
+					//var email = new Intent(Android.Content.Intent.ActionSendto)
+					//new string[] { closedArgs.Text } );
+
+					//email.PutExtra(Android.Content.Intent.ExtraCc,
+					//new string[] { "person3@xamarin.com" });
+
+					//email.PutExtra(Android.Content.Intent.ExtraSubject, "Hello Email");
+
+					//email.PutExtra(Android.Content.Intent.ExtraText,
+					//"Hello from Xamarin.Android");
+					/*
+                    try
                     {
-                        var alert1 = new UIAlertView()
-                        {
-                            Title = "No internet",
-                            Message = "Please check wifi or data connection."
-                        };
-                        alert1.AddButton("OK");
-                        alert1.AlertViewStyle = UIAlertViewStyle.Default;
+                        //String filename = "contacts_sid.vcf";
+                        //File filelocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), filename);
+                        //Android.Net.Uri path = Android.Net.Uri.FromFile()
+                        //Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                        // set the type to 'email'
+                        //emailIntent.setType("vnd.android.cursor.dir/email");
+                        //String to[] = { closedArgs.Text };
 
-                        alert1.Show();
-                        return;
+                        // the attachment
+                        //emailIntent.putExtra(Intent.EXTRA_STREAM, path);
+                        // the mail subject
+                        //emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                        //startActivity(Intent.createChooser(emailIntent, "Send email..."));
+
+
+                        var intent = new Intent(Intent.ActionSendto);
+                        string subject = "ECG Report";
+                        string filelocation = filePathNEW;
+                        string sayHi = "Hi  " + "\n\n\tThe above named party has sent you a copy of his most recent ECG.\n\n-- ISeeYouCare";
+
+                        Email(Forms.Context, closedArgs.Text, closedArgs.Text, subject, sayHi, filelocation);
+
+
+                        intent.SetType("message/rfc822");
+                        intent.PutExtra(Intent.ExtraEmail, new string[] { closedArgs.Text });
+						intent.PutExtra(Intent.ExtraSubject, "ECG Report");
+						intent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse("file://" + filelocation));
+                        intent.PutExtra(Intent.ExtraText, sayHi);
+						intent.SetData(Android.Net.Uri.Parse("mailto:"));
+                        intent.AddFlags(ActivityFlags.NewTask);
+                        Android.App.Application.Context.StartActivity(Intent.CreateChooser(intent, "Send email..."));
+
+
+				}
+                    catch (Exception e)
+                    {
+                        //System.out.println("is exception raises during sending mail" + e);
+                        Debug.WriteLine("email exception msg: " + e.Message);
                     }
+*/
 
-                    string input = alert.GetTextField(0).Text;
+					//await setEmailClient();
+					System.Diagnostics.Debug.WriteLine("showDialog");
+
+                    //string message = "If yes, please enter an email address.";
+
+                    /*
+                    UIAlertView alert = new UIAlertView("Email this report", message, null, "NO", "YES");
+                    //      alert.Message =
+                    alert.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
+
+                    alert.ShouldEnableFirstOtherButton = (UIAlertView alertView) =>
+                    {
+                        var txt = alertView.GetTextField(0).Text;
+                        return txt.Length > 6 && txt.Contains("@");
+                    };
+                    UITextField alertTextField = alert.GetTextField(0);
+                    alertTextField.KeyboardType = UIKeyboardType.EmailAddress;
+                    alert.Show();
+                    alert.Clicked += async (object s, UIButtonEventArgs ev) =>
+                    {
+                        System.Diagnostics.Debug.WriteLine("EV.BUTTON INDEX " + ev.ButtonIndex);
+
+                        if (ev.ButtonIndex == 1)
+                        {
+                            var internetStatus = Reachability.IsNetworkAvailable();
+
+                            System.Diagnostics.Debug.WriteLine("internetStatus" + internetStatus);
+                            if (!internetStatus)
+                            {
+                                var alert1 = new UIAlertView()
+                                {
+                                    Title = "No internet",
+                                    Message = "Please check wifi or data connection."
+                                };
+                                alert1.AddButton("OK");
+                                alert1.AlertViewStyle = UIAlertViewStyle.Default;
+
+                                alert1.Show();
+                                return;
+                            }*/
+
+                    //string input = alert.GetTextField(0).Text;
                     //      emailContent = alert.GetTextField(1).Text;
                     if (input.Contains("@"))
                     {
-                        await sentEmail(fileNameECG, input);
-                        System.Diagnostics.Debug.WriteLine("Toast MakeText Sending email...");
+                        sentEmail(fileNameECG, input);
+                        //System.Diagnostics.Debug.WriteLine("Toast MakeText Sending email...");
 #if false
                         Toast.MakeText("Sending email...")
                                  .SetType(ToastType.Info)
@@ -371,9 +489,16 @@ namespace MyHealthVitals.Droid
 #endif
                     }
                 }
-            };
-            return true;
-            */
+				else
+				{
+					//cancel was pressed
+				}
+
+
+
+			};
+				popup.Show();
+
 			return true;
 		}
 
@@ -406,7 +531,7 @@ namespace MyHealthVitals.Droid
 		}
 
 
-
+        //Toast toast = Toast.MakeText(Android.App.Application.Context, "Your toast message", ToastLength.Long);
 		String pdfPath = null;
 
 		async public Task<bool> sentEmail(string fileName, string addressEmail)
@@ -437,7 +562,7 @@ namespace MyHealthVitals.Droid
 
 			using (client)//var client = new MailKit.Net.Smtp.SmtpClient())
 			{
-				/*
+				
                 //  client.Connect("smtp.gmail.com", 587, false);
                 System.Diagnostics.Debug.WriteLine(" SendMail  Connect " + client.IsConnected);
                 // Note: since we don't have an OAuth2 token, disable
@@ -445,6 +570,7 @@ namespace MyHealthVitals.Droid
 
                 if (!client.IsConnected)
                 {
+                    /*
                     UIAlertView alert = new UIAlertView();
 
                     alert.AddButton("OK");
@@ -452,15 +578,23 @@ namespace MyHealthVitals.Droid
                     alert.AlertViewStyle = UIAlertViewStyle.Default;// = UIAlertViewStyle.PlainTextInput;
                     alert.Show();
                     return false;
+                    */
+                    //Display an error message
                 }
+                //Toast Toast = makeText();
 
-                Toast.MakeText("Sending email...")
+
+                Toast toast = Toast.MakeText(Android.App.Application.Context, "Sending email...", ToastLength.Short);
+                toast.SetGravity(Android.Views.GravityFlags.Center,0,0);
+                toast.Show();
+                /*
+                toast.makeText("Sending email...")
                                  .SetType(ToastType.Info)
                                  .SetDuration(2000)
                                  .SetBgBlue(100)
                                  .SetGravity(ToastGravity.Center)
                                  .Show();
-
+                */
 
 
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
@@ -506,6 +640,11 @@ namespace MyHealthVitals.Droid
                 }
                 finally
                 {
+                    Toast toast2 = Toast.MakeText(Android.App.Application.Context, toastText, ToastLength.Short);
+					toast2.SetGravity(Android.Views.GravityFlags.Center, 0, 0);
+
+					toast2.Show();
+                    /*
                     System.Diagnostics.Debug.WriteLine("Toast MakeText Sended ");
                     Toast.MakeText(toastText)
                          .SetType(ToastType.Notice)
@@ -513,9 +652,9 @@ namespace MyHealthVitals.Droid
                          .SetBgBlue(100)
                          .SetGravity(ToastGravity.Center)
                          .Show();
-
+                    */
                 }
-                */
+
 			}
 
 

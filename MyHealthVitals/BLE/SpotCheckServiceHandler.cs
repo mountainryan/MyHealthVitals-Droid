@@ -191,10 +191,33 @@ namespace MyHealthVitals
             */
 
 			//for Android, BLE packets only arrive 20 bytes at a time
+
+
+            /*
+			if (token == 48 && pretoken == 50)
+			{
+				Debug.WriteLine("stop response may be token=" + token + "   pretoken " + pretoken);
+				Debug.WriteLine("ch.Value[3] :" + ch.Value[3] + "ch.Value[4] " + ch.Value[4] + "ch.Value[5] :" + ch.Value[5]);
+				if (ch.Value[4] == 2 && ch.Value[5] == 36)
+				{
+					uiController.ShowMessageOnUI("You have not finished your ECG measure.", true, "Measure Interrupted");
+				}
+			}
+            */
+
+
 			if (ch.Value.Length > 0)
 			{
 				if (isEcgStarted)
 				{
+                    if (ch.Value.Length > 5)
+                    {
+                        if (ch.Value[2]==48 && ch.Value[4]==2 && ch.Value[5]==36)
+                        {
+                            uiController.ShowMessageOnUI("You have not finished your ECG measure.", true, "Measure Interrupted");
+                        }
+                    }
+
 					if (currEcgBytes != 0 && currEcgBytes != 59)
 					{
 						//get the current length

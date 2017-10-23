@@ -9,28 +9,36 @@
 			<!--login view starts-->
 			<StackLayout VerticalOptions = "FillAndExpand" Spacing="0">
 				
-				<StackLayout HorizontalOptions="FillAndExpand" x:Name="layoutImgContainer" Margin="50" Orientation="Vertical" VerticalOptions="Start">
-					<Image Source="icucarellc.png" >
+				<StackLayout HorizontalOptions="Center" x:Name="layoutImgContainer" Margin="90" Orientation="Vertical" VerticalOptions="Start">
+					<Image x:Name="icucareimg" Source="icucarellc.png" >
 					</Image>
 				</StackLayout>
-				<StackLayout x:Name="layoutLoginContainer" Margin="30,10,30,10" Orientation="Horizontal" Spacing="0">
-					<StackLayout x:Name = "layout" HorizontalOptions="FillAndExpand" Orientation="Vertical" Spacing="1">
-						<Entry BackgroundColor="#D3D3D3" TextColor="Black" Margin="3" HeightRequest="40" x:Name="txtUsername" HorizontalOptions="FillAndExpand" Text="" Placeholder="username" />
-						<Entry BackgroundColor="#D3D3D3" TextColor="Black" Margin="3" HeightRequest="40" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" Text="" Placeholder="password" />
+
+
+				
+				<StackLayout x:Name="layoutLoginContainer" HorizontalOptions="Center" Orientation="Horizontal" Spacing="0"><!--Margin="30,10,30,10"-->
+					<StackLayout x:Name = "layout" Orientation="Vertical"  Spacing="0" Margin="0,0,0,0">
+						<Entry BackgroundColor="#D3D3D3" TextColor="Black" Margin="0,6,0,1" WidthRequest="220" HeightRequest="50" x:Name="txtUsername" HorizontalOptions="FillAndExpand" FontSize="20" Text="" Placeholder="Username" />
+						<Entry BackgroundColor="#D3D3D3" TextColor="Black" Margin="0,1,0,6"  WidthRequest="220" HeightRequest="50" IsPassword="true" x:Name="txtPassword" HorizontalOptions="FillAndExpand" FontSize="20" Text="" Placeholder="Password" />
 					</StackLayout>
-					<Button Margin="3" HorizontalOptions="Center" BorderRadius="0" Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" WidthRequest="70" HeightRequest = "86" FontSize="16" Text="Login">
+
+					<Button Margin="0,0,0,0" WidthRequest="100" VerticalOptions="FillAndExpand" HorizontalOptions="Center" Clicked="btnLoginClicked" x:Name="btnLogin" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}"  FontSize="24" Text="Login">
 					</Button>
+					
 				</StackLayout>
+
+			
+				
 				<StackLayout>
-					<ScrollView MinimumWidthRequest="300" Margin="30" x:Name="scrollView" >
-						<Label FontSize="15" Margin="3" TextColor="{StaticResource colorWhite}" XAlign="Center" Text="Welcome - If this is your first time logging into your My eMHR Personal Health Records account from this App, remember to go to your Account Profile page and select Auto Login. &#x0a; &#x0a; All data as collected by the App from your connected devices will be automatically uploaded to your My eMHR Home Health page and subsequently, to your My Health Mobile APP.">
+					<ScrollView MinimumWidthRequest="300" Margin="60" x:Name="scrollView" >
+						<Label x:Name="lblWelcome" FontSize="24" Margin="60" TextColor="{StaticResource colorWhite}" XAlign="Center" Text="Welcome - If this is your first time logging into your My eMHR Personal Health Records account from this App, remember to go to your Account Profile page and select Auto Login. &#x0a; &#x0a; All data as collected by the App from your connected devices will be automatically uploaded to your My eMHR Home Health page and subsequently, to your My Health Mobile APP.">
 						</Label>
 					</ScrollView>
 				</StackLayout>
 			</StackLayout>
 
 			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
-				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2017" XAlign="Center" Font="Small" Margin="0,0,0,4">
+				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2017" XAlign="Center" FontSize="15" Margin="0,0,0,4">
 				</Label>
 			</StackLayout>
 			

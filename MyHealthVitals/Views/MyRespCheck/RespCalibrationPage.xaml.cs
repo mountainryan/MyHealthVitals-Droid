@@ -19,9 +19,10 @@ namespace MyHealthVitals
 
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-				
+					
 					layout.Spacing *= 2;
-					label.FontSize *= 1.5;
+				label.Margin = new Thickness (20, 10, 20, 10);	
+				label.FontSize *= 2;
 					layoutButton.Spacing *= 2;
 					button.HeightRequest *= 2;
 					button.FontSize *= 1.5;
@@ -40,7 +41,17 @@ namespace MyHealthVitals
 					buttonDel.WidthRequest *= 2;
 					buttonDel.HeightRequest *= 2;
 					buttonDel.FontSize *= 1.5;
-				*/	save.FontSize *= 1.5;
+				*/	
+				save.FontSize *= 1.5;
+				save.HeightRequest *= 1.5;
+				/*
+				readnum.FontSize *= 1.5;
+				peflbl.FontSize *= 1.5;
+				fevlbl.FontSize *= 1.5;
+				delbtn.WidthRequest *= 1.5;
+				delbtn.HeightRequest *= 1.5;
+				*/
+				//listView.ItemTemplate.
 			}
 		}
 		protected override void OnDisappearing()
@@ -59,7 +70,7 @@ namespace MyHealthVitals
 				//bleManager.ScanToConnectToSpotCheck(this);
 				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
 				//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
-				string readings = (3 - calibratedReadingList.Count) > 1 ? "more readings." : "more reading.";
+				string readings = (3 - calibratedReadingList.Count) > 1 ? " more readings." : " more reading.";
 				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + readings;
 			}
 			else {
@@ -79,23 +90,33 @@ namespace MyHealthVitals
             Debug.WriteLine("Calibration reading.");
 			//var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
 
+			currReading.fontsize = 15;
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				currReading.fontsize *= 2;
+			}
+
 			currReading.index = calibratedReadingList.Count;
 			calibratedReadingList.Add(currReading);
 
-			System.Diagnostics.Debug.WriteLine("loaded spirometer reading:" + currReading.pefString);
+			Debug.WriteLine("loaded spirometer reading:" + currReading.pefString);
 
-			if (this.calibratedReadingList.Count < 3)
+			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
-				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
-				//bleManager.ScanToConnectToSpotCheck(this);
-				//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
-				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
-			}
-			else {
-				layoutLoading.IsVisible = false;
-			}
 
-			listView.ItemsSource = calibratedReadingList;
+				if (this.calibratedReadingList.Count < 3)
+				{
+					lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
+					//bleManager.ScanToConnectToSpotCheck(this);
+					//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+					BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+				}
+				else {
+					layoutLoading.IsVisible = false;
+				}
+
+				listView.ItemsSource = calibratedReadingList;
+			}));
 		}
 
 		public void updateDeviceStateOnUI(String message, bool isConnected)

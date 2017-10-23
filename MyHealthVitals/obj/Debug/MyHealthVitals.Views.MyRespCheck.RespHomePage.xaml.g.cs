@@ -48,7 +48,7 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.Label lblFevReading;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::Xamarin.Forms.Button btnIndicator;
+        private global::MyHealthVitals.MyButton btnIndicator;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Button btnDelete;
@@ -57,7 +57,7 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.StackLayout layoutButton1;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::Xamarin.Forms.Button B1;
+        private global::MyHealthVitals.MyButton B1;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::MyHealthVitals.MyButton B2;
@@ -66,7 +66,7 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.RelativeLayout layoutMiddle;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::MyHealthVitals.RoundedBox box;
+        private global::Xamarin.Forms.BoxView box;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.StackLayout layoutbox;
@@ -96,7 +96,16 @@ namespace MyHealthVitals {
         private global::MyHealthVitals.MyButton B4;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::Xamarin.Forms.Button save;
+        private global::Xamarin.Forms.RelativeLayout savebtnbottom;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.StackLayout layoutbox2;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::MyHealthVitals.MyButton save;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Label copyrt1;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.RelativeLayout layoutLoading;
@@ -108,7 +117,19 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.RelativeLayout layoutLoadingTakeReading;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::MyHealthVitals.MyButton btncancelread;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Image icupng;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Label iculbl;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.WebView gifWebView;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
+        private global::Xamarin.Forms.Label copyrt2;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private void InitializeComponent() {
@@ -124,13 +145,13 @@ namespace MyHealthVitals {
             lblPefReading = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "lblPefReading");
             lblfev = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "lblfev");
             lblFevReading = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "lblFevReading");
-            btnIndicator = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Button>(this, "btnIndicator");
+            btnIndicator = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyButton>(this, "btnIndicator");
             btnDelete = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Button>(this, "btnDelete");
             layoutButton1 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutButton1");
-            B1 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Button>(this, "B1");
+            B1 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyButton>(this, "B1");
             B2 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyButton>(this, "B2");
             layoutMiddle = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.RelativeLayout>(this, "layoutMiddle");
-            box = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.RoundedBox>(this, "box");
+            box = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.BoxView>(this, "box");
             layoutbox = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutbox");
             lablebox = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "lablebox");
             layoutval = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutval");
@@ -140,11 +161,18 @@ namespace MyHealthVitals {
             layoutButton2 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutButton2");
             B3 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyButton>(this, "B3");
             B4 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyButton>(this, "B4");
-            save = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Button>(this, "save");
+            savebtnbottom = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.RelativeLayout>(this, "savebtnbottom");
+            layoutbox2 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutbox2");
+            save = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyButton>(this, "save");
+            copyrt1 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "copyrt1");
             layoutLoading = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.RelativeLayout>(this, "layoutLoading");
             lblLoadingMessage = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "lblLoadingMessage");
             layoutLoadingTakeReading = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.RelativeLayout>(this, "layoutLoadingTakeReading");
+            btncancelread = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyButton>(this, "btncancelread");
+            icupng = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Image>(this, "icupng");
+            iculbl = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "iculbl");
             gifWebView = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.WebView>(this, "gifWebView");
+            copyrt2 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "copyrt2");
         }
     }
 }

@@ -17,16 +17,16 @@ namespace MyHealthVitals
 			InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-				itemdate.FontSize *= 1.5;
+				itemdate.FontSize = 30;
 				itemdate.WidthRequest *= 2;
-				firstItem.FontSize *= 1.5;
+				firstItem.FontSize = 30;
 				firstItem.WidthRequest *= 2;
-				secondItem.FontSize *= 1.5;
+				secondItem.FontSize = 30;
 				secondItem.WidthRequest *= 2;
 				underline.WidthRequest *= 2;
+                //layoutholder.HeightRequest *= 1.5;
 			}
 			secondItem.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnLabelClicked()));
-	
 		}
 		protected override void OnAppearing()
 		{

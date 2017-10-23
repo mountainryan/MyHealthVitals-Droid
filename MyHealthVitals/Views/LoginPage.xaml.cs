@@ -17,6 +17,7 @@ namespace MyHealthVitals
         public static string ecgfilepath;
         public static long ecgfilelength;
         public static string patient_name;
+		public static string gifpath;
 	}
     public partial class LoginPage : ContentPage
     {
@@ -26,17 +27,41 @@ namespace MyHealthVitals
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
 				//layout.WidthRequest = 350;
-				layout.Margin = new Thickness(160,10,10,10);
-				layout.HorizontalOptions = LayoutOptions.Center;
-				txtUsername.WidthRequest = 300;
-				txtUsername.HeightRequest += 10;
-				txtPassword.WidthRequest = 300;
-				txtPassword.HeightRequest += 10;
-				txtUsername.HorizontalOptions = LayoutOptions.Center;
-				txtPassword.HorizontalOptions = LayoutOptions.Center;
-				btnLogin.HeightRequest = 30;//txtPassword.HeightRequest + txtUsername.HeightRequest   ;
-				Debug.WriteLine("btnLogin.HeightRequest==="+btnLogin.HeightRequest);
+				//layout.Margin = new Thickness(160,10,10,10);
+				//layout.HorizontalOptions = LayoutOptions.Center;
+				txtUsername.WidthRequest = 400;
+				txtUsername.HeightRequest = 75;
+				txtPassword.WidthRequest = 400;
+				txtPassword.HeightRequest = 75;
+				txtUsername.FontSize = 30;
+				txtPassword.FontSize = 30;
+				txtUsername.Margin = new Thickness(0, 2, 0, 1);
+				txtPassword.Margin = new Thickness(0, 1, 0, 2);
+				btnLogin.WidthRequest = 150;
+				btnLogin.FontSize = 30;
+				//txtUsername.HorizontalOptions = LayoutOptions.Center;
+				//txtPassword.HorizontalOptions = LayoutOptions.Center;
+				//btnLogin.HeightRequest = 30;//txtPassword.HeightRequest + txtUsername.HeightRequest   ;
+				Debug.WriteLine("btnLogin.HeightRequest===" + btnLogin.HeightRequest);
 			}
+			else
+			{
+				icucareimg.Source = "icucarellc_phone.png";
+				layoutImgContainer.Margin = new Thickness(45);
+				//txtUsername.WidthRequest *= (2 / 3);
+				//txtPassword.WidthRequest *= (2 / 3);
+				//txtUsername.HeightRequest *= (2 / 3);
+				//txtPassword.HeightRequest *= (2 / 3);
+				//txtUsername.FontSize *= (2 / 3);
+				//txtPassword.FontSize *= (2 / 3);
+				//btnLogin.WidthRequest *= (2 / 3);
+				//btnLogin.FontSize *= (2 / 3);
+				scrollView.MinimumWidthRequest *= .5;
+				scrollView.Margin = new Thickness(30);
+				lblWelcome.Margin = new Thickness(30);
+				lblWelcome.FontSize = 17;
+			}
+
             if (Demographics.sharedInstance.isAutoLogin)
             {
                 txtUsername.Text = Demographics.sharedInstance.username;
@@ -62,6 +87,11 @@ namespace MyHealthVitals
         {
             base.OnAppearing();
 
+			Debug.WriteLine("txtUsername width: "+txtUsername.WidthRequest);
+			Debug.WriteLine("txtPassword width: " + txtPassword.WidthRequest);
+			Debug.WriteLine("txtUsername Height: " + txtUsername.HeightRequest);
+			Debug.WriteLine("txtPassword Height: " + txtPassword.HeightRequest);
+
 		//	scrollView.HeightRequest = this.Content.Bounds.Size.Height - layoutImgContainer.Height - layoutLoginContainer.Height - 40;
 		}
 
@@ -71,12 +101,16 @@ namespace MyHealthVitals
             //var status = Reachability.   .InternetConnectionStatus();
             try
             {
+				//first copy the gif asset
+				//DependencyService.Get<IFileHelper>().copyAsset();
                 Debug.WriteLine("name= " + username + " pw = " + password);
                 Debug.WriteLine("Credential.sharedInstance = " + Credential.sharedInstance);
                 //Credential cred = await Credential.sharedInstance.CallApiForLogin(txtUsername.Text.Trim(), txtPassword.Text.Trim());
                 Credential cred = await Credential.sharedInstance.CallApiForLogin(username, password);
 
                 Debug.WriteLine("cred= " + cred);
+
+
 
                 Application.Current.Properties["_username"] = txtUsername.Text.Trim();
                 await Application.Current.SavePropertiesAsync();

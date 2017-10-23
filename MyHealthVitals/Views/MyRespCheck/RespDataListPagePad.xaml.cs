@@ -13,7 +13,6 @@ namespace MyHealthVitals
 		public RespDataListPagePad()
 		{
 			InitializeComponent();
-
 			CallAPiGetReadings();
 		}
 

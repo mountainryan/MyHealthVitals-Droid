@@ -219,8 +219,16 @@ namespace MyHealthVitals
 		{
 			base.OnAppearing();
 
+            if (Device.Idiom == TargetIdiom.Tablet)
+            {
+                plotView.HeightRequest *= 2;
+            }
+            Debug.WriteLine("Defaultxaxis : " + graphModel_report.DefaultXAxis);
+            Task.Delay(1).ContinueWith(_ => {});
+            Debug.WriteLine("Defaultxaxis : " + graphModel_report.DefaultXAxis);
 			if (countECGPacket_report == 0 && graphModel_report.DefaultXAxis != null)
 			{
+                Debug.WriteLine("Made it into ecgreport graph if statement.");
 				graphModel_report.DefaultXAxis.IsPanEnabled = false;
 				graphModel_report.DefaultYAxis.IsPanEnabled = false;
 
@@ -240,6 +248,7 @@ namespace MyHealthVitals
 				graphModel_report.InvalidatePlot(true);
 				styleGraphModel(graphModel_report);
 			}
+			
 			updateECGPacket_Report();
 
 		}
@@ -270,7 +279,15 @@ namespace MyHealthVitals
 					{
 						ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
 					}
-					var newPage = new ParameterItemDetailNew(10, ParametersPageLocal.allReadings);
+                    if (Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        var newPage = new ParameterItemDetailNew(10, ParametersPageLocal.allReadings);
+                    }
+                    else
+                    {
+                        var newPage = new ParameterItemDetailNew(10, ParametersPageLocal.allReadings);
+                    }
+					
 					//  await this.Navigation.PushModalAsync(newPage);
 					//  this.Navigation.RemovePage(this);
 				}
@@ -357,15 +374,53 @@ namespace MyHealthVitals
 			{
 				Debug.WriteLine("report   Exception " + ex);
 			}
+            Device.BeginInvokeOnMainThread(new Action(async () =>
+            {
+                if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".pdf"))
+                {
+                    reportButton.Text = "Send email";
+                }
+                graphModel_report.InvalidatePlot(false);
+                //  await DependencyService.Get<IFileHelper>().saveToPdf(graphModel_report, "EcgReport.pdf");
+                //  return true;
+                //plotView.RefreshPlot(true);
+                await Task.Delay(1).ContinueWith(_ => { });
+                initializePlotModel();
+            }));
 
-			if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".pdf"))
+
+		}
+
+		public void initializePlotModel()
+		{
+            Debug.WriteLine("countECGPacket : "+countECGPacket_report);
+
+			if (countECGPacket_report == 0 && graphModel_report.DefaultXAxis != null)
 			{
-				reportButton.Text = "Send email";
+				Debug.WriteLine("Made it into ecgreport graph if statement.");
+				graphModel_report.DefaultXAxis.IsPanEnabled = false;
+				graphModel_report.DefaultYAxis.IsPanEnabled = false;
+
+				graphModel_report.DefaultYAxis.Minimum = 0;
+				graphModel_report.DefaultYAxis.Maximum = 1000;
+
+				graphModel_report.DefaultXAxis.Minimum = 0;
+				graphModel_report.DefaultXAxis.Maximum = 8;
+				graphModel_report.DefaultXAxis.IsZoomEnabled = false;
+				graphModel_report.DefaultYAxis.IsZoomEnabled = false;
+				graphModel_report.TextColor = OxyColors.Transparent; //<--This is what made the numbers along the axes disappear
+																	 //but not in Android for some reason
+				graphModel_report.TitleColor = OxyColors.Black;
+				graphModel_report.SubtitleColor = OxyColors.Black;
+				graphModel_report.LegendTitleColor = OxyColors.Blue;
+				//  graphModel.LegendTextColor = OxyColors.Transparent;
+				graphModel_report.InvalidatePlot(true);
+				styleGraphModel(graphModel_report);
 			}
-			graphModel_report.InvalidatePlot(false);
-			//  await DependencyService.Get<IFileHelper>().saveToPdf(graphModel_report, "EcgReport.pdf");
-			//  return true;
-			//plotView.RefreshPlot(true);
+			else
+			{
+				Debug.WriteLine("WHY!!!!!");
+			}
 		}
 
 		async void btnSaveClicked(object sender, System.EventArgs e)

@@ -38,6 +38,7 @@ namespace MyHealthVitals
 		public MainPage(string deviceName)
 		{
 
+
 			this.deviceName = deviceName;
 			InitializeComponent();
 			resizeUI();
@@ -58,6 +59,7 @@ namespace MyHealthVitals
 			btnFareinheit.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
 			btnCelcious.TextColor = Color.Gray;
 			isCelcious = false;
+
 
 			BLECentralManager.sharedInstance.disConnectAll();
 			if (deviceName == "PC-100")
@@ -115,8 +117,6 @@ namespace MyHealthVitals
 			graphModel.InvalidatePlot(true);
 			Debug.WriteLine("graphModel      143   :" + graphModel);
 		}
-
-
 		protected async override void OnAppearing()
 		{
 			base.OnAppearing();
@@ -125,8 +125,9 @@ namespace MyHealthVitals
 			if (graphModel == null) return;
 			Debug.WriteLine("graphModel.DefaultXAxis  :" + graphModel.DefaultXAxis);
 
-			if (countECGPacket == 0 && graphModel.DefaultXAxis != null)
+            if (countECGPacket == 0 && graphModel.DefaultXAxis != null)
 			{
+                Debug.WriteLine("Made it in to graph mod if statement");
 				graphModel.DefaultXAxis.IsPanEnabled = false;
 				graphModel.DefaultYAxis.IsPanEnabled = false;
 
@@ -139,7 +140,12 @@ namespace MyHealthVitals
 				graphModel.DefaultYAxis.IsZoomEnabled = false;
 				styleGraphModel(graphModel);
 			}
-			if (lashEcgFile != null && lashEcgFile.Length > 0)
+			
+            var linearAxis1 = new LinearAxis();
+            linearAxis1.IsZoomEnabled = false;
+			linearAxis1.IsPanEnabled = false;
+			
+            if (lashEcgFile != null && lashEcgFile.Length > 0)
 			{
 
 				Boolean ecgExist = DependencyService.Get<IFileHelper>().checkFileExist(lashEcgFile + ".txt");
@@ -157,6 +163,7 @@ namespace MyHealthVitals
 			var ret = await DisplayAlert(deviceName, "Do you want to take a measurement?", "Yes", "No");
 			if (ret)
 			{
+                initializePlotModel();
 				try
 				{
 					if (BLECentralManager.sharedInstance.scaleServHandle.connectedDevice.State
@@ -178,10 +185,33 @@ namespace MyHealthVitals
 				}
 
 
-			}
+            }else{
+                initializePlotModel();
+            }
 			isFromDeviecList = false;
 
 		}
+
+        public void initializePlotModel()
+        {
+			if (countECGPacket == 0 && graphModel.DefaultXAxis != null)
+			{
+				Debug.WriteLine("Made it in to graph mod on initialize if statement");
+				graphModel.DefaultXAxis.IsPanEnabled = false;
+				graphModel.DefaultYAxis.IsPanEnabled = false;
+
+				graphModel.DefaultYAxis.Minimum = 0;
+				graphModel.DefaultYAxis.Maximum = 255;
+
+				graphModel.DefaultXAxis.Minimum = 0;
+				graphModel.DefaultXAxis.Maximum = 50;
+				graphModel.DefaultXAxis.IsZoomEnabled = false;
+				graphModel.DefaultYAxis.IsZoomEnabled = false;
+				styleGraphModel(graphModel);
+            }else{
+                Debug.WriteLine("WHY!!!!!");
+            }
+        }
 
 		private void styleGraphModel(PlotModel graphModel)
 		{
@@ -380,8 +410,9 @@ namespace MyHealthVitals
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
 					await DisplayAlert(title, message, "OK");
-					if (title.Equals("Measure Interruped"))
+					if (title.Equals("Measure Interrupted"))
 					{
+                        Debug.WriteLine("Measure Interrupted!");
 						Measure_Interruped = true;
 						countECGPacket = 0;
 						ecgTime = 0;
@@ -631,7 +662,7 @@ namespace MyHealthVitals
 			}
 			else
 			{
-				progressBar.Animate("SetProgress", (arg) => { progressBar.Progress = arg; }, 0, 30000, Easing.Linear);
+				progressBar.Animate("SetProgress", (arg) => { progressBar.Progress = arg; }, 0, 34000, Easing.Linear);
 			}
 
 		}
@@ -685,13 +716,12 @@ namespace MyHealthVitals
 				{
 					Debug.WriteLine("timer   =============" + timer);
 
-					timer = new CommonMethod.MySystemDeviceTimer(TimeSpan.FromSeconds(12), async () =>
+					timer = new CommonMethod.MySystemDeviceTimer(TimeSpan.FromSeconds(8), async () =>
 					{
 						Debug.WriteLine("StartTsure_Interruped==" + Measure_Interruped);
 						if (!Measure_Interruped)
 						{
-
-							await ECGcountdown();
+                            await ECGcountdown();
 						}
 						return;
 					});
@@ -707,8 +737,10 @@ namespace MyHealthVitals
 		{
 			try
 			{
+                Debug.WriteLine("countECGPacket = "+countECGPacket);
 				if (Measure_Interruped)
 				{
+                    Debug.WriteLine("Measure Interrupted.");
 					Measure_Interruped = false;
 					countECGPacket = 0;
 					ecgTime = 0;
@@ -723,35 +755,42 @@ namespace MyHealthVitals
 				{
 					N = 30;
 					Debug.WriteLine("countECGPacket   =============" + countECGPacket);
-					graphModel.LegendTitle = "ECG";
-					countDownLabel.Text = "Stabilizing reading, please continue.";
-					countDownLabel.IsVisible = true;
-					progressBar.IsVisible = false;
-
-
-					await initEcgCountdown();
-
-                    if (Device.Idiom == TargetIdiom.Tablet)
+                    Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
                     {
-                        ecgReportcBtnPad.IsEnabled = false;
-                    }else{
-                        ecgReportcBtn.IsEnabled = false;
-                    }
-					
-					// reseting the graphmodel for ecg waveform
-					graphModel.DefaultXAxis.IsPanEnabled = false;
-					xMin = 0;
-					graphModel.DefaultXAxis.Minimum = 0;
-					graphModel.DefaultXAxis.Maximum = 6.0;
 
-					graphModel.DefaultYAxis.Minimum = 0;
-					graphModel.DefaultYAxis.Maximum = 255;
+                        graphModel.LegendTitle = "ECG";
+                        countDownLabel.Text = "Stabilizing reading, please continue.";
+                        countDownLabel.IsVisible = true;
+                        progressBar.IsVisible = false;
 
-					lineSerie.Points.Clear();
-					//  graphModel.DefaultXAxis.IsPanEnabled = false;
-					graphModel.InvalidatePlot(true);
 
-					Debug.WriteLine("countECGPacket   end =============" + countECGPacket);
+                        //await initEcgCountdown();
+                        await initEcgCountdown();
+
+                        if (Device.Idiom == TargetIdiom.Tablet)
+                        {
+                            ecgReportcBtnPad.IsEnabled = false;
+                        }
+                        else
+                        {
+                            ecgReportcBtn.IsEnabled = false;
+                        }
+
+                        // reseting the graphmodel for ecg waveform
+                        graphModel.DefaultXAxis.IsPanEnabled = false;
+                        xMin = 0;
+                        graphModel.DefaultXAxis.Minimum = 0;
+                        graphModel.DefaultXAxis.Maximum = 6.0;
+
+                        graphModel.DefaultYAxis.Minimum = 0;
+                        graphModel.DefaultYAxis.Maximum = 255;
+
+                        lineSerie.Points.Clear();
+                        //  graphModel.DefaultXAxis.IsPanEnabled = false;
+                        graphModel.InvalidatePlot(true);
+
+                        Debug.WriteLine("countECGPacket   end =============" + countECGPacket);
+                    }));
 
 
 				}
@@ -1359,24 +1398,24 @@ namespace MyHealthVitals
 				lblGlucose.FontSize *= 1.5;
 				lblWeight.FontSize *= 1.5;
 				lblWEIT.FontSize *= 1.5;
+                countDownLabel.FontSize *= 1.5;
 
-				countDownLabel.FontSize *= 1.5;
-				layout1.WidthRequest *= 2;
-				layout2.WidthRequest *= 2;
-				layout3.WidthRequest *= 2;
-				layout4.WidthRequest *= 2;
-				layout5.WidthRequest *= 2;
-				layout6.WidthRequest *= 2;
-				layout7.WidthRequest *= 2;
-				layout8.WidthRequest *= 2;
-				layout9.WidthRequest *= 2;
-				layout10.WidthRequest *= 2;
-				layout11.WidthRequest *= 2;
-				layout12.WidthRequest *= 2;
-				layout13.WidthRequest *= 2;
-				layout14.WidthRequest *= 2;
-				layout15.WidthRequest *= 2;
-				layout16.WidthRequest *= 2;
+				layout1.WidthRequest *= 1.8;
+				layout2.WidthRequest *= 1.8;
+				layout3.WidthRequest *= 1.8;
+				layout4.WidthRequest *= 1.8;
+				layout5.WidthRequest *= 1.8;
+				layout6.WidthRequest *= 1.8;
+				layout7.WidthRequest *= 1.8;
+				layout8.WidthRequest *= 1.8;
+				layout9.WidthRequest *= 1.8;
+				layout10.WidthRequest *= 1.8;
+				layout11.WidthRequest *= 1.8;
+				layout12.WidthRequest *= 1.8;
+				layout13.WidthRequest *= 1.8;
+				layout14.WidthRequest *= 1.8;
+				layout15.WidthRequest *= 1.8;
+				layout16.WidthRequest *= 1.8;
 
 				plotView.HeightRequest *= 2;
 				NIBPButtonPad.FontSize *= 1.5;
@@ -1385,8 +1424,10 @@ namespace MyHealthVitals
 				layoutButtonPad.IsVisible = true;
 				btnFareinheit.FontSize *= 1.5;
 				btnCelcious.FontSize *= 1.5;
-                //	btnLbs.FontSize *= 1.5;
-                //	btnKgs.FontSize *= 1.5;
+				btnFareinheit.WidthRequest *= 1.5;
+				btnCelcious.WidthRequest *= 1.5;
+                btnLbs.FontSize *= 1.5;
+                btnKgs.FontSize *= 1.5;
                 //layoutButton.BackgroundColor = layoutButtonPad.BackgroundColor;
                 //layoutButton.Spacing = layoutButtonPad.Spacing;
                 //layoutButton.Margin = layoutButtonPad.Margin;

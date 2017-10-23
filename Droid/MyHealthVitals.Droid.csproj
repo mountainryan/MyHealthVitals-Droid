@@ -129,6 +129,13 @@
     <Compile Include="SplashActivity.cs" />
     <Compile Include="Helpers\FileHelperAndroid.cs" />
     <Compile Include="NoUnderlineEntry.cs" />
+    <Compile Include="RoundedButtons.cs" />
+    <Compile Include="TransparentWebViewRenderer.cs" />
+    <Compile Include="CircleRespButtons.cs" />
+    <Compile Include="LIstViewNoSel.cs" />
+    <Compile Include="EntryPopup.cs" />
+    <Compile Include="EntryPopupLoader.cs" />
+    <Compile Include="IEntryPopupLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -174,6 +181,14 @@
     <AndroidResource Include="Resources\drawable\SpiromterPad.png" />
     <AndroidResource Include="Resources\drawable\WeightScalesPad.png" />
     <AndroidResource Include="Resources\layout\splash.axml" />
+    <AndroidResource Include="Resources\drawable\CustomButtonBackground.axml" />
+    <AndroidResource Include="Resources\drawable\gifContainer.html" />
+    <AndroidResource Include="Resources\drawable\loading.gif" />
+    <AndroidResource Include="Resources\drawable\icucarellc_pad.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\deleteicon_x2.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\deleteicon_tab.png" />
+    <AndroidResource Include="Resources\drawable\icucarellc_phone.png" />
+    <AndroidResource Include="Resources\drawable\CustomButtonBackground2.axml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
@@ -181,6 +196,10 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\ICULogo.png" />
+    <AndroidAsset Include="Assets\gifContainer.html" />
+    <AndroidAsset Include="Assets\loading.gif" />
+    <AndroidAsset Include="Assets\gifContainer_pad.html" />
+    <AndroidAsset Include="Assets\loading_pad.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

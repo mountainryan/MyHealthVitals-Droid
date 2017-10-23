@@ -15,6 +15,8 @@ namespace MyHealthVitals
 		Task<bool> sentToEmail(string fileName);
 		bool checkFileExist(string fileName);
 		Task<bool> setEmailClient();
+		string retGif();
+		void copyAsset();
 	}
 
 	public interface IBaseUrl { string Get(); }

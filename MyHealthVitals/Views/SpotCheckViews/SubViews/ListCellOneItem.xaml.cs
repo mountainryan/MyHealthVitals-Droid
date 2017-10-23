@@ -12,12 +12,14 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet)
-				{
-					itemdate.FontSize *= 1.5;
-					itemdate.WidthRequest *= 2;
-					item.FontSize *= 1.5;
-					item.WidthRequest *= 2;
-				}
+			{
+                layoutholder.HeightRequest = 70;
+				itemdate.FontSize = 30;
+				itemdate.WidthRequest *= 2;
+                item.FontSize = 30;
+				item.WidthRequest *= 2;
+				//layoutholder.HeightRequest *= 1.5;
+			}	
 		}
 
 	}

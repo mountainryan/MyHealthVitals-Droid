@@ -229,7 +229,7 @@ namespace MyHealthVitals
                 case "BLE-MSA":
                     {
                         //can't show spirometer message
-                        //spiroServHandler.uiController.ShowConcetion("Spirometer Connection Lost.", false);
+                        spiroServHandler.uiController.updateDeviceStateOnUI("Failed to connect to Spirometer.", false);
                         break;
                     }
                 case "PC_300SNT":

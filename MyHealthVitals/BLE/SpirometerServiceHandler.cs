@@ -88,12 +88,14 @@ namespace MyHealthVitals
 		}
 
 		public void stopPolling() {
+			Debug.WriteLine("Stop polling!");
 			this.isStopPolling = true;
 		}
 
 		private void startPolling()
 		{
 			isStopPolling = false;
+			Debug.WriteLine("Start polling!");
 
 			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(250), () =>
 			{
@@ -176,13 +178,18 @@ namespace MyHealthVitals
 					{
 						Debug.WriteLine("bmchar is not null.");
 						bmChar.WriteAsync(new byte[] { 0x55, 0x06 });
+						Task.Delay(10).ContinueWith(_ =>
+		   				{
+			   				bmChar.WriteAsync(new byte[] { 0x55, 0x06 });
+						   });
+
 					}
 					else
 					{
 						Debug.WriteLine("bmchar is null.");
 					}						
 				}
-                if (data[0] == 170 && data[1] == 6 && isStatusAsked == false)
+				if (data[0] == 170 && data[1] == 6)// && isStatusAsked == false)
                 {
                     Debug.WriteLine("Got a 6, send a 1");
                     Debug.WriteLine("bmchar = " + bmChar.ToString());
@@ -193,13 +200,18 @@ namespace MyHealthVitals
                     {
                         Debug.WriteLine("bmchar is not null.");
                         bmChar.WriteAsync(new byte[] { 0x55, 0x01 });
+						Task.Delay(10).ContinueWith(_ =>
+		   				{
+			   				bmChar.WriteAsync(new byte[] { 0x55, 0x01 });
+						});;
+
                     }else{
                         Debug.WriteLine("bmchar is null.");
                     }
                         
                 }
 
-                if (data[0] == 170 && data[1] == 1 && isDataAsked == false)
+				if (data[0] == 170 && data[1] == 1)// && isDataAsked == false)
                 {
                     Debug.WriteLine("Got a 1, send for data");
                     Debug.WriteLine("bmchar = "+bmChar.ToString());
@@ -209,6 +221,11 @@ namespace MyHealthVitals
 					{
 						Debug.WriteLine("bmchar is not null.");
 						bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
+						Task.Delay(10).ContinueWith(_ =>
+		   				{
+			   				bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
+		   				}); 
+
 					}
 					else
 					{
@@ -226,6 +243,10 @@ namespace MyHealthVitals
 					{
 						Debug.WriteLine("bmchar is not null.");
 						bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
+						Task.Delay(10).ContinueWith(_ =>
+		   				{
+			   				//bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
+		   				});
 					}
 					else
 					{
@@ -233,6 +254,12 @@ namespace MyHealthVitals
 					}
 					
                 }
+				if (timespolled > 35 && isDataAsked)
+				{
+					//can't get the reading for some reason!
+					//try over and over
+					bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
+				}
 
                 // this is data
                 if (data[0] == 221)
@@ -258,7 +285,8 @@ namespace MyHealthVitals
                     }
                     else
                     {
-                        var reading = new SpirometerReading(DateTime.Now, (decimal)pef, (decimal)fev1);
+						
+						var reading = new SpirometerReading(DateTime.Now, (decimal)pef, (decimal)fev1);
                         uiController.updateCaller(reading);
                     }
 

@@ -59,6 +59,7 @@ namespace MyHealthVitals
 					}
 					else
 					{
+                        Debug.WriteLine("filename:" + fn + " e");
 						e.secondItem = "Emailed";
 					}
 					Debug.WriteLine("e.secondItem ="+ e.secondItem);
@@ -377,6 +378,7 @@ namespace MyHealthVitals
 									}
 									else
 									{
+                                        Debug.WriteLine("filename:" + fileName+ " val");
 										val.secondItem = "Emailed";
 									}
 									count++;
@@ -408,6 +410,7 @@ namespace MyHealthVitals
 								}
 								else
 								{
+                                    Debug.WriteLine("filename:" + fileName + " item");
 									item.secondItem = "Emailed";
 								}
 								count++;

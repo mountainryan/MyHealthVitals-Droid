@@ -4,6 +4,7 @@ using Xamarin.Forms;
 
 namespace MyHealthVitals
 {
+    
 	public partial class headerWithOneTitle : ContentView
 	{
 		public headerWithOneTitle(string firstHeaderTitle)
@@ -12,9 +13,8 @@ namespace MyHealthVitals
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
 				layout.Spacing *= 2;
-
-				labeldate.FontSize *= 1.5;
-				lblFirstTitle.FontSize *= 1.5;
+                labeldate.FontSize = 30;
+				lblFirstTitle.FontSize = 30;
 				labeldate.WidthRequest *= 2;
 				lblFirstTitle.WidthRequest *= 2;
 			}

@@ -9,6 +9,7 @@ namespace MyHealthVitals
 {
 	public partial class RespDataListPage : ContentPage
 	{
+		
 		ObservableCollection<SpirometerReading> spirometerReadingList = new ObservableCollection<SpirometerReading>();
 		public RespDataListPage()
 		{

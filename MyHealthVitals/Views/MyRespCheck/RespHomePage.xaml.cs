@@ -30,7 +30,7 @@ namespace MyHealthVitals
 					lblPefReading.WidthRequest *= 2;
 					lblFevReading.WidthRequest *= 2;
 					lblDateReading.WidthRequest *= 2;
-	*/
+				*/
 				lblfev.FontSize *= 1.5;
 				lblpef.FontSize *= 1.5;
 				lbldata.FontSize *= 1.5;
@@ -39,16 +39,19 @@ namespace MyHealthVitals
 				lblDateReading.FontSize *= 1.5;
 
 				layoutButton1.Spacing *= 4;
-				layoutButton1.Margin = new Thickness(45,0,40,0); 
+				layoutButton1.Margin = new Thickness(45, 0, 40, 0);
 				B1.FontSize *= 1.5;
 				B2.FontSize *= 1.5;
 				B1.WidthRequest *= 2;
 				B2.WidthRequest *= 2;
+				B1.HeightRequest *= 2;
+				B2.HeightRequest *= 2;
 
 				layoutMiddle.HeightRequest *= 2;
 				box.HeightRequest *= 2;
 				layoutbox.HeightRequest *= 2;
 				layoutbox.Spacing *= 2;
+
 
 				lablebox.FontSize *= 1.5;
 				layoutval.Spacing *= 2;
@@ -56,16 +59,47 @@ namespace MyHealthVitals
 				lblPef.FontSize *= 1.5;
 				lblFev1.FontSize *= 1.5;
 
-				layoutButton2.Margin = new Thickness(45,0,40,0); 
+				layoutButton2.Margin = new Thickness(45, 0, 40, 0);
 				layoutButton2.Spacing *= 4;
 				B3.WidthRequest *= 2;
 				B4.WidthRequest *= 2;
+				B3.HeightRequest *= 2;
+				B4.HeightRequest *= 2;
 				B3.FontSize *= 1.5;
 				B4.FontSize *= 1.5;
+
 				save.FontSize *= 1.5;
 				save.WidthRequest = box.WidthRequest;
-				save.Margin = new Thickness(45,0,40,0); 
+				save.HeightRequest *= 1.5;
+				save.Margin = new Thickness(45, 0, 40, 0);
+
+				//icupng.WidthRequest *= 1.5;
+				//icupng.HeightRequest *= 1.5;
+				iculbl.WidthRequest *= 1.5;
+				iculbl.FontSize *= 2;
+
+				//RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1,Constant = -40}" HeightRequest="30" WidthRequest="30"
+
+				btncancelread.WidthRequest *= 2;
+				btncancelread.HeightRequest *= 2;
+				btncancelread.Image = "deleteicon_x2.png";
+
+				icupng.Source = "icucarellc_pad.png";
+
+				gifWebView.HeightRequest *= 2;
+				gifWebView.WidthRequest *= 2;
+				var html = new HtmlWebViewSource();
+				html.BaseUrl = DependencyService.Get<IBaseUrl>().Get() + "gifContainer_pad.html";
+				gifWebView.Source = html.BaseUrl;
 			}
+			else 
+			{
+				save.WidthRequest = box.WidthRequest;
+				var html = new HtmlWebViewSource();
+				html.BaseUrl = DependencyService.Get<IBaseUrl>().Get() + "gifContainer.html";
+				gifWebView.Source = html.BaseUrl;
+			}
+
 
 			var tapGestureRecognizer = new TapGestureRecognizer();
 			tapGestureRecognizer.Tapped += (s, e) =>
@@ -77,9 +111,24 @@ namespace MyHealthVitals
 
 			imgProfile.GestureRecognizers.Add(tapGestureRecognizer);
 
-			gifWebView.Source = DependencyService.Get<IBaseUrl>().Get() + "/gifContainer.html";
+			//gifWebView.Source = DependencyService.Get<IBaseUrl>().Get() + "/gifContainer.html";
+			//gifWebView.Source = "http://gifimage.net/wp-content/uploads/2017/02/Loading-GIF-Image-14.gif";
+
+			//this one looks good, but the background is gray	
+			//gifWebView.Source = "https://m.popkey.co/163fce/Llgbv_s-200x150.gif";
+
+			//I like this one, but it's off center
+			//gifWebView.Source = "http://vignette2.wikia.nocookie.net/animaljam/images/4/42/Loading.gif/revision/latest?cb=20140911124847";
+
+
+			//string gifpath = "";
+			//Debug.WriteLine("gif file path: "+Task_vars.gifpath);
+			//string html_str = "<html><head><title>Xamarin Forms</title></head><body style=\"back\">< div class=\"loader\" style=\"position: fixed;  left: 0px;  top: 0px;  width: 100%;  height: 100%;  z-index: 9999;  background: url('"+Task_vars.gifpath+"') 20% 20% no-repeat rgb(0,0,0);\"></div>  </body></html>";
+			//gifWebView.Source = Task_vars.gifpath;
+
 
 			callAPiToDisplayGetDemographics();
+
 
 	   }
 		protected override void OnDisappearing()
@@ -249,7 +298,7 @@ namespace MyHealthVitals
 				lblDate.Text = "--";
 				lblFev1.Text = "--";
 				lblPef.Text = "--";
-				System.Diagnostics.Debug.WriteLine("Exception in getting calibrated data");
+				Debug.WriteLine("Exception in getting calibrated data");
 			}
 		}
 
