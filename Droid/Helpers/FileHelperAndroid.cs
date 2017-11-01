@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Diagnostics;
 using MimeKit;
 using MailKit;
@@ -38,6 +39,13 @@ using iTextSharp.text.html.simpleparser;
 //using Android.App;
 using Android.Content;
 //using Xamarin.Forms;
+using Android.App;
+using Android.Content.PM;
+using Android.Runtime;
+using Android.Views;
+//using Android.OS;
+using Android.Support.V7.AppCompat;
+using Android.Text;
 
 [assembly: Xamarin.Forms.Dependency(typeof(BaseUrl_Android))]
 
@@ -45,8 +53,6 @@ using Android.Content;
 
 namespace MyHealthVitals.Droid
 {
-
-
 	public class FileHelperAndroid : IFileHelper
 	{
 		String Patient;
@@ -63,9 +69,108 @@ namespace MyHealthVitals.Droid
 		string name;
 		static MimeMessage message = null;// = new MimeMessage();
 		MailKit.Net.Smtp.SmtpClient client = null;// = new MailKit.Net.Smtp.SmtpClient();
-												  //        client.Connect("smtp.gmail.com", 587, false);
+                                                  //        client.Connect("smtp.gmail.com", 587, false);
 
-		//  string emaiAddress,   
+        //  string emaiAddress,   
+
+        public async Task<bool> dispAlert(String title, String message, bool tablet, String btn1, String btn2)
+        {
+            bool val = false;
+            Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(Xamarin.Forms.Forms.Context as Activity);
+            AlertDialog alert = dialog.Create();
+
+            alert.SetTitle(title);
+
+            //Debug.WriteLine("Android Build # = " + Android.OS.Build.VERSION.Sdk);
+
+            //need to check for Android version # and if 24 or higher add ,0
+            if (tablet)
+            {
+                message.Replace("\n","<br/>");
+                //Debug.WriteLine("message = "+message);
+				if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
+				{
+					alert.SetMessage(Html.FromHtml("<big><big><big>" + message + "</big></big></big>", 0));
+				}
+				else
+				{
+					alert.SetMessage(Html.FromHtml("<big><big><big>" + message + "</big></big></big>"));
+				}
+            }else{
+                alert.SetMessage(message);
+            }
+
+
+            await Task.Run(() =>
+			{
+				var waitHandle = new AutoResetEvent(false);
+
+                if (tablet)
+                {
+                    if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
+                    {
+						alert.SetButton((int)(DialogButtonType.Positive), Html.FromHtml("<big><big>" + btn1 + "</big></big>",0), (sender, e) =>
+						{
+							val = true;
+							waitHandle.Set();
+						});
+
+						if (btn2 != null)
+						{
+							alert.SetButton((int)DialogButtonType.Negative, Html.FromHtml("<big><big>" + btn2 + "</big></big>",0), (sender, e) =>
+							{
+								val = false;
+								waitHandle.Set();
+							});							
+						}
+                    }else{
+						alert.SetButton((int)(DialogButtonType.Positive), Html.FromHtml("<big><big>" + btn1 + "</big></big>"), (sender, e) =>
+						{
+							val = true;
+							waitHandle.Set();
+						});
+						if (btn2 != null)
+						{
+							//Debug.WriteLine("message = <big><big>" + btn2 + "</big></big>");
+							alert.SetButton((int)DialogButtonType.Negative, Html.FromHtml("<big><big>" + btn2 + "</big></big>"), (sender, e) =>
+							{
+							  val = false;
+							  waitHandle.Set();
+							});							
+						}
+
+						
+                    }
+                }else{
+					alert.SetButton((int)(DialogButtonType.Positive), btn1, (sender, e) =>
+					{
+						val = true;
+						waitHandle.Set();
+					});
+
+					if (btn2 != null)
+					{
+						alert.SetButton((int)DialogButtonType.Negative, btn2, (sender, e) =>
+						{
+							val = false;
+							waitHandle.Set();
+						});
+					}
+                }
+
+				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+				{
+					alert.Show();
+                }));
+				waitHandle.WaitOne();
+			});
+			alert.Dispose();
+
+			//alert.Show();
+
+            return val;
+        }
+
 
 		public void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
 							   String FindingDetails, String HeartRate, String TestDuration = "30s")
@@ -137,9 +242,11 @@ namespace MyHealthVitals.Droid
 
 		public byte[] saveToPdf(PlotModel ecgModel, String fileName, string name)
 		{
+
+			//Show_Dialog msg = new Show_Dialog(Xamarin.Forms.Forms.Context as Activity);
+			//msg.ShowDialog("Error", "Message");
+
 			ecgModel.Annotations.Clear();
-
-
 
 			this.name = name;
 			this.fileName = fileName + ".pdf";
@@ -194,11 +301,11 @@ namespace MyHealthVitals.Droid
 				asset.CopyTo(dest);
 			if (checkFileExist(filePath))
 			{
-				Debug.WriteLine("GIF file exists");
+				//Debug.WriteLine("GIF file exists");
 			}
 			else 
 			{
-				Debug.WriteLine("GIF file does NOT exist");
+				//Debug.WriteLine("GIF file does NOT exist");
 			}
 			Task_vars.gifpath = filePath;
 		}
@@ -346,7 +453,7 @@ namespace MyHealthVitals.Droid
 		{
 			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 			filePath = Path.Combine(documentsPath, fileName);
-			System.Diagnostics.Debug.WriteLine("IF EXIST filePath == " + filePath);
+			//System.Diagnostics.Debug.WriteLine("IF EXIST filePath == " + filePath);
 
 			return File.Exists(filePath);
 		}
@@ -375,106 +482,8 @@ namespace MyHealthVitals.Droid
                 {
                     //use it as closedArgs.Text
                     Debug.WriteLine("my text: " + closedArgs.Text);
-                    var input = closedArgs.Text;
-					//send the email
-
-					//var email = new Intent(Android.Content.Intent.ActionSendto)
-					//new string[] { closedArgs.Text } );
-
-					//email.PutExtra(Android.Content.Intent.ExtraCc,
-					//new string[] { "person3@xamarin.com" });
-
-					//email.PutExtra(Android.Content.Intent.ExtraSubject, "Hello Email");
-
-					//email.PutExtra(Android.Content.Intent.ExtraText,
-					//"Hello from Xamarin.Android");
-					/*
-                    try
-                    {
-                        //String filename = "contacts_sid.vcf";
-                        //File filelocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), filename);
-                        //Android.Net.Uri path = Android.Net.Uri.FromFile()
-                        //Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                        // set the type to 'email'
-                        //emailIntent.setType("vnd.android.cursor.dir/email");
-                        //String to[] = { closedArgs.Text };
-
-                        // the attachment
-                        //emailIntent.putExtra(Intent.EXTRA_STREAM, path);
-                        // the mail subject
-                        //emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                        //startActivity(Intent.createChooser(emailIntent, "Send email..."));
-
-
-                        var intent = new Intent(Intent.ActionSendto);
-                        string subject = "ECG Report";
-                        string filelocation = filePathNEW;
-                        string sayHi = "Hi  " + "\n\n\tThe above named party has sent you a copy of his most recent ECG.\n\n-- ISeeYouCare";
-
-                        Email(Forms.Context, closedArgs.Text, closedArgs.Text, subject, sayHi, filelocation);
-
-
-                        intent.SetType("message/rfc822");
-                        intent.PutExtra(Intent.ExtraEmail, new string[] { closedArgs.Text });
-						intent.PutExtra(Intent.ExtraSubject, "ECG Report");
-						intent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse("file://" + filelocation));
-                        intent.PutExtra(Intent.ExtraText, sayHi);
-						intent.SetData(Android.Net.Uri.Parse("mailto:"));
-                        intent.AddFlags(ActivityFlags.NewTask);
-                        Android.App.Application.Context.StartActivity(Intent.CreateChooser(intent, "Send email..."));
-
-
-				}
-                    catch (Exception e)
-                    {
-                        //System.out.println("is exception raises during sending mail" + e);
-                        Debug.WriteLine("email exception msg: " + e.Message);
-                    }
-*/
-
-					//await setEmailClient();
-					System.Diagnostics.Debug.WriteLine("showDialog");
-
-                    //string message = "If yes, please enter an email address.";
-
-                    /*
-                    UIAlertView alert = new UIAlertView("Email this report", message, null, "NO", "YES");
-                    //      alert.Message =
-                    alert.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
-
-                    alert.ShouldEnableFirstOtherButton = (UIAlertView alertView) =>
-                    {
-                        var txt = alertView.GetTextField(0).Text;
-                        return txt.Length > 6 && txt.Contains("@");
-                    };
-                    UITextField alertTextField = alert.GetTextField(0);
-                    alertTextField.KeyboardType = UIKeyboardType.EmailAddress;
-                    alert.Show();
-                    alert.Clicked += async (object s, UIButtonEventArgs ev) =>
-                    {
-                        System.Diagnostics.Debug.WriteLine("EV.BUTTON INDEX " + ev.ButtonIndex);
-
-                        if (ev.ButtonIndex == 1)
-                        {
-                            var internetStatus = Reachability.IsNetworkAvailable();
-
-                            System.Diagnostics.Debug.WriteLine("internetStatus" + internetStatus);
-                            if (!internetStatus)
-                            {
-                                var alert1 = new UIAlertView()
-                                {
-                                    Title = "No internet",
-                                    Message = "Please check wifi or data connection."
-                                };
-                                alert1.AddButton("OK");
-                                alert1.AlertViewStyle = UIAlertViewStyle.Default;
-
-                                alert1.Show();
-                                return;
-                            }*/
-
-                    //string input = alert.GetTextField(0).Text;
-                    //      emailContent = alert.GetTextField(1).Text;
+                    var input = closedArgs.Text.Trim();
+					
                     if (input.Contains("@"))
                     {
                         sentEmail(fileNameECG, input);
@@ -536,12 +545,12 @@ namespace MyHealthVitals.Droid
 
 		async public Task<bool> sentEmail(string fileName, string addressEmail)
 		{
-			System.Diagnostics.Debug.WriteLine("SendMail fileName=    " + fileName);
+			//System.Diagnostics.Debug.WriteLine("SendMail fileName=    " + fileName);
 
 			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
 			filePathNEW = Path.Combine(documentsPath, fileName);
-			System.Diagnostics.Debug.WriteLine(" filePathNEW  = " + filePathNEW);
+			//System.Diagnostics.Debug.WriteLine(" filePathNEW  = " + filePathNEW);
 
 			message.From.Add(new MailboxAddress("ICUCare", "icucaredonotreplay@gmail.com"));
 			message.To.Add(new MailboxAddress("", addressEmail));
@@ -558,13 +567,13 @@ namespace MyHealthVitals.Droid
 			// Now we just need to set the message body and we're done
 			message.Body = builder.ToMessageBody();
 			String toastText = "Your ECG Report has been sent to " + addressEmail;
-			System.Diagnostics.Debug.WriteLine(" SendMail  SmtpClient ");
+			//System.Diagnostics.Debug.WriteLine(" SendMail  SmtpClient ");
 
 			using (client)//var client = new MailKit.Net.Smtp.SmtpClient())
 			{
 				
                 //  client.Connect("smtp.gmail.com", 587, false);
-                System.Diagnostics.Debug.WriteLine(" SendMail  Connect " + client.IsConnected);
+                //System.Diagnostics.Debug.WriteLine(" SendMail  Connect " + client.IsConnected);
                 // Note: since we don't have an OAuth2 token, disable
                 // the XOAUTH2 authentication mechanism.
 
@@ -603,13 +612,13 @@ namespace MyHealthVitals.Droid
                 client.Authenticate("icucaredonotreplay@gmail.com", "Start12345");
                 try
                 {
-                    System.Diagnostics.Debug.WriteLine(" SendMail  SendAsync before ");
+                    //System.Diagnostics.Debug.WriteLine(" SendMail  SendAsync before ");
                     //      System.Diagnostics.Debug.WriteLine("showDialog client.Verify(input);=    " + client.Verify(addressEmail));
 
                     //await client.SendAsync(message);
                     await client.SendAsync(message);
 
-                    System.Diagnostics.Debug.WriteLine(" SendMail  SendAsync end ");
+                    //System.Diagnostics.Debug.WriteLine(" SendMail  SendAsync end ");
                     File.Delete(filePathNEW);
                 }
                 catch (SmtpCommandException ex)

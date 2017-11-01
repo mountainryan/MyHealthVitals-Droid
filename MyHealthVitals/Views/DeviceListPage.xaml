@@ -6,31 +6,30 @@
 		x:Class="MyHealthVitals.DeviceListPage">
 
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Log Out" Clicked="btnLogOutClicked">	</ToolbarItem>
+		<ToolbarItem x:Name="tb" Text="Log Out" Clicked="btnLogOutClicked">	</ToolbarItem>
 	</ContentPage.ToolbarItems>
 	
 	<ContentPage.Content>
 		<RelativeLayout>
-			<StackLayout VerticalOptions="Center" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="15">
+			<StackLayout x:Name="page" VerticalOptions="Center" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="40">
 				<StackLayout Spacing="0" HorizontalOptions="Center">
 					<Button x:Name = "PC300" Clicked="btnPC300clicked" BackgroundColor = "Transparent"  Image="PC300Monitor.png"/>
-					<local:MyButton x:Name="btn300" BackgroundColor = "Transparent" Font="Middle" Clicked="btnPC300clicked" TextColor="White" WidthRequest="150" Text="BP, Pulse, SpO2, Glucose, ECG"/>
+					<local:MyButton x:Name="btn300" FontSize="16" BackgroundColor = "Transparent" Font="Middle" Clicked="btnPC300clicked" TextColor="White" WidthRequest="150" Text="BP, Pulse, SpO2, Glucose, ECG"/>
 					<!--<Image Source="imgBLEOff.png" HeightRequest="22" WidthRequest="22" />-->
 				</StackLayout>
-				<StackLayout HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
+				<StackLayout x:Name="middle" Spacing="40" HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
 					<StackLayout >
 						<Button x:Name = "Spiromter" Clicked="btnSpirometerClicked" WidthRequest ="150" BackgroundColor = "Transparent" Image="Spiromter.png" />
-
-						<local:MyButton x:Name="btnspi" Clicked="btnSpirometerClicked"  BackgroundColor = "Transparent" Font="Left" TextColor="White"  Text="Spirometer" />
+						<local:MyButton x:Name="btnspi" FontSize="16" Clicked="btnSpirometerClicked"  BackgroundColor = "Transparent" Font="Left" TextColor="White"  Text="Spirometer" />
 					</StackLayout>
 					<StackLayout >
 						<Button x:Name = "PC100" Clicked="btnPC100Clicked" WidthRequest ="150" BackgroundColor = "Transparent" Image="PC100Monitor.png" />
-						<local:MyButton x:Name="btn100" Clicked="btnPC100Clicked"  BackgroundColor = "Transparent" Font="Middle" TextColor="White"  Text="BP, Pulse, SpO2" />
+						<local:MyButton x:Name="btn100" FontSize="16" Clicked="btnPC100Clicked"  BackgroundColor = "Transparent" Font="Middle" TextColor="White"  Text="BP, Pulse, SpO2" />
 					</StackLayout>
 				</StackLayout>
 				<StackLayout Spacing="0" HorizontalOptions="Center">
 					<Button  x:Name = "weightScales" Clicked="btnScaleClicked"  BackgroundColor = "Transparent" Image="WeightScales.png"/>
-					<local:MyButton x:Name="btnweight" Clicked="btnScaleClicked"  BackgroundColor = "Transparent" Font="Middle" TextColor="White" WidthRequest="150" Text="Weight, BMI Scale" />
+					<local:MyButton x:Name="btnweight" FontSize="16" Clicked="btnScaleClicked"  BackgroundColor = "Transparent" Font="Middle" TextColor="White" WidthRequest="150" Text="Weight, BMI Scale" />
 				</StackLayout>
 			</StackLayout>
 

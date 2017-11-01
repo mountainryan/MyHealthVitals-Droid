@@ -17,21 +17,31 @@ namespace MyHealthVitals
 			InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-				itemdate.FontSize = 30;
-				itemdate.WidthRequest *= 2;
-				firstItem.FontSize = 30;
-				firstItem.WidthRequest *= 2;
-				secondItem.FontSize = 30;
-				secondItem.WidthRequest *= 2;
-				underline.WidthRequest *= 2;
+				itemdate.FontSize = 30 * Screensize.heightfactor;
+				itemdate.WidthRequest = 400 * Screensize.widthfactor;
+				firstItem.FontSize = 30 * Screensize.heightfactor;
+				firstItem.WidthRequest = 180 * Screensize.widthfactor;
+				secondItem.FontSize = 30 * Screensize.heightfactor;
+				secondItem.WidthRequest = 180 * Screensize.widthfactor;
+				underline.WidthRequest = 100 * Screensize.widthfactor;
                 //layoutholder.HeightRequest *= 1.5;
 			}
+            else if (Device.Idiom == TargetIdiom.Phone)
+            {
+				itemdate.FontSize *= Screensize.heightfactor;
+				itemdate.WidthRequest *= Screensize.widthfactor;
+				firstItem.FontSize *= Screensize.heightfactor;
+				firstItem.WidthRequest *= Screensize.widthfactor;
+				secondItem.FontSize *= Screensize.heightfactor;
+				secondItem.WidthRequest *= Screensize.widthfactor;
+				underline.WidthRequest *= Screensize.widthfactor;
+            }
 			secondItem.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnLabelClicked()));
 		}
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
-			Debug.WriteLine("ListCellTwoItem OnAppearing");
+			//Debug.WriteLine("ListCellTwoItem OnAppearing");
 			if (secondItem.Text != null && (secondItem.Text.Equals("No Report") || secondItem.Text.Equals("Saved")))
 			{
 				underline.IsVisible = true;
@@ -43,11 +53,16 @@ namespace MyHealthVitals
 		}
 		async void OnLabelClicked()
 		{
-			//	String fileName;
-			fileName = Regex.Replace(itemdate.Text, @"\s+", "");//dateTime.Trim(' ')
+            //	String fileName;
+            itemDate = itemdate.Text;
+            DateTime iDate = Convert.ToDateTime(itemDate);
+            String date_nosec = iDate.ToString("MM/dd/yyyy hh:mm tt");
+
+			fileName = Regex.Replace(date_nosec, @"\s+", "");//dateTime.Trim(' ')
 			fileName = Regex.Replace(fileName, @"[/:]+", "");
 			Debug.WriteLine("OnLabelClicked.fileName==" + fileName);
-			itemDate = itemdate.Text;
+			
+            Task_vars.ecgdate = Convert.ToDateTime(itemdate.Text);
 			if (secondItem.Text.Equals("No Report"))
 			{
 				//secondItem.TextColor = Color.Blue;

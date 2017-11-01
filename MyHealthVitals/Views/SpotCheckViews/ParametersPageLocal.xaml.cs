@@ -26,6 +26,7 @@ namespace MyHealthVitals
 		public static Reading[] allReadings;
 		public ParametersPageLocal()
 		{
+            //label.FontSize *= Screensize.heightfactor;
 			InitializeComponent();
             //sync data with cl
 			sycnwithCloud();

@@ -7,6 +7,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using System.Diagnostics;
+using Android.Support.V7.AppCompat;
 
 namespace MyHealthVitals.Droid
 {
@@ -20,13 +22,33 @@ namespace MyHealthVitals.Droid
 
 			base.OnCreate(bundle);
 
+			var metrics = Resources.DisplayMetrics;
+			var widthInDp = ConvertPixelsToDp(metrics.WidthPixels);
+			var heightInDp = ConvertPixelsToDp(metrics.HeightPixels);
+
+
+
+            System.Diagnostics.Debug.WriteLine("Pixel Width = "+metrics.WidthPixels);
+            System.Diagnostics.Debug.WriteLine("Pixel Height = "+metrics.HeightPixels);
+            System.Diagnostics.Debug.WriteLine("DP Width = "+widthInDp);
+            System.Diagnostics.Debug.WriteLine("DP Height = "+heightInDp);
+
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 
 			OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();
 
-			LoadApplication(new App());
-
-
+			LoadApplication(new App(widthInDp, heightInDp));
 		}
+		private int ConvertPixelsToDp(float pixelValue)
+		{
+			var dp = (int)((pixelValue) / Resources.DisplayMetrics.Density);
+            return dp;
+		}
+
+	}
+	public class Screensize
+	{
+        int dpwidth;
+        int dpheight;
 	}
 }

@@ -4,10 +4,10 @@ namespace MyHealthVitals
 {
 	public partial class App : Application
 	{
-		public App()
+		public App(int dpwidth, int dpheight)
 		{
 			InitializeComponent();
-			MainPage = new LoginPage();
+			MainPage = new LoginPage(dpwidth, dpheight);
 		}
 
 		protected override void OnStart()

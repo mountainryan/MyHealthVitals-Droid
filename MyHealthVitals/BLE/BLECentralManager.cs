@@ -14,8 +14,6 @@ namespace MyHealthVitals
 		void reconnectToDevice(IDevice device);
 
 
-
-
 		//object uiController;
 
 	}
@@ -70,9 +68,14 @@ namespace MyHealthVitals
 
 		public void connectToDevice(String deviceName, object controller)
 		{
+			var ble_state = CrossBluetoothLE.Current.State;
+			Debug.WriteLine("BLE state : " + ble_state);
+            string BLEstate = ble_state.ToString();
+
+
 			Debug.WriteLine("connectToDevice");
 			scanningDeviceName = deviceName;
-
+             
 			switch (deviceName)
 			{
 				case "BLE-MSA":
@@ -98,45 +101,77 @@ namespace MyHealthVitals
 					break;
 			}
 
-			if (!checkIfDeviceScanned(deviceName))
+			if (BLEstate == "Off")
 			{
-				// the device is not in the scanned list now scan to find the desired device and then connnect
-				Debug.WriteLine("StartScanningForDevicesAsync : " + deviceName);
-				CrossBluetoothLE.Current.Adapter.StartScanningForDevicesAsync();
-
-				//if (deviceName == "PC_300SNT") spotServHandler.uiController.ShowMessageOnUI("Searching device...", false);
-
-			}
-			else
-			{
-				Debug.WriteLine("reconnectToDevice : " + deviceName);
-
+				//throw a msg to turn on Bluetooth
+				Debug.WriteLine("Your Bluetooth is off!");
 				switch (deviceName)
 				{
 					case "BLE-MSA":
 						{
-							spiroServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+							//can't show spirometer message
+							spiroServHandler.uiController.updateDeviceStateOnUI("Bluetooth is turned off.", false);
 							break;
 						}
-
 					case "PC_300SNT":
 						{
-							spotServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+							spotServHandler.uiController.ShowConcetion("Bluetooth is turned off.", false);
 							break;
 						}
-
 					case "PC-100":
 						{
-							pc100ServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+							pc100ServHandler.uiController.ShowConcetion("Bluetooth is turned off.", false);
 							break;
 						}
 					case "eBody-Scale":
-						scaleServHandle.reconnectToDevice(getCurrentDevice(deviceName));
-						break;
-					default:
-						break;
+						{
+							scaleServHandle.uiController.ShowConcetion("Bluetooth is turned off.", false);
+							break;
+						}
+					default: break;
 				}
-			}
+            }else{
+				if (!checkIfDeviceScanned(deviceName))
+				{
+					// the device is not in the scanned list now scan to find the desired device and then connnect
+					Debug.WriteLine("StartScanningForDevicesAsync : " + deviceName);
+					CrossBluetoothLE.Current.Adapter.StartScanningForDevicesAsync();
+
+					//if (deviceName == "PC_300SNT") spotServHandler.uiController.ShowMessageOnUI("Searching device...", false);
+
+				}
+				else
+				{
+					Debug.WriteLine("reconnectToDevice : " + deviceName);
+
+					switch (deviceName)
+					{
+						case "BLE-MSA":
+							{
+								spiroServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+								break;
+							}
+
+						case "PC_300SNT":
+							{
+								spotServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+								break;
+							}
+
+						case "PC-100":
+							{
+								pc100ServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+								break;
+							}
+						case "eBody-Scale":
+							scaleServHandle.reconnectToDevice(getCurrentDevice(deviceName));
+							break;
+						default:
+							break;
+					}
+				}
+            }
+
 		}
 
 		private IDevice getCurrentDevice(String deviceName)
@@ -206,10 +241,7 @@ namespace MyHealthVitals
 						Debug.WriteLine("BLE connect basic ex msg: " + ex.Message);
 					}
 
-				}));
-                    
-				
-				
+				}));			
 				
 
 
@@ -218,8 +250,7 @@ namespace MyHealthVitals
 			}
             //var BLE_status = CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device).Status;
             //Debug.WriteLine("BLE status : "+BLE_status.ToString());
-            var ble_state = CrossBluetoothLE.Current.State;
-            Debug.WriteLine("BLE state : "+ble_state);
+
 		}
 
         public void SendConnError (string DeviceName)

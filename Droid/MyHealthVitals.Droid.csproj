@@ -136,6 +136,9 @@
     <Compile Include="EntryPopup.cs" />
     <Compile Include="EntryPopupLoader.cs" />
     <Compile Include="IEntryPopupLoader.cs" />
+    <Compile Include="CustomToolBar.cs" />
+    <Compile Include="Helpers\ShowDialog.cs" />
+    <Compile Include="CustomSwitch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -189,6 +192,8 @@
     <AndroidResource Include="Resources\drawable-hdpi\deleteicon_tab.png" />
     <AndroidResource Include="Resources\drawable\icucarellc_phone.png" />
     <AndroidResource Include="Resources\drawable\CustomButtonBackground2.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\imgPrevBlue_pad.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\imgNextBlue_pad.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />

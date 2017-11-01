@@ -22,28 +22,60 @@ namespace MyHealthVitals
 			InitializeComponent();
 			// initial rendering previously saved data
 			if (Device.Idiom == TargetIdiom.Tablet)
-				{
-					layout.Spacing *= 2;
-					imgProfile.WidthRequest *= 2;
-					imgProfile.HeightRequest *= 2;
-					lblName.FontSize *= 1.5;
-					lblEmail.FontSize *= 1.5;
-					lblGender.FontSize *= 1.5;
-					lblBirthdate.FontSize *= 1.5;
-					lblAge.FontSize *= 1.5;
-					lblHeight.FontSize *= 1.5;
-					lblWeight.FontSize *= 1.5;
-					lblMobileNo.FontSize *= 1.5;
-				gender.FontSize *= 1.5;
-				bid.FontSize *= 1.5;
-				age.FontSize *= 1.5;
-				height.FontSize *= 1.5;
-				weight.FontSize *= 1.5;
-				mobileno.FontSize *= 1.5;
-					rem.FontSize *= 1.5;
-					auto.FontSize *= 1.5;
-					save.FontSize *= 1.5;
-				}
+			{
+				layout.Spacing = 50 * Screensize.heightfactor;
+                layout.Padding = new Thickness(15 * Screensize.heightfactor);
+				imgProfile.WidthRequest = 160 * Screensize.widthfactor;
+				imgProfile.HeightRequest = 192 * Screensize.heightfactor;
+				lblName.FontSize = 32 * Screensize.heightfactor;
+				lblEmail.FontSize = 32 * Screensize.heightfactor;
+				lblGender.FontSize = 32 * Screensize.heightfactor;
+				lblBirthdate.FontSize = 32 * Screensize.heightfactor;
+				lblAge.FontSize = 32 * Screensize.heightfactor;
+				lblHeight.FontSize = 32 * Screensize.heightfactor;
+				lblWeight.FontSize = 32 * Screensize.heightfactor;
+				lblMobileNo.FontSize = 32 * Screensize.heightfactor;
+				gender.FontSize = 32 * Screensize.heightfactor;
+				bid.FontSize = 32 * Screensize.heightfactor;
+				age.FontSize = 32 * Screensize.heightfactor;
+				height.FontSize = 32 * Screensize.heightfactor;
+				weight.FontSize = 32 * Screensize.heightfactor;
+				mobileno.FontSize = 32 * Screensize.heightfactor;
+				rem.FontSize = 32 * Screensize.heightfactor;
+				auto.FontSize = 32 * Screensize.heightfactor;
+				save.FontSize = 32 * Screensize.heightfactor;
+                save.HeightRequest = 100 * Screensize.heightfactor;
+                savecont.Margin = new Thickness(50*Screensize.widthfactor, -180*Screensize.heightfactor, 50*Screensize.widthfactor, 0);
+                savecont.HeightRequest = 180 * Screensize.heightfactor;
+                savecont.Spacing = 60 * Screensize.heightfactor;
+                //Debug.WriteLine("Height of savecont = " + savecont.HeightRequest);
+                //Debug.WriteLine("Height of cpyrt = " + cpyrt.HeightRequest);
+
+			}
+            else if (Device.Idiom == TargetIdiom.Phone)
+            {
+                layout.Spacing *= Screensize.heightfactor;
+                layout.Padding = new Thickness(15 * Screensize.heightfactor);
+				imgProfile.WidthRequest *= Screensize.widthfactor;
+				imgProfile.HeightRequest *= Screensize.heightfactor;
+				lblName.FontSize *= Screensize.heightfactor;
+				lblEmail.FontSize *= Screensize.heightfactor;
+				lblGender.FontSize *= Screensize.heightfactor;
+				lblBirthdate.FontSize *= Screensize.heightfactor;
+				lblAge.FontSize *= Screensize.heightfactor;
+				lblHeight.FontSize *= Screensize.heightfactor;
+				lblWeight.FontSize *= Screensize.heightfactor;
+				lblMobileNo.FontSize *= Screensize.heightfactor;
+				gender.FontSize *= Screensize.heightfactor;
+				bid.FontSize *= Screensize.heightfactor;
+				age.FontSize *= Screensize.heightfactor;
+				height.FontSize *= Screensize.heightfactor;
+				weight.FontSize *= Screensize.heightfactor;
+				mobileno.FontSize *= Screensize.heightfactor;
+				rem.FontSize *= Screensize.heightfactor;
+				auto.FontSize *= Screensize.heightfactor;
+				save.FontSize *= Screensize.heightfactor;
+            }
 			switchAutoLogin.IsToggled = Demographics.sharedInstance.isAutoLogin;
 			switchRemUsername.IsToggled = Demographics.sharedInstance.isRememberUsername;
 

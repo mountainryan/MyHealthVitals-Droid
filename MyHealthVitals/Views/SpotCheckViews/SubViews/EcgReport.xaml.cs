@@ -17,6 +17,7 @@ using Polly;
 
 namespace MyHealthVitals
 {
+    
     public class FileData
     {
         public long? Id { get; set; }
@@ -51,6 +52,7 @@ namespace MyHealthVitals
 
 		public EcgReport(String filename, string patientName, bool rightButton = false, MainPage maincontrol = null)
 		{
+			
 			Debug.WriteLine("EcgReport()");
 			this.fileName = filename;
             this.mainControl = maincontrol;
@@ -219,10 +221,17 @@ namespace MyHealthVitals
 		{
 			base.OnAppearing();
 
-            if (Device.Idiom == TargetIdiom.Tablet)
-            {
-                plotView.HeightRequest *= 2;
-            }
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				reportButton.FontSize = 36 * Screensize.heightfactor;
+				reportButton.HeightRequest = 80 * Screensize.heightfactor;
+				plotView.HeightRequest = 900 * Screensize.heightfactor;
+			}
+			else if (Device.Idiom == TargetIdiom.Phone)
+			{
+				plotView.HeightRequest *= Screensize.heightfactor;
+			}
+
             Debug.WriteLine("Defaultxaxis : " + graphModel_report.DefaultXAxis);
             Task.Delay(1).ContinueWith(_ => {});
             Debug.WriteLine("Defaultxaxis : " + graphModel_report.DefaultXAxis);
@@ -260,9 +269,9 @@ namespace MyHealthVitals
 			//public ToolbarItem(string name, string icon, Action activated, ToolbarItemOrder order = ToolbarItemOrder.Default, int priority = 0);
 			var goBack = new ToolbarItem
 			{
-				//Icon = "settings32.png",
-				Text = "Back",
-				//  Command = new Command((c,e) => this.OnBackButtonPressed(c,e)),
+				//Icon = "settings32.png", 
+				Text = "Back", 
+                //  Command = new Command((c,e) => this.OnBackButtonPressed(c,e)),
 			};
 			goBack.Clicked += async (object sender, EventArgs e) =>
 			{
@@ -270,7 +279,16 @@ namespace MyHealthVitals
 				if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt"))
 				{
 					message = "Do you want to save and email the report before leaving";
-					var ret = await DisplayAlert("Save and Email", message, "Yes", "No");
+                    bool ret;
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Save and Email", message, true, "Yes", "No");
+					}
+					else
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Save and Email", message, false, "Yes", "No");
+					}
+					//var ret = await DisplayAlert("Save and Email", message, "Yes", "No");
 					if (ret)
 					{
 						btnSaveClicked(null, null);
@@ -393,7 +411,7 @@ namespace MyHealthVitals
 
 		public void initializePlotModel()
 		{
-            Debug.WriteLine("countECGPacket : "+countECGPacket_report);
+            //Debug.WriteLine("countECGPacket : "+countECGPacket_report);
 
 			if (countECGPacket_report == 0 && graphModel_report.DefaultXAxis != null)
 			{
@@ -419,7 +437,7 @@ namespace MyHealthVitals
 			}
 			else
 			{
-				Debug.WriteLine("WHY!!!!!");
+				//Debug.WriteLine("WHY!!!!!");
 			}
 		}
 
@@ -444,7 +462,7 @@ namespace MyHealthVitals
 			{
 				DependencyService.Get<IFileHelper>().setEmailClient();
 			});
-			Device.BeginInvokeOnMainThread(() =>
+			Device.BeginInvokeOnMainThread(async () =>
 			{
 				byte[] retdata = DependencyService.Get<IFileHelper>().saveToPdf(graphModel_report, fileName, patientName);
 				Task_vars.ecgcontent = retdata;
@@ -459,7 +477,15 @@ namespace MyHealthVitals
 				}
 				else
 				{
-					DisplayAlert("Failure", "Can not export the ecg report.", "OK");
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Failure", "Can not export the ecg report.", true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Failure", "Can not export the ecg report.", false, "OK", null);
+					}
+					//await DisplayAlert("Failure", "Can not export the ecg report.", "OK");
 
 				}
 				if (mainControl != null) mainControl.setSavereportbutton();
@@ -484,7 +510,9 @@ namespace MyHealthVitals
 
 			//build the file name
 			String filedate = Task_vars.ecgdate.ToString("MMddyyyy_HHmm") + ".pdf";
+            Debug.WriteLine("filedate = "+filedate);
 			String file_name = Task_vars.patient_name + "_ECGReport_" + filedate;
+            Debug.WriteLine("file_name = " + file_name);
 
 			ecgfile.Category = "Cardiology (ECG, EKGs, Stress Test, etc.)";
 			ecgfile.Content = Task_vars.ecgcontent;

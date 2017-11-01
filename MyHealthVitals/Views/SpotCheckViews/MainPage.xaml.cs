@@ -159,8 +159,14 @@ namespace MyHealthVitals
 			{
 				return;
 			}
-
-			var ret = await DisplayAlert(deviceName, "Do you want to take a measurement?", "Yes", "No");
+            bool ret;
+            if (Device.Idiom == TargetIdiom.Tablet)
+            {
+                ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, "Do you want to take a measurement?", true, "Yes", "No");
+            }else{
+                ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, "Do you want to take a measurement?", false, "Yes", "No");
+            }
+			//var ret = await DisplayAlert(deviceName, "Do you want to take a measurement?", "Yes", "No");
 			if (ret)
 			{
                 initializePlotModel();
@@ -209,7 +215,7 @@ namespace MyHealthVitals
 				graphModel.DefaultYAxis.IsZoomEnabled = false;
 				styleGraphModel(graphModel);
             }else{
-                Debug.WriteLine("WHY!!!!!");
+                //Debug.WriteLine("WHY!!!!!");
             }
         }
 
@@ -317,13 +323,29 @@ namespace MyHealthVitals
 				if (!isConnected && this.deviceName == "eBody-Scale")
 				{
 					//getLatestWeight(message);
-                    await DisplayAlert(deviceName, message, "OK");
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
+					}
+                    //await DisplayAlert(deviceName, message, "OK");
 				}
 				else
 				{
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
+					}
                     //if (this.deviceName != "eBody-Scale")
                     //{
-                        await DisplayAlert(deviceName, message, "OK");
+                        //await DisplayAlert(deviceName, message, "OK");
                     //}
 					
 				}
@@ -345,7 +367,15 @@ namespace MyHealthVitals
 				{
 					Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 					{
-						await DisplayAlert(this.deviceName, message, "OK");
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
+						}
+						else
+						{
+							var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
+						}
+						//await DisplayAlert(this.deviceName, message, "OK");
 					}));
 				}
 				//  
@@ -354,8 +384,19 @@ namespace MyHealthVitals
 			{
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
+                    var message_pad = message;
+                    message_pad += "<br/> Do you want to Save ECG data?";
 					message += "\n Do you want to Save ECG data?";
-					var ret = await DisplayAlert(title, message, "Yes", "No");
+                    bool ret;
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert(title, message_pad, true, "Yes", "No");
+					}
+					else
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert(title, message, false, "Yes", "No");
+					}
+                    //var ret = await DisplayAlert(title, message, "Yes", "No");
 					Debug.WriteLine("ret === " + ret);
 					if (ret)
 					{
@@ -409,7 +450,15 @@ namespace MyHealthVitals
 			{
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
-					await DisplayAlert(title, message, "OK");
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert(title, message, true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert(title, message, false, "OK", null);
+					}
+					//await DisplayAlert(title, message, "OK");
 					if (title.Equals("Measure Interrupted"))
 					{
                         Debug.WriteLine("Measure Interrupted!");
@@ -468,8 +517,19 @@ namespace MyHealthVitals
 					vitalsData.glucose.MetricValue = gluReading;
 				}
 
-				var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n "
-											 + "GLU:  " + vitalsData.glucose.MetricValue + unit, "Yes", "No");
+                bool ret;
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?<br/> "
+											 + "GLU:  " + vitalsData.glucose.MetricValue + unit, true, "Yes", "No");
+				}
+				else
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?\n "
+											 + "GLU:  " + vitalsData.glucose.MetricValue + unit, false, "Yes", "No");
+				}
+				//var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n "
+											// + "GLU:  " + vitalsData.glucose.MetricValue + unit, "Yes", "No");
 				if (!ret)
 				{
 					return;
@@ -511,8 +571,19 @@ namespace MyHealthVitals
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
 					string message = (vitalsData.spo2 == null ? "" : "SpO2: " + vitalsData.spo2.EnglishValue) + (vitalsData.bpm == null ? "" : "  Bpm: " + vitalsData.bpm.EnglishValue);
-					var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
-					if (ret)
+					bool ret;
+					//var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?<br/> "+message, true, "Yes", "No");
+					}
+					else
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?\n " + message, false, "Yes", "No");
+					}
+
+
+                    if (ret)
 					{
 						vitalsData.sendToServer_SPO2_PI_BPM();
 					}
@@ -543,9 +614,18 @@ namespace MyHealthVitals
 			{
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
-					string message = "Temperature: " + temperature.ToString() + "°C / " + ConvertFahrenheitToCelsius((double)this.vitalsData.temperature.EnglishValue) + "°F";
-					var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
-					if (ret)
+					string message = "Temperature: " + temperature.ToString() + "°F / " + ConvertFahrenheitToCelsius((double)this.vitalsData.temperature.EnglishValue) + "°C";
+                    bool ret;
+					//var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?<br/> " + message, true, "Yes", "No");
+					}
+					else
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?\n " + message, false, "Yes", "No");
+					}
+                    if (ret)
 					{
 						vitalsData.sendToServerTemperature();
 					}
@@ -737,7 +817,7 @@ namespace MyHealthVitals
 		{
 			try
 			{
-                Debug.WriteLine("countECGPacket = "+countECGPacket);
+                //Debug.WriteLine("countECGPacket = "+countECGPacket);
 				if (Measure_Interruped)
 				{
                     Debug.WriteLine("Measure Interrupted.");
@@ -847,79 +927,85 @@ namespace MyHealthVitals
 
 		private void initBpmWaveForm()
 		{
-			Debug.WriteLine("initBpmWaveForm");
-			if (graphModel == null) return;
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+            {
+                Debug.WriteLine("initBpmWaveForm");
+                if (graphModel == null) return;
 
-			if (graphModel.DefaultXAxis != null)
-			{
-				Debug.WriteLine("initBpmWaveForm ing");
-				//initBpm = false;
-				pulseTime = 0.0f;
-				graphModel.DefaultXAxis.IsPanEnabled = false;
-				graphModel.LegendTitle = "Pulse";
+                if (graphModel.DefaultXAxis != null)
+                {
+                    Debug.WriteLine("initBpmWaveForm ing");
+                    //initBpm = false;
+                    pulseTime = 0.0f;
+                    graphModel.DefaultXAxis.IsPanEnabled = false;
+                    graphModel.LegendTitle = "Pulse";
 
-				graphModel.DefaultYAxis.Minimum = -10;
-				graphModel.DefaultYAxis.Maximum = 265;
+                    graphModel.DefaultYAxis.Minimum = -10;
+                    graphModel.DefaultYAxis.Maximum = 265;
 
-				xMin = 0;
-				graphModel.DefaultXAxis.Minimum = xMin;
-				graphModel.DefaultXAxis.Maximum = xMin + 3.0;
-				if (lineSerie != null) lineSerie.Points.Clear();
-				graphModel.InvalidatePlot(true);
-				graphModel.DefaultXAxis.IsZoomEnabled = false;
-				graphModel.DefaultYAxis.IsZoomEnabled = false;
-			}
+                    xMin = 0;
+                    graphModel.DefaultXAxis.Minimum = xMin;
+                    graphModel.DefaultXAxis.Maximum = xMin + 3.0;
+                    if (lineSerie != null) lineSerie.Points.Clear();
+                    graphModel.InvalidatePlot(true);
+                    graphModel.DefaultXAxis.IsZoomEnabled = false;
+                    graphModel.DefaultYAxis.IsZoomEnabled = false;
+                }
+            }));
 		}
 		public void updateBpmWaveform(int bpm)
 		{
 			if (graphModel == null) return;
 
-			try
-			{
-				if (initBpm && graphModel.DefaultXAxis != null)
-				{
-					Debug.WriteLine("updateBpmWaveform initBpmWaveForm ing");
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+            {
+                try
+                {
+                    if (initBpm && graphModel.DefaultXAxis != null)
+                    {
+                        Debug.WriteLine("updateBpmWaveform initBpmWaveForm ing");
 
-					initBpm = false;
-					pulseTime = 0.0f;
-					graphModel.LegendTitle = "Pulse";
+                        initBpm = false;
+                        pulseTime = 0.0f;
+                        graphModel.LegendTitle = "Pulse";
 
-					graphModel.DefaultYAxis.Minimum = -10;
-					graphModel.DefaultYAxis.Maximum = 265;
+                        graphModel.DefaultYAxis.Minimum = -10;
+                        graphModel.DefaultYAxis.Maximum = 265;
 
-					xMin = 0;
-					graphModel.DefaultXAxis.Minimum = xMin;
-					graphModel.DefaultXAxis.Maximum = xMin + 3.0;
+                        xMin = 0;
+                        graphModel.DefaultXAxis.Minimum = xMin;
+                        graphModel.DefaultXAxis.Maximum = xMin + 3.0;
 
-					lineSerie.Points.Clear();
-					graphModel.DefaultXAxis.IsPanEnabled = false;
+                        lineSerie.Points.Clear();
+                        graphModel.DefaultXAxis.IsPanEnabled = false;
 
-					graphModel.InvalidatePlot(true);
-					//graphModel.DefaultXAxis.IsZoomEnabled = false;
-					//graphModel.DefaultYAxis.IsZoomEnabled = false;
-				}
+                        graphModel.InvalidatePlot(true);
+                        //graphModel.DefaultXAxis.IsZoomEnabled = false;
+                        //graphModel.DefaultYAxis.IsZoomEnabled = false;
+                    }
 
-				//  Debug.WriteLine("pulseTime = " + pulseTime);
-				//  Debug.WriteLine(" graphModel.DefaultXAxis.Maximum = " +  graphModel.DefaultXAxis.Maximum);
-				if (pulseTime > graphModel.DefaultXAxis.Maximum)
-				{
-					lineSerie.Points.Clear();
-					xMin = pulseTime;
-					graphModel.DefaultXAxis.Minimum = xMin;
-					graphModel.DefaultXAxis.Maximum = xMin + 3.0;
-				}
+                    //  Debug.WriteLine("pulseTime = " + pulseTime);
+                    //  Debug.WriteLine(" graphModel.DefaultXAxis.Maximum = " +  graphModel.DefaultXAxis.Maximum);
+                    if (pulseTime > graphModel.DefaultXAxis.Maximum)
+                    {
+                        lineSerie.Points.Clear();
+                        xMin = pulseTime;
+                        graphModel.DefaultXAxis.Minimum = xMin;
+                        graphModel.DefaultXAxis.Maximum = xMin + 3.0;
+                    }
 
-				pulseTime = pulseTime + 0.02f;
-				//  Debug.WriteLine("lineSerie.point.add  bpm = " +bpm);
-				if (bpm != 0)
-					lineSerie.Points.Add(new DataPoint(pulseTime, bpm));
+                    pulseTime = pulseTime + 0.02f;
+                    //  Debug.WriteLine("lineSerie.point.add  bpm = " +bpm);
+                    if (bpm != 0)
+                        lineSerie.Points.Add(new DataPoint(pulseTime, bpm));
 
-				graphModel.InvalidatePlot(true);
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine("Exception on updateting ui:" + ex.Message);
-			}
+                    graphModel.InvalidatePlot(true);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Exception on updateting ui:" + ex.Message);
+                }
+            }));
 		}
 
 		public void updatingPressureMeanTime(int pressure)
@@ -941,7 +1027,7 @@ namespace MyHealthVitals
 			this.vitalsData.bpm = new Reading(null, bpm, 3, false, null, null);
 			//this.vitalsData.bpSys = new Reading("Perfusion Index", perfusionIndex,2);
 
-			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
 				if (bpm == 0)
 				{
@@ -969,7 +1055,7 @@ namespace MyHealthVitals
 				{
 					lblPerfusionIndex.Text = "...";
 				}
-			});
+            }));
 			if (isBPMeasuring && !isupLoadedSPO2)
 			{
 
@@ -987,8 +1073,17 @@ namespace MyHealthVitals
 					Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 					{
 						string message = (vitalsData.spo2 == null ? "" : "SpO2: " + vitalsData.spo2.EnglishValue) + (vitalsData.bpm == null ? "" : "  Bpm: " + vitalsData.bpm.EnglishValue);
-						var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
-						if (ret)
+                        bool ret;
+						//var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?<br/> " + message, true, "Yes", "No");
+						}
+						else
+						{
+							ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?\n " + message, false, "Yes", "No");
+						}
+                        if (ret)
 						{
 							vitalsData.sendToServer_SPO2_PI_BPM();
 						}
@@ -1011,17 +1106,23 @@ namespace MyHealthVitals
 		public async void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm)
 		{
 			isBPMeasuring = true;
+
+            if (bpm == 9999)
+            {
+                BLECentralManager.sharedInstance.pc100ServHandler.getBPreading();
+            }
+
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
 				if (bpm != 0)
 				{
 					lblBpm.Text = bpm.ToString();
 				}
-				Debug.WriteLine("bpdia" + bpdia);
+				//Debug.WriteLine("bpdia" + bpdia);
 				lblDia.Text = (bpdia != 0 && bpdia != 170) ? bpdia.ToString() : "-";
 				lblSys.Text = bpsys != 0 ? bpsys.ToString() : "-";
 			});
-			Debug.WriteLine("bpsys = " + bpsys + ", dia  = " + bpdia + "  bpm =" + lblBpm);
+			//Debug.WriteLine("bpsys = " + bpsys + ", dia  = " + bpdia + "  bpm =" + bpm);
 			if (bpsys == 0 || bpdia == 0 || bpdia == 170 || bpm == 0)
 			{
 				return;
@@ -1031,7 +1132,15 @@ namespace MyHealthVitals
 			{
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
-					await DisplayAlert("Measuring Error", "Abnormal measurement results. bpsys= " + bpsys + "bpdia=" + bpdia, "OK");
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Error", "Abnormal measurement results. bpsys= " + bpsys + "bpdia= " + bpdia, true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Error", "Abnormal measurement results. bpsys= " + bpsys + "bpdia= " + bpdia, false, "OK", null);
+					}
+					//await DisplayAlert("Measuring Error", "Abnormal measurement results. bpsys= " + bpsys + "bpdia=" + bpdia, "OK");
 					lblBpm.Text = "-";
 					lblDia.Text = "-";
 					lblSys.Text = "-";
@@ -1042,7 +1151,16 @@ namespace MyHealthVitals
 				string message = "SYS: " + bpsys + " DIA: " + bpdia + " Bpm: " + bpm;
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
-					var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
+                    bool ret;
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?<br/> " + message, true, "Yes", "No");
+					}
+					else
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?\n " + message, false, "Yes", "No");
+					}
+					//var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
 					if (ret)
 					{
 						this.vitalsData.bpDia = new Reading("Diastolic", bpdia, 1, false, null, null);
@@ -1244,6 +1362,11 @@ namespace MyHealthVitals
 
 		void btnKgsClicked(Object sender, System.EventArgs e)
 		{
+            //var val = await DependencyService.Get<IFileHelper>().dispAlert("PC_300SNT","Do you want to take a measurement?", true, "Yes", "No");
+
+            //await DependencyService.Get<IFileHelper>().setEmailClient();
+            //Debug.WriteLine("alert value = "+val.ToString());
+
 			isKg = true;
 			btnKgs.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
 			btnLbs.TextColor = Color.Gray;
@@ -1262,7 +1385,16 @@ namespace MyHealthVitals
             Debug.WriteLine("latest weight msg:"+m);
 			string message = "Weight: " + (double)this.vitalsData.weight.EnglishValue + "Lbs / "
 							  + ConvertLBToKG((double)this.vitalsData.weight.EnglishValue) + "Kg";
-			var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
+            bool ret;
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?<br/> " + message, true, "Yes", "No");
+			}
+			else
+			{
+				ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?\n " + message, false, "Yes", "No");
+			}
+			//var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
 			if (!ret)
 			{
 				return;
@@ -1305,22 +1437,58 @@ namespace MyHealthVitals
 			if (diff < 1)
 			{
 				var myEmoji = "\U0001F60A";
-				await DisplayAlert("No Change", myEmoji + "Looking good.", "OK");
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					var val = await DependencyService.Get<IFileHelper>().dispAlert("No Change", myEmoji + "Looking good.", true, "OK", null);
+				}
+				else
+				{
+					var val = await DependencyService.Get<IFileHelper>().dispAlert("No Change", myEmoji + "Looking good.", false, "OK", null);
+				}
+				//await DisplayAlert("No Change", myEmoji + "Looking good.", "OK");
 			}
 			else if (weightReading > (double)this.vitalsData.weight.EnglishValue)
 			{
 				var myEmoji = "\U0001F600";
-				await DisplayAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", "OK");
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					var val = await DependencyService.Get<IFileHelper>().dispAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", true, "OK", null);
+				}
+				else
+				{
+					var val = await DependencyService.Get<IFileHelper>().dispAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", false, "OK", null);
+				}
+				//await DisplayAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", "OK");
 			}
 			else
 			{
 
 				var myEmoji = "\U0001F61F";
-				await DisplayAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", "OK");
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					var val = await DependencyService.Get<IFileHelper>().dispAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", true, "OK", null);
+				}
+				else
+				{
+					var val = await DependencyService.Get<IFileHelper>().dispAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", false, "OK", null);
+				}
+				//await DisplayAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", "OK");
 
 			}
 			this.vitalsData.sendToServerWeight(userHeight);
-			if (m != "") await DisplayAlert(deviceName, m, "OK");
+			if (m != "")
+            {
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					var val = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, m, true, "OK", null);
+				}
+				else
+				{
+					var val = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, m, false, "OK", null);
+				}
+				//await DisplayAlert(deviceName, m, "OK");
+			}
+                
 		}
 
 		public async void startECGReportPage()
@@ -1368,66 +1536,64 @@ namespace MyHealthVitals
 		{ 
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-				imgProfile.WidthRequest *= 2;
-				imgProfile.HeightRequest *= 2;
-				lblName.FontSize *= 1.5;
-				lblEmail.FontSize *= 1.5;
-				lblClickMessage.FontSize *= 1.5;
-
-				layoutContainer.Spacing *= 2;
-				lblSYS.FontSize *= 1.5;
-				lblmmHg.FontSize *= 1.5;
-				lblDIA.FontSize *= 1.5;
-				lblmm.FontSize *= 1.5;
-				lblSys.FontSize *= 1.5;
-				lblDia.FontSize *= 1.5;
-				lblSpo2.FontSize *= 1.5;
-				lblSPO2.FontSize *= 1.5;
-				lblpct.FontSize *= 1.5;
-				lblPR.FontSize *= 1.5;
-				lblBPM.FontSize *= 1.5;
-				lblBpm.FontSize *= 1.5;
-
-				lblPI.FontSize *= 1.5;
-				lblPIPCT.FontSize *= 1.5;
-				lblPerfusionIndex.FontSize *= 1.5;
-				lblTEMP.FontSize *= 1.5;
-                lblTemperature.FontSize *= 1.5;
-				lblGLU.FontSize *= 1.5;
-				lblUnitGlucose.FontSize *= 1.5;
-				lblGlucose.FontSize *= 1.5;
-				lblWeight.FontSize *= 1.5;
-				lblWEIT.FontSize *= 1.5;
-                countDownLabel.FontSize *= 1.5;
-
-				layout1.WidthRequest *= 1.8;
-				layout2.WidthRequest *= 1.8;
-				layout3.WidthRequest *= 1.8;
-				layout4.WidthRequest *= 1.8;
-				layout5.WidthRequest *= 1.8;
-				layout6.WidthRequest *= 1.8;
-				layout7.WidthRequest *= 1.8;
-				layout8.WidthRequest *= 1.8;
-				layout9.WidthRequest *= 1.8;
-				layout10.WidthRequest *= 1.8;
-				layout11.WidthRequest *= 1.8;
-				layout12.WidthRequest *= 1.8;
-				layout13.WidthRequest *= 1.8;
-				layout14.WidthRequest *= 1.8;
-				layout15.WidthRequest *= 1.8;
-				layout16.WidthRequest *= 1.8;
-
-				plotView.HeightRequest *= 2;
-				NIBPButtonPad.FontSize *= 1.5;
-				ecgReportcBtnPad.FontSize *= 1.5;
+                imgProfile.WidthRequest = 160 * Screensize.widthfactor;
+				imgProfile.HeightRequest = 192 * Screensize.heightfactor;
+				lblName.FontSize = 24 * Screensize.heightfactor;
+				lblEmail.FontSize = 21 * Screensize.heightfactor;
+                lblClickMessage.FontSize = 15 * Screensize.heightfactor;
+				layoutContainer.Spacing = 14 * Screensize.heightfactor;
+				lblSYS.FontSize = 21 * Screensize.heightfactor;
+				lblmmHg.FontSize = 21 * Screensize.heightfactor;
+				lblDIA.FontSize = 21 * Screensize.heightfactor;
+				lblmm.FontSize = 21 * Screensize.heightfactor;
+				lblSys.FontSize = 21 * Screensize.heightfactor;
+				lblDia.FontSize = 21 * Screensize.heightfactor;
+				lblSpo2.FontSize = 21 * Screensize.heightfactor;
+				lblSPO2.FontSize = 21 * Screensize.heightfactor;
+				lblpct.FontSize = 21 * Screensize.heightfactor;
+				lblPR.FontSize = 21 * Screensize.heightfactor;
+				lblBPM.FontSize = 21 * Screensize.heightfactor;
+				lblBpm.FontSize = 21 * Screensize.heightfactor;
+				lblPI.FontSize = 21 * Screensize.heightfactor;
+				lblPIPCT.FontSize = 21 * Screensize.heightfactor;
+				lblPerfusionIndex.FontSize = 21 * Screensize.heightfactor;
+				lblTEMP.FontSize = 21 * Screensize.heightfactor;
+                lblTemperature.FontSize = 21 * Screensize.heightfactor;
+				lblGLU.FontSize = 21 * Screensize.heightfactor;
+				lblUnitGlucose.FontSize = 21 * Screensize.heightfactor;
+				lblGlucose.FontSize = 21 * Screensize.heightfactor;
+				lblWeight.FontSize = 21 * Screensize.heightfactor;
+                lblWEIT.FontSize = 21 * Screensize.heightfactor;
+                countDownLabel.FontSize = 15 * Screensize.heightfactor;
+				layout1.WidthRequest = 180 * Screensize.widthfactor;
+				layout2.WidthRequest = 180 * Screensize.widthfactor;
+				layout3.WidthRequest = 180 * Screensize.widthfactor;
+				layout4.WidthRequest = 180 * Screensize.widthfactor;
+				layout5.WidthRequest = 180 * Screensize.widthfactor;
+				layout6.WidthRequest = 180 * Screensize.widthfactor;
+				layout7.WidthRequest = 180 * Screensize.widthfactor;
+				layout8.WidthRequest = 180 * Screensize.widthfactor;
+				layout9.WidthRequest = 180 * Screensize.widthfactor;
+				layout10.WidthRequest = 180 * Screensize.widthfactor;
+				layout11.WidthRequest = 180 * Screensize.widthfactor;
+				layout12.WidthRequest = 180 * Screensize.widthfactor;
+				layout13.WidthRequest = 180 * Screensize.widthfactor;
+				layout14.WidthRequest = 180 * Screensize.widthfactor;
+				layout15.WidthRequest = 180 * Screensize.widthfactor;
+				layout16.WidthRequest = 180 * Screensize.widthfactor;
+                plotView.HeightRequest = 300 * Screensize.heightfactor;
+				NIBPButtonPad.FontSize = 21 * Screensize.heightfactor;
+				ecgReportcBtnPad.FontSize = 21 * Screensize.heightfactor;
 				layoutButton.IsVisible = false;
 				layoutButtonPad.IsVisible = true;
-				btnFareinheit.FontSize *= 1.5;
-				btnCelcious.FontSize *= 1.5;
-				btnFareinheit.WidthRequest *= 1.5;
-				btnCelcious.WidthRequest *= 1.5;
-                btnLbs.FontSize *= 1.5;
-                btnKgs.FontSize *= 1.5;
+				btnFareinheit.FontSize = 21 * Screensize.heightfactor;
+				btnCelcious.FontSize = 21 * Screensize.heightfactor;
+                btnFareinheit.WidthRequest = 75;
+				btnCelcious.WidthRequest = 75;
+                btnLbs.FontSize = 21 * Screensize.heightfactor;
+                btnKgs.FontSize = 21 * Screensize.heightfactor;
+				btnLbs.WidthRequest = 75;
+				btnKgs.WidthRequest = 75;
                 //layoutButton.BackgroundColor = layoutButtonPad.BackgroundColor;
                 //layoutButton.Spacing = layoutButtonPad.Spacing;
                 //layoutButton.Margin = layoutButtonPad.Margin;
@@ -1435,6 +1601,67 @@ namespace MyHealthVitals
                 //layoutButton.Spacing = layoutButtonPad.Spacing;
 				//<StackLayout x:Name = "layoutButtonPad" IsVisible = "false" BackgroundColor="{StaticResource colorBlackBg}"  Orientation="Horizontal" Spacing ="20" Margin="15,-80,15,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" >
 			}
+            else if (Device.Idiom == TargetIdiom.Phone)
+            {
+				imgProfile.WidthRequest *= Screensize.widthfactor;
+                imgProfile.HeightRequest *= Screensize.heightfactor;
+				lblName.FontSize *= Screensize.heightfactor;
+				lblEmail.FontSize *= Screensize.heightfactor;
+				lblClickMessage.FontSize *= Screensize.heightfactor;
+				layoutContainer.Spacing *= Screensize.heightfactor;
+				lblSYS.FontSize *= Screensize.heightfactor;
+				lblmmHg.FontSize *= Screensize.heightfactor;
+				lblDIA.FontSize *= Screensize.heightfactor;
+				lblmm.FontSize *= Screensize.heightfactor;
+				lblSys.FontSize *= Screensize.heightfactor;
+				lblDia.FontSize *= Screensize.heightfactor;
+				lblSpo2.FontSize *= Screensize.heightfactor;
+				lblSPO2.FontSize *= Screensize.heightfactor;
+				lblpct.FontSize *= Screensize.heightfactor;
+				lblPR.FontSize *= Screensize.heightfactor;
+				lblBPM.FontSize *= Screensize.heightfactor;
+				lblBpm.FontSize *= Screensize.heightfactor;
+				lblPI.FontSize *= Screensize.heightfactor;
+				lblPIPCT.FontSize *= Screensize.heightfactor;
+				lblPerfusionIndex.FontSize *= Screensize.heightfactor;
+				lblTEMP.FontSize *= Screensize.heightfactor;
+				lblTemperature.FontSize *= Screensize.heightfactor;
+				lblGLU.FontSize *= Screensize.heightfactor;
+				lblUnitGlucose.FontSize *= Screensize.heightfactor;
+				lblGlucose.FontSize *= Screensize.heightfactor;
+				lblWeight.FontSize *= Screensize.heightfactor;
+				lblWEIT.FontSize *= Screensize.heightfactor;
+				countDownLabel.FontSize *= Screensize.heightfactor;
+				layout1.WidthRequest *= Screensize.widthfactor;
+				layout2.WidthRequest *= Screensize.widthfactor;
+				layout3.WidthRequest *= Screensize.widthfactor;
+				layout4.WidthRequest *= Screensize.widthfactor;
+				layout5.WidthRequest *= Screensize.widthfactor;
+				layout6.WidthRequest *= Screensize.widthfactor;
+				layout7.WidthRequest *= Screensize.widthfactor;
+				layout8.WidthRequest *= Screensize.widthfactor;
+				layout9.WidthRequest *= Screensize.widthfactor;
+				layout10.WidthRequest *= Screensize.widthfactor;
+				layout11.WidthRequest *= Screensize.widthfactor;
+				layout12.WidthRequest *= Screensize.widthfactor;
+				layout13.WidthRequest *= Screensize.widthfactor;
+				layout14.WidthRequest *= Screensize.widthfactor;
+				layout15.WidthRequest *= Screensize.widthfactor;
+				layout16.WidthRequest *= Screensize.widthfactor;
+				plotView.HeightRequest *= Screensize.heightfactor;
+				NIBPButton.FontSize *= Screensize.heightfactor;
+				ecgReportcBtn.FontSize *= Screensize.heightfactor;
+				//layoutButton.IsVisible = false;
+				//layoutButtonPad.IsVisible = true;
+				btnFareinheit.FontSize *= Screensize.heightfactor;
+				btnCelcious.FontSize *= Screensize.heightfactor;
+				//btnFareinheit.WidthRequest *= Screensize.widthfactor;
+				//btnCelcious.WidthRequest *= Screensize.widthfactor;
+				btnLbs.FontSize *= Screensize.heightfactor;
+				btnKgs.FontSize *= Screensize.heightfactor;
+				//btnLbs.WidthRequest = 75;
+				//btnKgs.WidthRequest = 75;
+            }
 		}
 	}
 }

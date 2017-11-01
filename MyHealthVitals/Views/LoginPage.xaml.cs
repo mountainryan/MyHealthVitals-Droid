@@ -19,47 +19,78 @@ namespace MyHealthVitals
         public static string patient_name;
 		public static string gifpath;
 	}
+    public class Screensize
+    {
+        public static int targetwidth_pad = 800;
+        public static int targetheight_pad = 1280;
+        public static int targetwidth_phone = 411;
+        public static int targetheight_phone = 797;
+        public static int dpwidth;
+        public static int dpheight;
+        public static double widthfactor;
+        public static double heightfactor;
+    }
     public partial class LoginPage : ContentPage
     {
-        public LoginPage()
+        public LoginPage(int dpwidth, int dpheight)
         {
+            Screensize.dpwidth = dpwidth;
+            Screensize.dpheight = dpheight;
+
+
+
             InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-				//layout.WidthRequest = 350;
-				//layout.Margin = new Thickness(160,10,10,10);
-				//layout.HorizontalOptions = LayoutOptions.Center;
-				txtUsername.WidthRequest = 400;
-				txtUsername.HeightRequest = 75;
-				txtPassword.WidthRequest = 400;
-				txtPassword.HeightRequest = 75;
-				txtUsername.FontSize = 30;
-				txtPassword.FontSize = 30;
+                Screensize.widthfactor = Convert.ToDouble(dpwidth) / Convert.ToDouble(Screensize.targetwidth_pad);
+                Screensize.heightfactor = Convert.ToDouble(dpheight) / Convert.ToDouble(Screensize.targetheight_pad);
+                layoutImgContainer.Margin = new Thickness(90 * Screensize.widthfactor);
+                icucareimg.Source = "icucarellc.png";
+				scrollView.Margin = new Thickness(60 * Screensize.widthfactor);
+				lblWelcome.Margin = new Thickness(60 * Screensize.widthfactor);
+                //layout.WidthRequest = 350;
+                //layout.Margin = new Thickness(160,10,10,10);
+                //layout.HorizontalOptions = LayoutOptions.Center;
+                scrollView.MinimumWidthRequest = 300 * Screensize.widthfactor;
+				txtUsername.WidthRequest = 400 * Screensize.widthfactor;
+				txtUsername.HeightRequest = 75 * Screensize.heightfactor;
+				txtPassword.WidthRequest = 400 * Screensize.widthfactor;
+				txtPassword.HeightRequest = 75 * Screensize.heightfactor;
+				txtUsername.FontSize = 30 * Screensize.heightfactor;
+				txtPassword.FontSize = 30 * Screensize.heightfactor;
 				txtUsername.Margin = new Thickness(0, 2, 0, 1);
 				txtPassword.Margin = new Thickness(0, 1, 0, 2);
-				btnLogin.WidthRequest = 150;
-				btnLogin.FontSize = 30;
+				btnLogin.WidthRequest = 150 * Screensize.widthfactor;
+				btnLogin.FontSize = 30 * Screensize.heightfactor;
+                lblWelcome.FontSize = 24 * Screensize.heightfactor;
 				//txtUsername.HorizontalOptions = LayoutOptions.Center;
 				//txtPassword.HorizontalOptions = LayoutOptions.Center;
 				//btnLogin.HeightRequest = 30;//txtPassword.HeightRequest + txtUsername.HeightRequest   ;
 				Debug.WriteLine("btnLogin.HeightRequest===" + btnLogin.HeightRequest);
 			}
-			else
+			else if (Device.Idiom == TargetIdiom.Phone)
 			{
-				icucareimg.Source = "icucarellc_phone.png";
-				layoutImgContainer.Margin = new Thickness(45);
-				//txtUsername.WidthRequest *= (2 / 3);
-				//txtPassword.WidthRequest *= (2 / 3);
-				//txtUsername.HeightRequest *= (2 / 3);
-				//txtPassword.HeightRequest *= (2 / 3);
-				//txtUsername.FontSize *= (2 / 3);
-				//txtPassword.FontSize *= (2 / 3);
-				//btnLogin.WidthRequest *= (2 / 3);
-				//btnLogin.FontSize *= (2 / 3);
-				scrollView.MinimumWidthRequest *= .5;
-				scrollView.Margin = new Thickness(30);
-				lblWelcome.Margin = new Thickness(30);
-				lblWelcome.FontSize = 17;
+				Screensize.widthfactor = Convert.ToDouble(dpwidth) / Convert.ToDouble(Screensize.targetwidth_phone);
+				Screensize.heightfactor = Convert.ToDouble(dpheight) / Convert.ToDouble(Screensize.targetheight_phone);
+				layoutImgContainer.Margin = new Thickness(45 * Screensize.widthfactor);
+				//icucareimg.Source = "icucarellc.png";
+                scrollView.Margin = new Thickness(30 * Screensize.widthfactor);
+				lblWelcome.Margin = new Thickness(30 * Screensize.widthfactor);
+				//layout.WidthRequest = 350;
+				//layout.Margin = new Thickness(160,10,10,10);
+				//layout.HorizontalOptions = LayoutOptions.Center;
+				scrollView.MinimumWidthRequest *= Screensize.widthfactor;
+                txtUsername.WidthRequest *= Screensize.widthfactor;
+                txtUsername.HeightRequest *= Screensize.heightfactor;
+				txtPassword.WidthRequest *= Screensize.widthfactor;
+				txtPassword.HeightRequest *= Screensize.heightfactor;
+				txtUsername.FontSize *= Screensize.heightfactor;
+				txtPassword.FontSize *= Screensize.heightfactor;
+				//txtUsername.Margin = new Thickness(0, 2, 0, 1);
+				//txtPassword.Margin = new Thickness(0, 1, 0, 2);
+				btnLogin.WidthRequest *= Screensize.widthfactor;
+				btnLogin.FontSize *= Screensize.heightfactor;
+				lblWelcome.FontSize *= Screensize.heightfactor;
 			}
 
             if (Demographics.sharedInstance.isAutoLogin)
@@ -76,6 +107,7 @@ namespace MyHealthVitals
             {
                 txtUsername.Text = "";
             }
+         
         }
 
         protected override void OnDisappearing()
@@ -85,6 +117,11 @@ namespace MyHealthVitals
 
         protected override void OnAppearing()
         {
+
+
+            var result = 142^1;
+            Debug.WriteLine("result ==== "+result);
+
             base.OnAppearing();
 
 			Debug.WriteLine("txtUsername width: "+txtUsername.WidthRequest);
@@ -183,10 +220,18 @@ namespace MyHealthVitals
 
         public void ShowAlertForLogin(String message)
         {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-                {
-                    DisplayAlert("Login Error", message, "OK");
-                });
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
+            {
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					var ret = await DependencyService.Get<IFileHelper>().dispAlert("Login Error", message, true, "OK", null);
+				}
+				else
+				{
+					var ret = await DependencyService.Get<IFileHelper>().dispAlert("Login Error", message, false, "OK", null);
+				}
+                //await DisplayAlert("Login Error", message, "OK");
+            });
         }
     }
 

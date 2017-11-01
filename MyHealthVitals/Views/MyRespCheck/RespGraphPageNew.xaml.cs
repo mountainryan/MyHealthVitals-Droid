@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Xamarin.Forms;
+using System.Diagnostics;
 
 namespace MyHealthVitals
 {
@@ -19,15 +20,51 @@ namespace MyHealthVitals
 		{
 			InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet) {
-				layoutPefContainer.WidthRequest *= 2;
-				layoutPefContainer.HeightRequest *= 2;
-				layoutFevContainer.WidthRequest *= 2;
-				layoutFevContainer.HeightRequest *= 2;
-				layoutL2.WidthRequest *= 2;
-				layoutL1.WidthRequest *= 2;
-				layoutN2.Spacing *= 2;
-				layoutN1.Spacing *= 2;
+				layoutPefContainer.WidthRequest = 300 * Screensize.widthfactor;
+                layoutPefContainer.HeightRequest = 800 * Screensize.heightfactor;
+				layoutFevContainer.WidthRequest = 300 * Screensize.widthfactor;
+				layoutFevContainer.HeightRequest = 800 * Screensize.heightfactor;
+				layoutL2.WidthRequest = 120 * Screensize.widthfactor;
+				layoutL1.WidthRequest = 120 * Screensize.widthfactor;
+                layoutN2.Spacing = (layoutPefContainer.HeightRequest - 74) / 3;
+				layoutN1.Spacing = (layoutPefContainer.HeightRequest - 74) / 3;
+                lblPef.FontSize = 30 * Screensize.heightfactor;
+                lblFev1.FontSize = 30 * Screensize.heightfactor;
+                lblDate.FontSize = 34 * Screensize.heightfactor;
+                lblDate.WidthRequest = 475 * Screensize.widthfactor;
+                peflabel.FontSize = 30 * Screensize.heightfactor;
+                fevlabel.FontSize = 30 * Screensize.heightfactor;
+
+                prevbtn.Image = "imgPrevBlue_pad.png";
+                nextbtn.Image = "imgNextBlue_pad.png";
+                prevbtn.WidthRequest = 100;
+                prevbtn.HeightRequest = 100;
+                nextbtn.WidthRequest = 100;
+                nextbtn.HeightRequest = 100;
+                // = "0,-25,0,0"
+                peflabel.Margin = new Thickness(0, -50 * Screensize.heightfactor, 0, 0);
+                fevlabel.Margin = new Thickness(0, -50 * Screensize.heightfactor, 0, 0);
 			}
+            else if (Device.Idiom == TargetIdiom.Phone)
+            {
+				layoutPefContainer.WidthRequest *= Screensize.widthfactor;
+				layoutPefContainer.HeightRequest *= Screensize.heightfactor;
+				layoutFevContainer.WidthRequest *= Screensize.widthfactor;
+				layoutFevContainer.HeightRequest *= Screensize.heightfactor;
+				layoutL2.WidthRequest *= Screensize.widthfactor;
+				layoutL1.WidthRequest *= Screensize.widthfactor;
+				layoutN2.Spacing = (layoutPefContainer.HeightRequest - 74) / 3;
+				layoutN1.Spacing = (layoutPefContainer.HeightRequest - 74) / 3;
+				lblPef.FontSize *= Screensize.heightfactor;
+				lblFev1.FontSize *= Screensize.heightfactor;
+				lblDate.FontSize *= Screensize.heightfactor;
+				lblDate.WidthRequest *= Screensize.widthfactor;
+				peflabel.FontSize *= Screensize.heightfactor;
+				fevlabel.FontSize *= Screensize.heightfactor;
+				peflabel.Margin = new Thickness(0, -25 * Screensize.heightfactor, 0, 0);
+				fevlabel.Margin = new Thickness(0, -25 * Screensize.heightfactor, 0, 0);
+
+            }
 
 
             CallAPiGetReadings();
@@ -63,15 +100,17 @@ namespace MyHealthVitals
 
 					if (layoutFevContainer.Height < 0 || layoutPefContainer.Height < 0)
 					{
-						int height = 300;
+						double height = 300 * Screensize.heightfactor;
 						if (Device.Idiom == TargetIdiom.Tablet) {
-							height *= 2;
+							height = 800 * Screensize.heightfactor;
 						}
 						boxFev.HeightRequest = height * (double)currReading.Fev1 / 9;
 						boxPef.HeightRequest = height * (double)currReading.Pef / 900;
 					}
 					else
 					{
+                        //Debug.WriteLine("layoutFevContainer.Height = "+layoutFevContainer.Height);
+                        //Debug.WriteLine("layoutFevContainer.HeightRequest = " + layoutFevContainer.HeightRequest);
 						boxFev.HeightRequest = layoutFevContainer.Height * (double)currReading.Fev1 / 9;
 						boxPef.HeightRequest = layoutPefContainer.Height * (double)currReading.Pef / 900;
 					}

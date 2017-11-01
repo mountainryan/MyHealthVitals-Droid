@@ -21,7 +21,7 @@ namespace MyHealthVitals
 
 			if (connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
 			{
-				Debug.WriteLine("PC-100 alrady in connected state.");
+				Debug.WriteLine("PC-100 already in connected state.");
 			}
 
 
@@ -63,6 +63,12 @@ namespace MyHealthVitals
 		public void stopMeasuringSpo2()
 		{
 			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x50, 0x02, 0x02, 0x85 });
+		}
+
+		public void getBPreading()
+		{
+            Debug.WriteLine("Executing write command!");
+			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x43, 0x02, 0x01, 0xCD });
 		}
 
 		public async void discoverServices(IDevice device)
@@ -153,25 +159,39 @@ namespace MyHealthVitals
 		public void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e)
 		{
 			var ch = e.Characteristic;
-			Debug.WriteLine("ch.Value[2]" + ch.Value[2]);
+			//Debug.WriteLine("ch.Value[2]" + ch.Value[2]);
 
-
+            //Debug.WriteLine("ch.Value.Length = "+ch.Value.Length);
+            //Debug.WriteLine("ch.Value[2] = "+ch.Value[2]);
 
 			if ((int)ch.Value[2] == 66)
 			{
 				glucoseResult = -100;
-				Debug.WriteLine("ch.Value.Length  ===  " + ch.Value.Length);
-				if (ch.Value.Length >= 9)
+                //Debug.WriteLine("ch.Value.Length  ===  " + ch.Value.Length);
+
+                if (ch.Value.Length == 19)
+                {
+                    this.uiController.SYS_DIA_BPM_updated(0, 0, 9999);
+                }
+				else if (ch.Value.Length >= 9)
 				{
+					//Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
+					//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
+					//Debug.WriteLine("ch.Value[7] = " + ch.Value[7]);
+					//Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
 					int sys = ((int)ch.Value[5] << 8) + (int)ch.Value[6];
-					Debug.WriteLine("sys" + sys);
+					//Debug.WriteLine("sys" + sys);
 					this.uiController.SYS_DIA_BPM_updated(sys, (int)ch.Value[8], 0);
 
 				}
 				else if(ch.Value.Length >= 7)
 				{
+					//Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
+					//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
+					//Debug.WriteLine("ch.Value[7] = " + ch.Value[7]);
+					//Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
 					int sys = ((int)ch.Value[5] << 8) + (int)ch.Value[6];
-					Debug.WriteLine("sys" + sys);
+					//Debug.WriteLine("sys" + sys);
 					this.uiController.SYS_DIA_BPM_updated(sys, 0, 0);
 						//	Debug.WriteLine("ch.Value[8]" + ch.Value[8]);
 				}
@@ -181,6 +201,10 @@ namespace MyHealthVitals
 			{
 				glucoseResult = -1;
 
+				//Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
+				//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
+				//Debug.WriteLine("ch.Value[7] = " + ch.Value[7]);
+				//Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
 				// checking length of data
 				if ((int)ch.Value[3] == 7)
 				{
@@ -307,7 +331,7 @@ namespace MyHealthVitals
 
 				if (waveformData == 0)
 				{
-					Debug.WriteLine("Wave form Data");
+					//Debug.WriteLine("Wave form Data");
 					//  this.uiController.noticeEndOfReadingSpo2();
 				}
 			}
@@ -368,7 +392,7 @@ namespace MyHealthVitals
 
 				if (ch.Value[5] == 0 || ch.Value[6] == 0)
 				{
-					Debug.WriteLine("Invalid readings.");
+					//Debug.WriteLine("Invalid readings.");
 					//Debug.WriteLine("err_status (should be 1) = " + err_status);
 					if (err_status == 1)
 					{
@@ -386,7 +410,7 @@ namespace MyHealthVitals
 
 					err_status = 0;
 
-					Debug.WriteLine("this.uiController.SPO2_readingCompleted");
+					//Debug.WriteLine("this.uiController.SPO2_readingCompleted");
 
 					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 10);
 				}
@@ -449,6 +473,7 @@ namespace MyHealthVitals
 					Debug.WriteLine("D0_data1 = " + D0_data1);
 					Debug.WriteLine("glucoseReadingVal = " + glucoseReadingVal);
 					Debug.WriteLine("gluUnit = " + gluUnit);
+
 				}
 			}
 		}

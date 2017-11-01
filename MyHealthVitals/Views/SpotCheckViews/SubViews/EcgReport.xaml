@@ -12,12 +12,12 @@
    						 <RowDefinition Height="auto"/>
 				  </Grid.RowDefinitions>
 				    <oxy:PlotView Model="{Binding graphModel_report}"  x:Name="plotView" BackgroundColor="White" Margin="10" 
-					              HeightRequest="355" HorizontalOptions="FillAndExpand" />	
+					              HeightRequest="450" HorizontalOptions="FillAndExpand" />	
 					
 				</Grid>	
-					<Button VerticalOptions = "LayoutOptions.End" x:Name ="reportButton" Clicked="btnSaveClicked" Text="Save ECG Report" Font="16" BackgroundColor="{StaticResource colorThemeBlue}" 
-								TextColor="White">
-					</Button>
+					<Button Margin="20" VerticalOptions = "LayoutOptions.End" x:Name ="reportButton" Clicked="btnSaveClicked" Text="Save ECG Report" Font="16" BackgroundColor="{StaticResource colorThemeBlue}" 
+								TextColor="White" HeightRequest="40"/>
+				
 			</StackLayout>
 			<RelativeLayout x:Name="ReportSaving" IsVisible="false" BackgroundColor="Transparent" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
 				<StackLayout VerticalOptions="Center" HorizontalOptions="Center" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">

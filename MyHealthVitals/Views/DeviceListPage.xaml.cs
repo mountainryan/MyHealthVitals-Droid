@@ -121,20 +121,32 @@ namespace MyHealthVitals
 			InitializeComponent();
 
 			gifWebView.Source = DependencyService.Get<IBaseUrl>().Get() + "/gifContainer.html";
-			if (Device.Idiom == TargetIdiom.Tablet) {
-				Spiromter.WidthRequest *= 2;
-				PC100.WidthRequest *= 2;
-				btn300.WidthRequest *= 1.2;
-				btnspi.FontSize *= 1.2;
-				btn300.FontSize *= 1.2;
-				btn100.FontSize *= 1.2;
-				btnweight.FontSize *= 1.2;
-			//	var image = new Image { Source = "PC100MonitorBIG.png" };
+			if (Device.Idiom == TargetIdiom.Tablet) 
+            {
+                page.Spacing = 120 * Screensize.heightfactor;
+                middle.Spacing = 150 * Screensize.widthfactor;
+                btn300.WidthRequest = 300 * Screensize.widthfactor;
+                btnweight.WidthRequest = 300 * Screensize.widthfactor;
+				btnspi.FontSize = 36 * Screensize.heightfactor;
+				btn300.FontSize = 36 * Screensize.heightfactor;
+				btn100.FontSize = 36 * Screensize.heightfactor;
+				btnweight.FontSize = 36 * Screensize.heightfactor;
 				PC100.Image = (FileImageSource)ImageSource.FromFile("PC100MonitorPad.png");
 				PC300.Image = (FileImageSource)ImageSource.FromFile("PC300MonitorPad.png");
 				weightScales.Image = (FileImageSource)ImageSource.FromFile("WeightScalesPad.png");
 				Spiromter.Image = (FileImageSource)ImageSource.FromFile("SpiromterPad.png");
 			}
+            else if (Device.Idiom == TargetIdiom.Phone)
+            {
+				page.Spacing *= Screensize.heightfactor;
+				middle.Spacing *= Screensize.widthfactor;
+				btn300.WidthRequest *= Screensize.widthfactor;
+				btnweight.WidthRequest *= Screensize.widthfactor;
+				btnspi.FontSize *= Screensize.heightfactor;
+				btn300.FontSize *= Screensize.heightfactor;
+				btn100.FontSize *= Screensize.heightfactor;
+				btnweight.FontSize *= Screensize.heightfactor;
+            }
 		}
 
 		public void navigateToMainPage() { 
@@ -159,7 +171,18 @@ namespace MyHealthVitals
 			else {
 				if (!isNavigated)
 				{
-					DisplayAlert(activeDeviceName, message, "OK");
+                    Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+                    {
+                        if (Device.Idiom == TargetIdiom.Tablet)
+                        {
+                            var ret = await DependencyService.Get<IFileHelper>().dispAlert(activeDeviceName, message, true, "OK", null);
+                        }
+                        else
+                        {
+                            var ret = await DependencyService.Get<IFileHelper>().dispAlert(activeDeviceName, message, false, "OK", null);
+                        }
+                        //DisplayAlert(activeDeviceName, message, "OK");
+                    }));
 				}
 			}	
 		}

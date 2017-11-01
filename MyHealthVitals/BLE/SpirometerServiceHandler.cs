@@ -101,8 +101,11 @@ namespace MyHealthVitals
 			{
 				if (isStopPolling == false)
 				{
-					//Debug.WriteLine("polling for data...");
-					bmChar.WriteAsync(new byte[] { 0x55, 0x06 });
+                    //Debug.WriteLine("polling for data...");
+                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                    {
+                        bmChar.WriteAsync(new byte[] { 0x55, 0x06 });
+                    });
 				}
 				return !isStopPolling;
 			});
@@ -111,18 +114,22 @@ namespace MyHealthVitals
 		public void clearReadingOnDevice()
 		{
             Debug.WriteLine("clearReadingOnDevice");
-			Task.Delay(1).ContinueWith(_ =>
-			{
-				Debug.WriteLine("Spirometer reading cleared.");
-				bmChar.WriteAsync(new byte[] { 0x55, 0x03 });
-			});
+            //Task.Delay(1).ContinueWith(_ =>
+            //{
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+            {
+                bmChar.WriteAsync(new byte[] { 0x55, 0x03 });
+                Debug.WriteLine("Spirometer reading cleared.");
+            });
+			//});
 
 			//wait for 1 millisecond to make sure it clears
-            Task.Delay(1).ContinueWith(_ =>
-            {
+            //Task.Delay(1).ContinueWith(_ =>
+            //{
                 //just wait for 1 millisecond
-                Debug.WriteLine("Waiting...");
-            });
+                //Debug.WriteLine("Waiting...");
+                //bmChar.WriteAsync(new byte[] { 0x55, 0x03 });
+            //});
 			
                                              
 		}
@@ -177,11 +184,10 @@ namespace MyHealthVitals
 					if (bmChar != null)
 					{
 						Debug.WriteLine("bmchar is not null.");
-						bmChar.WriteAsync(new byte[] { 0x55, 0x06 });
-						Task.Delay(10).ContinueWith(_ =>
-		   				{
-			   				bmChar.WriteAsync(new byte[] { 0x55, 0x06 });
-						   });
+                        Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                        {
+                           bmChar.WriteAsync(new byte[] { 0x55, 0x06 });
+                        });
 
 					}
 					else
@@ -199,11 +205,11 @@ namespace MyHealthVitals
                     if (bmChar != null)
                     {
                         Debug.WriteLine("bmchar is not null.");
-                        bmChar.WriteAsync(new byte[] { 0x55, 0x01 });
-						Task.Delay(10).ContinueWith(_ =>
-		   				{
-			   				bmChar.WriteAsync(new byte[] { 0x55, 0x01 });
-						});;
+                        Xamarin.Forms.Device.BeginInvokeOnMainThread( () =>
+                        {
+                            bmChar.WriteAsync(new byte[] { 0x55, 0x01 });
+                        });
+						
 
                     }else{
                         Debug.WriteLine("bmchar is null.");
@@ -220,12 +226,10 @@ namespace MyHealthVitals
 					if (bmChar != null)
 					{
 						Debug.WriteLine("bmchar is not null.");
-						bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
-						Task.Delay(10).ContinueWith(_ =>
-		   				{
-			   				bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
-		   				}); 
-
+                        Xamarin.Forms.Device.BeginInvokeOnMainThread( () =>
+                        {
+                            bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
+                        });
 					}
 					else
 					{
@@ -242,11 +246,10 @@ namespace MyHealthVitals
 					if (bmChar != null)
 					{
 						Debug.WriteLine("bmchar is not null.");
-						bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
-						Task.Delay(10).ContinueWith(_ =>
-		   				{
-			   				//bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
-		   				});
+                        Xamarin.Forms.Device.BeginInvokeOnMainThread( () =>
+                        {
+                            bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
+                        });
 					}
 					else
 					{
@@ -256,9 +259,12 @@ namespace MyHealthVitals
                 }
 				if (timespolled > 35 && isDataAsked)
 				{
-					//can't get the reading for some reason!
-					//try over and over
-					bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
+                    //can't get the reading for some reason!
+                    //try over and over
+                    Xamarin.Forms.Device.BeginInvokeOnMainThread( () =>
+                    {
+                        bmChar.WriteAsync(new byte[] { 0x55, 0x02, 0x01, 0x00 });
+                    });
 				}
 
                 // this is data
@@ -276,7 +282,7 @@ namespace MyHealthVitals
                     isStatusAsked = false;
                     clearReadingOnDevice();
                     //sometimes it doesn't clear so run it again
-                    clearReadingOnDevice();
+                    //clearReadingOnDevice();
                     timespolled = 0;
 
                     if (pef <= 200)

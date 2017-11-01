@@ -48,7 +48,7 @@ namespace MyHealthVitals {
         private global::Xamarin.Forms.Label lblFevReading;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
-        private global::MyHealthVitals.MyButton btnIndicator;
+        private global::MyHealthVitals.CircleResp btnIndicator;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "0.0.0.0")]
         private global::Xamarin.Forms.Button btnDelete;
@@ -145,7 +145,7 @@ namespace MyHealthVitals {
             lblPefReading = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "lblPefReading");
             lblfev = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "lblfev");
             lblFevReading = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "lblFevReading");
-            btnIndicator = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyButton>(this, "btnIndicator");
+            btnIndicator = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.CircleResp>(this, "btnIndicator");
             btnDelete = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Button>(this, "btnDelete");
             layoutButton1 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.StackLayout>(this, "layoutButton1");
             B1 = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::MyHealthVitals.MyButton>(this, "B1");

@@ -13,93 +13,130 @@ namespace MyHealthVitals
 
 		public RespHomePage()
 		{
-			InitializeComponent();
+            InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-				layoutContainer.Spacing *= 2;
-				imgProfile.WidthRequest *= 2;
-				imgProfile.HeightRequest *= 2;
-
-				lblName.FontSize *= 1.5;
-				lblEmail.FontSize *= 1.5;
-				lblClickMessage.FontSize *= 1.5;
-
-				lbldata.WidthRequest *= 2;
-				/*	lblpef.WidthRequest *= 2;
-					lblfev.WidthRequest *= 2;
-					lblPefReading.WidthRequest *= 2;
-					lblFevReading.WidthRequest *= 2;
-					lblDateReading.WidthRequest *= 2;
-				*/
-				lblfev.FontSize *= 1.5;
-				lblpef.FontSize *= 1.5;
-				lbldata.FontSize *= 1.5;
-				lblPefReading.FontSize *= 1.5;
-				lblFevReading.FontSize *= 1.5;
-				lblDateReading.FontSize *= 1.5;
-
-				layoutButton1.Spacing *= 4;
-				layoutButton1.Margin = new Thickness(45, 0, 40, 0);
-				B1.FontSize *= 1.5;
-				B2.FontSize *= 1.5;
-				B1.WidthRequest *= 2;
-				B2.WidthRequest *= 2;
-				B1.HeightRequest *= 2;
-				B2.HeightRequest *= 2;
-
-				layoutMiddle.HeightRequest *= 2;
-				box.HeightRequest *= 2;
-				layoutbox.HeightRequest *= 2;
-				layoutbox.Spacing *= 2;
-
-
-				lablebox.FontSize *= 1.5;
-				layoutval.Spacing *= 2;
-				lblDate.FontSize *= 1.5;
-				lblPef.FontSize *= 1.5;
-				lblFev1.FontSize *= 1.5;
-
-				layoutButton2.Margin = new Thickness(45, 0, 40, 0);
-				layoutButton2.Spacing *= 4;
-				B3.WidthRequest *= 2;
-				B4.WidthRequest *= 2;
-				B3.HeightRequest *= 2;
-				B4.HeightRequest *= 2;
-				B3.FontSize *= 1.5;
-				B4.FontSize *= 1.5;
-
-				save.FontSize *= 1.5;
+				layoutContainer.Spacing = 24 * Screensize.widthfactor;
+				imgProfile.WidthRequest = 200 * Screensize.widthfactor;
+				imgProfile.HeightRequest = 240 * Screensize.heightfactor;
+				lblName.FontSize = 36 * Screensize.heightfactor;
+				lblEmail.FontSize = 24 * Screensize.heightfactor;
+				lblClickMessage.FontSize = 20 * Screensize.heightfactor;
+				lbldata.WidthRequest = 240 * Screensize.widthfactor;
+                lblpef.WidthRequest = 200 * Screensize.widthfactor;
+                lblfev.WidthRequest = 140 * Screensize.widthfactor;
+				lblfev.FontSize = 34 * Screensize.heightfactor;
+				lblpef.FontSize = 34 * Screensize.heightfactor;
+				lbldata.FontSize = 34 * Screensize.heightfactor;
+				lblPefReading.FontSize = 30 * Screensize.heightfactor;
+				lblFevReading.FontSize = 30 * Screensize.heightfactor;
+				lblDateReading.FontSize = 30 * Screensize.heightfactor;
+				//layoutButton1.Spacing = 100 * Screensize.widthfactor;
+				layoutButton1.Margin = new Thickness(45 * Screensize.widthfactor, 0, 40 * Screensize.widthfactor, 0);
+                B1.FontSize = 36 * Screensize.heightfactor;
+                B2.FontSize = 36 * Screensize.heightfactor;
+				B1.WidthRequest = 300 * Screensize.widthfactor;
+				B2.WidthRequest = 300 * Screensize.widthfactor;
+				B1.HeightRequest = 120 * Screensize.heightfactor;
+				B2.HeightRequest = 120 * Screensize.heightfactor;
+                layoutMiddle.HeightRequest = 150 * Screensize.heightfactor;
+                box.HeightRequest = 150 * Screensize.heightfactor;
+				//layoutbox.HeightRequest *= 2;
+				layoutbox.Spacing = 12 * Screensize.widthfactor;
+				lablebox.FontSize = 36 * Screensize.heightfactor;
+				layoutval.Spacing = 60 * Screensize.widthfactor;
+				lblDate.FontSize = 32 * Screensize.heightfactor;
+				lblPef.FontSize = 32 * Screensize.heightfactor;
+				lblFev1.FontSize = 32 * Screensize.heightfactor;
+				layoutButton2.Margin = new Thickness(45 * Screensize.widthfactor, 0, 40 * Screensize.widthfactor, 0);
+                //layoutButton2.Spacing = 100 * Screensize.widthfactor;
+                B3.WidthRequest = 300 * Screensize.widthfactor;
+                B4.WidthRequest = 300 * Screensize.widthfactor;
+                B3.HeightRequest = 120 * Screensize.heightfactor;
+                B4.HeightRequest = 120 * Screensize.heightfactor;
+				B3.FontSize = 36 * Screensize.heightfactor;
+				B4.FontSize = 36 * Screensize.heightfactor;
+				save.FontSize = 36 * Screensize.heightfactor;
 				save.WidthRequest = box.WidthRequest;
-				save.HeightRequest *= 1.5;
-				save.Margin = new Thickness(45, 0, 40, 0);
+				save.HeightRequest = 90 * Screensize.heightfactor;
+				save.Margin = new Thickness(45 * Screensize.widthfactor, 0, 40 * Screensize.widthfactor, 0);
+                iculbl.WidthRequest = 450 * Screensize.widthfactor;
+				iculbl.FontSize = 40 * Screensize.heightfactor;
 
-				//icupng.WidthRequest *= 1.5;
-				//icupng.HeightRequest *= 1.5;
-				iculbl.WidthRequest *= 1.5;
-				iculbl.FontSize *= 2;
+                btnIndicator.HeightRequest = 40 * Screensize.heightfactor;
+                btnIndicator.WidthRequest = 40 * Screensize.heightfactor;
+                btnDelete.Image = "deleteicon_tab.png";
+                btnDelete.HeightRequest = 45 * Screensize.heightfactor;
+                btnDelete.WidthRequest = 45 * Screensize.heightfactor;
 
-				//RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1,Constant = -40}" HeightRequest="30" WidthRequest="30"
-
-				btncancelread.WidthRequest *= 2;
-				btncancelread.HeightRequest *= 2;
-				btncancelread.Image = "deleteicon_x2.png";
-
+                btncancelread.WidthRequest = 60;
+                btncancelread.HeightRequest = 60;
+                btncancelread.Image = "deleteicon_x2.png";
 				icupng.Source = "icucarellc_pad.png";
-
-				gifWebView.HeightRequest *= 2;
-				gifWebView.WidthRequest *= 2;
+				gifWebView.HeightRequest = 190 * Screensize.heightfactor;
+				gifWebView.WidthRequest = 190 * Screensize.widthfactor;
 				var html = new HtmlWebViewSource();
 				html.BaseUrl = DependencyService.Get<IBaseUrl>().Get() + "gifContainer_pad.html";
 				gifWebView.Source = html.BaseUrl;
-			}
-			else 
+            }
+			else if (Device.Idiom == TargetIdiom.Phone)
 			{
+				layoutContainer.Spacing *= Screensize.widthfactor;
+				imgProfile.WidthRequest *= Screensize.widthfactor;
+				imgProfile.HeightRequest *= Screensize.heightfactor;
+				lblName.FontSize *= Screensize.heightfactor;
+				lblEmail.FontSize *= Screensize.heightfactor;
+				lblClickMessage.FontSize *= Screensize.heightfactor;
+				lbldata.WidthRequest *= Screensize.widthfactor;
+                lblfev.WidthRequest *= Screensize.widthfactor;
+                lblpef.WidthRequest *= Screensize.widthfactor;
+				lblfev.FontSize *= Screensize.heightfactor;
+				lblpef.FontSize *= Screensize.heightfactor;
+				lbldata.FontSize *= Screensize.heightfactor;
+				lblPefReading.FontSize *= Screensize.heightfactor;
+				lblFevReading.FontSize *= Screensize.heightfactor;
+				lblDateReading.FontSize *= Screensize.heightfactor;
+				layoutButton1.Spacing *= Screensize.widthfactor;
+				layoutButton1.Margin = new Thickness(15* Screensize.widthfactor, 30* Screensize.heightfactor, 15* Screensize.widthfactor, 20* Screensize.heightfactor);
+				B1.FontSize *= Screensize.heightfactor;
+				B2.FontSize *= Screensize.heightfactor;
+				B1.WidthRequest *= Screensize.widthfactor;
+				B2.WidthRequest *= Screensize.widthfactor;
+				B1.HeightRequest *= Screensize.heightfactor;
+				B2.HeightRequest *= Screensize.heightfactor;
+				layoutMiddle.HeightRequest *= Screensize.heightfactor;
+				box.HeightRequest *= Screensize.heightfactor;
+				//layoutbox.HeightRequest *= 2;
+				layoutbox.Spacing *= Screensize.widthfactor;
+				lablebox.FontSize *= Screensize.heightfactor;
+				layoutval.Spacing *= Screensize.widthfactor;
+				lblDate.FontSize *= Screensize.heightfactor;
+				lblPef.FontSize *= Screensize.heightfactor;
+				lblFev1.FontSize *= Screensize.heightfactor;
+				layoutButton2.Margin = new Thickness(15* Screensize.widthfactor, 0, 15* Screensize.widthfactor, 20* Screensize.heightfactor);
+				layoutButton2.Spacing *= Screensize.widthfactor;
+				B3.WidthRequest *= Screensize.widthfactor;
+				B4.WidthRequest *= Screensize.widthfactor;
+				B3.HeightRequest *= Screensize.heightfactor;
+				B4.HeightRequest *= Screensize.heightfactor;
+				B3.FontSize *= Screensize.heightfactor;
+				B4.FontSize *= Screensize.heightfactor;
+				save.FontSize *= Screensize.heightfactor;
 				save.WidthRequest = box.WidthRequest;
+				save.HeightRequest *= Screensize.heightfactor;
+				//save.Margin = new Thickness(45 * Screensize.widthfactor, 0, 40*Screensize.widthfactor, 0);
+				iculbl.WidthRequest *= Screensize.widthfactor;
+				iculbl.FontSize *= Screensize.heightfactor;
 				var html = new HtmlWebViewSource();
 				html.BaseUrl = DependencyService.Get<IBaseUrl>().Get() + "gifContainer.html";
 				gifWebView.Source = html.BaseUrl;
-			}
 
+            }
+			//Debug.WriteLine("lblfev.WidthRequest = " + lblfev.WidthRequest);
+			//Debug.WriteLine("lblFevReading.WidthRequest = " + lblFevReading.WidthRequest);
+
+			//Debug.WriteLine("lblpef.WidthRequest = "+ lblpef.WidthRequest);
+            //Debug.WriteLine("lblPefReading.WidthRequest = " + lblPefReading.WidthRequest);
 
 			var tapGestureRecognizer = new TapGestureRecognizer();
 			tapGestureRecognizer.Tapped += (s, e) =>
@@ -136,8 +173,21 @@ namespace MyHealthVitals
 			base.OnDisappearing();
 			BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
 		}
-		async public void testAgainDialog() {
-           await DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
+		async public void testAgainDialog() 
+        {
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+            {
+                if (Device.Idiom == TargetIdiom.Tablet)
+                {
+                    var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "The FEV value is too low, please take reading again.", true, "OK", null);
+                }
+                else
+                {
+                    var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "The FEV value is too low, please take reading again.", false, "OK", null);
+                }
+            }));
+
+           //await DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
 		//	BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
 
 			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
@@ -174,10 +224,18 @@ namespace MyHealthVitals
 		public void updateDeviceStateOnUI(String message, bool isConnected) 
         {
 
-			Device.BeginInvokeOnMainThread(() =>
+			Device.BeginInvokeOnMainThread(async () =>
 			{
 				layoutLoadingTakeReading.IsVisible = false;
-                DisplayAlert("Spirometer", message, "OK");
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					var ret = await DependencyService.Get<IFileHelper>().dispAlert("Spirometer", message, true, "OK", null);
+				}
+				else
+				{
+					var ret = await DependencyService.Get<IFileHelper>().dispAlert("Spirometer", message, false, "OK", null);
+				}
+                //await DisplayAlert("Spirometer", message, "OK");
 			});
 
 			
@@ -214,21 +272,44 @@ namespace MyHealthVitals
 
 			try
 			{
-				Reading fevReading = new Reading("FEV1", currReading.Fev1, 9, false, null, null);
-				Reading pefReading = new Reading("PEF", currReading.Pef, 9, false, null, null);
-                pefReading.Date = fevReading.Date;
-				logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, currReading.Pef, currReading.Fev1));
+                if (currReading.Fev1 == -1 || currReading.Pef==-1)
+                {
+					//display error message
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading Error", "Invalid reading. Did not save.", true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading Error", "Invalid reading. Did not save.", false, "OK", null);
+					}
+                }else{
+					Reading fevReading = new Reading("FEV1", currReading.Fev1, 9, false, null, null);
+					Reading pefReading = new Reading("PEF", currReading.Pef, 9, false, null, null);
+					pefReading.Date = fevReading.Date;
+					logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, currReading.Pef, currReading.Fev1));
 
-				//await pefReading.PostReadingToService();
-				//await fevReading.PostReadingToService();
+					//await pefReading.PostReadingToService();
+					//await fevReading.PostReadingToService();
 
-				pefReading.PostReadingToService();
-				fevReading.PostReadingToService();
+					pefReading.PostReadingToService();
+					fevReading.PostReadingToService();
 
-				clearReadingDisplay();
+					clearReadingDisplay();
 
-                //saved pop up
-                await DisplayAlert("Reading", "Reading saved.", "OK");
+					//saved pop up
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", false, "OK", null);
+					}
+
+					//await DisplayAlert("Reading", "Reading saved.", "OK");
+				}
+				
 			}
 			catch (Exception ex)
 			{

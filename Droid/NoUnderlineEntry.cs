@@ -14,7 +14,7 @@ namespace MyHealthVitals.Droid
 			Control?.SetBackgroundColor(Android.Graphics.Color.Transparent);
             Control?.SetTextColor(Android.Graphics.Color.Black);
 			Control.SetWidth(600);
-			Control?.SetWidth(600);
+            Control?.SetWidth(600);
 			Control.Gravity = GravityFlags.CenterVertical;
 			Control.Gravity = GravityFlags.CenterHorizontal;
 

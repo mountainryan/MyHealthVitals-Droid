@@ -16,10 +16,10 @@
 					<!--second horizontal-->
 					<StackLayout Margin="0,0,10,0" BackgroundColor="White" Padding="1">
 						<StackLayout x:Name="layoutPefContainer" HeightRequest="300" WidthRequest="100" BackgroundColor="{StaticResource colorBlackBg}">
-							<Label TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" HorizontalTextAlignment="Center" Margin="0,-25,0,0" FontSize="14">
+							<Label x:Name="peflabel" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" VerticalTextAlignment="Start" HorizontalTextAlignment="Center" Margin="0,-25,0,0" FontSize="15">
 							</Label>
 							<StackLayout x:Name ="layoutL1" VerticalOptions="EndAndExpand" WidthRequest="60" HorizontalOptions="Center">
-								<Label x:Name="lblPef" XAlign="Center" Text="567" TextColor="White" VerticalOptions="End" YAlign="End" />
+								<Label x:Name="lblPef" XAlign="Center" Text="567" FontSize="15" TextColor="White" VerticalOptions="End" YAlign="End" />
 								<BoxView x:Name="boxPef" HeightRequest="150" BackgroundColor="Green" VerticalOptions="End" />
 							</StackLayout>
 						</StackLayout>
@@ -27,10 +27,10 @@
 					<!--Third horizontal-->
 					<StackLayout Margin="10,0,0,0" BackgroundColor="White" Padding="1">
 						<StackLayout x:Name="layoutFevContainer" HeightRequest="300" WidthRequest="100" BackgroundColor="{StaticResource colorBlackBg}">
-							<Label TextColor="{StaticResource colorThemeBlue}" Text="FEV1(L)" HorizontalTextAlignment="Center" Margin="0,-25,0,0" FontSize="14">
+							<Label x:Name="fevlabel" TextColor="{StaticResource colorThemeBlue}" Text="FEV1(L)" HorizontalTextAlignment="Center" Margin="0,-25,0,0" FontSize="15">
 							</Label>
 							<StackLayout x:Name ="layoutL2" VerticalOptions="EndAndExpand" WidthRequest="60" HorizontalOptions="Center">
-								<Label XAlign="Center" x:Name="lblFev1" Text="3.5" TextColor="White" VerticalOptions="End" YAlign="End" />
+								<Label XAlign="Center" x:Name="lblFev1" Text="3.5" FontSize="15" TextColor="White" VerticalOptions="End" YAlign="End" />
 								<BoxView x:Name="boxFev" HeightRequest="270" BackgroundColor="Green" VerticalOptions="End" />
 							</StackLayout>
 						</StackLayout>
@@ -44,9 +44,9 @@
 					</StackLayout>
 				</StackLayout>
 				<StackLayout  Margin="6,10,0,26" Orientation="Horizontal" HorizontalOptions="Center" Spacing="15">
-					<Button Clicked="btnPrevClicked"  BackgroundColor = "Transparent"  Image = "imgPrevBlue.png" HeightRequest="44" WidthRequest="44" />
+					<Button x:Name="prevbtn" Clicked="btnPrevClicked"  BackgroundColor = "Transparent"  Image = "imgPrevBlue.png" HeightRequest="50" WidthRequest="50" />
 					<Label WidthRequest="156" x:Name="lblDate" TextColor="White" Text="10/14/1990 09:11 AM" YAlign="Center" XAlign="Center" FontSize="15" />
-					<Button Clicked="btnNextClicked" BackgroundColor = "Transparent"  Image="imgNextBlue.png" HeightRequest="44" WidthRequest="44" HorizontalOptions="End" />
+					<Button x:Name="nextbtn" Clicked="btnNextClicked" BackgroundColor = "Transparent"  Image="imgNextBlue.png" HeightRequest="50" WidthRequest="50" HorizontalOptions="End" />
 				</StackLayout>
 			</StackLayout>
 

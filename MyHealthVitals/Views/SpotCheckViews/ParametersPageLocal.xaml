@@ -12,7 +12,7 @@
 		     	 <ViewCell>
 					<StackLayout VerticalOptions="Fill" Spacing="0" Padding="0" Margin="0">
 						<StackLayout VerticalOptions="Fill" Padding="8" Orientation="Horizontal">
-							<Label VerticalOptions="Center" Margin="7,0,0,0" Text="{Binding Name}" TextColor="White" />
+							<Label x:Name="label" VerticalOptions="Center" FontSize="24" Margin="7,0,0,0" Text="{Binding Name}" TextColor="White" />
 							<Image VerticalOptions="Center" HorizontalOptions="EndAndExpand" HeightRequest="26" WidthRequest="26" Source="imgArrow.png">
 							</Image>
 						</StackLayout>

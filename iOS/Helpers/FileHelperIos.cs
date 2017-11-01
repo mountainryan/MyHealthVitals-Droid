@@ -293,7 +293,7 @@ namespace MyHealthVitals.iOS
 		{
 			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 			filePath = Path.Combine(documentsPath, fileName);
-			System.Diagnostics.Debug.WriteLine("IF EXIST filePath == " +filePath);
+			//System.Diagnostics.Debug.WriteLine("IF EXIST filePath == " +filePath);
 
 			return File.Exists(filePath);
 		}
@@ -302,7 +302,7 @@ namespace MyHealthVitals.iOS
 		public async Task<bool> showDialog()
 		{
 			//await setEmailClient();
-			System.Diagnostics.Debug.WriteLine("showDialog");
+			//System.Diagnostics.Debug.WriteLine("showDialog");
 
 			string message = "If yes, please enter an email address.";
 			UIAlertView alert = new UIAlertView("Email this report", message, null, "NO", "YES");

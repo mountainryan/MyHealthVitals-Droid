@@ -12,12 +12,21 @@ namespace MyHealthVitals
 			InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-				layout.Spacing *= 2;
-                labeldate.FontSize = 30;
-				lblFirstTitle.FontSize = 30;
-				labeldate.WidthRequest *= 2;
-				lblFirstTitle.WidthRequest *= 2;
+                
+				layout.Spacing = 12 * Screensize.heightfactor;
+                labeldate.FontSize = 30 * Screensize.heightfactor;
+				lblFirstTitle.FontSize = 30 * Screensize.heightfactor;
+				labeldate.WidthRequest = 360 * Screensize.widthfactor;
+				lblFirstTitle.WidthRequest = 360 * Screensize.widthfactor;
 			}
+            else if (Device.Idiom == TargetIdiom.Phone)
+            {
+				layout.Spacing *= Screensize.heightfactor;
+				labeldate.FontSize *= Screensize.heightfactor;
+				lblFirstTitle.FontSize *= Screensize.heightfactor;
+				labeldate.WidthRequest *= Screensize.widthfactor;
+                lblFirstTitle.WidthRequest *= Screensize.widthfactor;
+            }
 			lblFirstTitle.Text = firstHeaderTitle;
 		}
 	}

@@ -18,25 +18,25 @@
 					<!-- Readign display container start here-->
 					<StackLayout Margin="6,0,6,30" Orientation="Horizontal">
 						<StackLayout>
-							<Label x:Name="lbldata" WidthRequest="120" XAlign="Start" FontSize="16" TextColor="{StaticResource colorThemeBlue}" Text="Date/Time" />
-							<Label x:Name="lblDateReading" FontSize="15" TextColor="White" Text=" " />
+							<Label x:Name="lbldata" WidthRequest="120" XAlign="Start" FontSize="15" TextColor="{StaticResource colorThemeBlue}" Text="Date/Time" />
+							<Label x:Name="lblDateReading" FontSize="14" TextColor="White" Text=" " />
 						</StackLayout>
 						<StackLayout>
-							<Label x:Name="lblpef" HorizontalTextAlignment="Center" FontSize="16" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" />
-							<Label x:Name="lblPefReading" HorizontalTextAlignment="Center" FontSize="15" TextColor="White" Text=" " />
+							<Label x:Name="lblpef" WidthRequest="90" HorizontalTextAlignment="Center" FontSize="15" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" />
+							<Label x:Name="lblPefReading" HorizontalTextAlignment="Center" FontSize="14" TextColor="White" Text=" " />
 						</StackLayout>
 						<StackLayout>
-							<Label x:Name="lblfev" HorizontalTextAlignment="Center" FontSize="16" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
-							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="15" TextColor="White" Text=" " />
+							<Label x:Name="lblfev" WidthRequest="70" HorizontalTextAlignment="Center" FontSize="15" TextColor="{StaticResource colorThemeBlue}">FEV1(L)</Label>
+							<Label x:Name="lblFevReading" HorizontalTextAlignment="Center" FontSize="14" TextColor="White" Text=" " />
 						</StackLayout>
-						<local:MyButton IsVisible="false" x:Name="btnIndicator" VerticalOptions="End" BackgroundColor="Green" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
-						<Button IsVisible="false" x:Name="btnDelete" Clicked="btnDeleteCurrentReadingClicked" Margin="0,-5,0,0" Image="deleteicon.png" BackgroundColor = "Transparent" VerticalOptions="End" HeightRequest="26" WidthRequest="26" />
+						<local:CircleResp IsVisible="false" x:Name="btnIndicator" VerticalOptions="End" BackgroundColor="Green" HeightRequest="20" WidthRequest="20" BorderRadius="10" />
+						<Button IsVisible="false" x:Name="btnDelete" Clicked="btnDeleteCurrentReadingClicked" Margin="0,-5,0,0" Image="deleteicon.png" BackgroundColor = "Transparent" VerticalOptions="End" HeightRequest="30" WidthRequest="30" />
 					</StackLayout>
 					<!-- Reading display container END-->
 					<!-- Buttons collection view container -->
 					<StackLayout x:Name = "layoutButton1" Spacing = "25" Margin="15,30,15,20" Orientation="Horizontal"   HorizontalOptions="Center">
-						<local:MyButton x:Name ="B1" HorizontalOptions="Start" WidthRequest = "120" HeightRequest = "60" Clicked="btnTakeReadingClicked"  BackgroundColor="#10F900" TextColor="Black" Text="Take Reading" />
-						<local:MyButton x:Name ="B2" TextColor="Black" WidthRequest = "120" HeightRequest = "60" HorizontalOptions = "End" Clicked="btnCalibrateClicked"  BackgroundColor="#639BFF" Text="Calibration Screen" />
+						<local:MyButton x:Name ="B1" FontSize="14" HorizontalOptions="Start" WidthRequest = "120" HeightRequest = "60" Clicked="btnTakeReadingClicked"  BackgroundColor="#10F900" TextColor="Black" Text="Take Reading" />
+						<local:MyButton x:Name ="B2" FontSize="14" TextColor="Black" WidthRequest = "120" HeightRequest = "60" HorizontalOptions = "End" Clicked="btnCalibrateClicked"  BackgroundColor="#639BFF" Text="Calibration Screen" />
 					</StackLayout>
 					<RelativeLayout x:Name = "layoutMiddle" VerticalOptions="Start" HeightRequest="75">
 
@@ -51,8 +51,8 @@
 						</StackLayout>
 					</RelativeLayout>
 					<StackLayout x:Name="layoutButton2" Spacing = "25" Orientation="Horizontal"  Margin="15,0,15,20" HorizontalOptions="Center">
-						<local:MyButton x:Name = "B3"  HorizontalOptions="Start" WidthRequest = "120" HeightRequest = "60" Clicked="btnViewGraphPageClicked" BackgroundColor="#FFFB00" TextColor="Black" Text="Click to View Data Graph" />
-						<local:MyButton x:Name="B4"  HorizontalOptions="End" WidthRequest = "120" HeightRequest = "60" Clicked="btnViewDataListClicked" BackgroundColor="#FF9300" TextColor="Black" Text="Click to View Data List" />
+						<local:MyButton x:Name = "B3" FontSize="14" HorizontalOptions="Start" WidthRequest = "120" HeightRequest = "60" Clicked="btnViewGraphPageClicked" BackgroundColor="#FFFB00" TextColor="Black" Text="Click to View Data Graph" />
+						<local:MyButton x:Name="B4" FontSize="14" HorizontalOptions="End" WidthRequest = "120" HeightRequest = "60" Clicked="btnViewDataListClicked" BackgroundColor="#FF9300" TextColor="Black" Text="Click to View Data List" />
 					</StackLayout>
 					<RelativeLayout x:Name = "savebtnbottom" VerticalOptions="Start" HeightRequest="60">
 					<!--
@@ -60,7 +60,7 @@
 						-->
 						<!--<Frame CornerRadius="10" Padding="0"></Frame>-->
 						<StackLayout x:Name ="layoutbox2" BackgroundColor="Transparent" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Margin="0,0,0,0" Padding="0" Spacing="0" >
-							<local:MyButton x:Name = "save" Clicked="btnSaveClicked" Text="SAVE" HeightRequest="60" BorderRadius="50" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" />
+							<local:MyButton x:Name = "save" FontSize="14" Clicked="btnSaveClicked" Text="SAVE" HeightRequest="60" BorderRadius="50" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" />
 						</StackLayout>
 							
 					</RelativeLayout>
@@ -74,7 +74,7 @@
 				<Label VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2017" XAlign="Center" FontSize="12" Margin="0,0,0,4">
 				</Label>
 			</StackLayout>-->
-			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="100" Spacing ="20" Margin="15,-100,15,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" >
+			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="20" Spacing ="20" Margin="15,-20,15,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" >
 			<Label x:Name="copyrt1" VerticalOptions="CenterAndExpand" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2017" XAlign="Center" FontSize="15" Margin="0,0,0,4">
 				</Label>
 			</StackLayout>
@@ -88,7 +88,7 @@
 			</RelativeLayout>
 			<!--Loading on take reading-->
 			<RelativeLayout IsVisible="false" x:Name="layoutLoadingTakeReading" BackgroundColor="Black">
-				<local:MyButton x:Name="btncancelread" Clicked="btnCancelTakeReadingClicked" Margin="0,10,0,0" BackgroundColor = "Transparent" Image="deleteicon.png" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1,Constant = -60}" HeightRequest="30" WidthRequest="30" />
+				<local:MyButton x:Name="btncancelread" Clicked="btnCancelTakeReadingClicked" Margin="0,2,5,0" BackgroundColor = "Transparent" Image="deleteicon.png" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1,Constant = -60}" HeightRequest="40" WidthRequest="40" />
 				<StackLayout Margin="20,20,20,0" Spacing="20" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Padding="10">
 					<Image x:Name="icupng" Source="icucarellc.png" Margin="0,15,0,0" />
 					<Label x:Name="iculbl" HorizontalOptions="Center" WidthRequest="300" Text="ICUCare‘s universally accessible patient-centered health data echo system is transforming healthcare and enabling people to live a healthier life, one patient at a time!" TextColor="White" FontSize="20" XAlign="Center" />

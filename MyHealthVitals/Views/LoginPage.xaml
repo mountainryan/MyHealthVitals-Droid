@@ -9,8 +9,8 @@
 			<!--login view starts-->
 			<StackLayout VerticalOptions = "FillAndExpand" Spacing="0">
 				
-				<StackLayout HorizontalOptions="Center" x:Name="layoutImgContainer" Margin="90" Orientation="Vertical" VerticalOptions="Start">
-					<Image x:Name="icucareimg" Source="icucarellc.png" >
+				<StackLayout HorizontalOptions="Center" x:Name="layoutImgContainer" Margin="45" Orientation="Vertical" VerticalOptions="Start">
+					<Image x:Name="icucareimg" Source="icucarellc_phone.png" >
 					</Image>
 				</StackLayout>
 
@@ -30,8 +30,8 @@
 			
 				
 				<StackLayout>
-					<ScrollView MinimumWidthRequest="300" Margin="60" x:Name="scrollView" >
-						<Label x:Name="lblWelcome" FontSize="24" Margin="60" TextColor="{StaticResource colorWhite}" XAlign="Center" Text="Welcome - If this is your first time logging into your My eMHR Personal Health Records account from this App, remember to go to your Account Profile page and select Auto Login. &#x0a; &#x0a; All data as collected by the App from your connected devices will be automatically uploaded to your My eMHR Home Health page and subsequently, to your My Health Mobile APP.">
+					<ScrollView MinimumWidthRequest="150" Margin="30" x:Name="scrollView" >
+						<Label x:Name="lblWelcome" FontSize="17" Margin="30" TextColor="{StaticResource colorWhite}" XAlign="Center" Text="Welcome - If this is your first time logging into your My eMHR Personal Health Records account from this App, remember to go to your Account Profile page and select Auto Login. &#x0a; &#x0a; All data as collected by the App from your connected devices will be automatically uploaded to your My eMHR Home Health page and subsequently, to your My Health Mobile APP.">
 						</Label>
 					</ScrollView>
 				</StackLayout>

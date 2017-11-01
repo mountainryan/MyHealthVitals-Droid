@@ -20,9 +20,14 @@ namespace MyHealthVitals
 			InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet) 
 			{
-				label.FontSize *= 1.5;
-				label.Margin = new Thickness(20);
+				label.FontSize = 45 * Screensize.heightfactor;
+				label.Margin = new Thickness(20*Screensize.widthfactor);
 			}
+            else if (Device.Idiom == TargetIdiom.Phone)
+            {
+				label.FontSize *= Screensize.heightfactor;
+				label.Margin = new Thickness(10 * Screensize.widthfactor);
+            }
 		}
 
 
@@ -35,7 +40,7 @@ namespace MyHealthVitals
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
-			Debug.WriteLine("ParameterItemDetailNew OnAppearing");
+			//Debug.WriteLine("ParameterItemDetailNew OnAppearing");
 			// callApi();
 			ListCellTwoItem.fileName = null;
 			itemList.ItemsSource = null;
@@ -44,8 +49,10 @@ namespace MyHealthVitals
 			{
 				if (e.date.Equals(ListCellTwoItem.itemDate))
 				{
-					Debug.WriteLine(e.date);
-					string fn = Regex.Replace(e.date, @"\s+", "");//dateTime.Trim(' ')
+					DateTime iDate = Convert.ToDateTime(e.date);
+					String date_nosec = iDate.ToString("MM/dd/yyyy hh:mm tt");
+					//Debug.WriteLine(e.date);
+					string fn = Regex.Replace(date_nosec, @"\s+", "");//dateTime.Trim(' ')
 					fn = Regex.Replace(fn, @"[/:]+", "");
 					bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fn + ".txt");
 					if (ret)
@@ -59,10 +66,10 @@ namespace MyHealthVitals
 					}
 					else
 					{
-                        Debug.WriteLine("filename:" + fn + " e");
+                        //Debug.WriteLine("filename:" + fn + " e");
 						e.secondItem = "Emailed";
 					}
-					Debug.WriteLine("e.secondItem ="+ e.secondItem);
+					//Debug.WriteLine("e.secondItem ="+ e.secondItem);
 					break;
 				}
 			}
@@ -132,14 +139,14 @@ namespace MyHealthVitals
 		{
 			try
 			{
-				Debug.WriteLine("LIST");
+				//Debug.WriteLine("LIST");
 
 				var allCategoryReading = from reading in allReadings
 										 where reading.CategoryId == categoryId
 										 select reading;
 
 				//allCategoryReading = allCategoryReading.GroupBy(s => s.Date);
-				Debug.WriteLine("categoryID = " + categoryId);
+				//Debug.WriteLine("categoryID = " + categoryId);
 
 				switch (categoryId)
 				{
@@ -155,7 +162,7 @@ namespace MyHealthVitals
 								};
 							}
 							//		categoryId = 1
-							Debug.WriteLine("BP START");
+							//Debug.WriteLine("BP START");
 							var bpReadings = from spSet in
 							   (from reading in allCategoryReading
 								group reading by reading.Date)
@@ -307,7 +314,7 @@ namespace MyHealthVitals
 							//where weight != null && bmi != null
 
 							var newWeightBmiReading = (weightBmiReading.GroupBy(s => s.Date).Select(grp => grp.First())).ToArray();
-							Debug.WriteLine("newWeightBmiReading = " + newWeightBmiReading);
+							//Debug.WriteLine("newWeightBmiReading = " + newWeightBmiReading);
 							foreach (var reading in newWeightBmiReading)
 							{
 								var item = new ParameterDetailItem();
@@ -363,10 +370,14 @@ namespace MyHealthVitals
 								//	item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
 
 								//if (count < 30)
-							//	{
-									var fileName = Regex.Replace(val.date, @"\s+", "");
-									fileName = Regex.Replace(fileName, @"[/:]+", "");
-									bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
+								//	{   
+								    DateTime iDate = Convert.ToDateTime(val.date);
+								    String date_nosec = iDate.ToString("MM/dd/yyyy hh:mm tt");
+								//Debug.WriteLine("date_nosec = "+date_nosec);	
+                                var fileName = Regex.Replace(date_nosec, @"\s+", "");
+                                fileName = Regex.Replace(fileName, @"[/:]+", "");
+								//Debug.WriteLine("fileName = " + fileName);	
+                                bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
 									if (ret)
 									{
 										val.secondItem = "No Report";
@@ -391,14 +402,18 @@ namespace MyHealthVitals
 
 						foreach (var reading in allCategoryReading)
 						{
+                            
 							var item = new ParameterDetailItem();
-							item.date = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
-
+                            item.date = reading.Date.ToString("MM/dd/yyyy hh:mm:ss tt");
+                            item.date_nosec = reading.Date.ToString("MM/dd/yyyy hh:mm tt");
+                            //Debug.WriteLine("item.date_nosec  = " + item.date_nosec);
 						//	if (count < 30)
 						//	{
-								var fileName = Regex.Replace(item.date, @"\s+", "");
+								var fileName = Regex.Replace(item.date_nosec, @"\s+", "");
 								fileName = Regex.Replace(fileName, @"[/:]+", "");
+                            //Debug.WriteLine("fileName = " + fileName);
 								bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
+                            //Debug.WriteLine("file exists? "+ret);
 								if (ret)
 								{
 									item.secondItem = "No Report";
@@ -410,7 +425,7 @@ namespace MyHealthVitals
 								}
 								else
 								{
-                                    Debug.WriteLine("filename:" + fileName + " item");
+                                    //Debug.WriteLine("filename:" + fileName + " item");
 									item.secondItem = "Emailed";
 								}
 								count++;

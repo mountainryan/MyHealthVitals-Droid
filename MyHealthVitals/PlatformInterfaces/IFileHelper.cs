@@ -7,8 +7,9 @@ namespace MyHealthVitals
 {
 	public interface IFileHelper
 	{
-		void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
-						String FindingDetails, String HeartRate, String TestDuration = "30s");
+        Task<bool> dispAlert(String Title, String message, bool tablet, String btn1, String btn2);
+      	void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
+		String FindingDetails, String HeartRate, String TestDuration = "30s");
 		List<string> readFromTxt(String fileName);
 		void saveTotxt(List<int> ecgModel, string title, string subtitle, String fileName);
 		byte[] saveToPdf(OxyPlot.PlotModel ecgModel, String fileName, string name);

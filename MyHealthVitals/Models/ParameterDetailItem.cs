@@ -9,6 +9,7 @@ namespace MyHealthVitals
 		public string firstItem { get; set;}
 		public string secondItem { get; set; }
 		public long categoryId;
+        public string date_nosec { get; set; }
 
 	}
 	public class logcalParameteritem { 

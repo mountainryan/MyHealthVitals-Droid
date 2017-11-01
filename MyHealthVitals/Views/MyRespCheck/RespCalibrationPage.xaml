@@ -21,12 +21,12 @@
 						<ListView.ItemTemplate>
 							<DataTemplate>
 								<ViewCell>
-										<StackLayout Spacing="20" Orientation="Horizontal" HeightRequest="120">
+										<StackLayout x:Name="calholder" Spacing="{Binding spacing}" Orientation="Horizontal" HeightRequest="{Binding stackheight}">
 											<Label x:Name="readnum" Margin="15,0,0,0" FontSize="{Binding fontsize}" Text="{Binding indexText}" WidthRequest="215" HeightRequest="80" YAlign="Center" TextColor="White">
 											</Label>
 											<Label x:Name="peflbl"  FontSize="{Binding fontsize}" Text="{Binding pefString}" YAlign="Center" XAlign="Center" WidthRequest="150" TextColor="White" />
 											<Label x:Name="fevlbl"  FontSize="{Binding fontsize}" Text="{Binding fev1String}" XAlign="Center" YAlign="Center" WidthRequest="180" TextColor="White" />
-											<local:MyButton x:Name="delbtn" Clicked="DeleteClicked" CommandParameter="{Binding index}" Image="deleteicon_tab.png" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" />
+											<local:MyButton x:Name="delbtn" Clicked="DeleteClicked" CommandParameter="{Binding index}" Image="{Binding imagepng}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" />
 										</StackLayout>
 								</ViewCell>
 							</DataTemplate>

@@ -26,6 +26,13 @@ namespace MyHealthVitals
 		private  Reading[] allReadings;
 		public ParametersPageLocalPad()
 		{
+            /*
+            cont.HeightRequest *= Screensize.heightfactor;
+            label.FontSize *= Screensize.heightfactor;
+            label.HeightRequest *= Screensize.heightfactor;
+            arrow.HeightRequest *= Screensize.heightfactor;
+            arrow.WidthRequest *= Screensize.widthfactor;
+            */
 			InitializeComponent();
 			this.allReadings = ParametersPageLocal.allReadings;
 			sycnwithCloud();

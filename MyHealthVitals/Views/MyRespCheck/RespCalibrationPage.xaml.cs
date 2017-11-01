@@ -19,40 +19,37 @@ namespace MyHealthVitals
 
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-					
-					layout.Spacing *= 2;
-				label.Margin = new Thickness (20, 10, 20, 10);	
-				label.FontSize *= 2;
-					layoutButton.Spacing *= 2;
-					button.HeightRequest *= 2;
-					button.FontSize *= 1.5;
-					labelpef.WidthRequest *= 2;
-					labelfev1.WidthRequest *= 2;
-					labelpef.FontSize *= 1.5;
-					labelfev1.FontSize *= 1.5;
-					listView.HeightRequest *= 2;
-			/*		layoutlist.Spacing *= 2;
-					label1.WidthRequest *= 2;
-					label1.FontSize *= 1.5;
-					label2.WidthRequest *= 2;
-					label2.FontSize *= 1.5;
-					label3.WidthRequest *= 2;
-					label3.FontSize *= 1.5;
-					buttonDel.WidthRequest *= 2;
-					buttonDel.HeightRequest *= 2;
-					buttonDel.FontSize *= 1.5;
-				*/	
-				save.FontSize *= 1.5;
-				save.HeightRequest *= 1.5;
-				/*
-				readnum.FontSize *= 1.5;
-				peflbl.FontSize *= 1.5;
-				fevlbl.FontSize *= 1.5;
-				delbtn.WidthRequest *= 1.5;
-				delbtn.HeightRequest *= 1.5;
-				*/
-				//listView.ItemTemplate.
+				layout.Spacing = 24 * Screensize.heightfactor;
+				label.Margin = new Thickness(20 * Screensize.widthfactor, 10 * Screensize.heightfactor, 20 * Screensize.widthfactor, 10 * Screensize.heightfactor);
+				label.FontSize = 32 * Screensize.heightfactor;
+				layoutButton.Spacing = 20 * Screensize.heightfactor;
+				button.HeightRequest = 70 * Screensize.heightfactor;
+				button.FontSize = 24 * Screensize.heightfactor;
+				labelpef.WidthRequest = 175 * Screensize.widthfactor;
+				labelfev1.WidthRequest = 175 * Screensize.widthfactor;
+				labelpef.FontSize = 30 * Screensize.heightfactor;
+				labelfev1.FontSize = 30 * Screensize.heightfactor;
+				listView.HeightRequest = 50 * Screensize.heightfactor;
+				save.FontSize = 36 * Screensize.heightfactor;
+				save.HeightRequest = 90 * Screensize.heightfactor;
+                save.Margin = new Thickness(3,4,3,120*Screensize.heightfactor);
 			}
+            else if (Device.Idiom == TargetIdiom.Phone)
+            {
+				layout.Spacing *= Screensize.heightfactor;
+				label.Margin = new Thickness(10 * Screensize.widthfactor, 5 * Screensize.heightfactor, 10 * Screensize.widthfactor, 5 * Screensize.heightfactor);
+				label.FontSize *= Screensize.heightfactor;
+				layoutButton.Spacing *= Screensize.heightfactor;
+				//button.HeightRequest *= Screensize.heightfactor;
+				button.FontSize *= Screensize.heightfactor;
+				labelpef.WidthRequest *= Screensize.widthfactor;
+				labelfev1.WidthRequest *= Screensize.widthfactor;
+				labelpef.FontSize *= Screensize.heightfactor;
+				labelfev1.FontSize *= Screensize.heightfactor;
+				listView.HeightRequest *= Screensize.heightfactor;
+				save.FontSize *= Screensize.heightfactor;
+				save.HeightRequest *= Screensize.heightfactor;
+            }
 		}
 		protected override void OnDisappearing()
 		{
@@ -74,12 +71,34 @@ namespace MyHealthVitals
 				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + readings;
 			}
 			else {
-				DisplayAlert("Calibration", "Readings taken are sufficient for calibration. If you want to take more readings, Please, delete the unwanted row and take reading again.", "OK");
+				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+				{
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration", "Readings taken are sufficient for calibration. If you want to take more readings, Please, delete the unwanted row and take reading again.", true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration", "Readings taken are sufficient for calibration. If you want to take more readings, Please, delete the unwanted row and take reading again.", false, "OK", null);
+					}
+				}));
+				//DisplayAlert("Calibration", "Readings taken are sufficient for calibration. If you want to take more readings, Please, delete the unwanted row and take reading again.", "OK");
 			}
 		}
 		public void testAgainDialog()
 		{
-           DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
+			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+			{
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "The FEV value is too low, please take reading again.", true, "OK", null);
+				}
+				else
+				{
+					var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "The FEV value is too low, please take reading again.", false, "OK", null);
+				}
+			}));
+           //DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
 	//		DisplayAlert("Test Again", "The FEV value is too low, please test again.", "OK");"
 			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
 		
@@ -90,10 +109,17 @@ namespace MyHealthVitals
             Debug.WriteLine("Calibration reading.");
 			//var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
 
-			currReading.fontsize = 15;
+			currReading.fontsize = 15 * Screensize.heightfactor;
+            currReading.spacing = 10 * Screensize.heightfactor;
+            currReading.stackheight = 80 * Screensize.heightfactor;
+            currReading.imagepng = "deleteicon.png";
+
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-				currReading.fontsize *= 2;
+				currReading.fontsize = 30 * Screensize.heightfactor;
+                currReading.spacing = 20 * Screensize.heightfactor;
+                currReading.stackheight = 120 * Screensize.heightfactor;
+                currReading.imagepng = "deleteicon_tab.png";
 			}
 
 			currReading.index = calibratedReadingList.Count;
@@ -129,11 +155,21 @@ namespace MyHealthVitals
 					});
 
 			}
-			catch { 
+            catch { 
 			
 			}
-
-			DisplayAlert("Spirometer", message, "OK");
+			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+			{
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					var ret = await DependencyService.Get<IFileHelper>().dispAlert("Spirometer", message, true, "OK", null);
+				}
+				else
+				{
+					var ret = await DependencyService.Get<IFileHelper>().dispAlert("Spirometer", message, false, "OK", null);
+				}
+			}));
+			//DisplayAlert("Spirometer", message, "OK");
 		}
 
 		async void btnSaveCLicked(object sender, System.EventArgs e)

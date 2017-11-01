@@ -1,14 +1,18 @@
 ﻿<Properties StartupConfiguration="{D46CA70E-D643-4A29-9B54-FC25DAE9558A}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workbench ActiveDocument="Projects Status">
     <Files>
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/EcgReport.xaml" Line="15" Column="74" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/EcgReport.xaml.cs" Line="376" Column="5" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml" Line="104" Column="24" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="724" Column="47" />
-      <File FileName="Droid/Helpers/FileHelperAndroid.cs" Line="355" Column="4" />
-      <File FileName="MyHealthVitals/Models/Credential.cs" Line="37" Column="42" />
-      <File FileName="Droid/MainActivity.cs" Line="30" Column="4" />
-      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="216" Column="26" />
+      <File FileName="MyHealthVitals/Views/UserProfile.xaml" Line="64" Column="15" />
+      <File FileName="MyHealthVitals/Views/UserProfile.xaml.cs" Line="63" Column="51" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml" Line="106" Column="15" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="309" Column="15" />
+      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="16" Column="9" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespCalibrationPage.xaml.cs" Line="155" Column="9" />
+      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="231" Column="6" />
+      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="16" Column="51" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/EcgReport.xaml" Line="19" Column="47" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/EcgReport.xaml.cs" Line="275" Column="6" />
+      <File FileName="Droid/CustomSwitch.cs" Line="9" Column="1" />
+      <File FileName="Droid/CustomToolBar.cs" Line="4" Column="21" />
       <File FileName="Projects Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
@@ -17,7 +21,7 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.11F233EF-1276-46D8-9D10-67178FDC94A1" />
 </Properties>

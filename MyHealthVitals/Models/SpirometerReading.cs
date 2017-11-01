@@ -10,7 +10,10 @@ namespace MyHealthVitals
 		public DateTime Date { get; set; }
 		public decimal Pef { get; set; }
 		public decimal Fev1 { get; set; }
-		public int fontsize { get; set; }
+		public double fontsize { get; set; }
+        public double spacing { get; set; }
+        public double stackheight { get; set; }
+        public string imagepng { get; set; }
 
 		public SpirometerReading(DateTime newDate, decimal pef, decimal fev1)
 		{

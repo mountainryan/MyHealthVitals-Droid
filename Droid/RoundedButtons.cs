@@ -3,7 +3,7 @@ using MyHealthVitals.Droid;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-[assembly: ExportRenderer(typeof(MyButton), typeof(RoundedButtons))]
+[assembly: ExportRenderer(typeof(Button), typeof(RoundedButtons))]
 namespace MyHealthVitals.Droid
 {
 	public class RoundedButtons : Xamarin.Forms.Platform.Android.AppCompat.ButtonRenderer
