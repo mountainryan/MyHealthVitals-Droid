@@ -13,8 +13,33 @@ namespace MyHealthVitals
 		ObservableCollection<SpirometerReading> spirometerReadingList = new ObservableCollection<SpirometerReading>();
 		public RespDataListPage()
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
 			InitializeComponent();
+			FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+			titlebtn.FontSize = 24 * Screensize.heightfactor;
+            backbtn.FontSize = 24 * Screensize.heightfactor;
+
+            label.FontSize *= Screensize.heightfactor;
+            Date.FontSize *= Screensize.heightfactor;
+            PEF.FontSize *= Screensize.heightfactor;
+            FEV.FontSize *= Screensize.heightfactor;
+            //Dateval.FontSize *= Screensize.heightfactor;
+            //PEFval.FontSize *= Screensize.heightfactor;
+            //FEVval.FontSize *= Screensize.heightfactor;
+			Date.WidthRequest *= Screensize.widthfactor;
+			PEF.WidthRequest *= Screensize.widthfactor;
+			FEV.WidthRequest *= Screensize.widthfactor;
+			//Dateval.WidthRequest *= Screensize.widthfactor;
+			//PEFval.WidthRequest *= Screensize.widthfactor;
+			//FEVval.WidthRequest *= Screensize.widthfactor;
+
+			//label.FontSize *= Screensize.heightfactor;
 			CallAPiGetReadings();
+		}
+
+		void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
 		}
 
 		public async void CallAPiGetReadings()

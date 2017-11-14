@@ -7,6 +7,9 @@ namespace MyHealthVitals
 {
 	public interface IFileHelper
 	{
+        void delBLEinfo();
+        List<string> getBLEinfo(string devicename);
+        void saveBLEinfo(string devicename, int blenum, Guid deviceid);
         Task<bool> dispAlert(String Title, String message, bool tablet, String btn1, String btn2);
       	void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
 		String FindingDetails, String HeartRate, String TestDuration = "30s");

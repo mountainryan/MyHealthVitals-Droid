@@ -18,6 +18,7 @@ namespace MyHealthVitals.Droid
 			Control.Gravity = GravityFlags.CenterVertical;
 			Control.Gravity = GravityFlags.CenterHorizontal;
 
+
 		}
 	}
 }

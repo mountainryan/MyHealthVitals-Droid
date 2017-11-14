@@ -15,10 +15,15 @@ namespace MyHealthVitals
 
 		public RespCalibrationPage()
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
 			InitializeComponent();
-
+			
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
+				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+				titlebtn.FontSize = 30 * Screensize.heightfactor;
+                backbtn.FontSize = 30 * Screensize.heightfactor;
+
 				layout.Spacing = 24 * Screensize.heightfactor;
 				label.Margin = new Thickness(20 * Screensize.widthfactor, 10 * Screensize.heightfactor, 20 * Screensize.widthfactor, 10 * Screensize.heightfactor);
 				label.FontSize = 32 * Screensize.heightfactor;
@@ -29,13 +34,18 @@ namespace MyHealthVitals
 				labelfev1.WidthRequest = 175 * Screensize.widthfactor;
 				labelpef.FontSize = 30 * Screensize.heightfactor;
 				labelfev1.FontSize = 30 * Screensize.heightfactor;
-				listView.HeightRequest = 50 * Screensize.heightfactor;
+				listView.HeightRequest = 350 * Screensize.heightfactor;
 				save.FontSize = 36 * Screensize.heightfactor;
 				save.HeightRequest = 90 * Screensize.heightfactor;
                 save.Margin = new Thickness(3,4,3,120*Screensize.heightfactor);
+				//prevcont.Margin = new Thickness(15,-100* Screensize.heightfactor,0,0);
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
+				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+				titlebtn.FontSize = 24 * Screensize.heightfactor;
+                backbtn.FontSize = 24 * Screensize.heightfactor;
+
 				layout.Spacing *= Screensize.heightfactor;
 				label.Margin = new Thickness(10 * Screensize.widthfactor, 5 * Screensize.heightfactor, 10 * Screensize.widthfactor, 5 * Screensize.heightfactor);
 				label.FontSize *= Screensize.heightfactor;
@@ -49,6 +59,8 @@ namespace MyHealthVitals
 				listView.HeightRequest *= Screensize.heightfactor;
 				save.FontSize *= Screensize.heightfactor;
 				save.HeightRequest *= Screensize.heightfactor;
+                save.Margin = new Thickness(3, 10 * Screensize.heightfactor, 3, 30 * Screensize.heightfactor);
+                //prevcont.Margin = new Thickness(15, -80 /** Screensize.heightfactor*/, 0, 0);
             }
 		}
 		protected override void OnDisappearing()
@@ -58,17 +70,99 @@ namespace MyHealthVitals
 			BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
 		}
 
-		void btnCalibrateClicked(object sender, System.EventArgs e)
+		void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
+		}
+
+		public async void btnCalibrateClicked(object sender, System.EventArgs e)
 		{
 			if (this.calibratedReadingList.Count < 3)
 			{
+				string readings = (3 - calibratedReadingList.Count) > 1 ? " more readings." : " more reading.";
+				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + readings;
 				layoutLoading.IsVisible = true;
 
 				//bleManager.ScanToConnectToSpotCheck(this);
-				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
-				//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
-				string readings = (3 - calibratedReadingList.Count) > 1 ? " more readings." : " more reading.";
-				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + readings;
+				//BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+                //DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+
+                string deviceName = "BLE-MSA";
+				List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
+				string BLEtype = "";
+				Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
+				bool conn_success = false;
+
+
+				if (result.Count == 3)
+				{
+					Debug.WriteLine("Found guid result in file");
+					BLEtype = result[1];
+					deviceID = new Guid(result[2]);
+					//initializePlotModel();
+					if (BLEtype == "1")
+					{
+						Debug.WriteLine("Type 1 connection");
+						conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+					}
+					else
+					{
+						//BLEtype = 2
+						//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+					}
+					Debug.WriteLine("conn_success = " + conn_success.ToString());
+					if (!conn_success)
+					{
+						//try the hard way
+						BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+					}
+				}
+				else if (result.Count == 0)
+				{
+					//try first method
+					try
+					{
+						BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+					}
+				}
+				else
+				{
+					//somehow they've connected more than 1 guid of a device (2 PC-300s for example)
+					//or they've managed to connect the same device to both BLE managers
+
+					for (int i = 0; i < result.Count; i += 3)
+					{
+						BLEtype = result[i + 1];
+						deviceID = new Guid(result[i + 2]);
+						//attempt to connect via this method
+						if (BLEtype == "1")
+						{
+							//layoutLoading.IsVisible = true;
+							conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+						}
+						else
+						{
+							//BLEtype = 2
+							//layoutLoading.IsVisible = true;
+							//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+						}
+						if (conn_success) break;
+					}
+					if (!conn_success)
+					{
+						//send the error message
+						//BLECentralManager.sharedInstance.SendConnError(deviceName, 2);
+						//or just try to connect the hard way!
+						BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+					}
+
+				}
+
+
 			}
 			else {
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
@@ -85,7 +179,7 @@ namespace MyHealthVitals
 				//DisplayAlert("Calibration", "Readings taken are sufficient for calibration. If you want to take more readings, Please, delete the unwanted row and take reading again.", "OK");
 			}
 		}
-		public void testAgainDialog()
+		public async void testAgainDialog()
 		{
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
@@ -98,10 +192,84 @@ namespace MyHealthVitals
 					var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "The FEV value is too low, please take reading again.", false, "OK", null);
 				}
 			}));
-           //DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
-	//		DisplayAlert("Test Again", "The FEV value is too low, please test again.", "OK");"
-			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
-		
+			//DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
+			//		DisplayAlert("Test Again", "The FEV value is too low, please test again.", "OK");"
+			//BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+
+			string deviceName = "BLE-MSA";
+			List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
+			string BLEtype = "";
+			Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
+			bool conn_success = false;
+
+
+			if (result.Count == 3)
+			{
+				Debug.WriteLine("Found guid result in file");
+				BLEtype = result[1];
+				deviceID = new Guid(result[2]);
+				//initializePlotModel();
+				if (BLEtype == "1")
+				{
+					Debug.WriteLine("Type 1 connection");
+					conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+				}
+				else
+				{
+					//BLEtype = 2
+					//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+				}
+				Debug.WriteLine("conn_success = " + conn_success.ToString());
+				if (!conn_success)
+				{
+					//try the hard way
+					BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+				}
+			}
+			else if (result.Count == 0)
+			{
+				//try first method
+				try
+				{
+					BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+				}
+			}
+			else
+			{
+				//somehow they've connected more than 1 guid of a device (2 PC-300s for example)
+				//or they've managed to connect the same device to both BLE managers
+
+				for (int i = 0; i < result.Count; i += 3)
+				{
+					BLEtype = result[i + 1];
+					deviceID = new Guid(result[i + 2]);
+					//attempt to connect via this method
+					if (BLEtype == "1")
+					{
+						//layoutLoading.IsVisible = true;
+						conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+					}
+					else
+					{
+						//BLEtype = 2
+						//layoutLoading.IsVisible = true;
+						//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+					}
+					if (conn_success) break;
+				}
+				if (!conn_success)
+				{
+					//send the error message
+					//BLECentralManager.sharedInstance.SendConnError(deviceName, 2);
+					//or just try to connect the hard way!
+					BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+				}
+
+			}
 		}
 		// call back methods
 		public void updateCaller(SpirometerReading currReading)
@@ -135,7 +303,81 @@ namespace MyHealthVitals
 					lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
 					//bleManager.ScanToConnectToSpotCheck(this);
 					//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
-					BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+					//BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+					string deviceName = "BLE-MSA";
+					List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
+					string BLEtype = "";
+					Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
+					bool conn_success = false;
+
+
+					if (result.Count == 3)
+					{
+						Debug.WriteLine("Found guid result in file");
+						BLEtype = result[1];
+						deviceID = new Guid(result[2]);
+						//initializePlotModel();
+						if (BLEtype == "1")
+						{
+							Debug.WriteLine("Type 1 connection");
+							conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+						}
+						else
+						{
+							//BLEtype = 2
+							//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+						}
+						Debug.WriteLine("conn_success = " + conn_success.ToString());
+						if (!conn_success)
+						{
+							//try the hard way
+							BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+						}
+					}
+					else if (result.Count == 0)
+					{
+						//try first method
+						try
+						{
+							BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+						}
+						catch (Exception ex)
+						{
+							Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+						}
+					}
+					else
+					{
+						//somehow they've connected more than 1 guid of a device (2 PC-300s for example)
+						//or they've managed to connect the same device to both BLE managers
+
+						for (int i = 0; i < result.Count; i += 3)
+						{
+							BLEtype = result[i + 1];
+							deviceID = new Guid(result[i + 2]);
+							//attempt to connect via this method
+							if (BLEtype == "1")
+							{
+								//layoutLoading.IsVisible = true;
+								conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+							}
+							else
+							{
+								//BLEtype = 2
+								//layoutLoading.IsVisible = true;
+								//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+							}
+							if (conn_success) break;
+						}
+						if (!conn_success)
+						{
+							//send the error message
+							//BLECentralManager.sharedInstance.SendConnError(deviceName, 2);
+							//or just try to connect the hard way!
+							BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+						}
+
+					}
 				}
 				else {
 					layoutLoading.IsVisible = false;
@@ -143,6 +385,65 @@ namespace MyHealthVitals
 
 				listView.ItemsSource = calibratedReadingList;
 			}));
+		}
+
+		public async void FailedConn(String message, bool isConn, int camefrom)
+		{
+			Debug.WriteLine("FailedConn  mainpage  : " + message);
+			if (camefrom == 1)
+			{
+				bool ret;
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("BLE-MSA", message, true, "Yes", "No");
+				}
+				else
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("BLE-MSA", message, false, "Yes", "No");
+				}
+				if (ret)
+				{
+					//try to connect again, this time to the second BLE manager
+					try
+					{
+						layoutLoading.IsVisible = true;
+						//await BLECentralManager.sharedInstance.ConnectToDevice2("BLE-MSA", this);
+                        BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine("conn error msg : " + ex.Message);
+					}
+
+				}
+			}
+			else
+			{
+				//camefrom BLE manager 2
+				bool ret;
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("BLE-MSA", message, true, "Yes", "No");
+				}
+				else
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("BLE-MSA", message, false, "Yes", "No");
+				}
+				if (ret)
+				{
+					//try to connect again, this time to the second BLE manager
+					try
+					{
+						layoutLoading.IsVisible = true;
+						BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine("conn error msg : " + ex.Message);
+					}
+
+				}
+			}
 		}
 
 		public void updateDeviceStateOnUI(String message, bool isConnected)
@@ -206,7 +507,7 @@ namespace MyHealthVitals
 			}
 		}
 
-		void DeleteClicked(object sender, System.EventArgs e)
+		public async void DeleteClicked(object sender, System.EventArgs e)
 		{
 			var btn = (Xamarin.Forms.Button)sender;
 
@@ -222,12 +523,89 @@ namespace MyHealthVitals
 
 			if (this.calibratedReadingList.Count < 3)
 			{
-				layoutLoading.IsVisible = true;
+				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
+                layoutLoading.IsVisible = true;
 				//bleManager.ScanToConnectToSpotCheck(this);
 				//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer(this);
-				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
-				lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
-			}
+				//BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+				
+
+				string deviceName = "BLE-MSA";
+				List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
+				string BLEtype = "";
+				Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
+				bool conn_success = false;
+
+
+				if (result.Count == 3)
+				{
+					Debug.WriteLine("Found guid result in file");
+					BLEtype = result[1];
+					deviceID = new Guid(result[2]);
+					//initializePlotModel();
+					if (BLEtype == "1")
+					{
+						Debug.WriteLine("Type 1 connection");
+						conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+					}
+					else
+					{
+						//BLEtype = 2
+						//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+					}
+					Debug.WriteLine("conn_success = " + conn_success.ToString());
+					if (!conn_success)
+					{
+						//try the hard way
+						BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+					}
+				}
+				else if (result.Count == 0)
+				{
+					//try first method
+					try
+					{
+						BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+					}
+				}
+				else
+				{
+					//somehow they've connected more than 1 guid of a device (2 PC-300s for example)
+					//or they've managed to connect the same device to both BLE managers
+
+					for (int i = 0; i < result.Count; i += 3)
+					{
+						BLEtype = result[i + 1];
+						deviceID = new Guid(result[i + 2]);
+						//attempt to connect via this method
+						if (BLEtype == "1")
+						{
+							//layoutLoading.IsVisible = true;
+							conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+						}
+						else
+						{
+							//BLEtype = 2
+							//layoutLoading.IsVisible = true;
+							//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+						}
+						if (conn_success) break;
+					}
+					if (!conn_success)
+					{
+						//send the error message
+						//BLECentralManager.sharedInstance.SendConnError(deviceName, 2);
+						//or just try to connect the hard way!
+						BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+					}
+
+				}
+            
+            }
 		}
 
 		private SpirometerReading getHighestReading() {

@@ -115,6 +115,15 @@
     <Reference Include="XamiTextSharpLGPL.Droid">
       <HintPath>..\packages\Xam.iTextSharpLGPL.0.1.0\lib\MonoAndroid10\XamiTextSharpLGPL.Droid.dll</HintPath>
     </Reference>
+    <Reference Include="nexus.core">
+      <HintPath>..\packages\nexus.core.0.29.4\lib\portable45-net45+win8\nexus.core.dll</HintPath>
+    </Reference>
+    <Reference Include="ble.net">
+      <HintPath>..\packages\ble.net.0.12.14\lib\portable45-net45+win8\ble.net.dll</HintPath>
+    </Reference>
+    <Reference Include="ble.net-android">
+      <HintPath>..\packages\ble.net-android.0.12.14\lib\monoandroid44\ble.net-android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyHealthVitals\MyHealthVitals.csproj">
@@ -159,7 +168,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\splash.png" />
     <AndroidResource Include="Resources\drawable-hdpi\deleteicon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\imgArrow.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\imgList.png" />
     <AndroidResource Include="Resources\drawable-hdpi\imgNext.png" />
     <AndroidResource Include="Resources\drawable-hdpi\imgNextBlue.png" />
     <AndroidResource Include="Resources\drawable-hdpi\imgPrevBlue.png" />
@@ -194,6 +202,15 @@
     <AndroidResource Include="Resources\drawable\CustomButtonBackground2.axml" />
     <AndroidResource Include="Resources\drawable-hdpi\imgPrevBlue_pad.png" />
     <AndroidResource Include="Resources\drawable-hdpi\imgNextBlue_pad.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\imgList.png" />
+    <AndroidResource Include="Resources\drawable\imgBackArrow.png" />
+    <AndroidResource Include="Resources\drawable\ISEEYOUCARE_logo.png" />
+    <AndroidResource Include="Resources\drawable\switch_track_off.xml" />
+    <AndroidResource Include="Resources\drawable\switch_track_on.xml" />
+    <AndroidResource Include="Resources\drawable\thumb_off.xml" />
+    <AndroidResource Include="Resources\drawable\thumb_on.xml" />
+    <AndroidResource Include="Resources\drawable\thumb.xml" />
+    <AndroidResource Include="Resources\drawable\track.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />

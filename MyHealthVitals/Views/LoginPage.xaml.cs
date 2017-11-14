@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using nexus.core.logging;
+using nexus.protocols.ble;
 
 namespace MyHealthVitals
 {
@@ -19,6 +21,10 @@ namespace MyHealthVitals
         public static string patient_name;
 		public static string gifpath;
 	}
+	public class BLEadapter
+	{
+		public static IBluetoothLowEnergyAdapter adapter;
+	}
     public class Screensize
     {
         public static int targetwidth_pad = 800;
@@ -32,12 +38,12 @@ namespace MyHealthVitals
     }
     public partial class LoginPage : ContentPage
     {
-        public LoginPage(int dpwidth, int dpheight)
+        public LoginPage(int dpwidth, int dpheight, IBluetoothLowEnergyAdapter _adapter)
         {
+            NavigationPage.SetHasNavigationBar(this, false);
             Screensize.dpwidth = dpwidth;
             Screensize.dpheight = dpheight;
-
-
+            BLEadapter.adapter = _adapter;
 
             InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet)
@@ -45,7 +51,7 @@ namespace MyHealthVitals
                 Screensize.widthfactor = Convert.ToDouble(dpwidth) / Convert.ToDouble(Screensize.targetwidth_pad);
                 Screensize.heightfactor = Convert.ToDouble(dpheight) / Convert.ToDouble(Screensize.targetheight_pad);
                 layoutImgContainer.Margin = new Thickness(90 * Screensize.widthfactor);
-                icucareimg.Source = "icucarellc.png";
+                icucareimg.Source = "ISEEYOUCARE_logo.png";
 				scrollView.Margin = new Thickness(60 * Screensize.widthfactor);
 				lblWelcome.Margin = new Thickness(60 * Screensize.widthfactor);
                 //layout.WidthRequest = 350;
@@ -117,6 +123,7 @@ namespace MyHealthVitals
 
         protected override void OnAppearing()
         {
+            //DependencyService.Get<IFileHelper>().delBLEinfo();
 
 
             var result = 142^1;
@@ -124,10 +131,10 @@ namespace MyHealthVitals
 
             base.OnAppearing();
 
-			Debug.WriteLine("txtUsername width: "+txtUsername.WidthRequest);
-			Debug.WriteLine("txtPassword width: " + txtPassword.WidthRequest);
-			Debug.WriteLine("txtUsername Height: " + txtUsername.HeightRequest);
-			Debug.WriteLine("txtPassword Height: " + txtPassword.HeightRequest);
+			//Debug.WriteLine("txtUsername width: " + txtUsername.WidthRequest);
+			//Debug.WriteLine("txtPassword width: " + txtPassword.WidthRequest);
+			//Debug.WriteLine("txtUsername Height: " + txtUsername.HeightRequest);
+			//Debug.WriteLine("txtPassword Height: " + txtPassword.HeightRequest);
 
 		//	scrollView.HeightRequest = this.Content.Bounds.Size.Height - layoutImgContainer.Height - layoutLoginContainer.Height - 40;
 		}
@@ -140,12 +147,12 @@ namespace MyHealthVitals
             {
 				//first copy the gif asset
 				//DependencyService.Get<IFileHelper>().copyAsset();
-                Debug.WriteLine("name= " + username + " pw = " + password);
-                Debug.WriteLine("Credential.sharedInstance = " + Credential.sharedInstance);
+                //Debug.WriteLine("name= " + username + " pw = " + password);
+                //Debug.WriteLine("Credential.sharedInstance = " + Credential.sharedInstance);
                 //Credential cred = await Credential.sharedInstance.CallApiForLogin(txtUsername.Text.Trim(), txtPassword.Text.Trim());
                 Credential cred = await Credential.sharedInstance.CallApiForLogin(username, password);
 
-                Debug.WriteLine("cred= " + cred);
+                //Debug.WriteLine("cred= " + cred);
 
 
 
@@ -167,9 +174,10 @@ namespace MyHealthVitals
                     Debug.WriteLine("Login succesfull.");
                     var newScreen = new DeviceListPage();
                     //var newScreen = new RespHomePage();
-                    newScreen.Title = " ";
-
+                    newScreen.Title = "Device List";
+                    NavigationPage.SetHasNavigationBar(this, false);
                     var nav = new NavigationPage(newScreen);
+
                     this.Navigation.PushModalAsync(nav);
                 });
 
@@ -179,7 +187,7 @@ namespace MyHealthVitals
 					//var th = new Thread(GetReadings());
 					//th.Start();
                     //GetReadings();
-					Debug.WriteLine("task Id = " + Task.CurrentId);
+					//Debug.WriteLine("task Id = " + Task.CurrentId);
 					ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService(); Debug.WriteLine("sync data from website");
                 });
 

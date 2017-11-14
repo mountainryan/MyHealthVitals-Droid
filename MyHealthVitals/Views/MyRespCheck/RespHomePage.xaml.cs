@@ -13,9 +13,39 @@ namespace MyHealthVitals
 
 		public RespHomePage()
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
+			FakeToolbar.Children.Add(
+			backarrow,
+			// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+			new Rectangle(0, 0.5, 0.1, 1),
+			// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+			AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+		    );
+
+			FakeToolbar.Children.Add(
+				backbtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.1, 0.5, 0.15, 1),
+				AbsoluteLayoutFlags.All
+			);
+			FakeToolbar.Children.Add(
+				titlebtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.5, 0.5, 0.5, 1),
+				AbsoluteLayoutFlags.All
+			);
+
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
+				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+                backbtn.FontSize = 30 * Screensize.heightfactor;
+				titlebtn.FontSize = 30 * Screensize.heightfactor;
+
 				layoutContainer.Spacing = 24 * Screensize.widthfactor;
 				imgProfile.WidthRequest = 200 * Screensize.widthfactor;
 				imgProfile.HeightRequest = 240 * Screensize.heightfactor;
@@ -56,10 +86,13 @@ namespace MyHealthVitals
                 B4.HeightRequest = 120 * Screensize.heightfactor;
 				B3.FontSize = 36 * Screensize.heightfactor;
 				B4.FontSize = 36 * Screensize.heightfactor;
+
 				save.FontSize = 36 * Screensize.heightfactor;
 				save.WidthRequest = box.WidthRequest;
 				save.HeightRequest = 90 * Screensize.heightfactor;
 				save.Margin = new Thickness(45 * Screensize.widthfactor, 0, 40 * Screensize.widthfactor, 0);
+                //layoutbox2.HeightRequest = 120;
+
                 iculbl.WidthRequest = 450 * Screensize.widthfactor;
 				iculbl.FontSize = 40 * Screensize.heightfactor;
 
@@ -73,14 +106,23 @@ namespace MyHealthVitals
                 btncancelread.HeightRequest = 60;
                 btncancelread.Image = "deleteicon_x2.png";
 				icupng.Source = "icucarellc_pad.png";
-				gifWebView.HeightRequest = 190 * Screensize.heightfactor;
-				gifWebView.WidthRequest = 190 * Screensize.widthfactor;
+                icupng.HeightRequest = 250 * Screensize.heightfactor;
+                icupng.WidthRequest = 500 * Screensize.heightfactor;
+                gifWebView.HeightRequest = 190;// * Screensize.heightfactor;
+                gifWebView.WidthRequest = 190;// * Screensize.widthfactor;
 				var html = new HtmlWebViewSource();
 				html.BaseUrl = DependencyService.Get<IBaseUrl>().Get() + "gifContainer_pad.html";
 				gifWebView.Source = html.BaseUrl;
+
+                Debug.WriteLine("ht factor: "+Screensize.heightfactor);
+                Debug.WriteLine("wd factor: " + Screensize.widthfactor);
             }
 			else if (Device.Idiom == TargetIdiom.Phone)
 			{
+				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+				titlebtn.FontSize = 24 * Screensize.heightfactor;
+                backbtn.FontSize = 24 * Screensize.heightfactor;
+
 				layoutContainer.Spacing *= Screensize.widthfactor;
 				imgProfile.WidthRequest *= Screensize.widthfactor;
 				imgProfile.HeightRequest *= Screensize.heightfactor;
@@ -127,6 +169,8 @@ namespace MyHealthVitals
 				//save.Margin = new Thickness(45 * Screensize.widthfactor, 0, 40*Screensize.widthfactor, 0);
 				iculbl.WidthRequest *= Screensize.widthfactor;
 				iculbl.FontSize *= Screensize.heightfactor;
+				icupng.HeightRequest = 125 * Screensize.heightfactor;
+				icupng.WidthRequest = 250 * Screensize.heightfactor;
 				var html = new HtmlWebViewSource();
 				html.BaseUrl = DependencyService.Get<IBaseUrl>().Get() + "gifContainer.html";
 				gifWebView.Source = html.BaseUrl;
@@ -173,6 +217,10 @@ namespace MyHealthVitals
 			base.OnDisappearing();
 			BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
 		}
+		void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
+		}
 		async public void testAgainDialog() 
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
@@ -187,10 +235,46 @@ namespace MyHealthVitals
                 }
             }));
 
-           //await DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
-		//	BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
+			//await DisplayAlert("Reading", "The FEV value is too low, please take reading again.", "OK");
+			//	BLECentralManager.sharedInstance.spiroServHandler.stopPolling();
 
-			BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+			//connect to known device
+			//BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+
+			string deviceName = "BLE-MSA";
+
+			layoutLoadingTakeReading.IsVisible = true;
+
+			List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
+			string BLEtype = "";
+			Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
+			bool conn_success = false;
+
+			for (int i = 0; i < result.Count; i += 3)
+			{
+				BLEtype = result[i + 1];
+				deviceID = new Guid(result[i + 2]);
+				//attempt to connect via this method
+				if (BLEtype == "1")
+				{
+					//layoutLoading.IsVisible = true;
+					conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+				}
+				else
+				{
+					//BLEtype = 2
+					//layoutLoading.IsVisible = true;
+					//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+				}
+				if (conn_success) break;
+			}
+			if (!conn_success)
+			{
+				//send the error message
+				//BLECentralManager.sharedInstance.SendConnError(deviceName, 2);
+				//or just try to connect the hard way!
+				BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+			}
 
 		}
 
@@ -221,6 +305,66 @@ namespace MyHealthVitals
 			}
 		}
 
+		public async void FailedConn(String message, bool isConn, int camefrom)
+		{
+			Debug.WriteLine("FailedConn  mainpage  : " + message);
+			if (camefrom == 1)
+			{
+				bool ret;
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("BLE-MSA", message, true, "Yes", "No");
+				}
+				else
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("BLE-MSA", message, false, "Yes", "No");
+				}
+				if (ret)
+				{
+					//try to connect again, this time to the second BLE manager
+					try
+					{
+						layoutLoadingTakeReading.IsVisible = true;
+						//await BLECentralManager.sharedInstance.ConnectToDevice2("BLE-MSA", this);
+                        BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine("conn error msg : " + ex.Message);
+					}
+
+				}
+			}
+			else
+			{
+				//camefrom BLE manager 2
+                //shouldn't happen now!
+				bool ret;
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("BLE-MSA", message, true, "Yes", "No");
+				}
+				else
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("BLE-MSA", message, false, "Yes", "No");
+				}
+				if (ret)
+				{
+					//try to connect again, this time to the second BLE manager
+					try
+					{
+						layoutLoadingTakeReading.IsVisible = true;
+						BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine("conn error msg : " + ex.Message);
+					}
+
+				}
+			}
+		}
+
 		public void updateDeviceStateOnUI(String message, bool isConnected) 
         {
 
@@ -241,18 +385,102 @@ namespace MyHealthVitals
 			
 		}
 
-		void btnTakeReadingClicked(object sender, System.EventArgs e)
+		public async void btnTakeReadingClicked(object sender, System.EventArgs e)
 		{
-			//updateCaller(new SpirometerReading(DateTime.Now, 680, 3.5m));
+            //ignoring BLE manager 2 for now!
 
+            string deviceName = "BLE-MSA";
+
+            layoutLoadingTakeReading.IsVisible = true;
+
+			List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
+			string BLEtype = "";
+			Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
+			bool conn_success = false;
+
+
+			if (result.Count == 3)
+			{
+				Debug.WriteLine("Found guid result in file");
+				BLEtype = result[1];
+				deviceID = new Guid(result[2]);
+				//initializePlotModel();
+				if (BLEtype == "1")
+				{
+					Debug.WriteLine("Type 1 connection");
+					conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+				}
+				else
+				{
+					//BLEtype = 2
+					//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+				}
+				Debug.WriteLine("conn_success = " + conn_success.ToString());
+				if (!conn_success)
+				{
+					//try the hard way
+					BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+				}
+			}
+			else if (result.Count == 0)
+			{
+				//try first method
+				try
+				{
+					BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+				}
+			}
+			else
+			{
+				//somehow they've connected more than 1 guid of a device (2 PC-300s for example)
+				//or they've managed to connect the same device to both BLE managers
+
+				for (int i = 0; i < result.Count; i += 3)
+				{
+					BLEtype = result[i + 1];
+					deviceID = new Guid(result[i + 2]);
+					//attempt to connect via this method
+					if (BLEtype == "1")
+					{
+						//layoutLoading.IsVisible = true;
+						conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+					}
+					else
+					{
+						//BLEtype = 2
+						//layoutLoading.IsVisible = true;
+						//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+					}
+					if (conn_success) break;
+				}
+				if (!conn_success)
+				{
+					//send the error message
+					//BLECentralManager.sharedInstance.SendConnError(deviceName, 2);
+                    //or just try to connect the hard way!
+                    BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+				}
+
+			}
+
+            //await BLECentralManager.sharedInstance.ConnectToDevice2(deviceName, this);
+
+
+            /*
 			try
 			{
-				layoutLoadingTakeReading.IsVisible = true;
-				BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+                layoutLoadingTakeReading.IsVisible = true;
+				BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
 			}
 			catch { 
 				layoutLoadingTakeReading.IsVisible = true;
+                Debug.WriteLine("couldn't connect to Spirometer.");
 			}
+			*/
 
 			//bleManager.ScanToConnectToSpotCheck((BLEReadingUpdatableSpiroMeter)this);
 			//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);

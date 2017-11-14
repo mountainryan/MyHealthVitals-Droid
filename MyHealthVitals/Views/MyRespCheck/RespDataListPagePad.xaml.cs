@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Linq;
 using Xamarin.Forms;
+using System.Diagnostics;
 
 namespace MyHealthVitals
 {
@@ -12,8 +13,20 @@ namespace MyHealthVitals
 		ObservableCollection<SpirometerReading> spirometerReadingList = new ObservableCollection<SpirometerReading>();
 		public RespDataListPagePad()
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
 			InitializeComponent();
+
+			FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+			titlebtn.FontSize = 30 * Screensize.heightfactor;
+            backbtn.FontSize = 30 * Screensize.heightfactor;
+            label.FontSize *= Screensize.heightfactor;
+
 			CallAPiGetReadings();
+		}
+
+		void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
 		}
 
 		public async void CallAPiGetReadings()
@@ -77,6 +90,7 @@ namespace MyHealthVitals
 			{
 				layoutLoading.IsVisible = false;
 			}
+            Debug.WriteLine("font size of Most Recent Readings = " + label.FontSize);
 		}
 	}
 }

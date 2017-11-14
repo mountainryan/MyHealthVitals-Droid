@@ -52,13 +52,39 @@ namespace MyHealthVitals
 
 		public EcgReport(String filename, string patientName, bool rightButton = false, MainPage maincontrol = null)
 		{
-			
+			NavigationPage.SetHasNavigationBar(this, false);
 			Debug.WriteLine("EcgReport()");
 			this.fileName = filename;
             this.mainControl = maincontrol;
 			this.patientName = patientName;
 			Debug.WriteLine("this.fileName==" + this.fileName);
 			InitializeComponent();
+
+			FakeToolbar.Children.Add(
+			backarrow,
+			// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+			new Rectangle(0, 0.5, 0.1, 1),
+			// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+			AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+			);
+
+			FakeToolbar.Children.Add(
+				backbtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.1, 0.5, 0.15, 1),
+				AbsoluteLayoutFlags.All
+			);
+			FakeToolbar.Children.Add(
+				titlebtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.5, 0.5, 0.5, 1),
+				AbsoluteLayoutFlags.All
+			);
+
 			setUpEcgDisplay_Report();
 			if (rightButton)
 			{
@@ -223,12 +249,18 @@ namespace MyHealthVitals
 
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
+				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+				titlebtn.FontSize = 30 * Screensize.heightfactor;
+                backbtn.FontSize = 30 * Screensize.heightfactor;
 				reportButton.FontSize = 36 * Screensize.heightfactor;
 				reportButton.HeightRequest = 80 * Screensize.heightfactor;
 				plotView.HeightRequest = 900 * Screensize.heightfactor;
 			}
 			else if (Device.Idiom == TargetIdiom.Phone)
 			{
+				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+				titlebtn.FontSize = 24 * Screensize.heightfactor;
+                backbtn.FontSize = 24 * Screensize.heightfactor;
 				plotView.HeightRequest *= Screensize.heightfactor;
 			}
 
@@ -262,6 +294,46 @@ namespace MyHealthVitals
 
 		}
 
+		async void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			//Navigation.PopAsync();
+			string message = "";
+			if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt"))
+			{
+				message = "Do you want to save and email the report before leaving";
+				bool ret;
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("Save and Email", message, true, "Yes", "No");
+				}
+				else
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert("Save and Email", message, false, "Yes", "No");
+				}
+				//var ret = await DisplayAlert("Save and Email", message, "Yes", "No");
+				if (ret)
+				{
+					btnSaveClicked(null, null);
+				}
+				if (ParametersPageLocal.allReadings == null)
+				{
+					int index = Task.WaitAny(Task_vars.tasks);
+					//ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
+				}
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					var newPage = new ParameterItemDetailNew(10, ParametersPageLocal.allReadings);
+				}
+				else
+				{
+					var newPage = new ParameterItemDetailNew(10, ParametersPageLocal.allReadings);
+				}
+
+				//  await this.Navigation.PushModalAsync(newPage);
+				//  this.Navigation.RemovePage(this);
+			}
+			await Navigation.PopModalAsync();
+		}
 
 		private void setGobackButton()
 		{
@@ -295,7 +367,8 @@ namespace MyHealthVitals
 					}
 					if (ParametersPageLocal.allReadings == null)
 					{
-						ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
+						int index = Task.WaitAny(Task_vars.tasks);
+						//ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
 					}
                     if (Device.Idiom == TargetIdiom.Tablet)
                     {

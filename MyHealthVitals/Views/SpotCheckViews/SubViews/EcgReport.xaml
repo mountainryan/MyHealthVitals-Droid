@@ -2,11 +2,33 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
+    xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals"
 	x:Class="MyHealthVitals.EcgReport">
-
+    
 	<ContentPage.Content>
 		<RelativeLayout>
-			<StackLayout VerticalOptions = "FillAndExpand">
+            <StackLayout 
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                  >
+			<!--<StackLayout VerticalOptions = "FillAndExpand">-->
+
+            
+            <AbsoluteLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" >
+                <local:MyButton x:Name="backarrow" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
+                <local:MyButton x:Name="backbtn" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Back" TextColor="{StaticResource colorThemeBlue}" FontSize="30" />
+
+                <Label x:Name="titlebtn" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="ECG Report" TextColor="Black" FontSize="30" />
+                
+                        <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
+            </AbsoluteLayout>  
+
+                <ScrollView><StackLayout>
+                
 				<Grid VerticalOptions = "FillAndExpand">
 				  <Grid.RowDefinitions>
    						 <RowDefinition Height="auto"/>
@@ -15,8 +37,10 @@
 					              HeightRequest="450" HorizontalOptions="FillAndExpand" />	
 					
 				</Grid>	
-					<Button Margin="20" VerticalOptions = "LayoutOptions.End" x:Name ="reportButton" Clicked="btnSaveClicked" Text="Save ECG Report" Font="16" BackgroundColor="{StaticResource colorThemeBlue}" 
+					<local:MyButton Margin="20" VerticalOptions = "LayoutOptions.End" x:Name ="reportButton" Clicked="btnSaveClicked" Text="Save ECG Report" Font="16" BackgroundColor="{StaticResource colorThemeBlue}" 
 								TextColor="White" HeightRequest="40"/>
+
+                </StackLayout></ScrollView>
 				
 			</StackLayout>
 			<RelativeLayout x:Name="ReportSaving" IsVisible="false" BackgroundColor="Transparent" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">

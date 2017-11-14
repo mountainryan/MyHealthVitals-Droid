@@ -9,8 +9,24 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 		<StackLayout BackgroundColor="{StaticResource colorBlackBg}">
-				<Label x:Name = "label"  TextColor="White" FontSize="30" FontAttributes="Bold" Margin="10" HorizontalTextAlignment="Center" Text="Most Recent Readings" >
-				</Label>
+
+        
+        <AbsoluteLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" >
+            <local:MyButton x:Name="backarrow" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
+            <local:MyButton x:Name="backbtn" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Back" TextColor="{StaticResource colorThemeBlue}" FontSize="30" />
+
+            <Label x:Name="titlebtn" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="" TextColor="Black" FontSize="30" />
+            
+                <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
+        </AbsoluteLayout>  
+        
+			<!--<StackLayout x:Name="prevcont" IsVisible="true" BackgroundColor="{StaticResource colorBlackBg}"   Margin="0,20,0,0">
+					<Button x:Name="prevbtn" Clicked="btnPrevClicked"  BackgroundColor = "Transparent"  Image = "imgPrevBlue.png" HeightRequest="50" WidthRequest="50" />
+					<Button FontSize="30" Clicked="btnPrevClicked" Text="Back" VerticalOptions="Center" TextColor="{StaticResource colorThemeBlue}" BackgroundColor = "Transparent"/>
+                    -->
+					<Label x:Name = "label" XAlign="Center" TextColor="White" FontSize="30" Margin="0,0,0,0" FontAttributes="Bold" HorizontalOptions="Center" HorizontalTextAlignment="Center" Text="Most Recent Readings" >
+							</Label>
+			<!--</StackLayout>-->
 				<StackLayout x:Name="headerContainer">
 					
 				</StackLayout>

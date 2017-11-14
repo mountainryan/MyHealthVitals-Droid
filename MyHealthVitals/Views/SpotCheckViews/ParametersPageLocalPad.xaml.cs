@@ -26,14 +26,21 @@ namespace MyHealthVitals
 		private  Reading[] allReadings;
 		public ParametersPageLocalPad()
 		{
-            /*
+            NavigationPage.SetHasNavigationBar(this, false);
+			/*
             cont.HeightRequest *= Screensize.heightfactor;
             label.FontSize *= Screensize.heightfactor;
             label.HeightRequest *= Screensize.heightfactor;
             arrow.HeightRequest *= Screensize.heightfactor;
             arrow.WidthRequest *= Screensize.widthfactor;
             */
+			
 			InitializeComponent();
+
+			FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+			titlebtn.FontSize = 30 * Screensize.heightfactor;
+            backbtn.FontSize = 30 * Screensize.heightfactor;
+
 			this.allReadings = ParametersPageLocal.allReadings;
 			sycnwithCloud();
 
@@ -62,6 +69,10 @@ namespace MyHealthVitals
             //set the height of these elements on screen
 
 
+		}
+		void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
 		}
 		async void Handle_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
 		{

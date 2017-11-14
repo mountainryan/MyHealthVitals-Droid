@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Xamarin.Forms;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MyHealthVitals
 {
@@ -18,6 +19,7 @@ namespace MyHealthVitals
 
 		public RespGraphPageNew()
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
 			InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet) {
 				layoutPefContainer.WidthRequest = 300 * Screensize.widthfactor;
@@ -37,16 +39,27 @@ namespace MyHealthVitals
 
                 prevbtn.Image = "imgPrevBlue_pad.png";
                 nextbtn.Image = "imgNextBlue_pad.png";
-                prevbtn.WidthRequest = 100;
-                prevbtn.HeightRequest = 100;
-                nextbtn.WidthRequest = 100;
-                nextbtn.HeightRequest = 100;
+                prevbtn.WidthRequest = 103;
+                prevbtn.HeightRequest = 103;
+                nextbtn.WidthRequest = 103;
+                nextbtn.HeightRequest = 103;
                 // = "0,-25,0,0"
                 peflabel.Margin = new Thickness(0, -50 * Screensize.heightfactor, 0, 0);
                 fevlabel.Margin = new Thickness(0, -50 * Screensize.heightfactor, 0, 0);
+				//prevcont.Margin = new Thickness(15, -100 * Screensize.heightfactor, 0, 0);
+
+
+				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+				titlebtn.FontSize = 30 * Screensize.heightfactor;
+                backbtn.FontSize = 30 * Screensize.heightfactor;
+                minilayoutcont.Margin = new Thickness(0, 80*Screensize.heightfactor, 0, 0);
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
+				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+				titlebtn.FontSize = 24 * Screensize.heightfactor;
+                backbtn.FontSize = 24 * Screensize.heightfactor;
+
 				layoutPefContainer.WidthRequest *= Screensize.widthfactor;
 				layoutPefContainer.HeightRequest *= Screensize.heightfactor;
 				layoutFevContainer.WidthRequest *= Screensize.widthfactor;
@@ -64,12 +77,18 @@ namespace MyHealthVitals
 				peflabel.Margin = new Thickness(0, -25 * Screensize.heightfactor, 0, 0);
 				fevlabel.Margin = new Thickness(0, -25 * Screensize.heightfactor, 0, 0);
 
+                //prevcont.Margin = new Thickness(15, -100 * Screensize.heightfactor, 0, 0);
             }
 
 
             CallAPiGetReadings();
 				//layoutContainer.IsVisible = false;
 		}
+		void btnBackClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
+		}
+
 		void btnNextClicked(object sender, System.EventArgs e)
 		{
 		// next
@@ -137,11 +156,14 @@ namespace MyHealthVitals
 					}
 				}
 				//	var allReadings = await Reading.GetAllReadingsFromService();
-
-				if (ParametersPageLocal.allReadings == null)
+				await Task.Delay(1).ContinueWith(_ =>
 				{
-					ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
-				}
+					if (ParametersPageLocal.allReadings == null)
+					{
+						int index = Task.WaitAny(Task_vars.tasks);
+						//ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
+					}
+				});
 
 				var allCategoryReading = from reading in ParametersPageLocal.allReadings
 										 where reading.CategoryId == 9

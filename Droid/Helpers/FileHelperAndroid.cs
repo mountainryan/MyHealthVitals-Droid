@@ -46,6 +46,9 @@ using Android.Views;
 //using Android.OS;
 using Android.Support.V7.AppCompat;
 using Android.Text;
+using nexus.core.logging;
+using nexus.protocols.ble;
+using Android.Util;
 
 [assembly: Xamarin.Forms.Dependency(typeof(BaseUrl_Android))]
 
@@ -55,7 +58,7 @@ namespace MyHealthVitals.Droid
 {
 	public class FileHelperAndroid : IFileHelper
 	{
-		String Patient;
+        String Patient;
 		String DOB;
 		String Finding;
 		String Recorded;
@@ -69,17 +72,35 @@ namespace MyHealthVitals.Droid
 		string name;
 		static MimeMessage message = null;// = new MimeMessage();
 		MailKit.Net.Smtp.SmtpClient client = null;// = new MailKit.Net.Smtp.SmtpClient();
-                                                  //        client.Connect("smtp.gmail.com", 587, false);
+												  //        client.Connect("smtp.gmail.com", 587, false);
 
-        //  string emaiAddress,   
+		//  string emaiAddress,   
 
+	
         public async Task<bool> dispAlert(String title, String message, bool tablet, String btn1, String btn2)
         {
             bool val = false;
             Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(Xamarin.Forms.Forms.Context as Activity);
             AlertDialog alert = dialog.Create();
 
-            alert.SetTitle(title);
+			//alert.SetTitle(title);
+			if (tablet)
+			{
+				//message.Replace("\n", "<br/>");
+				//Debug.WriteLine("message = "+message);
+				if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
+				{
+					alert.SetTitle(Html.FromHtml("<big><big><big>" + title + "</big></big></big>", 0));
+				}
+				else
+				{
+					alert.SetTitle(Html.FromHtml("<big><big><big>" + title + "</big></big></big>"));
+				}
+			}
+			else
+			{
+				alert.SetTitle(title);
+			}
 
             //Debug.WriteLine("Android Build # = " + Android.OS.Build.VERSION.Sdk);
 
@@ -90,11 +111,11 @@ namespace MyHealthVitals.Droid
                 //Debug.WriteLine("message = "+message);
 				if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
 				{
-					alert.SetMessage(Html.FromHtml("<big><big><big>" + message + "</big></big></big>", 0));
+					alert.SetMessage(Html.FromHtml("<big><big>" + message + "</big></big>", 0));
 				}
 				else
 				{
-					alert.SetMessage(Html.FromHtml("<big><big><big>" + message + "</big></big></big>"));
+					alert.SetMessage(Html.FromHtml("<big><big>" + message + "</big></big>"));
 				}
             }else{
                 alert.SetMessage(message);
@@ -107,9 +128,10 @@ namespace MyHealthVitals.Droid
 
                 if (tablet)
                 {
+                    //Debug.WriteLine("set tablet buttons");
                     if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
                     {
-						alert.SetButton((int)(DialogButtonType.Positive), Html.FromHtml("<big><big>" + btn1 + "</big></big>",0), (sender, e) =>
+                        alert.SetButton((int)(DialogButtonType.Positive), Html.FromHtml("<big><big>" + btn1 + "</big></big>",0), (sender, e) =>
 						{
 							val = true;
 							waitHandle.Set();
@@ -124,6 +146,7 @@ namespace MyHealthVitals.Droid
 							});							
 						}
                     }else{
+
 						alert.SetButton((int)(DialogButtonType.Positive), Html.FromHtml("<big><big>" + btn1 + "</big></big>"), (sender, e) =>
 						{
 							val = true;
@@ -142,6 +165,7 @@ namespace MyHealthVitals.Droid
 						
                     }
                 }else{
+                    //Debug.WriteLine("set phone buttons");
 					alert.SetButton((int)(DialogButtonType.Positive), btn1, (sender, e) =>
 					{
 						val = true;
@@ -160,7 +184,9 @@ namespace MyHealthVitals.Droid
 
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
+                    //alert.Window.SetLayout(1200, 1200);
 					alert.Show();
+					
                 }));
 				waitHandle.WaitOne();
 			});
@@ -171,8 +197,7 @@ namespace MyHealthVitals.Droid
             return val;
         }
 
-
-		public void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
+        public void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
 							   String FindingDetails, String HeartRate, String TestDuration = "30s")
 		{
 			this.Patient = Patient;
@@ -183,6 +208,116 @@ namespace MyHealthVitals.Droid
 			this.TestDuration = TestDuration;
 			this.HeartRate = HeartRate;
 		}
+
+        public void delBLEinfo()
+        {
+			//delete the file
+            var filename = "BLElog.txt";
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			var txtpath = Path.Combine(documentsPath, filename);
+			if (checkFileExist(filename))
+			{
+				File.Delete(txtpath);
+			}
+        }
+
+        public List<string> getBLEinfo(string devicename)
+        {
+			List<string> result = new List<string>();
+            var filename = "BLElog.txt";
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			var txtpath = Path.Combine(documentsPath, filename);
+            //check if file exists
+            if (checkFileExist(filename))
+            {
+				//Debug.WriteLine("getBLEinfo file exists!");
+                //read the file until you find devicename
+				string line;
+				StreamReader sr = new System.IO.StreamReader(txtpath);
+				while ((line = sr.ReadLine()) != null)
+				{
+                    //Debug.WriteLine("line info = " + line);
+                    //do stuff with line
+                    if (line==devicename)
+                    {
+                        result.Add(line);
+                        //get next 2 lines as well
+                        line = sr.ReadLine();
+                        //Debug.WriteLine("line info 2 = " + line);
+                        result.Add(line);
+                        line = sr.ReadLine();
+                        //Debug.WriteLine("line info 3 = " + line);
+                        result.Add(line);
+                    }
+				}
+				sr.Close();
+            }else{
+                //Debug.WriteLine("getBLEinfo file does NOT exist!");
+                //no info to get
+
+            }
+
+            return result;
+        }
+
+        public void saveBLEinfo(string devicename, int blenum, Guid deviceid)
+        {
+            var filename = "BLElog.txt";
+            var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			var txtpath = Path.Combine(documentsPath, filename);
+            bool BLEinfoExists = false;
+            //write info to file if it doesn't already exist
+            if (checkFileExist(filename))
+            {
+                //Debug.WriteLine("saveBLEinfo file exists!");
+				//read file for existing BLE info on devicename
+				string line; 
+				StreamReader sr = new System.IO.StreamReader(txtpath);
+				while ((line = sr.ReadLine()) != null)
+				{
+					//do stuff with line
+					if (line == devicename)
+					{
+                        line = sr.ReadLine();
+                        if (line == blenum.ToString())
+                        {
+                            line = sr.ReadLine();
+                            if (line == deviceid.ToString())
+                            {
+                                //already exists
+                                BLEinfoExists = true;
+                            }
+                        }
+					}
+				}
+				sr.Close();
+
+                if (!BLEinfoExists)
+                {
+                    //Debug.WriteLine("appending BLE file!");
+					//append to file
+					using (StreamWriter sw = File.AppendText(txtpath))
+					{
+						sw.WriteLine(devicename);
+						sw.WriteLine(blenum.ToString());
+						sw.WriteLine(deviceid.ToString());
+					}
+                }else{
+                    //Debug.WriteLine("BLE info already exists!");
+                }
+
+
+            }else{
+                //Debug.WriteLine("saveBLEinfo file does NOT exist!");
+                //Debug.WriteLine("creating and writing to BLE file!");
+				//write initial lines to file
+				System.IO.StreamWriter sw = new System.IO.StreamWriter(txtpath);
+				sw.WriteLine(devicename);
+				sw.WriteLine(blenum.ToString());
+				sw.WriteLine(deviceid.ToString());
+				sw.Close();
+            }
+        }
 
 		public void saveTotxt(List<int> ecgList, string title, string subtitle, String fileName)
 		{
@@ -476,7 +611,7 @@ namespace MyHealthVitals.Droid
 		public async Task<bool> ShowDialog()
 		{
             
-            var popup = new EntryPopup("Email this report? If yes, please enter email address", string.Empty, "OK", "Cancel");
+            var popup = new EntryPopup("Email this report? If yes, please enter email address", string.Empty, "Yes", "No");
 			popup.PopupClosed += (o, closedArgs) => {
                 if (closedArgs.Button == "OK")
                 {
@@ -579,6 +714,16 @@ namespace MyHealthVitals.Droid
 
                 if (!client.IsConnected)
                 {
+                    Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+                    {
+                        if (Device.Idiom == TargetIdiom.Tablet)
+                        {
+                            var val = await DependencyService.Get<IFileHelper>().dispAlert("Email alert", "The email client connection is unsuccessful, please check wifi or data connection.", true, "OK", null);    
+                        }else{
+                            var val = await DependencyService.Get<IFileHelper>().dispAlert("Email alert", "The email client connection is unsuccessful, please check wifi or data connection.", false, "OK", null);
+                        }
+
+                    }));
                     /*
                     UIAlertView alert = new UIAlertView();
 

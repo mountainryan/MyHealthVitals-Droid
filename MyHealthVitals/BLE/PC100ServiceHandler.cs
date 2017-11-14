@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
+using System.Linq;
+using nexus.core.logging;
+using nexus.protocols.ble;
 
 namespace MyHealthVitals
 {
@@ -13,6 +16,15 @@ namespace MyHealthVitals
 		public ICharacteristic bmChar;
 		public IDevice connectedDevice;
 		public IBluetoothCallBackUpdatable uiController;
+
+		public void GetData(Byte[] bytes)
+		{ 
+			//Debug.WriteLine("Using BLE 2");
+            //Debug.WriteLine("Made it into PC100ServiceHandler.GetData()");
+			//get the bytes into an int array
+			int[] ints = bytes.Select(x => (int)x).ToArray();
+            ManipData(ints);
+        }
 
 		public void reconnectToDevice(IDevice device)
 		{
@@ -51,24 +63,105 @@ namespace MyHealthVitals
 		}
 
 		//NIBP commands
-		public void startMeasuringBP()
+		public async void startMeasuringBP()
 		{
-			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x01, 0x29 });
+            if (BLE_val.BLE_value == 1)
+            {
+                executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x01, 0x29 });
+            }else{
+				try
+				{
+					Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+					Guid gchar = new Guid("0000fff2-0000-1000-8000-00805f9b34fb");
+					nexus.protocols.ble.connection.IBleGattServer GattServer = BLEdata.gattserver;
+					// The resulting value of the characteristic is returned. In nearly all cases this
+					// will be the same value that was provided to the write call (e.g. `byte[]{ 1, 2, 3 }`)
+					var value = await GattServer.WriteCharacteristicValue(
+					   gservice,
+					   gchar,
+					   new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x01, 0x29 });
+				}
+				catch (GattException ex)
+				{
+					Debug.WriteLine("starting BP error msg: " + ex.Message);
+				}
+            }
+			
 		}
 
-		public void stoptMeasuringBP()
+		public async void stoptMeasuringBP()
 		{
-			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x02, 0xCB });
+            if (BLE_val.BLE_value == 1)
+            {
+                executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x02, 0xCB });
+            }else{
+				try
+				{
+					Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+					Guid gchar = new Guid("0000fff2-0000-1000-8000-00805f9b34fb");
+					nexus.protocols.ble.connection.IBleGattServer GattServer = BLEdata.gattserver;
+					// The resulting value of the characteristic is returned. In nearly all cases this
+					// will be the same value that was provided to the write call (e.g. `byte[]{ 1, 2, 3 }`)
+					var value = await GattServer.WriteCharacteristicValue(
+					   gservice,
+					   gchar,
+					   new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x02, 0xCB });
+				}
+				catch (GattException ex)
+				{
+					Debug.WriteLine("stopping BP error msg: " + ex.Message);
+				}
+            }
 		}
-		public void stopMeasuringSpo2()
+		public async void stopMeasuringSpo2()
 		{
-			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x50, 0x02, 0x02, 0x85 });
+            if (BLE_val.BLE_value == 1)
+            {
+                executeWriteCommand(new byte[] { 0xAA, 0x55, 0x50, 0x02, 0x02, 0x85 });
+            }else{
+				try
+				{
+					Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+					Guid gchar = new Guid("0000fff2-0000-1000-8000-00805f9b34fb");
+					nexus.protocols.ble.connection.IBleGattServer GattServer = BLEdata.gattserver;
+					// The resulting value of the characteristic is returned. In nearly all cases this
+					// will be the same value that was provided to the write call (e.g. `byte[]{ 1, 2, 3 }`)
+					var value = await GattServer.WriteCharacteristicValue(
+					   gservice,
+					   gchar,
+					   new byte[] { 0xAA, 0x55, 0x50, 0x02, 0x02, 0x85 });
+				}
+				catch (GattException ex)
+				{
+					Debug.WriteLine("stopping sp02 error msg: " + ex.Message);
+				}
+            }
 		}
 
-		public void getBPreading()
+		public async void getBPreading()
 		{
-            Debug.WriteLine("Executing write command!");
-			executeWriteCommand(new byte[] { 0xAA, 0x55, 0x43, 0x02, 0x01, 0xCD });
+            if (BLE_val.BLE_value == 1)
+            {
+                Debug.WriteLine("Executing write command!");
+                executeWriteCommand(new byte[] { 0xAA, 0x55, 0x43, 0x02, 0x01, 0xCD });
+            }else{
+				try
+				{
+					Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+					Guid gchar = new Guid("0000fff2-0000-1000-8000-00805f9b34fb");
+					nexus.protocols.ble.connection.IBleGattServer GattServer = BLEdata.gattserver;
+					// The resulting value of the characteristic is returned. In nearly all cases this
+					// will be the same value that was provided to the write call (e.g. `byte[]{ 1, 2, 3 }`)
+					var value = await GattServer.WriteCharacteristicValue(
+					   gservice,
+					   gchar,
+					   new byte[] { 0xAA, 0x55, 0x43, 0x02, 0x01, 0xCD });
+				}
+				catch (GattException ex)
+				{
+					Debug.WriteLine("get BP reading error msg: " + ex.Message);
+				}
+            }
 		}
 
 		public async void discoverServices(IDevice device)
@@ -128,10 +221,10 @@ namespace MyHealthVitals
 			}	
 		}
 
-		private void printUpdatedCharacteristics(ICharacteristic ch)
+		private void printUpdatedCharacteristics(int[] vals)
 		{
 			List<int> values = new List<int>();
-			foreach (var b in ch.Value)
+			foreach (var b in vals)
 			{
 				values.Add(b);
 			}
@@ -156,64 +249,74 @@ namespace MyHealthVitals
 		int last_status = 0;
 		int err_status = 1;
 
-		public void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e)
+        public void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e)
+        {
+			//Debug.WriteLine("Using BLE 1");
+            var ch = e.Characteristic;
+            //Debug.WriteLine("vals[2]" + vals[2]);
+
+            //Debug.WriteLine("vals.Length = "+vals.Length);
+            //Debug.WriteLine("vals[2] = "+vals[2]);
+
+            int[] ints = ch.Value.Select(x => (int)x).ToArray();
+            //ch.Id
+              //Debug.WriteLine("char id = " + ch.Id);
+            ManipData(ints);
+        }
+
+		public void ManipData(int[] vals)
 		{
-			var ch = e.Characteristic;
-			//Debug.WriteLine("ch.Value[2]" + ch.Value[2]);
 
-            //Debug.WriteLine("ch.Value.Length = "+ch.Value.Length);
-            //Debug.WriteLine("ch.Value[2] = "+ch.Value[2]);
-
-			if ((int)ch.Value[2] == 66)
+			if ((int)vals[2] == 66)
 			{
 				glucoseResult = -100;
-                //Debug.WriteLine("ch.Value.Length  ===  " + ch.Value.Length);
+                //Debug.WriteLine("vals.Length  ===  " + vals.Length);
 
-                if (ch.Value.Length == 19)
+                if (vals.Length == 19)
                 {
                     this.uiController.SYS_DIA_BPM_updated(0, 0, 9999);
                 }
-				else if (ch.Value.Length >= 9)
+				else if (vals.Length >= 9)
 				{
-					//Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
-					//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
-					//Debug.WriteLine("ch.Value[7] = " + ch.Value[7]);
-					//Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
-					int sys = ((int)ch.Value[5] << 8) + (int)ch.Value[6];
+					//Debug.WriteLine("vals[5] = " + vals[5]);
+					//Debug.WriteLine("vals[6] = " + vals[6]);
+					//Debug.WriteLine("vals[7] = " + vals[7]);
+					//Debug.WriteLine("vals[8] = " + vals[8]);
+					int sys = ((int)vals[5] << 8) + (int)vals[6];
 					//Debug.WriteLine("sys" + sys);
-					this.uiController.SYS_DIA_BPM_updated(sys, (int)ch.Value[8], 0);
+					this.uiController.SYS_DIA_BPM_updated(sys, (int)vals[8], 0);
 
 				}
-				else if(ch.Value.Length >= 7)
+				else if(vals.Length >= 7)
 				{
-					//Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
-					//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
-					//Debug.WriteLine("ch.Value[7] = " + ch.Value[7]);
-					//Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
-					int sys = ((int)ch.Value[5] << 8) + (int)ch.Value[6];
+					//Debug.WriteLine("vals[5] = " + vals[5]);
+					//Debug.WriteLine("vals[6] = " + vals[6]);
+					//Debug.WriteLine("vals[7] = " + vals[7]);
+					//Debug.WriteLine("vals[8] = " + vals[8]);
+					int sys = ((int)vals[5] << 8) + (int)vals[6];
 					//Debug.WriteLine("sys" + sys);
 					this.uiController.SYS_DIA_BPM_updated(sys, 0, 0);
-						//	Debug.WriteLine("ch.Value[8]" + ch.Value[8]);
+						//	Debug.WriteLine("vals[8]" + vals[8]);
 				}
 			}
 		//token in NIBP result in pc-100
-			else if ((int)ch.Value[2] == 67)
+			else if ((int)vals[2] == 67)
 			{
 				glucoseResult = -1;
 
-				//Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
-				//Debug.WriteLine("ch.Value[6] = " + ch.Value[6]);
-				//Debug.WriteLine("ch.Value[7] = " + ch.Value[7]);
-				//Debug.WriteLine("ch.Value[8] = " + ch.Value[8]);
+				//Debug.WriteLine("vals[5] = " + vals[5]);
+				//Debug.WriteLine("vals[6] = " + vals[6]);
+				//Debug.WriteLine("vals[7] = " + vals[7]);
+				//Debug.WriteLine("vals[8] = " + vals[8]);
 				// checking length of data
-				if ((int)ch.Value[3] == 7)
+				if ((int)vals[3] == 7)
 				{
 					// combining byte 6 and byte 7 to read temperature
 					// high byte << 8 + low byte
-					int sys = ((int)ch.Value[5] << 8) + (int)ch.Value[6];
-					//int map = (int)ch.Value[7];
-					int dia = (int)ch.Value[8];
-					int heartRate = (int)ch.Value[9];
+					int sys = ((int)vals[5] << 8) + (int)vals[6];
+					//int map = (int)vals[7];
+					int dia = (int)vals[8];
+					int heartRate = (int)vals[9];
 
 					//Debug.WriteLine(sys);
 
@@ -221,17 +324,18 @@ namespace MyHealthVitals
 				}
 
 				// error
-				if ((int)ch.Value[3] == 3)
+				if ((int)vals[3] == 3)
 				{
-					var bit7 = (int)(ch.Value[5] >> 7);
+                    
+					var bit7 = (int)(vals[5] >> 7);
 
-					var bit3 = (ch.Value[5] & (1 << 3));
-					var bit2 = (ch.Value[5] & (1 << 2));
-					var bit1 = (ch.Value[5] & (1 << 1));
-					var bit0 = (ch.Value[5] & (1 << 0));
+					var bit3 = (vals[5] & (1 << 3));
+					var bit2 = (vals[5] & (1 << 2));
+					var bit1 = (vals[5] & (1 << 1));
+					var bit0 = (vals[5] & (1 << 0));
 
 					var bit3_0 = ""+bit3+""+bit2+""+bit1+""+bit0;
-					Debug.WriteLine("ch.Value[5] "+ch.Value[5] );
+					Debug.WriteLine("vals[5] "+vals[5] );
 					var message = "";
 
 					if (bit7==1)
@@ -301,7 +405,7 @@ namespace MyHealthVitals
 			/// </summary>
 			/// 
 			/// 
-			if ((int)ch.Value[2] == 80 && (int)ch.Value[3] == 3)
+			if ((int)vals[2] == 80 && (int)vals[3] == 3)
 			{
 				//new reading, rest status, and values
 				last_status = 0;
@@ -319,15 +423,15 @@ namespace MyHealthVitals
 			//Debug.WriteLine("err_status = " + err_status);
 			//Debug.WriteLine("last_status = " + last_status);
 
-			if ((int)ch.Value[2] == 82)
+			if ((int)vals[2] == 82)
 			{
 				glucoseResult = -100;
 				// when waveform data comes down to 0 then it is end of the spo2 reading
-				var waveformData = (int)ch.Value[5];
+				var waveformData = (int)vals[5];
 				//Debug.WriteLine("WaveformData: " + waveformData);
 				//printUpdatedCharacteristics(ch);
 
-				this.uiController.updateBpmWaveform((int)ch.Value[6]);
+				this.uiController.updateBpmWaveform((int)vals[6]);
 
 				if (waveformData == 0)
 				{
@@ -336,7 +440,7 @@ namespace MyHealthVitals
 				}
 			}
 
-			if ((int)ch.Value[2] == 80 && (int)ch.Value[4] == 2)
+			if ((int)vals[2] == 80 && (int)vals[4] == 2)
 			{
 				//Debug.WriteLine("err_status = " + err_status);
 				//Debug.WriteLine("last_status = " + last_status);
@@ -387,17 +491,17 @@ namespace MyHealthVitals
 				}
 				this.uiController.noticeEndOfReadingSpo2();
 			}
-			if ((int)ch.Value[2] == 83 && (int)ch.Value[3] == 7)
+			if ((int)vals[2] == 83 && (int)vals[3] == 7)
 			{
 
-				if (ch.Value[5] == 0 || ch.Value[6] == 0)
+				if (vals[5] == 0 || vals[6] == 0)
 				{
 					//Debug.WriteLine("Invalid readings.");
 					//Debug.WriteLine("err_status (should be 1) = " + err_status);
 					if (err_status == 1)
 					{
-						int errshift = ch.Value[9] >> 6;
-						int errval = (int)ch.Value[9] - (errshift * (int)Math.Pow(2, 6));
+						int errshift = vals[9] >> 6;
+						int errval = (int)vals[9] - (errshift * (int)Math.Pow(2, 6));
 						last_status = errval;
 						//Debug.WriteLine("errshift = " + errshift);
 						//Debug.WriteLine("last_status = " + last_status);
@@ -405,24 +509,24 @@ namespace MyHealthVitals
 				}
 				else
 				{
-					int lastSpo2 = (int)ch.Value[5];
-					int lastBPM = (int)ch.Value[6];
+					int lastSpo2 = (int)vals[5];
+					int lastBPM = (int)vals[6];
 
 					err_status = 0;
 
 					//Debug.WriteLine("this.uiController.SPO2_readingCompleted");
 
-					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)ch.Value[8]) / 10);
+					this.uiController.SPO2_readingCompleted(lastSpo2, lastBPM, (float)((int)vals[8]) / 10);
 				}
 			}
 			/*
-			Debug.WriteLine("ch.Value[2] = " + ch.Value[2]);
-			Debug.WriteLine("ch.Value[3] = " + ch.Value[3]);
-			Debug.WriteLine("ch.Value[4] = " + ch.Value[4]);
-			Debug.WriteLine("ch.Value[5] = " + ch.Value[5]);
+			Debug.WriteLine("vals[2] = " + vals[2]);
+			Debug.WriteLine("vals[3] = " + vals[3]);
+			Debug.WriteLine("vals[4] = " + vals[4]);
+			Debug.WriteLine("vals[5] = " + vals[5]);
 */
 			// this token is for glucose reading
-			if ((int)ch.Value[2] == 115) 
+			if ((int)vals[2] == 115) 
 			{
 				Debug.WriteLine("glucose");
 				// this is needed because device is reading same data more than once to we are tracking glucose reading stop and sending the last reading
@@ -450,22 +554,22 @@ namespace MyHealthVitals
 
 
 			
-				glucoseResult = ((int)ch.Value[5] >> 3) & 3;
+				glucoseResult = ((int)vals[5] >> 3) & 3;
 				Debug.WriteLine("correctResult= " + glucoseResult);
 				if (glucoseResult == 0)
 				{
-					int D0_data1 = (int)ch.Value[5];
-					Debug.WriteLine("((int)ch.Value[6] << 8) + (int)ch.Value[7] = " + ((int)ch.Value[6] << 8) + (int)ch.Value[7]);
-					Debug.WriteLine("(int)ch.Value[6] * 100 + (int)ch.Value[7] = " + (int)ch.Value[6] * 100 + (int)ch.Value[7]);
+					int D0_data1 = (int)vals[5];
+					Debug.WriteLine("((int)vals[6] << 8) + (int)vals[7] = " + ((int)vals[6] << 8) + (int)vals[7]);
+					Debug.WriteLine("(int)vals[6] * 100 + (int)vals[7] = " + (int)vals[6] * 100 + (int)vals[7]);
 					if ((D0_data1 & 1) == 1)
 					{
-						int dataMgDl = ((int)ch.Value[6] << 8) + (int)ch.Value[7];
+						int dataMgDl = ((int)vals[6] << 8) + (int)vals[7];
 						glucoseReadingVal = (decimal)dataMgDl;
 						gluUnit = "mg/dL";
 					}
 					else
 					{
-						int dataMmol = (int)ch.Value[6] * 100 + (int)ch.Value[7];
+						int dataMmol = (int)vals[6] * 100 + (int)vals[7];
 						glucoseReadingVal = (decimal)dataMmol / 10;
 						gluUnit = "Mmol/L";
 					}

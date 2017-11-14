@@ -13,6 +13,7 @@ namespace MyHealthVitals
 		void updatingPressureMeanTime(int pressure);
 		void updated_Weight(decimal weight);
 		void updateTemperature(decimal temperature);
+        void FailedConn(String message, bool isConn, int camefrom);
 
 		void noticeEndOfReadingSpo2();
 		void updateDeviceConnected(String deviceName, bool isConnected);
@@ -30,6 +31,7 @@ namespace MyHealthVitals
 	{
 		void updateCaller(SpirometerReading currReading);
 		void updateDeviceStateOnUI(String message, bool isConnected);
+        void FailedConn(String message, bool isConn, int camefrom);
 		void testAgainDialog();
 	}
 }

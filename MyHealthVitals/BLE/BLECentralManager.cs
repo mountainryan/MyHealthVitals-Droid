@@ -5,6 +5,12 @@ using System.Text;
 using System.Diagnostics;
 using Plugin.BLE.Abstractions.Contracts;
 using Plugin.BLE.Abstractions.Exceptions;
+using System.Threading;
+using System.Threading.Tasks;
+using nexus.core.logging;
+using nexus.protocols.ble;
+using Xamarin.Forms;
+
 namespace MyHealthVitals
 {
 	public interface IBLEDeviceServiceHandler
@@ -12,11 +18,16 @@ namespace MyHealthVitals
 		void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e);
 		void discoverServices(IDevice device);
 		void reconnectToDevice(IDevice device);
-
+        void GetData(Byte[] bytes);
 
 		//object uiController;
 
 	}
+    public class BLEdata
+    {
+        public static nexus.protocols.ble.connection.IBleGattServer gattserver;
+
+    }
 	/*	public class ListItemManager {
 			public static ListItemManager sharedInstance = new ListItemManager();
 			public ListCellTwoItem listcellTwoItem;
@@ -43,6 +54,9 @@ namespace MyHealthVitals
 		public ScaleServiceHandler scaleServHandle;
 		string ScaleName = "eBody-Scale";
 
+        IBluetoothLowEnergyAdapter adapter = BLEadapter.adapter;
+
+
 		//public DeviceListPage deviceListPage;
 
 		//public get
@@ -66,13 +80,233 @@ namespace MyHealthVitals
 			scaleServHandle = new ScaleServiceHandler();
 		}
 
+
+
+        public async Task ConnectToDevice2(string deviceName, object controller)
+        {
+            Debug.WriteLine("connectToDevice2");
+			scanningDeviceName = deviceName;
+
+			switch (deviceName)
+			{
+				case "BLE-MSA":
+					{
+						spiroServHandler.uiController = (BLEReadingUpdatableSpiroMeter)controller;
+						break;
+					}
+
+				case "PC_300SNT":
+					{
+						spotServHandler.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+					}
+				case "PC-100":
+					{
+						pc100ServHandler.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+					}
+				case "eBody-Scale":
+                    {
+                        scaleServHandle.uiController = (IBluetoothCallBackUpdatable)controller;
+                        break;
+                    }
+				default: break;
+			}
+
+
+			var val = checkBLEState(deviceName);
+            if (val)
+            {
+                Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
+
+                Debug.WriteLine("result is null");
+
+                IBlePeripheral found = null;
+				//scan for the named device and attempt to connect to it
+
+				if (BLEdata.gattserver != null)
+				{
+					BLEdata.gattserver.Dispose();
+				}
+
+                await adapter.ScanForBroadcasts(
+                    new ScanFilter.Factory()
+                        .SetAdvertisedDeviceName(deviceName)
+                        .SetIgnoreRepeatBroadcasts(true),
+                    p => { found = p; });
+
+                if (found != null)
+                {
+                    Debug.WriteLine("Device guid = " + found.DeviceId.ToString());
+                    deviceID = found.DeviceId;
+                }
+
+				if (deviceID.ToString() != "00000000-0000-0000-0000-000000000000")
+				{
+					//connect to the device
+                    var connection = await adapter.ConnectToDevice(deviceID, TimeSpan.FromSeconds(15));
+					if (connection.IsSuccessful())
+					{
+                        BLE_val.BLE_value = 2;
+                        //write to BLElog.txt
+                        DependencyService.Get<IFileHelper>().saveBLEinfo(deviceName, BLE_val.BLE_value, deviceID);
+
+                        var gattServer = connection.GattServer;
+                        BLEdata.gattserver = gattServer;
+						// do things with gattServer here... (see further examples...)
+						Debug.WriteLine("Successfully connected!!!!");
+						//show that we are connected
+						DeviceConnected(deviceName);
+						
+
+						foreach (var guid in await gattServer.ListAllServices())
+						{
+							Debug.WriteLine($"service: {guid}");
+							foreach (var guid2 in await gattServer.ListServiceCharacteristics(guid))
+							{
+								Debug.WriteLine($"  characteristic: {guid2}");
+							}
+						}
+
+						if (deviceName == "BLE-MSA")
+						{
+							//run discoverservices2
+							spiroServHandler.discoverServices2(deviceID);
+						}
+
+
+						NotifyChar(gattServer, deviceName);
+
+					}
+					else
+					{
+						// Do something to inform user or otherwise handle unsuccessful connection.
+						Debug.WriteLine("Error connecting to device. result={0:g}", connection.ConnectionResult);
+						// e.g., "Error connecting to device. result=ConnectionAttemptCancelled"
+						//send the error message to screen
+						SendConnError(deviceName, 2);//, connection.ConnectionResult.ToString());
+					}
+                }else{
+                    //device not found
+                    Debug.WriteLine("Device not found");
+                }
+            }
+
+        }
+
+        public void NotifyChar(nexus.protocols.ble.connection.IBleGattServer gattServer, string deviceName)
+        {						
+			switch (deviceName)
+			{
+				case "BLE-MSA":
+					{
+						//listen for Characteristic
+						Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+						Guid gchar = new Guid("0000ff0a-0000-1000-8000-00805f9b34fb");
+						try
+						{
+							// will stop listening when gattServer is disconnected
+							//Byte[] charbytes;
+							gattServer.NotifyCharacteristicValue(
+							   gservice,
+							   gchar,
+								spotServHandler.GetData,
+							   // provide IObserver<Tuple<Guid, Byte[]>> or IObserver<Byte[]>
+							   // There are several extension methods to assist in creating the obvserver...
+							   bytes => {
+
+
+							   });
+						}
+						catch (GattException ex)
+						{
+							Debug.WriteLine(ex.ToString());
+						}
+						break;
+					}
+
+				case "PC_300SNT":
+					{
+						Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+						Guid gchar = new Guid("0000fff1-0000-1000-8000-00805f9b34fb");
+						try
+						{
+							// will stop listening when gattServer is disconnected
+							//Byte[] charbytes;
+							gattServer.NotifyCharacteristicValue(
+							   gservice,
+							   gchar,
+								spotServHandler.GetData,
+							   // provide IObserver<Tuple<Guid, Byte[]>> or IObserver<Byte[]>
+							   // There are several extension methods to assist in creating the obvserver...
+							   bytes => {
+
+
+							   });
+						}
+						catch (GattException ex)
+						{
+							Debug.WriteLine(ex.ToString());
+						}
+						break;
+					}
+				case "PC-100":
+					{
+						Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+						Guid gchar = new Guid("0000fff1-0000-1000-8000-00805f9b34fb");
+						try
+						{
+							// will stop listening when gattServer is disconnected
+							//Byte[] charbytes;
+							gattServer.NotifyCharacteristicValue(
+							   gservice,
+							   gchar,
+								pc100ServHandler.GetData,
+							   // provide IObserver<Tuple<Guid, Byte[]>> or IObserver<Byte[]>
+							   // There are several extension methods to assist in creating the obvserver...
+							   bytes => {
+
+
+							   });
+						}
+						catch (GattException ex)
+						{
+							Debug.WriteLine(ex.ToString());
+						}
+						break;
+					}
+				case "eBody-Scale":
+                    {
+						Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+						Guid gchar = new Guid("0000fff4-0000-1000-8000-00805f9b34fb");
+                        try
+                        {
+                            // will stop listening when gattServer is disconnected
+                            //Byte[] charbytes;
+                            gattServer.NotifyCharacteristicValue(
+                               gservice,
+                               gchar,
+                                scaleServHandle.GetData,
+                               // provide IObserver<Tuple<Guid, Byte[]>> or IObserver<Byte[]>
+                               // There are several extension methods to assist in creating the obvserver...
+                               bytes =>
+                               {
+
+                               });
+                        }
+                        catch (GattException ex)
+                        {
+                            Debug.WriteLine(ex.ToString());
+                        }
+                        break;
+                    }
+				default:
+					break;
+			}
+        }
+
 		public void connectToDevice(String deviceName, object controller)
-		{
-			var ble_state = CrossBluetoothLE.Current.State;
-			Debug.WriteLine("BLE state : " + ble_state);
-            string BLEstate = ble_state.ToString();
-
-
+		{	
 			Debug.WriteLine("connectToDevice");
 			scanningDeviceName = deviceName;
              
@@ -101,36 +335,10 @@ namespace MyHealthVitals
 					break;
 			}
 
-			if (BLEstate == "Off")
-			{
-				//throw a msg to turn on Bluetooth
-				Debug.WriteLine("Your Bluetooth is off!");
-				switch (deviceName)
-				{
-					case "BLE-MSA":
-						{
-							//can't show spirometer message
-							spiroServHandler.uiController.updateDeviceStateOnUI("Bluetooth is turned off.", false);
-							break;
-						}
-					case "PC_300SNT":
-						{
-							spotServHandler.uiController.ShowConcetion("Bluetooth is turned off.", false);
-							break;
-						}
-					case "PC-100":
-						{
-							pc100ServHandler.uiController.ShowConcetion("Bluetooth is turned off.", false);
-							break;
-						}
-					case "eBody-Scale":
-						{
-							scaleServHandle.uiController.ShowConcetion("Bluetooth is turned off.", false);
-							break;
-						}
-					default: break;
-				}
-            }else{
+            var val = checkBLEState(deviceName);
+            if (val)
+            {
+            
 				if (!checkIfDeviceScanned(deviceName))
 				{
 					// the device is not in the scanned list now scan to find the desired device and then connnect
@@ -176,12 +384,12 @@ namespace MyHealthVitals
 
 		private IDevice getCurrentDevice(String deviceName)
 		{
-
+            Debug.WriteLine("calling getCurrentDevice()");
 			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices )
 			{
 				if (device.Name == deviceName)
 				{
-					Debug.WriteLine("getCurrentDevice" + device.Name);
+					Debug.WriteLine("getCurrentDevice = " + device.Name);
 					return device;
 				}
 			}
@@ -198,7 +406,7 @@ namespace MyHealthVitals
 				if (device.Name == deviceName)
 				{
 					// already scanned device
-					Debug.WriteLine(deviceName + " is already conneced");
+					Debug.WriteLine(deviceName + " is already connected");
 					return true;
 				}
 			}
@@ -227,14 +435,16 @@ namespace MyHealthVitals
 				{
 					try
 					{
-						await CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device);
+						Debug.WriteLine("attempting to connect...");
+                        await CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device);
+
 					}
 					catch (DeviceConnectionException ex)
 					{
 						Debug.WriteLine("BLE connect DCE ex msg: " + ex.Message);
                         Debug.WriteLine("e.Device.Name = " + e.Device.Name);
                         //send error message to screen if callback error 133 = "GattCallback error: 133"
-                        SendConnError(e.Device.Name);
+                        SendConnError(e.Device.Name, 1);
 					}
 					catch (Exception ex)
 					{
@@ -247,45 +457,276 @@ namespace MyHealthVitals
 
 				//CrossBluetoothLE.Current.Adapter.fail
 				//CrossBluetoothLE.Current.Adapter.ConnectedDevices
-			}
+            }else{
+                Debug.WriteLine("wrong device = "+e.Device.Name);
+            }
             //var BLE_status = CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device).Status;
             //Debug.WriteLine("BLE status : "+BLE_status.ToString());
 
 		}
 
-        public void SendConnError (string DeviceName)
+        public void SendConnError (string DeviceName, int camefrom)
         {
             switch (DeviceName)
             {
                 case "BLE-MSA":
                     {
                         //can't show spirometer message
-                        spiroServHandler.uiController.updateDeviceStateOnUI("Failed to connect to Spirometer.", false);
+                        spiroServHandler.uiController.FailedConn("Failed to connect to Spirometer. Try again?", false, camefrom);
                         break;
                     }
                 case "PC_300SNT":
                     {
-                        spotServHandler.uiController.ShowConcetion("Failed to connect to PC-300.", false);
+                        spotServHandler.uiController.FailedConn("Failed to connect to PC-300. Try again?", false, camefrom);
                         break;
                     }
                 case "PC-100":
                     {
-                        pc100ServHandler.uiController.ShowConcetion("Failed to connect to PC-100.", false);
+                        pc100ServHandler.uiController.FailedConn("Failed to connect to PC-100. Try again?", false, camefrom);
+
                         break;
                     }
                 case "eBody-Scale":
                     {
-                        scaleServHandle.uiController.ShowConcetion("Failed to connect to eBody-Scale.", false);
+                        scaleServHandle.uiController.FailedConn("Failed to connect to eBody-Scale. Try again?", false, camefrom);
                         break;
                     }
                 default:break;
             }
         }
+        /*
+        public void Conn_Error(string deviceName)//, string message)
+        {
+			switch (deviceName)
+			{
+				case "BLE-MSA":
+					{
+						//can't show spirometer message
+						spiroServHandler.uiController.updateDeviceStateOnUI("Failed to connect to Spirometer.", false);
+						break;
+					}
+				case "PC_300SNT":
+					{
+						spotServHandler.uiController.ShowConcetion("Failed to connect to PC-300.", false);
+						break;
+					}
+				case "PC-100":
+					{
+						pc100ServHandler.uiController.ShowConcetion("Failed to connect to PC-100.", false);
+						break;
+					}
+				case "eBody-Scale":
+					{
+						scaleServHandle.uiController.ShowConcetion("Failed to connect to eBody-Scale.", false);
+						break;
+					}
+				default: break;
+			}
+        }*/
+
+        public async Task<bool> ConnectKnownDevice2(Guid deviceID, string deviceName, object controller)
+        {
+			switch (deviceName)
+			{
+				case "BLE-MSA":
+					{
+						spiroServHandler.uiController = (BLEReadingUpdatableSpiroMeter)controller;
+						break;
+					}
+
+				case "PC_300SNT":
+					{
+						spotServHandler.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+					}
+				case "PC-100":
+					{
+						pc100ServHandler.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+					}
+				case "eBody-Scale":
+					{
+						scaleServHandle.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+					}
+				default: break;
+			}
+
+            //may not need this line
+			if (BLEdata.gattserver != null)
+			{
+				BLEdata.gattserver.Dispose();
+			}
+
+            Debug.WriteLine("called ConnectKnownDevice2");
+			var connection = await adapter.ConnectToDevice(deviceID, TimeSpan.FromSeconds(5));
+            bool connected = false;
+			if (connection.IsSuccessful())
+			{
+                connected = true;
+				BLE_val.BLE_value = 2;
+				//write to BLElog.txt
+				DependencyService.Get<IFileHelper>().saveBLEinfo(deviceName, BLE_val.BLE_value, deviceID);
+
+				var gattServer = connection.GattServer;
+                BLEdata.gattserver = gattServer;
+				// do things with gattServer here... (see further examples...)
+				Debug.WriteLine("Successfully connected!!!!");
+				//show that we are connected
+				DeviceConnected(deviceName);
+                if (deviceName == "BLE-MSA")
+                {
+                    //run discoverservices2
+                    spiroServHandler.discoverServices2(deviceID);
+                }
+
+				foreach (var guid in await gattServer.ListAllServices())
+				{
+					Debug.WriteLine($"service: {guid}");
+					foreach (var guid2 in await gattServer.ListServiceCharacteristics(guid))
+					{
+						Debug.WriteLine($"  characteristic: {guid2}");
+					}
+				}
+
+				NotifyChar(gattServer, deviceName);
+
+			}
+			else
+			{
+				// Do something to inform user or otherwise handle unsuccessful connection.
+				Debug.WriteLine("Error connecting to device. result={0:g}", connection.ConnectionResult);
+				// e.g., "Error connecting to device. result=ConnectionAttemptCancelled"
+				//send the error message to screen
+				//Conn_Error(deviceName);//, connection.ConnectionResult.ToString());
+			}
+            return connected;
+        }
+
+        public async Task<bool> ConnectKnownDevice(Guid deviceID, string deviceName, object controller)
+        {
+			switch (deviceName)
+			{
+				case "BLE-MSA":
+					{
+						spiroServHandler.uiController = (BLEReadingUpdatableSpiroMeter)controller;
+						break;
+					}
+
+				case "PC_300SNT":
+					{
+						spotServHandler.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+					}
+				case "PC-100":
+					{
+						pc100ServHandler.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+					}
+				case "eBody-Scale":
+					{
+						scaleServHandle.uiController = (IBluetoothCallBackUpdatable)controller;
+						break;
+					}
+				default: break;
+			}
+            bool connected = false;
+            if (!checkIfDeviceScanned(deviceName))
+            {
+                Debug.WriteLine("called ConnectKnownDevice");
+
+                try
+                {
+                    //CancellationTokenSource cts = new CancellationTokenSource();
+                    //var token = cts.Token;
+                    await CrossBluetoothLE.Current.Adapter.ConnectToKnownDeviceAsync(deviceID);
+
+                    connected = true;
+                }
+                catch (DeviceConnectionException e)
+                {
+                    Debug.WriteLine("connectToKnownDeviceAsync error msg: " + e.Message);
+                }
+            }else{
+                //Debug.WriteLine("skipped redundant scan!");
+				Debug.WriteLine("reconnectToDevice : " + deviceName);
+
+				switch (deviceName)
+				{
+					case "BLE-MSA":
+						{
+							spiroServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+							break;
+						}
+
+					case "PC_300SNT":
+						{
+							spotServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+							break;
+						}
+
+					case "PC-100":
+						{
+							pc100ServHandler.reconnectToDevice(getCurrentDevice(deviceName));
+							break;
+						}
+					case "eBody-Scale":
+						scaleServHandle.reconnectToDevice(getCurrentDevice(deviceName));
+						break;
+					default:
+						break;
+				}
+                connected = true;
+            }
+            return connected;
+        }
+
+        public void DeviceConnected(string deviceName)
+        {
+			switch (deviceName)
+			{
+				case "BLE-MSA":
+					{
+						//don't do anything!
+                        //start discoverservices2 maybe?
+						break;
+					}
+
+				case "PC_300SNT":
+					{
+						//Debug.WriteLine("PC_300SNT device id = " + e.Device.Id.ToString());
+
+						//spotServHandler.discoverServices(e.Device);
+						spotServHandler.uiController.ShowConcetion("Connected.", true);
+						break;
+					}
+				case "PC-100":
+					{
+						//Debug.WriteLine("PC-100 device id = " + e.Device.Id.ToString());
+						//pc100ServHandler.discoverServices(e.Device);
+						pc100ServHandler.uiController.ShowConcetion("Connected.", true);
+						break;
+					}
+				case "eBody-Scale":
+					{
+						//Debug.WriteLine("eBody-Scale device id = " + e.Device.Id.ToString());
+						//scaleServHandle.discoverServices(e.Device);
+						scaleServHandle.uiController.ShowConcetion("Connected.", true);
+						break;
+					}
+
+				default:
+					break;
+			}
+        }
 
 		private void Adapter_DeviceConnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
 			Debug.WriteLine("Adapter_DeviceConnected: " + e.Device.Name);
-		//	connectedDevices.Add(e.Device);
+			//	connectedDevices.Add(e.Device);
+			Guid deviceID = e.Device.Id;
+			BLE_val.BLE_value = 1;
+			DependencyService.Get<IFileHelper>().saveBLEinfo(e.Device.Name, BLE_val.BLE_value, deviceID);
 
 			switch (e.Device.Name)
 			{
@@ -438,6 +879,48 @@ namespace MyHealthVitals
 				Debug.WriteLine(device.Name + "  " + device.State);
 			}
 
+		}
+		public bool checkBLEState(string deviceName)
+		{
+			var ble_state = CrossBluetoothLE.Current.State;
+			Debug.WriteLine("BLE state : " + ble_state);
+			string BLEstate = ble_state.ToString();
+
+			if (BLEstate == "Off")
+			{
+				//throw a msg to turn on Bluetooth
+				Debug.WriteLine("Your Bluetooth is off!");
+				switch (deviceName)
+				{
+					case "BLE-MSA":
+						{
+							//can't show spirometer message
+							spiroServHandler.uiController.updateDeviceStateOnUI("Bluetooth is turned off.", false);
+							break;
+						}
+					case "PC_300SNT":
+						{
+							spotServHandler.uiController.ShowConcetion("Bluetooth is turned off.", false);
+							break;
+						}
+					case "PC-100":
+						{
+							pc100ServHandler.uiController.ShowConcetion("Bluetooth is turned off.", false);
+							break;
+						}
+					case "eBody-Scale":
+						{
+							scaleServHandle.uiController.ShowConcetion("Bluetooth is turned off.", false);
+							break;
+						}
+					default: break;
+				}
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	}
 }

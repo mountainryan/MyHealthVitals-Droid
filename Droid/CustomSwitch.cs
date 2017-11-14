@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using MyHealthVitals;
 using MyHealthVitals.Droid;
 using Xamarin.Forms;
@@ -12,28 +12,17 @@ namespace MyHealthVitals.Droid
 {
 	public class CustomSwitch : SwitchRenderer
 	{
-		protected override void OnElementChanged(ElementChangedEventArgs<Switch> e)
+		protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.Switch> e)
 		{
 			base.OnElementChanged(e);
-            Control?.SetHeight(120);
-            Control.SetHeight(120);
-            Control.SetMinimumHeight(120);
-            Control?.SetMinimumHeight(120);
-            Control.SetMinHeight(120);
-            Control?.SetMinHeight(120);
-
-			if (Control != null)
-			{
-				//Control.TextOn = "AAN";
-				//Control.TextOff = "UIT";
-                //Control.SetTextColor(Android.Graphics.Color.HotPink);//Color.White);
-			}
-
-			if (Control.Checked == true)
-			{
-                //Control.SetBackgroundColor(Android.Graphics.Color.Gold);//Color.Green);
-			}
+            if (Device.Idiom == TargetIdiom.Tablet)
+            {
+                if (Control != null)
+                {
+                    Control.SetTrackResource(Resource.Drawable.track);
+                    Control.SetThumbResource(Resource.Drawable.thumb);
+                }
+            }
 		}
 	}
 }
-*/

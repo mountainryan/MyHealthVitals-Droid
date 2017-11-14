@@ -15,15 +15,46 @@ namespace MyHealthVitals
 			Demographics.sharedInstance.isRememberUsername = switchRemUsername.IsToggled;
 			Demographics.sharedInstance.saveUserDefaults();
 			this.Navigation.PopAsync();
+
+
 		}
 
 		public UserProfile()
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
 			InitializeComponent();
+			FakeToolbar.Children.Add(
+			backarrow,
+			// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+			new Rectangle(0, 0.5, 0.1, 1),
+			// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+			AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+			);
+
+			FakeToolbar.Children.Add(
+				backbtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.1, 0.5, 0.35, 1),
+				AbsoluteLayoutFlags.All
+			);
+			FakeToolbar.Children.Add(
+				titlebtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.5, 0.5, 0.5, 1),
+				AbsoluteLayoutFlags.All
+			);
 			// initial rendering previously saved data
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
-				layout.Spacing = 50 * Screensize.heightfactor;
+				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+				backbtn.FontSize = 30 * Screensize.heightfactor;
+				titlebtn.FontSize = 30 * Screensize.heightfactor;
+
+				layout.Spacing = 40 * Screensize.heightfactor;
                 layout.Padding = new Thickness(15 * Screensize.heightfactor);
 				imgProfile.WidthRequest = 160 * Screensize.widthfactor;
 				imgProfile.HeightRequest = 192 * Screensize.heightfactor;
@@ -45,15 +76,19 @@ namespace MyHealthVitals
 				auto.FontSize = 32 * Screensize.heightfactor;
 				save.FontSize = 32 * Screensize.heightfactor;
                 save.HeightRequest = 100 * Screensize.heightfactor;
-                savecont.Margin = new Thickness(50*Screensize.widthfactor, -180*Screensize.heightfactor, 50*Screensize.widthfactor, 0);
-                savecont.HeightRequest = 180 * Screensize.heightfactor;
-                savecont.Spacing = 60 * Screensize.heightfactor;
+                //savecont.Margin = new Thickness(5*Screensize.widthfactor, -245*Screensize.heightfactor, 5*Screensize.widthfactor, 0);
+                //savecont.HeightRequest = 180 * Screensize.heightfactor;
+                //savecont.Spacing = 9 * Screensize.heightfactor;
+				save.Margin = new Thickness(50 * Screensize.widthfactor, 0);
                 //Debug.WriteLine("Height of savecont = " + savecont.HeightRequest);
-                //Debug.WriteLine("Height of cpyrt = " + cpyrt.HeightRequest);
-
+                //Debug.WriteLine("Height of cpyrt = " + cpyrt.HeightRequest
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
+				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+				titlebtn.FontSize = 24 * Screensize.heightfactor;
+                backbtn.FontSize = 24 * Screensize.heightfactor;
+
                 layout.Spacing *= Screensize.heightfactor;
                 layout.Padding = new Thickness(15 * Screensize.heightfactor);
 				imgProfile.WidthRequest *= Screensize.widthfactor;
@@ -86,6 +121,11 @@ namespace MyHealthVitals
 			else {
 				callAPi();
 			}
+		}
+
+		void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
 		}
 
 		private async void callAPi()

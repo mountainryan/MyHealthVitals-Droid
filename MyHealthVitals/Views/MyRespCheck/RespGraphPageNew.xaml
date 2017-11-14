@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.RespGraphPageNew">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals"
+    x:Class="MyHealthVitals.RespGraphPageNew">
 	<ContentPage.Content>
 		<RelativeLayout BackgroundColor="{StaticResource colorBlackBg}" >
+
+            <StackLayout x:Name="layoutContainer"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                  >
+            
+            <StackLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <local:MyButton x:Name="backarrow" Clicked="btnBackClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
+                    <local:MyButton x:Name="backbtn" Clicked="btnBackClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="30" />
+
+                    <Label x:Name="titlebtn" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="Data Graph Screen" TextColor="Black" FontSize="30" />
+                    
+                        <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
+             </StackLayout> 
+
+                <!--
 			<StackLayout x:Name="layoutContainer" VerticalOptions="CenterAndExpand" Padding="0,30,0,0" 
 					RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" 
 					RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" Spacing="0">
-				<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="6">
+            -->
+            <ScrollView><StackLayout>
+                <StackLayout x:Name="minilayoutcont" Orientation="Horizontal" HorizontalOptions="Center" Spacing="6" Padding="0,50,0,0">
 					<!--first horizontal-->
 					<StackLayout x:Name = "layoutN1" Spacing="81">
 						<Label XAlign="End" FontSize="12" Text="900" TextColor="White" />
@@ -15,7 +39,7 @@
 					</StackLayout>
 					<!--second horizontal-->
 					<StackLayout Margin="0,0,10,0" BackgroundColor="White" Padding="1">
-						<StackLayout x:Name="layoutPefContainer" HeightRequest="300" WidthRequest="100" BackgroundColor="{StaticResource colorBlackBg}">
+						<StackLayout x:Name="layoutPefContainer" HeightRequest="400" WidthRequest="120" BackgroundColor="{StaticResource colorBlackBg}">
 							<Label x:Name="peflabel" TextColor="{StaticResource colorThemeBlue}" Text="PEF(L/min)" VerticalTextAlignment="Start" HorizontalTextAlignment="Center" Margin="0,-25,0,0" FontSize="15">
 							</Label>
 							<StackLayout x:Name ="layoutL1" VerticalOptions="EndAndExpand" WidthRequest="60" HorizontalOptions="Center">
@@ -26,7 +50,7 @@
 					</StackLayout>
 					<!--Third horizontal-->
 					<StackLayout Margin="10,0,0,0" BackgroundColor="White" Padding="1">
-						<StackLayout x:Name="layoutFevContainer" HeightRequest="300" WidthRequest="100" BackgroundColor="{StaticResource colorBlackBg}">
+						<StackLayout x:Name="layoutFevContainer" HeightRequest="400" WidthRequest="120" BackgroundColor="{StaticResource colorBlackBg}">
 							<Label x:Name="fevlabel" TextColor="{StaticResource colorThemeBlue}" Text="FEV1(L)" HorizontalTextAlignment="Center" Margin="0,-25,0,0" FontSize="15">
 							</Label>
 							<StackLayout x:Name ="layoutL2" VerticalOptions="EndAndExpand" WidthRequest="60" HorizontalOptions="Center">
@@ -48,11 +72,19 @@
 					<Label WidthRequest="156" x:Name="lblDate" TextColor="White" Text="10/14/1990 09:11 AM" YAlign="Center" XAlign="Center" FontSize="15" />
 					<Button x:Name="nextbtn" Clicked="btnNextClicked" BackgroundColor = "Transparent"  Image="imgNextBlue.png" HeightRequest="50" WidthRequest="50" HorizontalOptions="End" />
 				</StackLayout>
-			</StackLayout>
 
+                </StackLayout></ScrollView>
+				
+			</StackLayout>
+            <!--
+			<StackLayout x:Name="prevcont" IsVisible="true" BackgroundColor="{StaticResource colorBlackBg}" HorizontalOptions="Center" Orientation="Horizontal" Spacing ="5"  Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" >
+				<Button x:Name="prbtn" Clicked="btnBackClicked"  BackgroundColor = "Transparent"  Image = "imgPrevBlue.png" HeightRequest="50" WidthRequest="50" />
+				<Button FontSize="30" Clicked="btnBackClicked" Text="Back" VerticalOptions="Center" TextColor="{StaticResource colorThemeBlue}" BackgroundColor = "Transparent"/>
+			</StackLayout>
+			-->
 			<StackLayout   
-					HeightRequest="30"
-					Margin="0,-30,0,0"
+					HeightRequest="20"
+					Margin="0,-20,0,0"
 					RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
 					RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" 
 					Spacing="0">

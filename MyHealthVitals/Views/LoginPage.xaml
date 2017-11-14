@@ -7,14 +7,23 @@
 	<ContentPage.Content>
 		<RelativeLayout>
 			<!--login view starts-->
-			<StackLayout VerticalOptions = "FillAndExpand" Spacing="0">
+            <StackLayout 
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                  >
+			<!--<StackLayout VerticalOptions = "FillAndExpand" Spacing="0">-->
+             
+                <ScrollView><StackLayout>
 				
 				<StackLayout HorizontalOptions="Center" x:Name="layoutImgContainer" Margin="45" Orientation="Vertical" VerticalOptions="Start">
-					<Image x:Name="icucareimg" Source="icucarellc_phone.png" >
+					<Image x:Name="icucareimg" Source="ISEEYOUCARE_logo.png" >
 					</Image>
 				</StackLayout>
-
-
+            
 				
 				<StackLayout x:Name="layoutLoginContainer" HorizontalOptions="Center" Orientation="Horizontal" Spacing="0"><!--Margin="30,10,30,10"-->
 					<StackLayout x:Name = "layout" Orientation="Vertical"  Spacing="0" Margin="0,0,0,0">
@@ -35,6 +44,8 @@
 						</Label>
 					</ScrollView>
 				</StackLayout>
+
+                </StackLayout></ScrollView>
 			</StackLayout>
 
 			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">

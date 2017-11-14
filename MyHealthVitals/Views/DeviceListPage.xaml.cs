@@ -7,11 +7,12 @@ namespace MyHealthVitals
 {
 	public partial class DeviceListPage : ContentPage, IBluetoothCallBackUpdatable
 	{
-
+        //NavigationPage.SetHasNavigationBar(this, false);
 		private String activeDeviceName = "";
 		bool isNavigated = false;
 		void btnScaleClicked(object sender, System.EventArgs e) 
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
 			activeDeviceName = "eBody-Scale";//"Headset";
             navigateToMainPage();
 			/*
@@ -32,10 +33,12 @@ namespace MyHealthVitals
 				BLECentralManager.sharedInstance.connectToDevice(activeDeviceName, this);
 			}*/
 		}
+        public void FailedConn(String message, bool isConn, int camefrom){}
+
 		void btnPC100Clicked(object sender, System.EventArgs e)
 		{
 			//BLECentralManager.sharedInstance.connectToDevice("PC-100", this);
-
+            NavigationPage.SetHasNavigationBar(this, false);
 			activeDeviceName = "PC-100";
             navigateToMainPage();
 			/*
@@ -65,6 +68,7 @@ namespace MyHealthVitals
 
 		void btnSpirometerClicked(object sender, System.EventArgs e)
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
 			var newScreen = new RespHomePage();
 			newScreen.Title = "Main Screen";
 			this.Navigation.PushAsync(newScreen);
@@ -72,6 +76,7 @@ namespace MyHealthVitals
 
 		void btnPC300clicked(object sender, System.EventArgs e)
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
 			activeDeviceName = "PC_300SNT";
             navigateToMainPage();
 			/*
@@ -118,15 +123,59 @@ namespace MyHealthVitals
 
 		public DeviceListPage()
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
+			//NavigationPage.SetBackButtonTitle(this, "Back");
 			InitializeComponent();
+			//NavigationPage.SetBackButtonTitle(this, "Back");
 
 			gifWebView.Source = DependencyService.Get<IBaseUrl>().Get() + "/gifContainer.html";
+
 			if (Device.Idiom == TargetIdiom.Tablet) 
             {
-                page.Spacing = 120 * Screensize.heightfactor;
-                middle.Spacing = 150 * Screensize.widthfactor;
-                btn300.WidthRequest = 300 * Screensize.widthfactor;
-                btnweight.WidthRequest = 300 * Screensize.widthfactor;
+                setPortrait();
+			}
+            else if (Device.Idiom == TargetIdiom.Phone)
+            {
+				setPortrait();
+            }
+
+		}
+
+        /*
+		protected override void OnSizeAllocated(double width, double height)
+		{
+            base.OnSizeAllocated(width, height);
+
+            int pages = Navigation.NavigationStack.Count;
+            Debug.WriteLine("Nav stack count = " + pages);
+
+            if (width < height)
+            {
+                Debug.WriteLine("Application Is in portrait");
+                if (pages == 1) { setPortrait(); }
+
+            }
+            else
+            {
+                Debug.WriteLine("Application Is in Landscape");
+                if (pages == 1) { setLandscape(); }
+            }
+		}*/
+
+        public void setLandscape()
+        {
+            Debug.WriteLine("Called DeviceListPage setLandscape()");
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+				//titlebtn.FontSize = 36 * Screensize.heightfactor;
+				logoutbtn.FontSize = 30 * Screensize.heightfactor;
+				btnfirst.Margin = new Thickness(0, 75 * Screensize.heightfactor, 0, 0);
+
+				page.Spacing = 10 * Screensize.heightfactor;
+				middle.Spacing = 150 * Screensize.widthfactor;
+				btn300.WidthRequest = 300 * Screensize.widthfactor;
+				btnweight.WidthRequest = 300 * Screensize.widthfactor;
 				btnspi.FontSize = 36 * Screensize.heightfactor;
 				btn300.FontSize = 36 * Screensize.heightfactor;
 				btn100.FontSize = 36 * Screensize.heightfactor;
@@ -136,24 +185,71 @@ namespace MyHealthVitals
 				weightScales.Image = (FileImageSource)ImageSource.FromFile("WeightScalesPad.png");
 				Spiromter.Image = (FileImageSource)ImageSource.FromFile("SpiromterPad.png");
 			}
-            else if (Device.Idiom == TargetIdiom.Phone)
-            {
-				page.Spacing *= Screensize.heightfactor;
-				middle.Spacing *= Screensize.widthfactor;
-				btn300.WidthRequest *= Screensize.widthfactor;
-				btnweight.WidthRequest *= Screensize.widthfactor;
-				btnspi.FontSize *= Screensize.heightfactor;
-				btn300.FontSize *= Screensize.heightfactor;
-				btn100.FontSize *= Screensize.heightfactor;
-				btnweight.FontSize *= Screensize.heightfactor;
-            }
-		}
+			else if (Device.Idiom == TargetIdiom.Phone)
+			{
+				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+				//titlebtn.FontSize = 24 * Screensize.heightfactor;
+				logoutbtn.FontSize = 24 * Screensize.heightfactor;
+				btnfirst.Margin = new Thickness(0, 55 * Screensize.heightfactor, 0, 0);
+                page.Spacing = 0;//10 * Screensize.heightfactor;
+				middle.Spacing = 150 * Screensize.widthfactor;
+				btn300.WidthRequest = 150 * Screensize.widthfactor;
+				btnweight.WidthRequest = 150 * Screensize.widthfactor;
+				btnspi.FontSize = 16 * Screensize.heightfactor;
+				btn300.FontSize = 16 * Screensize.heightfactor;
+				btn100.FontSize = 16 * Screensize.heightfactor;
+				btnweight.FontSize = 16 * Screensize.heightfactor;
+			}
+        }
+
+        public void setPortrait()
+        {
+            Debug.WriteLine("Called DeviceListPage setPortrait()");
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+				//titlebtn.FontSize = 36 * Screensize.heightfactor;
+				logoutbtn.FontSize = 30 * Screensize.heightfactor;
+				btnfirst.Margin = new Thickness(0, 75 * Screensize.heightfactor, 0, 0);
+				page.Spacing = 90 * Screensize.heightfactor;
+				middle.Spacing = 150 * Screensize.widthfactor;
+				btn300.WidthRequest = 300 * Screensize.widthfactor;
+				btnweight.WidthRequest = 300 * Screensize.widthfactor;
+				btnspi.FontSize = 36 * Screensize.heightfactor;
+				btn300.FontSize = 36 * Screensize.heightfactor;
+				btn100.FontSize = 36 * Screensize.heightfactor;
+				btnweight.FontSize = 36 * Screensize.heightfactor;
+				PC100.Image = (FileImageSource)ImageSource.FromFile("PC100MonitorPad.png");
+				PC300.Image = (FileImageSource)ImageSource.FromFile("PC300MonitorPad.png");
+				weightScales.Image = (FileImageSource)ImageSource.FromFile("WeightScalesPad.png");
+				Spiromter.Image = (FileImageSource)ImageSource.FromFile("SpiromterPad.png");
+			}
+			else if (Device.Idiom == TargetIdiom.Phone)
+			{
+				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+				//titlebtn.FontSize = 24 * Screensize.heightfactor;
+				logoutbtn.FontSize = 24 * Screensize.heightfactor;
+				btnfirst.Margin = new Thickness(0, 55 * Screensize.heightfactor, 0, 0);
+				page.Spacing = 40 * Screensize.heightfactor;
+				middle.Spacing = 40 * Screensize.widthfactor;
+				btn300.WidthRequest = 150 * Screensize.widthfactor;
+				btnweight.WidthRequest = 150 * Screensize.widthfactor;
+				btnspi.FontSize = 16 * Screensize.heightfactor;
+				btn300.FontSize = 16 * Screensize.heightfactor;
+				btn100.FontSize = 16 * Screensize.heightfactor;
+				btnweight.FontSize = 16 * Screensize.heightfactor;
+			}
+        }
 
 		public void navigateToMainPage() { 
+            NavigationPage.SetHasNavigationBar(this, false);
 			var newScreen = new MainPage(activeDeviceName);
-			newScreen.isFromDeviecList = true;
+			newScreen.isFromDeviceList = true;
 			newScreen.Title = "Main Screen";
+			//NavigationPage.SetBackButtonTitle(this, "Main Screen");
 			this.Navigation.PushAsync(newScreen);
+			//var nav = new NavigationPage(newScreen);
+			//this.Navigation.PushModalAsync(nav);
 		}
 
 		public void ShowMessageOnUI(String message, Boolean isConnected, String title = null ) {

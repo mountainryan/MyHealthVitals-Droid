@@ -6,14 +6,42 @@
 		x:Class="MyHealthVitals.DeviceListPage">
 
 	<ContentPage.ToolbarItems>
+		<!--
+		<StackLayout x:Name="tbcont" Spacing="0" HorizontalOptions="Center">
+			<ToolbarItem x:Name="tb" Text="Log Out" Clicked="btnLogOutClicked">	</ToolbarItem>
+		</StackLayout>
+		-->
 		<ToolbarItem x:Name="tb" Text="Log Out" Clicked="btnLogOutClicked">	</ToolbarItem>
 	</ContentPage.ToolbarItems>
 	
 	<ContentPage.Content>
 		<RelativeLayout>
+            <StackLayout 
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                  >
+                <StackLayout x:Name="FakeToolbar" Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="75" BackgroundColor="White">
+                    <!--<Button x:Name="backarrow" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />-->
+                    <!--<local:MyButton x:Name="titlebtn" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Device List" TextColor="White" FontSize="36" />-->
+                    <local:MyButton x:Name="logoutbtn" Clicked="btnLogOutClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text = "Log Out" FontSize="36" TextColor="{StaticResource colorThemeBlue}" HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+                 
+
+            <!--
+            </StackLayout>
+
+
 			<StackLayout x:Name="page" VerticalOptions="Center" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="40">
-				<StackLayout Spacing="0" HorizontalOptions="Center">
-					<Button x:Name = "PC300" Clicked="btnPC300clicked" BackgroundColor = "Transparent"  Image="PC300Monitor.png"/>
+            -->
+                <ScrollView><StackLayout x:Name="page" Spacing="40">
+
+
+                <StackLayout x:Name="btnfirst" Spacing="0" HorizontalOptions="Center">
+					<Button x:Name = "PC300" Clicked="btnPC300clicked" BackgroundColor = "Transparent" Image="PC300Monitor.png"/>
 					<local:MyButton x:Name="btn300" FontSize="16" BackgroundColor = "Transparent" Font="Middle" Clicked="btnPC300clicked" TextColor="White" WidthRequest="150" Text="BP, Pulse, SpO2, Glucose, ECG"/>
 					<!--<Image Source="imgBLEOff.png" HeightRequest="22" WidthRequest="22" />-->
 				</StackLayout>
@@ -31,6 +59,9 @@
 					<Button  x:Name = "weightScales" Clicked="btnScaleClicked"  BackgroundColor = "Transparent" Image="WeightScales.png"/>
 					<local:MyButton x:Name="btnweight" FontSize="16" Clicked="btnScaleClicked"  BackgroundColor = "Transparent" Font="Middle" TextColor="White" WidthRequest="150" Text="Weight, BMI Scale" />
 				</StackLayout>
+
+                </StackLayout></ScrollView>
+                
 			</StackLayout>
 
 			<RelativeLayout IsVisible="false" x:Name="layoutLoadingDevice" BackgroundColor="Black">

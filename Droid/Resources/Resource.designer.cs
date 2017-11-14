@@ -2188,106 +2188,130 @@ namespace MyHealthVitals.Droid
 			public const int imgArrow = 2130837659;
 			
 			// aapt resource value: 0x7f02009c
-			public const int imgList = 2130837660;
+			public const int imgBackArrow = 2130837660;
 			
 			// aapt resource value: 0x7f02009d
-			public const int imgNext = 2130837661;
+			public const int imgList = 2130837661;
 			
 			// aapt resource value: 0x7f02009e
-			public const int imgNextBlue = 2130837662;
+			public const int imgNext = 2130837662;
 			
 			// aapt resource value: 0x7f02009f
-			public const int imgNextBlue_pad = 2130837663;
+			public const int imgNextBlue = 2130837663;
 			
 			// aapt resource value: 0x7f0200a0
-			public const int imgPrevBlue = 2130837664;
+			public const int imgNextBlue_pad = 2130837664;
 			
 			// aapt resource value: 0x7f0200a1
-			public const int imgPrevBlue_pad = 2130837665;
+			public const int imgPrevBlue = 2130837665;
 			
 			// aapt resource value: 0x7f0200a2
-			public const int imgUserPH = 2130837666;
+			public const int imgPrevBlue_pad = 2130837666;
 			
 			// aapt resource value: 0x7f0200a3
-			public const int loading = 2130837667;
+			public const int imgUserPH = 2130837667;
 			
 			// aapt resource value: 0x7f0200a4
-			public const int mr_dialog_material_background_dark = 2130837668;
+			public const int ISEEYOUCARE_logo = 2130837668;
 			
 			// aapt resource value: 0x7f0200a5
-			public const int mr_dialog_material_background_light = 2130837669;
+			public const int loading = 2130837669;
 			
 			// aapt resource value: 0x7f0200a6
-			public const int mr_ic_audiotrack_light = 2130837670;
+			public const int mr_dialog_material_background_dark = 2130837670;
 			
 			// aapt resource value: 0x7f0200a7
-			public const int mr_ic_cast_dark = 2130837671;
+			public const int mr_dialog_material_background_light = 2130837671;
 			
 			// aapt resource value: 0x7f0200a8
-			public const int mr_ic_cast_light = 2130837672;
+			public const int mr_ic_audiotrack_light = 2130837672;
 			
 			// aapt resource value: 0x7f0200a9
-			public const int mr_ic_close_dark = 2130837673;
+			public const int mr_ic_cast_dark = 2130837673;
 			
 			// aapt resource value: 0x7f0200aa
-			public const int mr_ic_close_light = 2130837674;
+			public const int mr_ic_cast_light = 2130837674;
 			
 			// aapt resource value: 0x7f0200ab
-			public const int mr_ic_media_route_connecting_mono_dark = 2130837675;
+			public const int mr_ic_close_dark = 2130837675;
 			
 			// aapt resource value: 0x7f0200ac
-			public const int mr_ic_media_route_connecting_mono_light = 2130837676;
+			public const int mr_ic_close_light = 2130837676;
 			
 			// aapt resource value: 0x7f0200ad
-			public const int mr_ic_media_route_mono_dark = 2130837677;
+			public const int mr_ic_media_route_connecting_mono_dark = 2130837677;
 			
 			// aapt resource value: 0x7f0200ae
-			public const int mr_ic_media_route_mono_light = 2130837678;
+			public const int mr_ic_media_route_connecting_mono_light = 2130837678;
 			
 			// aapt resource value: 0x7f0200af
-			public const int mr_ic_pause_dark = 2130837679;
+			public const int mr_ic_media_route_mono_dark = 2130837679;
 			
 			// aapt resource value: 0x7f0200b0
-			public const int mr_ic_pause_light = 2130837680;
+			public const int mr_ic_media_route_mono_light = 2130837680;
 			
 			// aapt resource value: 0x7f0200b1
-			public const int mr_ic_play_dark = 2130837681;
+			public const int mr_ic_pause_dark = 2130837681;
 			
 			// aapt resource value: 0x7f0200b2
-			public const int mr_ic_play_light = 2130837682;
-			
-			// aapt resource value: 0x7f0200bd
-			public const int notification_template_icon_bg = 2130837693;
+			public const int mr_ic_pause_light = 2130837682;
 			
 			// aapt resource value: 0x7f0200b3
-			public const int PC100Monitor = 2130837683;
+			public const int mr_ic_play_dark = 2130837683;
 			
 			// aapt resource value: 0x7f0200b4
-			public const int PC100MonitorPad = 2130837684;
+			public const int mr_ic_play_light = 2130837684;
+			
+			// aapt resource value: 0x7f0200c5
+			public const int notification_template_icon_bg = 2130837701;
 			
 			// aapt resource value: 0x7f0200b5
-			public const int PC300Monitor = 2130837685;
+			public const int PC100Monitor = 2130837685;
 			
 			// aapt resource value: 0x7f0200b6
-			public const int PC300MonitorPad = 2130837686;
+			public const int PC100MonitorPad = 2130837686;
 			
 			// aapt resource value: 0x7f0200b7
-			public const int Spiromter = 2130837687;
+			public const int PC300Monitor = 2130837687;
 			
 			// aapt resource value: 0x7f0200b8
-			public const int SpiromterPad = 2130837688;
+			public const int PC300MonitorPad = 2130837688;
 			
 			// aapt resource value: 0x7f0200b9
-			public const int splash = 2130837689;
+			public const int Spiromter = 2130837689;
 			
 			// aapt resource value: 0x7f0200ba
-			public const int splash_screen = 2130837690;
+			public const int SpiromterPad = 2130837690;
 			
 			// aapt resource value: 0x7f0200bb
-			public const int WeightScales = 2130837691;
+			public const int splash = 2130837691;
 			
 			// aapt resource value: 0x7f0200bc
-			public const int WeightScalesPad = 2130837692;
+			public const int splash_screen = 2130837692;
+			
+			// aapt resource value: 0x7f0200bd
+			public const int switch_track_off = 2130837693;
+			
+			// aapt resource value: 0x7f0200be
+			public const int switch_track_on = 2130837694;
+			
+			// aapt resource value: 0x7f0200bf
+			public const int thumb = 2130837695;
+			
+			// aapt resource value: 0x7f0200c0
+			public const int thumb_off = 2130837696;
+			
+			// aapt resource value: 0x7f0200c1
+			public const int thumb_on = 2130837697;
+			
+			// aapt resource value: 0x7f0200c2
+			public const int track = 2130837698;
+			
+			// aapt resource value: 0x7f0200c3
+			public const int WeightScales = 2130837699;
+			
+			// aapt resource value: 0x7f0200c4
+			public const int WeightScalesPad = 2130837700;
 			
 			static Drawable()
 			{
@@ -3171,14 +3195,14 @@ namespace MyHealthVitals.Droid
 			// aapt resource value: 0x7f0a015a
 			public const int Animation_Design_BottomSheetDialog = 2131362138;
 			
-			// aapt resource value: 0x7f0a0179
-			public const int AppCompatDialogStyle = 2131362169;
+			// aapt resource value: 0x7f0a017f
+			public const int AppCompatDialogStyle = 2131362175;
 			
-			// aapt resource value: 0x7f0a0176
-			public const int AppTheme_ActionBar = 2131362166;
+			// aapt resource value: 0x7f0a017c
+			public const int AppTheme_ActionBar = 2131362172;
 			
-			// aapt resource value: 0x7f0a0177
-			public const int AppTheme_ActionBar_TitleText = 2131362167;
+			// aapt resource value: 0x7f0a017d
+			public const int AppTheme_ActionBar_TitleText = 2131362173;
 			
 			// aapt resource value: 0x7f0a00a5
 			public const int Base_AlertDialog_AppCompat = 2131361957;
@@ -3621,17 +3645,20 @@ namespace MyHealthVitals.Droid
 			// aapt resource value: 0x7f0a001a
 			public const int CardView_Light = 2131361818;
 			
+			// aapt resource value: 0x7f0a0180
+			public const int CustomActionBar = 2131362176;
+			
+			// aapt resource value: 0x7f0a0181
+			public const int CustomActionBarTextSize = 2131362177;
+			
+			// aapt resource value: 0x7f0a0179
+			public const int CustomSwitch = 2131362169;
+			
 			// aapt resource value: 0x7f0a017a
-			public const int CustomActionBar = 2131362170;
+			public const int DialogUplatform = 2131362170;
 			
 			// aapt resource value: 0x7f0a017b
-			public const int CustomActionBarTextSize = 2131362171;
-			
-			// aapt resource value: 0x7f0a0174
-			public const int DialogUplatform = 2131362164;
-			
-			// aapt resource value: 0x7f0a0175
-			public const int MyAlertDialogStyle = 2131362165;
+			public const int MyAlertDialogStyle = 2131362171;
 			
 			// aapt resource value: 0x7f0a0172
 			public const int MyTheme = 2131362162;
@@ -3639,8 +3666,8 @@ namespace MyHealthVitals.Droid
 			// aapt resource value: 0x7f0a0173
 			public const int MyTheme_Base = 2131362163;
 			
-			// aapt resource value: 0x7f0a017d
-			public const int MyTheme_Splash = 2131362173;
+			// aapt resource value: 0x7f0a0183
+			public const int MyTheme_Splash = 2131362179;
 			
 			// aapt resource value: 0x7f0a0032
 			public const int Platform_AppCompat = 2131361842;
@@ -3714,8 +3741,11 @@ namespace MyHealthVitals.Droid
 			// aapt resource value: 0x7f0a0050
 			public const int RtlUnderlay_Widget_AppCompat_ActionButton_Overflow = 2131361872;
 			
-			// aapt resource value: 0x7f0a017c
-			public const int Splash = 2131362172;
+			// aapt resource value: 0x7f0a0182
+			public const int Splash = 2131362178;
+			
+			// aapt resource value: 0x7f0a0177
+			public const int SwitchCompatTheme = 2131362167;
 			
 			// aapt resource value: 0x7f0a00d1
 			public const int TextAppearance_AppCompat = 2131362001;
@@ -4003,7 +4033,19 @@ namespace MyHealthVitals.Droid
 			public const int ThemeOverlay_AppCompat_Light = 2131362066;
 			
 			// aapt resource value: 0x7f0a0178
-			public const int Toolbar_TitleText = 2131362168;
+			public const int ThemeOverlay_MySwitchCompat = 2131362168;
+			
+			// aapt resource value: 0x7f0a0175
+			public const int TodoActionBar = 2131362165;
+			
+			// aapt resource value: 0x7f0a0174
+			public const int TodoActionBar_MenuTextStyle = 2131362164;
+			
+			// aapt resource value: 0x7f0a0176
+			public const int TodoActionBarTitle = 2131362166;
+			
+			// aapt resource value: 0x7f0a017e
+			public const int Toolbar_TitleText = 2131362174;
 			
 			// aapt resource value: 0x7f0a0113
 			public const int Widget_AppCompat_ActionBar = 2131362067;

@@ -26,12 +26,30 @@ namespace MyHealthVitals
 		public static Reading[] allReadings;
 		public ParametersPageLocal()
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
             //label.FontSize *= Screensize.heightfactor;
 			InitializeComponent();
+			FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+			titlebtn.FontSize = 24 * Screensize.heightfactor;
+            backbtn.FontSize = 24 * Screensize.heightfactor;
             //sync data with cl
 			sycnwithCloud();
 		
 		}
+
+		void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
+		}
+
+        public void setLandscape()
+        { 
+            Debug.WriteLine("Called ParamPageLocal setLandscape()");
+        }
+        public void setPortrait()
+        {
+            Debug.WriteLine("Called ParamPageLocal setPortrait()");
+        }
 
 		public async void sycnwithCloud()
 		{

@@ -54,9 +54,25 @@ namespace MyHealthVitals.iOS
         string name;
         static MimeMessage message = null;// = new MimeMessage();
         MailKit.Net.Smtp.SmtpClient client = null;// = new MailKit.Net.Smtp.SmtpClient();
-                                                  //		client.Connect("smtp.gmail.com", 587, false);
+												  //		client.Connect("smtp.gmail.com", 587, false);
 
-        //	string emaiAddress,   
+		//	string emaiAddress,   
+
+		public void delBLEinfo()
+		{ }
+		public List<string> getBLEinfo(string devicename)
+		{
+			List<string> result = new List<string>();
+			return result;
+		}
+		public void saveBLEinfo(string devicename, int blenum, Guid deviceid)
+		{ }
+		public async Task<bool> dispAlert(String title, String message, bool tablet, String btn1, String btn2)
+		{ return true;}
+		public string retGif()
+		{ return ""; }
+		public void copyAsset()
+		{ }
 
         public void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
                                String FindingDetails, String HeartRate, String TestDuration = "30s")

@@ -17,19 +17,27 @@ namespace MyHealthVitals
 		public ObservableCollection<ParameterDetailItem> data = new ObservableCollection<ParameterDetailItem>();
 		public ParameterItemDetailNew()
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
 			InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet) 
 			{
+                
 				label.FontSize = 45 * Screensize.heightfactor;
 				label.Margin = new Thickness(20*Screensize.widthfactor);
+                //titlebtn.Text = Xamarin.Forms.Page.
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
+                
 				label.FontSize *= Screensize.heightfactor;
 				label.Margin = new Thickness(10 * Screensize.widthfactor);
             }
 		}
 
+		void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
+		}
 
 		protected override void OnDisappearing()
 		{
@@ -74,15 +82,60 @@ namespace MyHealthVitals
 				}
 			}
 			itemList.ItemsSource = data;
-
+            Debug.WriteLine("font size of Most Recent Readings = "+label.FontSize);
 		}
 
 		public ParameterItemDetailNew(int id, Reading[] allReadings)
 		{
+            NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
+			FakeToolbar.Children.Add(
+			backarrow,
+			// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+			new Rectangle(0, 0.5, 0.1, 1),
+			// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+			AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+			);
+
+			FakeToolbar.Children.Add(
+				backbtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.1, 0.5, 0.15, 1),
+				AbsoluteLayoutFlags.All
+			);
+			FakeToolbar.Children.Add(
+				titlebtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.5, 0.5, 0.5, 1),
+				AbsoluteLayoutFlags.All
+			);
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+				titlebtn.FontSize = 30 * Screensize.heightfactor;
+                backbtn.FontSize = 30 * Screensize.heightfactor;
+
+				label.FontSize = 45 * Screensize.heightfactor;
+				label.Margin = new Thickness(20 * Screensize.widthfactor);
+				//titlebtn.Text = Xamarin.Forms.Page.
+			}
+			else if (Device.Idiom == TargetIdiom.Phone)
+			{
+				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+				titlebtn.FontSize = 24 * Screensize.heightfactor;
+                backbtn.FontSize = 24 * Screensize.heightfactor;
+
+				label.FontSize *= Screensize.heightfactor;
+				label.Margin = new Thickness(10 * Screensize.widthfactor);
+			}
            	this.categoryId = id;
 			this.allReadings = allReadings;
 			setTitleAndData(id);
+            titlebtn.Text = this.Title;
 			callApi();
 		}
 
@@ -371,8 +424,8 @@ namespace MyHealthVitals
 
 								//if (count < 30)
 								//	{   
-								    DateTime iDate = Convert.ToDateTime(val.date);
-								    String date_nosec = iDate.ToString("MM/dd/yyyy hh:mm tt");
+							    DateTime iDate = Convert.ToDateTime(val.date);
+							    String date_nosec = iDate.ToString("MM/dd/yyyy hh:mm tt");
 								//Debug.WriteLine("date_nosec = "+date_nosec);	
                                 var fileName = Regex.Replace(date_nosec, @"\s+", "");
                                 fileName = Regex.Replace(fileName, @"[/:]+", "");
@@ -409,26 +462,26 @@ namespace MyHealthVitals
                             //Debug.WriteLine("item.date_nosec  = " + item.date_nosec);
 						//	if (count < 30)
 						//	{
-								var fileName = Regex.Replace(item.date_nosec, @"\s+", "");
-								fileName = Regex.Replace(fileName, @"[/:]+", "");
-                            //Debug.WriteLine("fileName = " + fileName);
-								bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
-                            //Debug.WriteLine("file exists? "+ret);
-								if (ret)
-								{
-									item.secondItem = "No Report";
-								}
-								else if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + "ECG.pdf"))
-								{
-									//count++;
-									item.secondItem = "Saved";
-								}
-								else
-								{
-                                    //Debug.WriteLine("filename:" + fileName + " item");
-									item.secondItem = "Emailed";
-								}
-								count++;
+							var fileName = Regex.Replace(item.date_nosec, @"\s+", "");
+							fileName = Regex.Replace(fileName, @"[/:]+", "");
+                        //Debug.WriteLine("fileName = " + fileName);
+							bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
+                        //Debug.WriteLine("file exists? "+ret);
+							if (ret)
+							{
+								item.secondItem = "No Report";
+							}
+							else if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + "ECG.pdf"))
+							{
+								//count++;
+								item.secondItem = "Saved";
+							}
+							else
+							{
+                                //Debug.WriteLine("filename:" + fileName + " item");
+								item.secondItem = "Emailed";
+							}
+							count++;
 						//	}
 
 							item.firstItem = reading.EnglishValue == 0 ? "Normal" : "Abnormal";

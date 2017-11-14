@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Plugin.BLE;
 using Plugin.BLE.Abstractions.Contracts;
 using Plugin.BLE.Abstractions.EventArgs;
+using System.Linq;
+
 namespace MyHealthVitals
 {
 	public class ScaleServiceHandler : IBLEDeviceServiceHandler
@@ -12,30 +14,50 @@ namespace MyHealthVitals
 		public ICharacteristic bmChar;
 		public IDevice connectedDevice;
 		public IBluetoothCallBackUpdatable uiController;
-        //
+
+		public void GetData(Byte[] bytes)
+		{ 
+            //Debug.WriteLine("Using BLE 2");
+			//get the bytes into an int array
+			int[] ints = bytes.Select(x => (int)x).ToArray();
+            ManipData(ints);
+        }
 
 		public void C_ValueUpdated(object sender, CharacteristicUpdatedEventArgs e)
 		{
+			//Debug.WriteLine("Using BLE 1");
 			var ch = e.Characteristic;
-			Debug.WriteLine("C_ValueUpdated CH.VALUE.SIZE == " + ch.Value.Length);
+			//Debug.WriteLine("C_ValueUpdated CH.VALUE.SIZE == " + ch.Value.Length);
 			/*
 			foreach (var s in ch.Value)
 			{
 				Debug.WriteLine("value in ch = " + Int32.Parse(Convert.ToString(s, 2)).ToString("0000 0000"));
 			}*/
 
-		//	Debug.WriteLine("ch.Value[0] = " + ch.Value[0]);
-		//	Debug.WriteLine("ch.Value[1] = " + ch.Value[1]);
+			//	Debug.WriteLine("ch.Value[0] = " + ch.Value[0]);
+			//	Debug.WriteLine("ch.Value[1] = " + ch.Value[1]);
 			//Debug.WriteLine("ch.Value[0] = " + ch.Value[0]);
+			int[] ints = ch.Value.Select(x => (int)x).ToArray();
+			ManipData(ints);
+		}
+
+		public void ManipData(int[] vals)
+		{
 			//token in NIBP result in pc-100
-			if ((int)ch.Value[0] == 0xFF)
+			if ((int)vals[0] == 0xFF)
 			{
-				int type = (int)ch.Value[1] >> 6;
-				string hex = BitConverter.ToString(ch.Value);
-				Debug.WriteLine("hex = " + hex);
-				double weight = ((ch.Value[1] & 0x3F) << 8) | ch.Value[2];
+				Debug.WriteLine("vals[0] = " + vals[0]);
+				Debug.WriteLine("vals[1] = " + vals[1]);
+				Debug.WriteLine("vals[2] = " + vals[2]);
+				int type = (int)vals[1] >> 6;
+				//string hex = BitConverter.ToString(vals);
+				//Debug.WriteLine("hex = " + hex);
+				double weight_adj = (((vals[1] - 128) << 8) + vals[2]) * 2.20462262185 / 10;
+				Debug.WriteLine("weight adj = " + weight_adj);
+				double weight = ((vals[1] & 0x3F) << 8) | vals[2];
 				Debug.WriteLine("weight = " + weight);
 				weight = Math.Round(weight * 2.20462262185 / 10, 1);
+				Debug.WriteLine("weight = " + weight);
 
 				//weight = Math.Round((weight / 10), 2);
                 this.uiController.updated_Weight((decimal)weight);

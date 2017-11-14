@@ -4,7 +4,25 @@
 		<RelativeLayout>
 			<!--Heading view start here-->
 			<StackLayout Spacing="24" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
-				<Label FontAttributes="Bold" TextColor="White" XAlign="Center" FontSize="30"  Margin="0,20,0,0" Text="Most Recent Readings"/>
+                
+                <StackLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <local:MyButton x:Name="backarrow" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
+                    <local:MyButton x:Name="backbtn" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="30" />
+
+                    <Label x:Name="titlebtn" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="Data List Screen" TextColor="Black" FontSize="30" />
+                    
+                        <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
+                </StackLayout> 
+
+
+                <!--<StackLayout x:Name="prevcont" IsVisible="true" BackgroundColor="{StaticResource colorBlackBg}" Orientation="Horizontal" Spacing ="5"  Margin="10,20,0,0">
+					<Button x:Name="prevbtn" Clicked="btnPrevClicked"  BackgroundColor = "Transparent"  Image = "imgPrevBlue.png" HeightRequest="50" WidthRequest="50" />
+					<Button FontSize="30" Clicked="btnPrevClicked" Text="Back" VerticalOptions="Center" TextColor="{StaticResource colorThemeBlue}" BackgroundColor = "Transparent"/>
+                    -->
+					<Label x:Name="label" FontAttributes="Bold" TextColor="White" XAlign="Center" FontSize="45" HorizontalOptions="Center" Margin="50,0,0,0" Text="Most Recent Readings"/>
+				<!--</StackLayout>-->
+
+
 				<StackLayout VerticalOptions="Fill"  Spacing="0" Padding="0" Margin="0">
 					<StackLayout Padding="20,0,20,0" HeightRequest="80" Spacing="0"  VerticalOptions="CenterAndExpand"  Orientation="Horizontal">
 						<Label WidthRequest="330" TextColor="{StaticResource colorThemeBlue}"  VerticalOptions="CenterAndExpand" YAlign="Center" FontSize="24" Text="Date/Time" />

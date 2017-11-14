@@ -68,6 +68,7 @@ namespace MyHealthVitals
 				//secondItem.TextColor = Color.Blue;
 				var newPage = new EcgReport(fileName, Demographics.sharedInstance.FirstName, true);
 				newPage.Title = "ECG Report";
+                //Navigation.PushAsync(newPage);
 				await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(newPage));
 			}
 			else if (secondItem.Text.Equals("Saved"))

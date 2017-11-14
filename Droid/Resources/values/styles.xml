@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 	<style name="MyTheme" parent="MyTheme.Base">
+		<!--Yes I'm using NavigationPage and I'm just trying to increase the font size of the title for that page and anything I put in the toolbar. I've included some code at the bottom of the post.-->
 	</style>
 	<!-- Base theme applied no matter what API -->
 	<style name="MyTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar"> <!--DarkActionBar">-->
@@ -23,21 +24,69 @@
 		<item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
         <item name="android:textCursorDrawable">@null</item>
 
-		<item name="colorAccent">#05c112</item>
+		<item name="colorAccent">#1069ef</item>
 
         <!--<item name="android:actionBarStyle">@style/CustomActionBar</item>
         <item name="android:height">80dp</item>-->
 
 		<!--<item name="android:alertDialogTheme">@style/DialogUplatform</item>-->
-		<item name="android:alertDialogTheme">@style/MyAlertDialogStyle</item>
 
-		<item name="switchMinWidth">120dp</item>
+		<!--<item name="android:alertDialogTheme">@style/MyAlertDialogStyle</item>-->
+
+		<item name="switchMinWidth">100dp</item>
+
+		<!--<item name="switchStyle">@style/CustomSwitch</item>
+		<item name="colorSwitchThumbNormal">#eff70c</item>
+		<item name="colorButtonNormal">#eff70c</item>-->
               
-		<!--Action bar style-->
+		<!--Action bar style
+		<item name="actionBarStyle">@style/TodoActionBar</item>
+		<item name="android:itemTextAppearance">@style/TodoActionBar.MenuTextStyle</item>
+		-->
+		<!--
         <item name="android:actionBarTheme">@style/AppTheme.ActionBar</item>
         <item name="actionBarTheme">@style/AppTheme.ActionBar</item>
-		
+		-->
 	</style>
+
+	<style name="TodoActionBar.MenuTextStyle"
+      parent="style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+    	<item name="android:textSize">40sp</item>
+    </style>
+	
+	<style name="TodoActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    	<item name="titleTextStyle">@style/TodoActionBarTitle</item>
+    </style>
+
+	<style name="TodoActionBarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+		<item name="android:textSize">40sp</item>
+    </style>
+
+	<style name="SwitchCompatTheme">
+        <item name="android:colorControlActivated">#a10cf2</item>
+        <!--<item name="android:colorSwitchThumbNormal">#eff70c</item>-->
+        <item name="android:colorForeground">#a10cf2</item>
+		<item name="colorAccent">#09e826</item> 
+    </style>
+
+    <style name="ThemeOverlay.MySwitchCompat" parent="">
+        <item name="colorControlActivated">#eff70c</item>
+        <!--    <item name="colorSwitchThumbNormal">#eff70c</item>-->
+        <item name="android:colorForeground">#eff70c</item>
+    </style>
+
+	<style name="CustomSwitch" parent="">
+        <item name="colorPrimary">#09e826</item>
+        <item name="colorAccent">#09e826</item>   
+		<!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#09e826</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#eff70c</item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#c6c6bc</item>
+    </style>  
    
 	<style name="DialogUplatform" parent="@android:style/Theme.Holo.Light.Dialog"> 
 		<item name="android:windowFrame">@null</item>
@@ -49,14 +98,12 @@
     </style>
 
 	<style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!-- Used for the buttons--> 
         <item name="colorAccent">#2E82F7</item>
-        <!-- Used for the title and text -->
         <item name="android:textColorPrimary">@android:color/black</item>
-        <!-- Used for the background 
-        <item name="android:background">#4CAF50</item>-->
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">36dp</item>
+		<item name="android:minWidth">400dp</item>
+        <!--<item name="android:textSize">36dp</item>-->
+        <!--<item name="android:layout_width">match_parent</item>-->
     </style>
 
 	<style name="AppTheme.ActionBar" parent="Widget.AppCompat.Light.ActionBar">

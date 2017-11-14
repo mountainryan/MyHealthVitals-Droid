@@ -15,12 +15,27 @@ namespace MyHealthVitals
         public double stackheight { get; set; }
         public string imagepng { get; set; }
 
+		public double phone_font_size { get; set; }
+		public double phone_datewidth { get; set; }
+		public double phone_pefwidth { get; set; }
+		public double phone_fevwidth { get; set; }
+
 		public SpirometerReading(DateTime newDate, decimal pef, decimal fev1)
 		{
 			this.Date = newDate;
 			this.Pef = pef;
 			this.Fev1 = fev1;
+
+            this.phone_font_size = (16 * Screensize.heightfactor);
+            this.phone_datewidth = (185 * Screensize.widthfactor);
+            this.phone_pefwidth = (90 * Screensize.widthfactor);
+            this.phone_fevwidth = (70 * Screensize.widthfactor);
 		}
+
+		/*public double phone_font_size = (16 * Screensize.heightfactor);
+        public double phone_datewidth = (185 * Screensize.widthfactor);
+        public double phone_pefwidth = (90 * Screensize.widthfactor);
+        public double phone_fevwidth= (70 * Screensize.widthfactor);*/
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -90,7 +105,7 @@ namespace MyHealthVitals
 		public string fev1String { get { return Math.Round(Fev1, 2).ToString(); } }
 		public string dateString { get { return Date.ToString("MM/dd/yyyy hh:mm tt"); }  }
 
-		public string color
+        public string color
 		{
 			get
 			{

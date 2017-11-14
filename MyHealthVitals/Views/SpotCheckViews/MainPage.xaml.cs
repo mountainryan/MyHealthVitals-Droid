@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 
 namespace MyHealthVitals
 {
+    public class BLE_val
+    {
+        public static int BLE_value=0;
+    }
 	public partial class MainPage : ContentPage, IBluetoothCallBackUpdatable
 	{
 
@@ -33,16 +37,50 @@ namespace MyHealthVitals
 		float userHeight = (float)0.0;
 		bool isBPMeasuring = false;
 		bool isupLoadedSPO2 = false;
-		public bool isFromDeviecList = false;
+		public bool isFromDeviceList = false;
 		bool isNavigated = false;
 		public MainPage(string deviceName)
 		{
-
-
+			//NavigationPage.SetBackButtonTitle(this, "Back");
+            NavigationPage.SetHasNavigationBar(this, false);
 			this.deviceName = deviceName;
 			InitializeComponent();
+			FakeToolbar.Children.Add(
+			backarrow,
+			// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+			new Rectangle(0, 0.5, 0.1, 1),
+			// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+			AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+			);
+
+			FakeToolbar.Children.Add(
+				backbtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.1, 0.5, 0.15, 1),
+				AbsoluteLayoutFlags.All
+			);
+			FakeToolbar.Children.Add(
+				titlebtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.5, 0.5, 0.5, 1),
+				AbsoluteLayoutFlags.All
+			);
+			FakeToolbar.Children.Add(
+				listbtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(1, 0.5, 0.1, 1),
+				AbsoluteLayoutFlags.All
+			);
 			resizeUI();
 			btnLbs.TextColor = (Color)App.Current.Resources["colorThemeBlue"];
+
+			//NavigationPage.SetBackButtonTitle(this, "Back");
 
 			var tapGestureRecognizer = new TapGestureRecognizer();
 			tapGestureRecognizer.Tapped += (s, e) =>
@@ -131,6 +169,10 @@ namespace MyHealthVitals
 				graphModel.DefaultXAxis.IsPanEnabled = false;
 				graphModel.DefaultYAxis.IsPanEnabled = false;
 
+                graphModel.DefaultFontSize = 20;
+				graphModel.DefaultXAxis.FontSize = 20;
+				graphModel.DefaultYAxis.FontSize = 20;
+
 				graphModel.DefaultYAxis.Minimum = 0;
 				graphModel.DefaultYAxis.Maximum = 255;
 
@@ -155,46 +197,118 @@ namespace MyHealthVitals
 				}
 			}
 
-			if (!isFromDeviecList || BLECentralManager.sharedInstance.checkIfDeviceScanned(deviceName))
+			if (!isFromDeviceList || BLECentralManager.sharedInstance.checkIfDeviceScanned(deviceName))
 			{
 				return;
 			}
             bool ret;
             if (Device.Idiom == TargetIdiom.Tablet)
             {
+                Debug.WriteLine("recognized tablet");
                 ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, "Do you want to take a measurement?", true, "Yes", "No");
             }else{
+                Debug.WriteLine("recognized phone");
                 ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, "Do you want to take a measurement?", false, "Yes", "No");
             }
 			//var ret = await DisplayAlert(deviceName, "Do you want to take a measurement?", "Yes", "No");
 			if (ret)
 			{
-                initializePlotModel();
-				try
+                //DependencyService.Get<IFileHelper>().delBLEinfo();
+
+                //check if the current android machine has connected to this device before.
+                List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
+                string BLEtype = "";
+                Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
+                bool conn_success = false;
+				if (result.Count == 3)
 				{
-					if (BLECentralManager.sharedInstance.scaleServHandle.connectedDevice.State
-						!= Plugin.BLE.Abstractions.DeviceState.Connected)
+                    Debug.WriteLine("Found guid result in file");
+                    BLEtype = result[1];
+                    deviceID = new Guid(result[2]);
+                    initializePlotModel();
+                    if (BLEtype == "1")
+                    {
+                        Debug.WriteLine("Type 1 connection");
+                        layoutLoading.IsVisible = true;
+                        conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+                    }else{
+                        //BLEtype = 2
+                        layoutLoading.IsVisible = true;
+                        conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+                    }
+                    Debug.WriteLine("conn_success = "+conn_success.ToString());
+                    if (!conn_success)
+                    {
+                        //try the hard way
+                        lblLoadingMessage.Text = "Retrying...";
+                        layoutLoading.IsVisible = true;
+                        BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+                    }
+                }
+                else if (result.Count == 0)
+                {
+                    //try first method
+					initializePlotModel();
+                    try
+                    {
+                        if (BLECentralManager.sharedInstance.scaleServHandle.connectedDevice.State
+                            != Plugin.BLE.Abstractions.DeviceState.Connected)
+                        {
+                            {
+                                BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+                        layoutLoading.IsVisible = true;
+                        BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+                        //BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+                        //BLECentralManager.sharedInstance.checkIfDeviceScanned(deviceName);
+                    }					
+                }else{
+					//somehow they've connected more than 1 guid of a device (2 PC-300s for example)
+					//or they've managed to connect the same device to both BLE managers
+
+					//not sure how to handle this one
+                    initializePlotModel();
+					for (int i = 0; i < result.Count; i += 3)
 					{
+                        BLEtype = result[i + 1];
+                        deviceID = new Guid(result[i + 2]);
+						//attempt to connect via this method
+						if (BLEtype == "1")
 						{
-							BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+							layoutLoading.IsVisible = true;
+							conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
 						}
+						else
+						{
+							//BLEtype = 2
+							layoutLoading.IsVisible = true;
+							conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+						}
+                        if (conn_success) break;
 					}
-				}
-				catch (Exception ex)
-				{
-                    Debug.WriteLine("try to connect BLE failed: "+ex.Message);
-					layoutLoading.IsVisible = true;
-					BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
-					//BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
-					//BLECentralManager.sharedInstance.checkIfDeviceScanned(deviceName);
+                    if (!conn_success)
+                    {
+						//send the error message
+						//BLECentralManager.sharedInstance.SendConnError(deviceName, 2);
+						//or just try to connect the hard way!
+						lblLoadingMessage.Text = "Retrying...";
+						layoutLoading.IsVisible = true;
+						BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+                    }
 
-				}
-
+                }
 
             }else{
                 initializePlotModel();
+                //layoutLoading.IsVisible = true;
+                //await BLECentralManager.sharedInstance.ConnectToDevice2(deviceName, this);
             }
-			isFromDeviecList = false;
+			isFromDeviceList = false;
 
 		}
 
@@ -205,6 +319,10 @@ namespace MyHealthVitals
 				Debug.WriteLine("Made it in to graph mod on initialize if statement");
 				graphModel.DefaultXAxis.IsPanEnabled = false;
 				graphModel.DefaultYAxis.IsPanEnabled = false;
+
+                graphModel.DefaultFontSize = 20;
+				graphModel.DefaultXAxis.FontSize = 20;
+				graphModel.DefaultYAxis.FontSize = 20;
 
 				graphModel.DefaultYAxis.Minimum = 0;
 				graphModel.DefaultYAxis.Maximum = 255;
@@ -243,9 +361,13 @@ namespace MyHealthVitals
 			graphModel.DefaultYAxis.MajorGridlineColor = OxyColors.LightGray;
 			graphModel.DefaultYAxis.MinorGridlineColor = OxyColors.LightGray;
 
+            graphModel.DefaultFontSize = 20;
+			graphModel.DefaultXAxis.FontSize = 20;
+			graphModel.DefaultYAxis.FontSize = 20;
 
 
-			graphModel.LegendFontSize = 5;
+            graphModel.LegendTitleFontSize = 20;
+			graphModel.LegendFontSize = 10;
 			graphModel.LegendSymbolPlacement = LegendSymbolPlacement.Left;
 			graphModel.LegendPosition = LegendPosition.TopLeft;
 			graphModel.LegendTitle = "Pulse";
@@ -303,26 +425,85 @@ namespace MyHealthVitals
 		}
 		bool Measure_Interruped = false;
 
+        public async void FailedConn(String message, bool isConn, int camefrom)
+        {
+            layoutLoading.IsVisible = false;
+            Debug.WriteLine("FailedConn  mainpage  : " + message);
+            if (camefrom == 1)
+            {
+                bool ret;
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, true, "Yes", "No");
+				}
+				else
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, false, "Yes", "No");
+				}
+                if (ret)
+                {
+                    //try to connect again, this time to the second BLE manager
+                    try
+                    {
+                        layoutLoading.IsVisible = true;
+                        await BLECentralManager.sharedInstance.ConnectToDevice2(this.deviceName, this);    
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("conn error msg : "+ex.Message);
+                    }
+
+                }
+            }else{
+				//camefrom BLE manager 2
+				bool ret;
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, true, "Yes", "No");
+				}
+				else
+				{
+					ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, false, "Yes", "No");
+				}
+				if (ret)
+				{
+					//try to connect again, this time to the second BLE manager
+					try
+					{
+						layoutLoading.IsVisible = true;
+						BLECentralManager.sharedInstance.connectToDevice(this.deviceName, this);
+					}
+					catch (Exception ex)
+					{
+						Debug.WriteLine("conn error msg : " + ex.Message);
+					}
+
+				}
+            }
+        }
 
 
-
-		public void ShowConcetion(String message, Boolean isConnected)
+		public async void ShowConcetion(String message, Boolean isConnected)
 		{
 
 			Debug.WriteLine("ShowConcetion  mainpage  : "+message);
 			//Xamarin.Forms.Device.BeginInvokeOnMainThread();
 			Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
-
 				layoutLoading.IsVisible = false;
+			
 				if (isConnected)
 				{
-                    setWeight = false;
+					setWeight = false;
 					isNavigated = true;
 				}
+
+
 				if (!isConnected && this.deviceName == "eBody-Scale")
 				{
 					//getLatestWeight(message);
+
+					/*
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
 						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
@@ -331,7 +512,8 @@ namespace MyHealthVitals
 					{
 						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
 					}
-                    //await DisplayAlert(deviceName, message, "OK");
+					*/
+					//await DisplayAlert(deviceName, message, "OK");
 				}
 				else
 				{
@@ -343,13 +525,17 @@ namespace MyHealthVitals
 					{
 						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
 					}
-                    //if (this.deviceName != "eBody-Scale")
-                    //{
-                        //await DisplayAlert(deviceName, message, "OK");
-                    //}
-					
+
 				}
+
+					//if (this.deviceName != "eBody-Scale")
+					//{
+					//await DisplayAlert(deviceName, message, "OK");
+					//}
+
+				
 			}));
+			//}));
 		}
 
 		async public void ShowMessageOnUI(string message, Boolean isConnected, string title = null)
@@ -668,6 +854,9 @@ namespace MyHealthVitals
 				if (!setWeight)
 				{
 					setWeight = true;
+
+					//wait 5 seconds
+					await Task.Delay(5000);
 					getLatestWeight("");
 				}
             }));
@@ -698,6 +887,9 @@ namespace MyHealthVitals
 				ecgTime = 0.0f;
 				heartRate = bpm;
 				if (state == 17) return;
+                graphModel.DefaultFontSize = 20;
+				graphModel.DefaultXAxis.FontSize = 20;
+				graphModel.DefaultYAxis.FontSize = 20;
 				graphModel.DefaultXAxis.IsPanEnabled = false;
 				graphModel.DefaultXAxis.Minimum = 0;
 				graphModel.DefaultXAxis.Maximum = 50;
@@ -837,7 +1029,8 @@ namespace MyHealthVitals
 					Debug.WriteLine("countECGPacket   =============" + countECGPacket);
                     Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
                     {
-
+                        graphModel.LegendTitleFontSize = 20;
+                        graphModel.LegendFontSize = 10;
                         graphModel.LegendTitle = "ECG";
                         countDownLabel.Text = "Stabilizing reading, please continue.";
                         countDownLabel.IsVisible = true;
@@ -856,7 +1049,10 @@ namespace MyHealthVitals
                             ecgReportcBtn.IsEnabled = false;
                         }
 
-                        // reseting the graphmodel for ecg waveform
+						// reseting the graphmodel for ecg waveform
+                        graphModel.DefaultFontSize = 20;
+						graphModel.DefaultXAxis.FontSize = 20;
+						graphModel.DefaultYAxis.FontSize = 20;
                         graphModel.DefaultXAxis.IsPanEnabled = false;
                         xMin = 0;
                         graphModel.DefaultXAxis.Minimum = 0;
@@ -938,8 +1134,13 @@ namespace MyHealthVitals
                     //initBpm = false;
                     pulseTime = 0.0f;
                     graphModel.DefaultXAxis.IsPanEnabled = false;
+                    graphModel.LegendTitleFontSize = 20;
+                    graphModel.LegendFontSize = 10;
                     graphModel.LegendTitle = "Pulse";
 
+                    graphModel.DefaultFontSize = 20;
+                    graphModel.DefaultXAxis.FontSize = 20;
+                    graphModel.DefaultYAxis.FontSize = 20;
                     graphModel.DefaultYAxis.Minimum = -10;
                     graphModel.DefaultYAxis.Maximum = 265;
 
@@ -967,8 +1168,13 @@ namespace MyHealthVitals
 
                         initBpm = false;
                         pulseTime = 0.0f;
+                        graphModel.LegendFontSize = 10;
+                        graphModel.LegendTitleFontSize = 20;
                         graphModel.LegendTitle = "Pulse";
 
+                        graphModel.DefaultFontSize = 20;
+						graphModel.DefaultXAxis.FontSize = 20;
+						graphModel.DefaultYAxis.FontSize = 20;
                         graphModel.DefaultYAxis.Minimum = -10;
                         graphModel.DefaultYAxis.Maximum = 265;
 
@@ -990,6 +1196,9 @@ namespace MyHealthVitals
                     {
                         lineSerie.Points.Clear();
                         xMin = pulseTime;
+                        graphModel.DefaultFontSize = 20;
+						graphModel.DefaultXAxis.FontSize = 20;
+						graphModel.DefaultYAxis.FontSize = 20;
                         graphModel.DefaultXAxis.Minimum = xMin;
                         graphModel.DefaultXAxis.Maximum = xMin + 3.0;
                     }
@@ -1109,7 +1318,13 @@ namespace MyHealthVitals
 
             if (bpm == 9999)
             {
-                BLECentralManager.sharedInstance.pc100ServHandler.getBPreading();
+                if (BLE_val.BLE_value == 1)
+                {
+                    BLECentralManager.sharedInstance.pc100ServHandler.getBPreading();
+                }else{
+                    //not sure how to write using the other BLE controller yet
+                }
+
             }
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -1206,55 +1421,72 @@ namespace MyHealthVitals
 			Demographics.sharedInstance.calibratedReadingList.Clear();
 			this.Navigation.PopModalAsync(true);
 		}
+
+		void btnPrevClicked(object sender, System.EventArgs e)
+		{
+			Navigation.PopAsync();
+		}
+
 		void btnNIBPStartClicked(object sender, System.EventArgs e)
 		{
-			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+			if (BLECentralManager.sharedInstance.checkIfDeviceScanned(this.deviceName))
 			{
-				var btn = (Button)sender;
-
-				if (btn.Text == "NIBP Start")
+				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
+					var btn = (Button)sender;
 
-					btn.Text = "NIBP Stop";
-
-					switch (this.deviceName)
+					if (btn.Text == "NIBP Start")
 					{
 
-						case "PC_300SNT":
-							{
-								BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
-								break;
-							}
+						btn.Text = "NIBP Stop";
 
-						case "PC-100":
-							{
-								BLECentralManager.sharedInstance.pc100ServHandler.startMeasuringBP();
-								break;
-							}
+						switch (this.deviceName)
+						{
+
+							case "PC_300SNT":
+								{
+									BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
+									break;
+								}
+
+							case "PC-100":
+								{
+									BLECentralManager.sharedInstance.pc100ServHandler.startMeasuringBP();
+									break;
+								}
+						}
 					}
-				}
-				else
-				{
-
-					btn.Text = "NIBP Start";
-
-					switch (this.deviceName)
+					else
 					{
 
-						case "PC_300SNT":
-							{
-								BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
-								break;
-							}
+						btn.Text = "NIBP Start";
 
-						case "PC-100":
-							{
-								BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
-								break;
-							}
+						switch (this.deviceName)
+						{
+
+							case "PC_300SNT":
+								{
+									BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
+									break;
+								}
+
+							case "PC-100":
+								{
+									BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
+									break;
+								}
+						}
 					}
-				}
-			}));
+				}));
+			}
+			else
+			{
+				//device not connected error message
+				ShowConcetion("Device is not connected.", false);
+			}
+
+
+
 			//bleManager.startMeasuringBP();
 			//DependencyService.Get<ICBCentralManager>().startMeasuringBP();
 		}
@@ -1386,6 +1618,7 @@ namespace MyHealthVitals
 			string message = "Weight: " + (double)this.vitalsData.weight.EnglishValue + "Lbs / "
 							  + ConvertLBToKG((double)this.vitalsData.weight.EnglishValue) + "Kg";
             bool ret;
+
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
 				ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?<br/> " + message, true, "Yes", "No");
@@ -1394,7 +1627,8 @@ namespace MyHealthVitals
 			{
 				ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?\n " + message, false, "Yes", "No");
 			}
-			//var ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
+
+			//ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
 			if (!ret)
 			{
 				return;
@@ -1415,7 +1649,8 @@ namespace MyHealthVitals
 			{
 				if (ParametersPageLocal.allReadings == null)
 				{
-					ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
+					int index = Task.WaitAny(Task_vars.tasks);
+					//ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
 				}
 				var allCategoryReading5 = (from reading in ParametersPageLocal.allReadings
 										   where reading.CategoryId == 5
@@ -1536,6 +1771,10 @@ namespace MyHealthVitals
 		{ 
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
+				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
+				titlebtn.FontSize = 30 * Screensize.heightfactor;
+                backbtn.FontSize = 30 * Screensize.heightfactor;
+
                 imgProfile.WidthRequest = 160 * Screensize.widthfactor;
 				imgProfile.HeightRequest = 192 * Screensize.heightfactor;
 				lblName.FontSize = 24 * Screensize.heightfactor;
@@ -1546,24 +1785,16 @@ namespace MyHealthVitals
 				lblmmHg.FontSize = 21 * Screensize.heightfactor;
 				lblDIA.FontSize = 21 * Screensize.heightfactor;
 				lblmm.FontSize = 21 * Screensize.heightfactor;
-				lblSys.FontSize = 21 * Screensize.heightfactor;
-				lblDia.FontSize = 21 * Screensize.heightfactor;
-				lblSpo2.FontSize = 21 * Screensize.heightfactor;
 				lblSPO2.FontSize = 21 * Screensize.heightfactor;
 				lblpct.FontSize = 21 * Screensize.heightfactor;
 				lblPR.FontSize = 21 * Screensize.heightfactor;
 				lblBPM.FontSize = 21 * Screensize.heightfactor;
-				lblBpm.FontSize = 21 * Screensize.heightfactor;
 				lblPI.FontSize = 21 * Screensize.heightfactor;
 				lblPIPCT.FontSize = 21 * Screensize.heightfactor;
-				lblPerfusionIndex.FontSize = 21 * Screensize.heightfactor;
 				lblTEMP.FontSize = 21 * Screensize.heightfactor;
-                lblTemperature.FontSize = 21 * Screensize.heightfactor;
-				lblGLU.FontSize = 21 * Screensize.heightfactor;
+                lblGLU.FontSize = 21 * Screensize.heightfactor;
 				lblUnitGlucose.FontSize = 21 * Screensize.heightfactor;
-				lblGlucose.FontSize = 21 * Screensize.heightfactor;
-				lblWeight.FontSize = 21 * Screensize.heightfactor;
-                lblWEIT.FontSize = 21 * Screensize.heightfactor;
+			    lblWEIT.FontSize = 21 * Screensize.heightfactor;
                 countDownLabel.FontSize = 15 * Screensize.heightfactor;
 				layout1.WidthRequest = 180 * Screensize.widthfactor;
 				layout2.WidthRequest = 180 * Screensize.widthfactor;
@@ -1583,9 +1814,12 @@ namespace MyHealthVitals
 				layout16.WidthRequest = 180 * Screensize.widthfactor;
                 plotView.HeightRequest = 300 * Screensize.heightfactor;
 				NIBPButtonPad.FontSize = 21 * Screensize.heightfactor;
+                NIBPButtonPad.HeightRequest = 100 * Screensize.heightfactor;
 				ecgReportcBtnPad.FontSize = 21 * Screensize.heightfactor;
+                ecgReportcBtnPad.HeightRequest = 100 * Screensize.heightfactor;
 				layoutButton.IsVisible = false;
 				layoutButtonPad.IsVisible = true;
+                //layoutButtonPad.Margin = new Thickness(15, -200 * Screensize.heightfactor, 15, 0);
 				btnFareinheit.FontSize = 21 * Screensize.heightfactor;
 				btnCelcious.FontSize = 21 * Screensize.heightfactor;
                 btnFareinheit.WidthRequest = 75;
@@ -1594,6 +1828,16 @@ namespace MyHealthVitals
                 btnKgs.FontSize = 21 * Screensize.heightfactor;
 				btnLbs.WidthRequest = 75;
 				btnKgs.WidthRequest = 75;
+
+                lblSys.FontSize = 30 * Screensize.heightfactor;
+				lblDia.FontSize = 30 * Screensize.heightfactor;
+				lblSpo2.FontSize = 30 * Screensize.heightfactor;
+                lblBpm.FontSize = 30 * Screensize.heightfactor;
+                lblPerfusionIndex.FontSize = 30 * Screensize.heightfactor;
+                lblTemperature.FontSize = 30 * Screensize.heightfactor;
+				lblGlucose.FontSize = 30 * Screensize.heightfactor;
+				lblWeight.FontSize = 30 * Screensize.heightfactor;
+
                 //layoutButton.BackgroundColor = layoutButtonPad.BackgroundColor;
                 //layoutButton.Spacing = layoutButtonPad.Spacing;
                 //layoutButton.Margin = layoutButtonPad.Margin;
@@ -1603,6 +1847,10 @@ namespace MyHealthVitals
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
+				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+				titlebtn.FontSize = 24 * Screensize.heightfactor;
+                backbtn.FontSize = 24 * Screensize.heightfactor;
+
 				imgProfile.WidthRequest *= Screensize.widthfactor;
                 imgProfile.HeightRequest *= Screensize.heightfactor;
 				lblName.FontSize *= Screensize.heightfactor;

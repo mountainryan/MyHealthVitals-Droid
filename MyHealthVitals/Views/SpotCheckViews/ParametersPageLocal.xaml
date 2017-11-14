@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyHealthVitals.ParametersPageLocal">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:local="clr-namespace:MyHealthVitals;assembly=MyHealthVitals"
+    x:Class="MyHealthVitals.ParametersPageLocal">
 	<ContentPage.Content>
 	<RelativeLayout  BackgroundColor="{StaticResource colorBlackBg}">
-		<StackLayout Spacing="0" BackgroundColor="{StaticResource colorBlackBg}">
-		<Label Style="{DynamicResource styleLblNumeric}" FontSize="17" Margin="10" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Readings" 
+        <StackLayout 
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=Constant,Constant=0}"
+                  >
+		<!--<StackLayout Spacing="0" BackgroundColor="{StaticResource colorBlackBg}">-->
+
+
+        <StackLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <local:MyButton x:Name="backarrow" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
+            <local:MyButton x:Name="backbtn" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="30" />
+
+            <Label x:Name="titlebtn" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="Parameter List Screen" TextColor="Black" FontSize="30" />
+            
+                <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
+        </StackLayout> 
+
+        <ScrollView><StackLayout>
+                
+		<Label Style="{DynamicResource styleLblNumeric}" FontSize="21" Margin="10" HorizontalTextAlignment="Center" Text="Select from the List Below to View Most Recent Readings" 
 				></Label>
 		<BoxView HeightRequest="0.5" BackgroundColor="White" />
 		<ListView x:Name="parameterListView" ItemTapped="Handle_ItemTapped" HasUnevenRows="true" SeparatorVisibility="None" BackgroundColor="{StaticResource colorBlackBg}">
@@ -22,6 +45,9 @@
 		      </DataTemplate>
 		    </ListView.ItemTemplate>
 		</ListView>
+
+        </StackLayout></ScrollView>
+        
 		</StackLayout>
 
 		<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Transparent" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
