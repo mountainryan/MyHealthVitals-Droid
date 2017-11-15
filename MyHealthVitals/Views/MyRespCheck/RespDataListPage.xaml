@@ -5,14 +5,14 @@
 			<!--Heading view start here-->
 			<StackLayout Spacing="12" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
                 
-                <StackLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <AbsoluteLayout x:Name="FakeToolbar"  HeightRequest="55" BackgroundColor="White" >
                     <local:MyButton x:Name="backarrow" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
-                    <local:MyButton x:Name="backbtn" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="24" />
+                    <local:MyButton x:Name="backbtn" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="16" />
 
-                    <Label x:Name="titlebtn" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="Data List Screen" TextColor="Black" FontSize="24" />
+                    <Label x:Name="titlebtn" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="Data List Screen" TextColor="Black" FontSize="16" />
                     
                         <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
-                </StackLayout> 
+                </AbsoluteLayout> 
 
                 <Label x:Name="label" FontAttributes="Bold" TextColor="White" XAlign="Center" FontSize="30" Margin="0,10,0,0" Text="Most Recent Readings"/>
             
@@ -45,7 +45,7 @@
 			</StackLayout>
 			<!--Last line-->
 			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="30" Margin="0,-30,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
-				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2017" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4">
+				<Label VerticalOptions="CenterAndExpand" Text="ISeeYouCare Inc. - Copyright - 2017" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4">
 				</Label>
 			</StackLayout>
 			<!--loading layout starts-->

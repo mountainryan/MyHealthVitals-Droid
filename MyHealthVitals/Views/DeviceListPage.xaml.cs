@@ -189,7 +189,7 @@ namespace MyHealthVitals
 			{
 				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
 				//titlebtn.FontSize = 24 * Screensize.heightfactor;
-				logoutbtn.FontSize = 24 * Screensize.heightfactor;
+				logoutbtn.FontSize = 16 * Screensize.heightfactor;
 				btnfirst.Margin = new Thickness(0, 55 * Screensize.heightfactor, 0, 0);
                 page.Spacing = 0;//10 * Screensize.heightfactor;
 				middle.Spacing = 150 * Screensize.widthfactor;
@@ -210,7 +210,7 @@ namespace MyHealthVitals
 				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
 				//titlebtn.FontSize = 36 * Screensize.heightfactor;
 				logoutbtn.FontSize = 30 * Screensize.heightfactor;
-				btnfirst.Margin = new Thickness(0, 75 * Screensize.heightfactor, 0, 0);
+				btnfirst.Margin = new Thickness(0, 40 * Screensize.heightfactor, 0, 0);
 				page.Spacing = 90 * Screensize.heightfactor;
 				middle.Spacing = 150 * Screensize.widthfactor;
 				btn300.WidthRequest = 300 * Screensize.widthfactor;
@@ -228,8 +228,8 @@ namespace MyHealthVitals
 			{
 				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
 				//titlebtn.FontSize = 24 * Screensize.heightfactor;
-				logoutbtn.FontSize = 24 * Screensize.heightfactor;
-				btnfirst.Margin = new Thickness(0, 55 * Screensize.heightfactor, 0, 0);
+				logoutbtn.FontSize = 16 * Screensize.heightfactor;
+				btnfirst.Margin = new Thickness(0, 20 * Screensize.heightfactor, 0, 0);
 				page.Spacing = 40 * Screensize.heightfactor;
 				middle.Spacing = 40 * Screensize.widthfactor;
 				btn300.WidthRequest = 150 * Screensize.widthfactor;

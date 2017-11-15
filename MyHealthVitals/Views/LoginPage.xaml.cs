@@ -54,9 +54,6 @@ namespace MyHealthVitals
                 icucareimg.Source = "ISEEYOUCARE_logo.png";
 				scrollView.Margin = new Thickness(60 * Screensize.widthfactor);
 				lblWelcome.Margin = new Thickness(60 * Screensize.widthfactor);
-                //layout.WidthRequest = 350;
-                //layout.Margin = new Thickness(160,10,10,10);
-                //layout.HorizontalOptions = LayoutOptions.Center;
                 scrollView.MinimumWidthRequest = 300 * Screensize.widthfactor;
 				txtUsername.WidthRequest = 400 * Screensize.widthfactor;
 				txtUsername.HeightRequest = 75 * Screensize.heightfactor;
@@ -72,31 +69,26 @@ namespace MyHealthVitals
 				//txtUsername.HorizontalOptions = LayoutOptions.Center;
 				//txtPassword.HorizontalOptions = LayoutOptions.Center;
 				//btnLogin.HeightRequest = 30;//txtPassword.HeightRequest + txtUsername.HeightRequest   ;
-				Debug.WriteLine("btnLogin.HeightRequest===" + btnLogin.HeightRequest);
+				//Debug.WriteLine("btnLogin.HeightRequest===" + btnLogin.HeightRequest);
 			}
 			else if (Device.Idiom == TargetIdiom.Phone)
 			{
 				Screensize.widthfactor = Convert.ToDouble(dpwidth) / Convert.ToDouble(Screensize.targetwidth_phone);
 				Screensize.heightfactor = Convert.ToDouble(dpheight) / Convert.ToDouble(Screensize.targetheight_phone);
 				layoutImgContainer.Margin = new Thickness(45 * Screensize.widthfactor);
-				//icucareimg.Source = "icucarellc.png";
                 scrollView.Margin = new Thickness(30 * Screensize.widthfactor);
 				lblWelcome.Margin = new Thickness(30 * Screensize.widthfactor);
-				//layout.WidthRequest = 350;
-				//layout.Margin = new Thickness(160,10,10,10);
-				//layout.HorizontalOptions = LayoutOptions.Center;
-				scrollView.MinimumWidthRequest *= Screensize.widthfactor;
-                txtUsername.WidthRequest *= Screensize.widthfactor;
-                txtUsername.HeightRequest *= Screensize.heightfactor;
-				txtPassword.WidthRequest *= Screensize.widthfactor;
-				txtPassword.HeightRequest *= Screensize.heightfactor;
-				txtUsername.FontSize *= Screensize.heightfactor;
-				txtPassword.FontSize *= Screensize.heightfactor;
-				//txtUsername.Margin = new Thickness(0, 2, 0, 1);
-				//txtPassword.Margin = new Thickness(0, 1, 0, 2);
-				btnLogin.WidthRequest *= Screensize.widthfactor;
-				btnLogin.FontSize *= Screensize.heightfactor;
-				lblWelcome.FontSize *= Screensize.heightfactor;
+				scrollView.MinimumWidthRequest = 150 * Screensize.widthfactor;
+                txtUsername.WidthRequest = 220 * Screensize.widthfactor;
+                txtUsername.HeightRequest = 50 * Screensize.heightfactor;
+				txtPassword.WidthRequest = 220 * Screensize.widthfactor;
+				txtPassword.HeightRequest = 50 * Screensize.heightfactor;
+				txtUsername.FontSize = 20 * Screensize.heightfactor;
+				txtPassword.FontSize = 20 * Screensize.heightfactor;
+				btnLogin.WidthRequest = 100 * Screensize.widthfactor;
+				btnLogin.FontSize = 24 * Screensize.heightfactor;
+				lblWelcome.FontSize = 17 * Screensize.heightfactor;
+                icucareimg.Source = "ISEEYOUCARE_logo.png";
 			}
 
             if (Demographics.sharedInstance.isAutoLogin)
@@ -113,7 +105,6 @@ namespace MyHealthVitals
             {
                 txtUsername.Text = "";
             }
-         
         }
 
         protected override void OnDisappearing()
@@ -124,7 +115,6 @@ namespace MyHealthVitals
         protected override void OnAppearing()
         {
             //DependencyService.Get<IFileHelper>().delBLEinfo();
-
 
             var result = 142^1;
             Debug.WriteLine("result ==== "+result);

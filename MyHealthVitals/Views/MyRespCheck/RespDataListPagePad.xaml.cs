@@ -19,7 +19,7 @@ namespace MyHealthVitals
 			FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
 			titlebtn.FontSize = 30 * Screensize.heightfactor;
             backbtn.FontSize = 30 * Screensize.heightfactor;
-            label.FontSize *= Screensize.heightfactor;
+            label.FontSize = 45 * Screensize.heightfactor;
 
 			CallAPiGetReadings();
 		}

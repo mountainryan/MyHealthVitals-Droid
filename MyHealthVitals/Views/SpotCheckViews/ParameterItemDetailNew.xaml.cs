@@ -19,19 +19,6 @@ namespace MyHealthVitals
 		{
             NavigationPage.SetHasNavigationBar(this, false);
 			InitializeComponent();
-			if (Device.Idiom == TargetIdiom.Tablet) 
-			{
-                
-				label.FontSize = 45 * Screensize.heightfactor;
-				label.Margin = new Thickness(20*Screensize.widthfactor);
-                //titlebtn.Text = Xamarin.Forms.Page.
-			}
-            else if (Device.Idiom == TargetIdiom.Phone)
-            {
-                
-				label.FontSize *= Screensize.heightfactor;
-				label.Margin = new Thickness(10 * Screensize.widthfactor);
-            }
 		}
 
 		void btnPrevClicked(object sender, System.EventArgs e)
@@ -90,11 +77,11 @@ namespace MyHealthVitals
             NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
 			FakeToolbar.Children.Add(
-			backarrow,
-			// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
-			new Rectangle(0, 0.5, 0.1, 1),
-			// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
-			AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+    			backarrow,
+    			// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+    			new Rectangle(0, 0.5, 0.1, 1),
+    			// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+    			AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
 			);
 
 			FakeToolbar.Children.Add(
@@ -126,10 +113,10 @@ namespace MyHealthVitals
 			else if (Device.Idiom == TargetIdiom.Phone)
 			{
 				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
-				titlebtn.FontSize = 24 * Screensize.heightfactor;
-                backbtn.FontSize = 24 * Screensize.heightfactor;
+				titlebtn.FontSize = 16 * Screensize.heightfactor;
+                backbtn.FontSize = 16 * Screensize.heightfactor;
 
-				label.FontSize *= Screensize.heightfactor;
+				label.FontSize = 30 * Screensize.heightfactor;
 				label.Margin = new Thickness(10 * Screensize.widthfactor);
 			}
            	this.categoryId = id;

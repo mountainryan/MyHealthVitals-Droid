@@ -15,14 +15,14 @@
 		<!--<StackLayout Spacing="0" BackgroundColor="{StaticResource colorBlackBg}">-->
 
 
-        <StackLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <AbsoluteLayout x:Name="FakeToolbar"  HeightRequest="55" BackgroundColor="White" >
             <local:MyButton x:Name="backarrow" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
-            <local:MyButton x:Name="backbtn" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="30" />
+            <local:MyButton x:Name="backbtn" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="16" />
 
-            <Label x:Name="titlebtn" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="Parameter List Screen" TextColor="Black" FontSize="30" />
+            <Label x:Name="titlebtn" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="Parameter List Screen" TextColor="Black" FontSize="16" />
             
                 <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
-        </StackLayout> 
+        </AbsoluteLayout> 
 
         <ScrollView><StackLayout>
                 

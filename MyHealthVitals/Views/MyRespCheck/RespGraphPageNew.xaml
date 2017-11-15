@@ -14,7 +14,7 @@
                     RelativeLayout.YConstraint="{ConstraintExpression Type=Constant,Constant=0}"
                   >
             
-            <StackLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <StackLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="true">
                     <local:MyButton x:Name="backarrow" Clicked="btnBackClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
                     <local:MyButton x:Name="backbtn" Clicked="btnBackClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="30" />
 
@@ -22,6 +22,14 @@
                     
                         <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
              </StackLayout> 
+             <AbsoluteLayout x:Name="FakeToolbar2"  HeightRequest="55" BackgroundColor="White" IsVisible="false">
+                <local:MyButton x:Name="backarrow2" Clicked="btnBackClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
+                <local:MyButton x:Name="backbtn2" Clicked="btnBackClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="16" />
+
+                <Label x:Name="titlebtn2" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="Data Graph Screen" TextColor="Black" FontSize="16" />
+                
+                    <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
+            </AbsoluteLayout> 
 
                 <!--
 			<StackLayout x:Name="layoutContainer" VerticalOptions="CenterAndExpand" Padding="0,30,0,0" 
@@ -88,7 +96,7 @@
 					RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
 					RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" 
 					Spacing="0">
-				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2017" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4"/>
+				<Label VerticalOptions="CenterAndExpand" Text="ISeeYouCare Inc. - Copyright - 2017" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="12" Margin="0,0,0,4"/>
 			</StackLayout>
 						<!--loading layout starts-->
 			<RelativeLayout x:Name="layoutLoading" IsVisible="false" BackgroundColor="Black" Opacity="0.85" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">

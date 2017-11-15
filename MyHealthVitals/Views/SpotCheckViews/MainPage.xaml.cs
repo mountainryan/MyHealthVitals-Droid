@@ -169,9 +169,16 @@ namespace MyHealthVitals
 				graphModel.DefaultXAxis.IsPanEnabled = false;
 				graphModel.DefaultYAxis.IsPanEnabled = false;
 
-                graphModel.DefaultFontSize = 20;
-				graphModel.DefaultXAxis.FontSize = 20;
-				graphModel.DefaultYAxis.FontSize = 20;
+                if (Device.Idiom == TargetIdiom.Tablet)
+                {
+                    graphModel.DefaultFontSize = 20;
+                    graphModel.DefaultXAxis.FontSize = 20;
+                    graphModel.DefaultYAxis.FontSize = 20;
+                }else{
+					graphModel.DefaultFontSize = 10;
+					graphModel.DefaultXAxis.FontSize = 10;
+					graphModel.DefaultYAxis.FontSize = 10;
+                }
 
 				graphModel.DefaultYAxis.Minimum = 0;
 				graphModel.DefaultYAxis.Maximum = 255;
@@ -320,9 +327,19 @@ namespace MyHealthVitals
 				graphModel.DefaultXAxis.IsPanEnabled = false;
 				graphModel.DefaultYAxis.IsPanEnabled = false;
 
-                graphModel.DefaultFontSize = 20;
-				graphModel.DefaultXAxis.FontSize = 20;
-				graphModel.DefaultYAxis.FontSize = 20;
+                if (Device.Idiom == TargetIdiom.Tablet)
+                {
+					graphModel.DefaultFontSize = 20;
+					graphModel.DefaultXAxis.FontSize = 20;
+					graphModel.DefaultYAxis.FontSize = 20;
+				}
+			    else
+			    {
+    				graphModel.DefaultFontSize = 10;
+    				graphModel.DefaultXAxis.FontSize = 10;
+    				graphModel.DefaultYAxis.FontSize = 10;
+			    }
+
 
 				graphModel.DefaultYAxis.Minimum = 0;
 				graphModel.DefaultYAxis.Maximum = 255;
@@ -361,13 +378,25 @@ namespace MyHealthVitals
 			graphModel.DefaultYAxis.MajorGridlineColor = OxyColors.LightGray;
 			graphModel.DefaultYAxis.MinorGridlineColor = OxyColors.LightGray;
 
-            graphModel.DefaultFontSize = 20;
-			graphModel.DefaultXAxis.FontSize = 20;
-			graphModel.DefaultYAxis.FontSize = 20;
+			if (Device.Idiom == TargetIdiom.Tablet)
+			{
+				graphModel.DefaultFontSize = 20;
+				graphModel.DefaultXAxis.FontSize = 20;
+				graphModel.DefaultYAxis.FontSize = 20;
+				graphModel.LegendTitleFontSize = 20;
+				graphModel.LegendFontSize = 20;
+			}
+			else
+			{
+				graphModel.DefaultFontSize = 10;
+				graphModel.DefaultXAxis.FontSize = 10;
+				graphModel.DefaultYAxis.FontSize = 10;
+				graphModel.LegendTitleFontSize = 10;
+				graphModel.LegendFontSize = 10;
+			}
 
 
-            graphModel.LegendTitleFontSize = 20;
-			graphModel.LegendFontSize = 10;
+
 			graphModel.LegendSymbolPlacement = LegendSymbolPlacement.Left;
 			graphModel.LegendPosition = LegendPosition.TopLeft;
 			graphModel.LegendTitle = "Pulse";
@@ -887,9 +916,18 @@ namespace MyHealthVitals
 				ecgTime = 0.0f;
 				heartRate = bpm;
 				if (state == 17) return;
-                graphModel.DefaultFontSize = 20;
-				graphModel.DefaultXAxis.FontSize = 20;
-				graphModel.DefaultYAxis.FontSize = 20;
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					graphModel.DefaultFontSize = 20;
+					graphModel.DefaultXAxis.FontSize = 20;
+					graphModel.DefaultYAxis.FontSize = 20;
+				}
+				else
+				{
+					graphModel.DefaultFontSize = 10;
+					graphModel.DefaultXAxis.FontSize = 10;
+					graphModel.DefaultYAxis.FontSize = 10;
+				}
 				graphModel.DefaultXAxis.IsPanEnabled = false;
 				graphModel.DefaultXAxis.Minimum = 0;
 				graphModel.DefaultXAxis.Maximum = 50;
@@ -1029,8 +1067,23 @@ namespace MyHealthVitals
 					Debug.WriteLine("countECGPacket   =============" + countECGPacket);
                     Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
                     {
-                        graphModel.LegendTitleFontSize = 20;
-                        graphModel.LegendFontSize = 10;
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							graphModel.DefaultFontSize = 20;
+							graphModel.DefaultXAxis.FontSize = 20;
+							graphModel.DefaultYAxis.FontSize = 20;
+							graphModel.LegendTitleFontSize = 20;
+							graphModel.LegendFontSize = 20;
+						}
+						else
+						{
+							graphModel.DefaultFontSize = 10;
+							graphModel.DefaultXAxis.FontSize = 10;
+							graphModel.DefaultYAxis.FontSize = 10;
+							graphModel.LegendTitleFontSize = 10;
+							graphModel.LegendFontSize = 10;
+						}
+                       
                         graphModel.LegendTitle = "ECG";
                         countDownLabel.Text = "Stabilizing reading, please continue.";
                         countDownLabel.IsVisible = true;
@@ -1050,9 +1103,7 @@ namespace MyHealthVitals
                         }
 
 						// reseting the graphmodel for ecg waveform
-                        graphModel.DefaultFontSize = 20;
-						graphModel.DefaultXAxis.FontSize = 20;
-						graphModel.DefaultYAxis.FontSize = 20;
+
                         graphModel.DefaultXAxis.IsPanEnabled = false;
                         xMin = 0;
                         graphModel.DefaultXAxis.Minimum = 0;
@@ -1134,13 +1185,25 @@ namespace MyHealthVitals
                     //initBpm = false;
                     pulseTime = 0.0f;
                     graphModel.DefaultXAxis.IsPanEnabled = false;
-                    graphModel.LegendTitleFontSize = 20;
-                    graphModel.LegendFontSize = 10;
+
                     graphModel.LegendTitle = "Pulse";
 
-                    graphModel.DefaultFontSize = 20;
-                    graphModel.DefaultXAxis.FontSize = 20;
-                    graphModel.DefaultYAxis.FontSize = 20;
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						graphModel.DefaultFontSize = 20;
+						graphModel.DefaultXAxis.FontSize = 20;
+						graphModel.DefaultYAxis.FontSize = 20;
+						graphModel.LegendTitleFontSize = 20;
+						graphModel.LegendFontSize = 20;
+					}
+					else
+					{
+						graphModel.DefaultFontSize = 10;
+						graphModel.DefaultXAxis.FontSize = 10;
+						graphModel.DefaultYAxis.FontSize = 10;
+						graphModel.LegendTitleFontSize = 10;
+						graphModel.LegendFontSize = 10;
+					}
                     graphModel.DefaultYAxis.Minimum = -10;
                     graphModel.DefaultYAxis.Maximum = 265;
 
@@ -1172,9 +1235,18 @@ namespace MyHealthVitals
                         graphModel.LegendTitleFontSize = 20;
                         graphModel.LegendTitle = "Pulse";
 
-                        graphModel.DefaultFontSize = 20;
-						graphModel.DefaultXAxis.FontSize = 20;
-						graphModel.DefaultYAxis.FontSize = 20;
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							graphModel.DefaultFontSize = 20;
+							graphModel.DefaultXAxis.FontSize = 20;
+							graphModel.DefaultYAxis.FontSize = 20;
+						}
+						else
+						{
+							graphModel.DefaultFontSize = 10;
+							graphModel.DefaultXAxis.FontSize = 10;
+							graphModel.DefaultYAxis.FontSize = 10;
+						}
                         graphModel.DefaultYAxis.Minimum = -10;
                         graphModel.DefaultYAxis.Maximum = 265;
 
@@ -1196,9 +1268,18 @@ namespace MyHealthVitals
                     {
                         lineSerie.Points.Clear();
                         xMin = pulseTime;
-                        graphModel.DefaultFontSize = 20;
-						graphModel.DefaultXAxis.FontSize = 20;
-						graphModel.DefaultYAxis.FontSize = 20;
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							graphModel.DefaultFontSize = 20;
+							graphModel.DefaultXAxis.FontSize = 20;
+							graphModel.DefaultYAxis.FontSize = 20;
+						}
+						else
+						{
+							graphModel.DefaultFontSize = 10;
+							graphModel.DefaultXAxis.FontSize = 10;
+							graphModel.DefaultYAxis.FontSize = 10;
+						}
                         graphModel.DefaultXAxis.Minimum = xMin;
                         graphModel.DefaultXAxis.Maximum = xMin + 3.0;
                     }
@@ -1484,8 +1565,6 @@ namespace MyHealthVitals
 				//device not connected error message
 				ShowConcetion("Device is not connected.", false);
 			}
-
-
 
 			//bleManager.startMeasuringBP();
 			//DependencyService.Get<ICBCentralManager>().startMeasuringBP();
@@ -1780,7 +1859,7 @@ namespace MyHealthVitals
 				lblName.FontSize = 24 * Screensize.heightfactor;
 				lblEmail.FontSize = 21 * Screensize.heightfactor;
                 lblClickMessage.FontSize = 15 * Screensize.heightfactor;
-				layoutContainer.Spacing = 14 * Screensize.heightfactor;
+                layoutContainer.Spacing = (56 * Screensize.heightfactor) / 4;
 				lblSYS.FontSize = 21 * Screensize.heightfactor;
 				lblmmHg.FontSize = 21 * Screensize.heightfactor;
 				lblDIA.FontSize = 21 * Screensize.heightfactor;
@@ -1796,22 +1875,22 @@ namespace MyHealthVitals
 				lblUnitGlucose.FontSize = 21 * Screensize.heightfactor;
 			    lblWEIT.FontSize = 21 * Screensize.heightfactor;
                 countDownLabel.FontSize = 15 * Screensize.heightfactor;
-				layout1.WidthRequest = 180 * Screensize.widthfactor;
-				layout2.WidthRequest = 180 * Screensize.widthfactor;
-				layout3.WidthRequest = 180 * Screensize.widthfactor;
-				layout4.WidthRequest = 180 * Screensize.widthfactor;
-				layout5.WidthRequest = 180 * Screensize.widthfactor;
-				layout6.WidthRequest = 180 * Screensize.widthfactor;
-				layout7.WidthRequest = 180 * Screensize.widthfactor;
-				layout8.WidthRequest = 180 * Screensize.widthfactor;
-				layout9.WidthRequest = 180 * Screensize.widthfactor;
-				layout10.WidthRequest = 180 * Screensize.widthfactor;
-				layout11.WidthRequest = 180 * Screensize.widthfactor;
-				layout12.WidthRequest = 180 * Screensize.widthfactor;
-				layout13.WidthRequest = 180 * Screensize.widthfactor;
-				layout14.WidthRequest = 180 * Screensize.widthfactor;
-				layout15.WidthRequest = 180 * Screensize.widthfactor;
-				layout16.WidthRequest = 180 * Screensize.widthfactor;
+				layout1.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout2.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout3.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout4.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout5.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout6.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout7.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout8.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout9.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout10.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout11.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout12.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout13.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout14.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout15.WidthRequest = (360 * Screensize.widthfactor) / 2;
+				layout16.WidthRequest = (360 * Screensize.widthfactor) / 2;
                 plotView.HeightRequest = 300 * Screensize.heightfactor;
 				NIBPButtonPad.FontSize = 21 * Screensize.heightfactor;
                 NIBPButtonPad.HeightRequest = 100 * Screensize.heightfactor;
@@ -1848,65 +1927,65 @@ namespace MyHealthVitals
             else if (Device.Idiom == TargetIdiom.Phone)
             {
 				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
-				titlebtn.FontSize = 24 * Screensize.heightfactor;
-                backbtn.FontSize = 24 * Screensize.heightfactor;
+				titlebtn.FontSize = 16 * Screensize.heightfactor;
+                backbtn.FontSize = 16 * Screensize.heightfactor;
 
-				imgProfile.WidthRequest *= Screensize.widthfactor;
-                imgProfile.HeightRequest *= Screensize.heightfactor;
-				lblName.FontSize *= Screensize.heightfactor;
-				lblEmail.FontSize *= Screensize.heightfactor;
-				lblClickMessage.FontSize *= Screensize.heightfactor;
-				layoutContainer.Spacing *= Screensize.heightfactor;
-				lblSYS.FontSize *= Screensize.heightfactor;
-				lblmmHg.FontSize *= Screensize.heightfactor;
-				lblDIA.FontSize *= Screensize.heightfactor;
-				lblmm.FontSize *= Screensize.heightfactor;
-				lblSys.FontSize *= Screensize.heightfactor;
-				lblDia.FontSize *= Screensize.heightfactor;
-				lblSpo2.FontSize *= Screensize.heightfactor;
-				lblSPO2.FontSize *= Screensize.heightfactor;
-				lblpct.FontSize *= Screensize.heightfactor;
-				lblPR.FontSize *= Screensize.heightfactor;
-				lblBPM.FontSize *= Screensize.heightfactor;
-				lblBpm.FontSize *= Screensize.heightfactor;
-				lblPI.FontSize *= Screensize.heightfactor;
-				lblPIPCT.FontSize *= Screensize.heightfactor;
-				lblPerfusionIndex.FontSize *= Screensize.heightfactor;
-				lblTEMP.FontSize *= Screensize.heightfactor;
-				lblTemperature.FontSize *= Screensize.heightfactor;
-				lblGLU.FontSize *= Screensize.heightfactor;
-				lblUnitGlucose.FontSize *= Screensize.heightfactor;
-				lblGlucose.FontSize *= Screensize.heightfactor;
-				lblWeight.FontSize *= Screensize.heightfactor;
-				lblWEIT.FontSize *= Screensize.heightfactor;
-				countDownLabel.FontSize *= Screensize.heightfactor;
-				layout1.WidthRequest *= Screensize.widthfactor;
-				layout2.WidthRequest *= Screensize.widthfactor;
-				layout3.WidthRequest *= Screensize.widthfactor;
-				layout4.WidthRequest *= Screensize.widthfactor;
-				layout5.WidthRequest *= Screensize.widthfactor;
-				layout6.WidthRequest *= Screensize.widthfactor;
-				layout7.WidthRequest *= Screensize.widthfactor;
-				layout8.WidthRequest *= Screensize.widthfactor;
-				layout9.WidthRequest *= Screensize.widthfactor;
-				layout10.WidthRequest *= Screensize.widthfactor;
-				layout11.WidthRequest *= Screensize.widthfactor;
-				layout12.WidthRequest *= Screensize.widthfactor;
-				layout13.WidthRequest *= Screensize.widthfactor;
-				layout14.WidthRequest *= Screensize.widthfactor;
-				layout15.WidthRequest *= Screensize.widthfactor;
-				layout16.WidthRequest *= Screensize.widthfactor;
-				plotView.HeightRequest *= Screensize.heightfactor;
-				NIBPButton.FontSize *= Screensize.heightfactor;
-				ecgReportcBtn.FontSize *= Screensize.heightfactor;
+				imgProfile.WidthRequest = 80 * Screensize.widthfactor;
+                imgProfile.HeightRequest = 96 * Screensize.heightfactor;
+				lblName.FontSize = 15 * Screensize.heightfactor;
+				lblEmail.FontSize = 14 * Screensize.heightfactor;
+				lblClickMessage.FontSize = 10 * Screensize.heightfactor;
+                layoutContainer.Spacing = (28 * Screensize.heightfactor)/4;
+				lblSYS.FontSize = 14 * Screensize.heightfactor;
+				lblmmHg.FontSize = 14 * Screensize.heightfactor;
+				lblDIA.FontSize = 14 * Screensize.heightfactor;
+				lblmm.FontSize = 14 * Screensize.heightfactor;
+				lblSys.FontSize = 14 * Screensize.heightfactor;
+				lblDia.FontSize = 14 * Screensize.heightfactor;
+				lblSpo2.FontSize = 14 * Screensize.heightfactor;
+				lblSPO2.FontSize = 14 * Screensize.heightfactor;
+				lblpct.FontSize = 14 * Screensize.heightfactor;
+				lblPR.FontSize = 14 * Screensize.heightfactor;
+				lblBPM.FontSize = 14 * Screensize.heightfactor;
+				lblBpm.FontSize = 14 * Screensize.heightfactor;
+				lblPI.FontSize = 14 * Screensize.heightfactor;
+				lblPIPCT.FontSize = 14 * Screensize.heightfactor;
+				lblPerfusionIndex.FontSize = 14 * Screensize.heightfactor;
+				lblTEMP.FontSize = 14 * Screensize.heightfactor;
+				lblTemperature.FontSize = 14 * Screensize.heightfactor;
+				lblGLU.FontSize = 14 * Screensize.heightfactor;
+				lblUnitGlucose.FontSize = 14 * Screensize.heightfactor;
+				lblGlucose.FontSize = 14 * Screensize.heightfactor;
+				lblWeight.FontSize = 14 * Screensize.heightfactor;
+				lblWEIT.FontSize = 14 * Screensize.heightfactor;
+				countDownLabel.FontSize = 10 * Screensize.heightfactor;
+                layout1.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout2.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout3.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout4.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout5.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout6.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout7.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout8.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout9.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout10.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout11.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout12.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout13.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout14.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout15.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				layout16.WidthRequest = (180 * Screensize.widthfactor) / 2;
+				plotView.HeightRequest = 150 * Screensize.heightfactor;
+				NIBPButton.FontSize = 14 * Screensize.heightfactor;
+				ecgReportcBtn.FontSize = 14 * Screensize.heightfactor;
 				//layoutButton.IsVisible = false;
 				//layoutButtonPad.IsVisible = true;
-				btnFareinheit.FontSize *= Screensize.heightfactor;
-				btnCelcious.FontSize *= Screensize.heightfactor;
+				btnFareinheit.FontSize = 14 * Screensize.heightfactor;
+				btnCelcious.FontSize = 14 * Screensize.heightfactor;
 				//btnFareinheit.WidthRequest *= Screensize.widthfactor;
 				//btnCelcious.WidthRequest *= Screensize.widthfactor;
-				btnLbs.FontSize *= Screensize.heightfactor;
-				btnKgs.FontSize *= Screensize.heightfactor;
+				btnLbs.FontSize = 14 * Screensize.heightfactor;
+				btnKgs.FontSize = 14 * Screensize.heightfactor;
 				//btnLbs.WidthRequest = 75;
 				//btnKgs.WidthRequest = 75;
             }

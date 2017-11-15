@@ -259,9 +259,10 @@ namespace MyHealthVitals
 			else if (Device.Idiom == TargetIdiom.Phone)
 			{
 				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
-				titlebtn.FontSize = 24 * Screensize.heightfactor;
-                backbtn.FontSize = 24 * Screensize.heightfactor;
-				plotView.HeightRequest *= Screensize.heightfactor;
+				titlebtn.FontSize = 16 * Screensize.heightfactor;
+                backbtn.FontSize = 16 * Screensize.heightfactor;
+				plotView.HeightRequest = 450 * Screensize.heightfactor;
+                reportButton.FontSize = 16 * Screensize.heightfactor;
 			}
 
             Debug.WriteLine("Defaultxaxis : " + graphModel_report.DefaultXAxis);

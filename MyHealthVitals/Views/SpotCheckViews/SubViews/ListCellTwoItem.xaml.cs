@@ -24,17 +24,18 @@ namespace MyHealthVitals
 				secondItem.FontSize = 30 * Screensize.heightfactor;
 				secondItem.WidthRequest = 180 * Screensize.widthfactor;
 				underline.WidthRequest = 100 * Screensize.widthfactor;
+
                 //layoutholder.HeightRequest *= 1.5;
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
-				itemdate.FontSize *= Screensize.heightfactor;
-				itemdate.WidthRequest *= Screensize.widthfactor;
-				firstItem.FontSize *= Screensize.heightfactor;
-				firstItem.WidthRequest *= Screensize.widthfactor;
-				secondItem.FontSize *= Screensize.heightfactor;
-				secondItem.WidthRequest *= Screensize.widthfactor;
-				underline.WidthRequest *= Screensize.widthfactor;
+				itemdate.FontSize = 16 * Screensize.heightfactor;
+				itemdate.WidthRequest = 200 * Screensize.widthfactor;
+				firstItem.FontSize = 16 * Screensize.heightfactor;
+				firstItem.WidthRequest = 90 * Screensize.widthfactor;
+				secondItem.FontSize = 16 * Screensize.heightfactor;
+				secondItem.WidthRequest = 90 * Screensize.widthfactor;
+				underline.WidthRequest = 50 * Screensize.widthfactor;
             }
 			secondItem.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnLabelClicked()));
 		}

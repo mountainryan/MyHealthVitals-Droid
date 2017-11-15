@@ -21,11 +21,11 @@ namespace MyHealthVitals
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
-				layout.Spacing *= Screensize.heightfactor;
-				labeldate.FontSize *= Screensize.heightfactor;
-				lblFirstTitle.FontSize *= Screensize.heightfactor;
-				labeldate.WidthRequest *= Screensize.widthfactor;
-                lblFirstTitle.WidthRequest *= Screensize.widthfactor;
+                layout.Spacing = 6 * Screensize.heightfactor;
+				labeldate.FontSize = 16 * Screensize.heightfactor;
+				lblFirstTitle.FontSize = 16 * Screensize.heightfactor;
+				labeldate.WidthRequest = 180 * Screensize.widthfactor;
+                lblFirstTitle.WidthRequest = 180 * Screensize.widthfactor;
             }
 			lblFirstTitle.Text = firstHeaderTitle;
 		}

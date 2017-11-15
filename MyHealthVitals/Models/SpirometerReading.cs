@@ -14,6 +14,9 @@ namespace MyHealthVitals
         public double spacing { get; set; }
         public double stackheight { get; set; }
         public string imagepng { get; set; }
+        //public string readnum_wd { get; set; }
+        //public string pef_wd { get; set; }
+        //public string fev_wd { get; set; }
 
 		public double phone_font_size { get; set; }
 		public double phone_datewidth { get; set; }
@@ -27,9 +30,9 @@ namespace MyHealthVitals
 			this.Fev1 = fev1;
 
             this.phone_font_size = (16 * Screensize.heightfactor);
-            this.phone_datewidth = (185 * Screensize.widthfactor);
-            this.phone_pefwidth = (90 * Screensize.widthfactor);
-            this.phone_fevwidth = (70 * Screensize.widthfactor);
+            this.phone_datewidth = (370 * Screensize.widthfactor) / 2;
+            this.phone_pefwidth = (370 * Screensize.widthfactor) / 4.111111;
+            this.phone_fevwidth = (370 * Screensize.widthfactor) / 5.285714;
 		}
 
 		/*public double phone_font_size = (16 * Screensize.heightfactor);

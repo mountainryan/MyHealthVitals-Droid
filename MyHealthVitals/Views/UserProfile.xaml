@@ -78,7 +78,7 @@
 						</Switch>
 					</StackLayout>
                     <StackLayout x:Name="savecont" BackgroundColor="{StaticResource colorBlackBg}" Margin="5,0,5,0" >
-                        <local:MyButton x:Name = "save" Clicked="btnSaveClicked" Text="SAVE"  TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" Margin="10,0,10,0" HeightRequest="50" />
+                        <local:MyButton x:Name = "save" Clicked="btnSaveClicked" Text="SAVE" FontSize="16" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" Margin="10,0,10,0" HeightRequest="50" />
                     </StackLayout>
                           
 				</StackLayout>
@@ -94,7 +94,7 @@
 				</StackLayout>
                 -->
 				
-				<Label x:Name="cpyrt" TextColor="{StaticResource ColorLightGray}" Text="ICUCARE LLC - Copyright - 2017" XAlign="Center" FontSize="15" Margin="0,0,0,0" >
+				<Label x:Name="cpyrt" TextColor="{StaticResource ColorLightGray}" Text="ISeeYouCare Inc. - Copyright - 2017" XAlign="Center" FontSize="15" Margin="0,0,0,0" >
 				</Label>
 			</StackLayout>
 			</RelativeLayout>

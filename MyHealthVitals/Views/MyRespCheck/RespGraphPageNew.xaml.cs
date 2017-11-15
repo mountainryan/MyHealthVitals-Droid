@@ -22,12 +22,12 @@ namespace MyHealthVitals
             NavigationPage.SetHasNavigationBar(this, false);
 			InitializeComponent();
 			if (Device.Idiom == TargetIdiom.Tablet) {
-				layoutPefContainer.WidthRequest = 300 * Screensize.widthfactor;
+                layoutPefContainer.WidthRequest = (600 * Screensize.widthfactor) / 2;
                 layoutPefContainer.HeightRequest = 800 * Screensize.heightfactor;
-				layoutFevContainer.WidthRequest = 300 * Screensize.widthfactor;
+				layoutFevContainer.WidthRequest = (600 * Screensize.widthfactor) / 2;
 				layoutFevContainer.HeightRequest = 800 * Screensize.heightfactor;
-				layoutL2.WidthRequest = 120 * Screensize.widthfactor;
-				layoutL1.WidthRequest = 120 * Screensize.widthfactor;
+                layoutL2.WidthRequest = (240 * Screensize.widthfactor) / 2;
+				layoutL1.WidthRequest = (240 * Screensize.widthfactor) / 2;
                 layoutN2.Spacing = (layoutPefContainer.HeightRequest - 74) / 3;
 				layoutN1.Spacing = (layoutPefContainer.HeightRequest - 74) / 3;
                 lblPef.FontSize = 30 * Screensize.heightfactor;
@@ -56,26 +56,54 @@ namespace MyHealthVitals
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
-				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
-				titlebtn.FontSize = 24 * Screensize.heightfactor;
-                backbtn.FontSize = 24 * Screensize.heightfactor;
+				FakeToolbar2.Children.Add(
+				backarrow2,
+				// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+				new Rectangle(0, 0.5, 0.1, 1),
+				// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+				AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+				);
 
-				layoutPefContainer.WidthRequest *= Screensize.widthfactor;
-				layoutPefContainer.HeightRequest *= Screensize.heightfactor;
-				layoutFevContainer.WidthRequest *= Screensize.widthfactor;
-				layoutFevContainer.HeightRequest *= Screensize.heightfactor;
-				layoutL2.WidthRequest *= Screensize.widthfactor;
-				layoutL1.WidthRequest *= Screensize.widthfactor;
+				FakeToolbar2.Children.Add(
+					backbtn2,
+					// Using 0.5 will center it and the layout takes the size of the element into account
+					// 0.5 will center, 1 will right align
+					// Adds in the center, with 90% of the navbar's width and 100% of height
+					new Rectangle(0.1, 0.5, 0.3, 1),
+					AbsoluteLayoutFlags.All
+				);
+				FakeToolbar2.Children.Add(
+					titlebtn2,
+					// Using 0.5 will center it and the layout takes the size of the element into account
+					// 0.5 will center, 1 will right align
+					// Adds in the center, with 90% of the navbar's width and 100% of height
+					new Rectangle(0.6, 0.5, 0.5, 1),
+					AbsoluteLayoutFlags.All
+				);
+				FakeToolbar.IsVisible = false;
+				FakeToolbar2.IsVisible = true;
+				FakeToolbar2.HeightRequest = 55 * Screensize.heightfactor;
+				titlebtn2.FontSize = 16 * Screensize.heightfactor;
+				backbtn2.FontSize = 16 * Screensize.heightfactor;
+
+                layoutPefContainer.WidthRequest = (240 * Screensize.widthfactor) / 2;
+				layoutPefContainer.HeightRequest = 400 * Screensize.heightfactor;
+				layoutFevContainer.WidthRequest = (240 * Screensize.widthfactor) / 2;
+				layoutFevContainer.HeightRequest = 400 * Screensize.heightfactor;
+                layoutL2.WidthRequest = (120 * Screensize.widthfactor) / 2;
+				layoutL1.WidthRequest = (120 * Screensize.widthfactor) / 2;
 				layoutN2.Spacing = (layoutPefContainer.HeightRequest - 74) / 3;
 				layoutN1.Spacing = (layoutPefContainer.HeightRequest - 74) / 3;
-				lblPef.FontSize *= Screensize.heightfactor;
-				lblFev1.FontSize *= Screensize.heightfactor;
-				lblDate.FontSize *= Screensize.heightfactor;
-				lblDate.WidthRequest *= Screensize.widthfactor;
-				peflabel.FontSize *= Screensize.heightfactor;
-				fevlabel.FontSize *= Screensize.heightfactor;
+				lblPef.FontSize = 15 * Screensize.heightfactor;
+				lblFev1.FontSize = 15 * Screensize.heightfactor;
+				lblDate.FontSize = 15 * Screensize.heightfactor;
+				lblDate.WidthRequest = 156 * Screensize.widthfactor;
+				peflabel.FontSize = 15 * Screensize.heightfactor;
+				fevlabel.FontSize = 15 * Screensize.heightfactor;
 				peflabel.Margin = new Thickness(0, -25 * Screensize.heightfactor, 0, 0);
 				fevlabel.Margin = new Thickness(0, -25 * Screensize.heightfactor, 0, 0);
+
+                minilayoutcont.Margin = new Thickness(0, 60 * Screensize.heightfactor, 0, 0);
 
                 //prevcont.Margin = new Thickness(15, -100 * Screensize.heightfactor, 0, 0);
             }

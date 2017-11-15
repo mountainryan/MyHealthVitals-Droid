@@ -24,10 +24,10 @@ namespace MyHealthVitals
 				titlebtn.FontSize = 30 * Screensize.heightfactor;
                 backbtn.FontSize = 30 * Screensize.heightfactor;
 
-				layout.Spacing = 24 * Screensize.heightfactor;
+                layout.Spacing = (96 * Screensize.heightfactor) / 4;
 				label.Margin = new Thickness(20 * Screensize.widthfactor, 10 * Screensize.heightfactor, 20 * Screensize.widthfactor, 10 * Screensize.heightfactor);
 				label.FontSize = 32 * Screensize.heightfactor;
-				layoutButton.Spacing = 20 * Screensize.heightfactor;
+                layoutButton.Spacing = (60 * Screensize.heightfactor) / 3;
 				button.HeightRequest = 70 * Screensize.heightfactor;
 				button.FontSize = 24 * Screensize.heightfactor;
 				labelpef.WidthRequest = 175 * Screensize.widthfactor;
@@ -42,23 +42,50 @@ namespace MyHealthVitals
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
-				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
-				titlebtn.FontSize = 24 * Screensize.heightfactor;
-                backbtn.FontSize = 24 * Screensize.heightfactor;
+				FakeToolbar2.Children.Add(
+    			backarrow2,
+    			// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+    			new Rectangle(0, 0.5, 0.1, 1),
+    			// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+    			AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+    			);
 
-				layout.Spacing *= Screensize.heightfactor;
+				FakeToolbar2.Children.Add(
+					backbtn2,
+					// Using 0.5 will center it and the layout takes the size of the element into account
+					// 0.5 will center, 1 will right align
+					// Adds in the center, with 90% of the navbar's width and 100% of height
+					new Rectangle(0.1, 0.5, 0.3, 1),
+					AbsoluteLayoutFlags.All
+				);
+				FakeToolbar2.Children.Add(
+					titlebtn2,
+					// Using 0.5 will center it and the layout takes the size of the element into account
+					// 0.5 will center, 1 will right align
+					// Adds in the center, with 90% of the navbar's width and 100% of height
+					new Rectangle(0.6, 0.5, 0.5, 1),
+					AbsoluteLayoutFlags.All
+				);
+                FakeToolbar.IsVisible = false;
+                FakeToolbar2.IsVisible = true;
+				FakeToolbar2.HeightRequest = 55 * Screensize.heightfactor;
+				titlebtn2.FontSize = 16 * Screensize.heightfactor;
+                backbtn2.FontSize = 16 * Screensize.heightfactor;
+
+                layout.Spacing = (48 * Screensize.heightfactor) / 4;
 				label.Margin = new Thickness(10 * Screensize.widthfactor, 5 * Screensize.heightfactor, 10 * Screensize.widthfactor, 5 * Screensize.heightfactor);
-				label.FontSize *= Screensize.heightfactor;
-				layoutButton.Spacing *= Screensize.heightfactor;
+				label.FontSize = 16 * Screensize.heightfactor;
+                layoutButton.Spacing = (30 * Screensize.heightfactor) / 3;
 				//button.HeightRequest *= Screensize.heightfactor;
-				button.FontSize *= Screensize.heightfactor;
-				labelpef.WidthRequest *= Screensize.widthfactor;
-				labelfev1.WidthRequest *= Screensize.widthfactor;
-				labelpef.FontSize *= Screensize.heightfactor;
-				labelfev1.FontSize *= Screensize.heightfactor;
-				listView.HeightRequest *= Screensize.heightfactor;
-				save.FontSize *= Screensize.heightfactor;
-				save.HeightRequest *= Screensize.heightfactor;
+				button.FontSize = 14 * Screensize.heightfactor;
+                button.HeightRequest = 40 * Screensize.heightfactor;
+				labelpef.WidthRequest = 90 * Screensize.widthfactor;
+				labelfev1.WidthRequest = 90 * Screensize.widthfactor;
+				labelpef.FontSize = 14 * Screensize.heightfactor;
+				labelfev1.FontSize = 14 * Screensize.heightfactor;
+				listView.HeightRequest = 280 * Screensize.heightfactor;
+				save.FontSize = 14 * Screensize.heightfactor;
+				save.HeightRequest = 60 * Screensize.heightfactor;
                 save.Margin = new Thickness(3, 10 * Screensize.heightfactor, 3, 30 * Screensize.heightfactor);
                 //prevcont.Margin = new Thickness(15, -80 /** Screensize.heightfactor*/, 0, 0);
             }
@@ -277,10 +304,7 @@ namespace MyHealthVitals
             Debug.WriteLine("Calibration reading.");
 			//var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
 
-			currReading.fontsize = 15 * Screensize.heightfactor;
-            currReading.spacing = 10 * Screensize.heightfactor;
-            currReading.stackheight = 80 * Screensize.heightfactor;
-            currReading.imagepng = "deleteicon.png";
+			
 
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
@@ -288,7 +312,12 @@ namespace MyHealthVitals
                 currReading.spacing = 20 * Screensize.heightfactor;
                 currReading.stackheight = 120 * Screensize.heightfactor;
                 currReading.imagepng = "deleteicon_tab.png";
-			}
+            }else{
+				currReading.fontsize = 15 * Screensize.heightfactor;
+				currReading.spacing = 10 * Screensize.heightfactor;
+				currReading.stackheight = 80 * Screensize.heightfactor;
+				currReading.imagepng = "deleteicon.png";
+            }
 
 			currReading.index = calibratedReadingList.Count;
 			calibratedReadingList.Add(currReading);

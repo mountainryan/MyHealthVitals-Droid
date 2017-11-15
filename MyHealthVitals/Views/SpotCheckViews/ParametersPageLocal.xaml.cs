@@ -29,9 +29,33 @@ namespace MyHealthVitals
             NavigationPage.SetHasNavigationBar(this, false);
             //label.FontSize *= Screensize.heightfactor;
 			InitializeComponent();
+			FakeToolbar.Children.Add(
+				backarrow,
+				// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+				new Rectangle(0, 0.5, 0.1, 1),
+				// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+				AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+				);
+
+			FakeToolbar.Children.Add(
+				backbtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.1, 0.5, 0.3, 1),
+				AbsoluteLayoutFlags.All
+			);
+			FakeToolbar.Children.Add(
+				titlebtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.7, 0.5, 0.5, 1),
+				AbsoluteLayoutFlags.All
+			);
 			FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
-			titlebtn.FontSize = 24 * Screensize.heightfactor;
-            backbtn.FontSize = 24 * Screensize.heightfactor;
+			titlebtn.FontSize = 16 * Screensize.heightfactor;
+			backbtn.FontSize = 16 * Screensize.heightfactor;
             //sync data with cl
 			sycnwithCloud();
 		

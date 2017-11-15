@@ -36,7 +36,7 @@ namespace MyHealthVitals
 				// Using 0.5 will center it and the layout takes the size of the element into account
 				// 0.5 will center, 1 will right align
 				// Adds in the center, with 90% of the navbar's width and 100% of height
-				new Rectangle(0.1, 0.5, 0.35, 1),
+				new Rectangle(0.1, 0.5, 0.3, 1),
 				AbsoluteLayoutFlags.All
 			);
 			FakeToolbar.Children.Add(
@@ -54,8 +54,8 @@ namespace MyHealthVitals
 				backbtn.FontSize = 30 * Screensize.heightfactor;
 				titlebtn.FontSize = 30 * Screensize.heightfactor;
 
-				layout.Spacing = 40 * Screensize.heightfactor;
-                layout.Padding = new Thickness(15 * Screensize.heightfactor);
+                layout.Spacing = (360 * Screensize.heightfactor)/9;
+                layout.Padding = new Thickness((135 * Screensize.heightfactor)/9);
 				imgProfile.WidthRequest = 160 * Screensize.widthfactor;
 				imgProfile.HeightRequest = 192 * Screensize.heightfactor;
 				lblName.FontSize = 32 * Screensize.heightfactor;
@@ -86,30 +86,30 @@ namespace MyHealthVitals
             else if (Device.Idiom == TargetIdiom.Phone)
             {
 				FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
-				titlebtn.FontSize = 24 * Screensize.heightfactor;
-                backbtn.FontSize = 24 * Screensize.heightfactor;
+				titlebtn.FontSize = 16 * Screensize.heightfactor;
+                backbtn.FontSize = 16 * Screensize.heightfactor;
 
-                layout.Spacing *= Screensize.heightfactor;
-                layout.Padding = new Thickness(15 * Screensize.heightfactor);
-				imgProfile.WidthRequest *= Screensize.widthfactor;
-				imgProfile.HeightRequest *= Screensize.heightfactor;
-				lblName.FontSize *= Screensize.heightfactor;
-				lblEmail.FontSize *= Screensize.heightfactor;
-				lblGender.FontSize *= Screensize.heightfactor;
-				lblBirthdate.FontSize *= Screensize.heightfactor;
-				lblAge.FontSize *= Screensize.heightfactor;
-				lblHeight.FontSize *= Screensize.heightfactor;
-				lblWeight.FontSize *= Screensize.heightfactor;
-				lblMobileNo.FontSize *= Screensize.heightfactor;
-				gender.FontSize *= Screensize.heightfactor;
-				bid.FontSize *= Screensize.heightfactor;
-				age.FontSize *= Screensize.heightfactor;
-				height.FontSize *= Screensize.heightfactor;
-				weight.FontSize *= Screensize.heightfactor;
-				mobileno.FontSize *= Screensize.heightfactor;
-				rem.FontSize *= Screensize.heightfactor;
-				auto.FontSize *= Screensize.heightfactor;
-				save.FontSize *= Screensize.heightfactor;
+                layout.Spacing = (225 * Screensize.heightfactor) / 9;
+                layout.Padding = new Thickness((135 * Screensize.heightfactor)/9);
+				imgProfile.WidthRequest = 100 * Screensize.widthfactor;
+				imgProfile.HeightRequest = 120 * Screensize.heightfactor;
+				lblName.FontSize = 16 * Screensize.heightfactor;
+				lblEmail.FontSize = 15 * Screensize.heightfactor;
+				lblGender.FontSize = 16 * Screensize.heightfactor;
+				lblBirthdate.FontSize = 16 * Screensize.heightfactor;
+				lblAge.FontSize = 16 * Screensize.heightfactor;
+				lblHeight.FontSize = 16 * Screensize.heightfactor;
+				lblWeight.FontSize = 16 * Screensize.heightfactor;
+				lblMobileNo.FontSize = 16 * Screensize.heightfactor;
+				gender.FontSize = 16 * Screensize.heightfactor;
+				bid.FontSize = 16 * Screensize.heightfactor;
+				age.FontSize = 16 * Screensize.heightfactor;
+				height.FontSize = 16 * Screensize.heightfactor;
+				weight.FontSize = 16 * Screensize.heightfactor;
+				mobileno.FontSize = 16 * Screensize.heightfactor;
+				rem.FontSize = 16 * Screensize.heightfactor;
+				auto.FontSize = 16 * Screensize.heightfactor;
+				save.FontSize = 16 * Screensize.heightfactor;
             }
 			switchAutoLogin.IsToggled = Demographics.sharedInstance.isAutoLogin;
 			switchRemUsername.IsToggled = Demographics.sharedInstance.isRememberUsername;

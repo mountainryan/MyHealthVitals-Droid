@@ -12,7 +12,7 @@
                     RelativeLayout.YConstraint="{ConstraintExpression Type=Constant,Constant=0}"
                   >
                 
-                <StackLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <StackLayout x:Name="FakeToolbar"  HeightRequest="75" BackgroundColor="White" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="0" IsVisible="true">
                     <local:MyButton x:Name="backarrow" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
                     <local:MyButton x:Name="backbtn" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="30" />
 
@@ -20,6 +20,14 @@
                     
                         <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
                 </StackLayout> 
+                <AbsoluteLayout x:Name="FakeToolbar2"  HeightRequest="55" BackgroundColor="White" IsVisible="false">
+                    <local:MyButton x:Name="backarrow2" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgBackArrow.png" />
+                    <local:MyButton x:Name="backbtn2" Clicked="btnPrevClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Text="Main Screen" TextColor="{StaticResource colorThemeBlue}" FontSize="16" />
+
+                    <Label x:Name="titlebtn2" XAlign="Center" YAlign="Center" VerticalOptions="Center" FontAttributes="Bold" BackgroundColor="Transparent" Text="Calibration Screen" TextColor="Black" FontSize="16" />
+                    
+                        <!--<Button x:Name="listbtn" Clicked="btnListClicked" VerticalOptions="Center" BackgroundColor = "Transparent" Image = "imgList.png" HorizontalOptions="EndAndExpand"/>-->
+                </AbsoluteLayout> 
                 
 			<ScrollView><!-- RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">-->
 				<StackLayout x:Name = "layout" Spacing="12">
@@ -28,11 +36,11 @@
 					<StackLayout x:Name = "layoutButton" Orientation="Horizontal" Spacing="10" Margin="15,0,0,0">
 						<StackLayout BackgroundColor="Yellow" Padding="1">
 							<StackLayout Padding="0" BackgroundColor="{StaticResource colorBlackBg}">
-								<Button x:Name = "button" Clicked="btnCalibrateClicked"  BackgroundColor = "Transparent" Text="Re-calibrate" HeightRequest="35" Margin="10,0,10,0" TextColor="Yellow" />
+								<Button x:Name = "button" Clicked="btnCalibrateClicked"  BackgroundColor = "Transparent" Text="Re-calibrate" HeightRequest="40" Margin="10,0,10,0" TextColor="Yellow" />
 							</StackLayout>
 						</StackLayout>
-						<Label x:Name = "labelpef" WidthRequest="76" XAlign="Start" Text="PEF(L/min)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
-						<Label x:Name = "labelfev1" WidthRequest="76" XAlign="Center" Text="FEV1(L)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
+						<Label x:Name = "labelpef" WidthRequest="80" XAlign="Start" Text="PEF(L/min)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
+						<Label x:Name = "labelfev1" WidthRequest="80" XAlign="Center" Text="FEV1(L)" FontSize="14" TextColor="{StaticResource colorThemeBlue}" YAlign="Center" />
 					</StackLayout>
 					
 					<ListView BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="280" x:Name="listView" HasUnevenRows="true">
@@ -40,7 +48,7 @@
 							<DataTemplate>
 								<ViewCell>
 										<StackLayout x:Name="calholder" Spacing="{Binding spacing}" Orientation="Horizontal" HeightRequest="{Binding stackheight}">
-											<Label x:Name="readnum" Margin="15,0,0,0" FontSize="{Binding fontsize}" Text="{Binding indexText}" WidthRequest="215" HeightRequest="80" YAlign="Center" TextColor="White">
+											<Label x:Name="readnum" Margin="15,0,0,0" FontSize="{Binding fontsize}" Text="{Binding indexText}" WidthRequest="215" YAlign="Center" TextColor="White">
 											</Label>
 											<Label x:Name="peflbl"  FontSize="{Binding fontsize}" Text="{Binding pefString}" YAlign="Center" XAlign="Center" WidthRequest="150" TextColor="White" />
 											<Label x:Name="fevlbl"  FontSize="{Binding fontsize}" Text="{Binding fev1String}" XAlign="Center" YAlign="Center" WidthRequest="180" TextColor="White" />
@@ -67,7 +75,7 @@
 			</StackLayout>
             -->
 			<StackLayout BackgroundColor="{StaticResource colorBlackBg}" HeightRequest="20" Margin="0,-20,0,0" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Spacing="0">
-				<Label VerticalOptions="CenterAndExpand" Text="ICUCARE LLC - Copyright - 2017" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="15" Margin="0,0,0,4">
+				<Label VerticalOptions="CenterAndExpand" Text="ISeeYouCare Inc. - Copyright - 2017" TextColor="{StaticResource ColorLightGray}" XAlign="Center" FontSize="15" Margin="0,0,0,4">
 				</Label>
 			</StackLayout>
 			<!--loading layout starts-->

@@ -15,20 +15,44 @@ namespace MyHealthVitals
 		{
             NavigationPage.SetHasNavigationBar(this, false);
 			InitializeComponent();
-			FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
-			titlebtn.FontSize = 24 * Screensize.heightfactor;
-            backbtn.FontSize = 24 * Screensize.heightfactor;
+			FakeToolbar.Children.Add(
+				backarrow,
+				// Adds the Button on the top left corner, with 10% of the navbar's width and 100% height
+				new Rectangle(0, 0.5, 0.1, 1),
+				// The proportional flags tell the layout to scale the value using [0, 1] -> [0%, 100%]
+				AbsoluteLayoutFlags.HeightProportional | AbsoluteLayoutFlags.WidthProportional
+				);
 
-            label.FontSize *= Screensize.heightfactor;
-            Date.FontSize *= Screensize.heightfactor;
-            PEF.FontSize *= Screensize.heightfactor;
-            FEV.FontSize *= Screensize.heightfactor;
+			FakeToolbar.Children.Add(
+				backbtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.1, 0.5, 0.3, 1),
+				AbsoluteLayoutFlags.All
+			);
+			FakeToolbar.Children.Add(
+				titlebtn,
+				// Using 0.5 will center it and the layout takes the size of the element into account
+				// 0.5 will center, 1 will right align
+				// Adds in the center, with 90% of the navbar's width and 100% of height
+				new Rectangle(0.6, 0.5, 0.5, 1),
+				AbsoluteLayoutFlags.All
+			);
+			FakeToolbar.HeightRequest = 55 * Screensize.heightfactor;
+			titlebtn.FontSize = 16 * Screensize.heightfactor;
+			backbtn.FontSize = 16 * Screensize.heightfactor;
+
+            label.FontSize = 30 * Screensize.heightfactor;
+            Date.FontSize = 16 * Screensize.heightfactor;
+            PEF.FontSize = 16 * Screensize.heightfactor;
+            FEV.FontSize = 16 * Screensize.heightfactor;
             //Dateval.FontSize *= Screensize.heightfactor;
             //PEFval.FontSize *= Screensize.heightfactor;
             //FEVval.FontSize *= Screensize.heightfactor;
-			Date.WidthRequest *= Screensize.widthfactor;
-			PEF.WidthRequest *= Screensize.widthfactor;
-			FEV.WidthRequest *= Screensize.widthfactor;
+            Date.WidthRequest = (370 * Screensize.widthfactor) / 2;
+            PEF.WidthRequest  = (370 * Screensize.widthfactor) / 4.111111;
+            FEV.WidthRequest = (370 * Screensize.widthfactor) / 5.285714;
 			//Dateval.WidthRequest *= Screensize.widthfactor;
 			//PEFval.WidthRequest *= Screensize.widthfactor;
 			//FEVval.WidthRequest *= Screensize.widthfactor;

@@ -22,10 +22,10 @@ namespace MyHealthVitals
 			}
             else if (Device.Idiom == TargetIdiom.Phone)
             {
-				itemdate.FontSize *= Screensize.heightfactor;
-				itemdate.WidthRequest *= Screensize.widthfactor;
-				item.FontSize *= Screensize.heightfactor;
-				item.WidthRequest *= Screensize.widthfactor;
+				itemdate.FontSize = 16 * Screensize.heightfactor;
+				itemdate.WidthRequest = 190 * Screensize.widthfactor;
+				item.FontSize = 16 * Screensize.heightfactor;
+				item.WidthRequest = 180 * Screensize.widthfactor;
             }
 		}
 
