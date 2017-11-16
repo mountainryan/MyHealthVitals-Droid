@@ -1,10 +1,6 @@
-﻿<Properties StartupConfiguration="{D46CA70E-D643-4A29-9B54-FC25DAE9558A}|Default" GitUserInfo="UsingGIT">
+﻿<Properties StartupConfiguration="{9B1D70ED-D6F1-4366-8A75-5738241DEC81}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workbench ActiveDocument="Projects Status">
     <Files>
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml" Line="18" Column="1" />
-      <File FileName="MyHealthVitals/Models/Credential.cs" Line="26" Column="24" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml.cs" Line="63" Column="60" />
-      <File FileName="MyHealthVitals/Views/MyRespCheck/RespHomePage.xaml" Line="134" Column="15" />
       <File FileName="Projects Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
@@ -13,7 +9,6 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.11F233EF-1276-46D8-9D10-67178FDC94A1" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.DFE6A3D2-C47A-40F1-8ED1-0ACA4512E395" />
 </Properties>
