@@ -360,7 +360,7 @@ namespace MyHealthVitals
 			isStopPolling = false;
 			Debug.WriteLine("Start polling!");
 
-			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(25), () =>
+			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(5), () =>
 			{
 				if (isStopPolling == false)
 				{

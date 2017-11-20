@@ -613,7 +613,7 @@ namespace MyHealthVitals.Droid
             
             var popup = new EntryPopup("Email this report? If yes, please enter email address", string.Empty, "Yes", "No");
 			popup.PopupClosed += (o, closedArgs) => {
-                if (closedArgs.Button == "OK")
+                if (closedArgs.Button == "Yes")
                 {
                     //use it as closedArgs.Text
                     Debug.WriteLine("my text: " + closedArgs.Text);

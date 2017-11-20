@@ -1399,13 +1399,7 @@ namespace MyHealthVitals
 
             if (bpm == 9999)
             {
-                if (BLE_val.BLE_value == 1)
-                {
-                    BLECentralManager.sharedInstance.pc100ServHandler.getBPreading();
-                }else{
-                    //not sure how to write using the other BLE controller yet
-                }
-
+                BLECentralManager.sharedInstance.pc100ServHandler.getBPreading();
             }
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -1572,8 +1566,9 @@ namespace MyHealthVitals
 		void btnEcgReportClicked(object sender, System.EventArgs e)
 		{
 			Debug.WriteLine("vitalsData = " + vitalsData);
-			//  bool ret = await DependencyService.Get<IFileHelper>().sentToEmail("" + ".pdf");
-			//==================
+            //  bool ret = await DependencyService.Get<IFileHelper>().sentToEmail("" + ".pdf");
+            //==================
+            Task_vars.comingfrom = "MainPage";
 			startECGReportPage();
 		}
 

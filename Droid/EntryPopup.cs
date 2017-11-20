@@ -21,7 +21,7 @@ namespace MyHealthVitals.Droid
             Buttons = buttons.ToList();
         }
 
-        public EntryPopup(string title, string text) : this(title, text, "OK", "Cancel")
+        public EntryPopup(string title, string text) : this(title, text, "Yes", "No")
         {
         }
 

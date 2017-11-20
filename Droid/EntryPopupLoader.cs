@@ -15,24 +15,27 @@ namespace MyNameSpace.Droid.Implementation
 			var alert = new AlertDialog.Builder(Forms.Context);
 
 			var edit = new EditText(Forms.Context) { Text = popup.Text };
+            //edit.SetPadding(20,0,20,0);
+            edit.SetPaddingRelative(50,20,20,20);
+
 			alert.SetView(edit);
 
 			alert.SetTitle(popup.Title);
 
-			alert.SetPositiveButton("OK", (senderAlert, args) =>
+			alert.SetPositiveButton("Yes", (senderAlert, args) =>
 			{
 				popup.OnPopupClosed(new EntryPopupClosedArgs
 				{
-					Button = "OK",
+					Button = "Yes",
 					Text = edit.Text
 				});
 			});
 
-			alert.SetNegativeButton("Cancel", (senderAlert, args) =>
+			alert.SetNegativeButton("No", (senderAlert, args) =>
 			{
 				popup.OnPopupClosed(new EntryPopupClosedArgs
 				{
-					Button = "Cancel",
+					Button = "No",
 					Text = edit.Text
 				});
 			});

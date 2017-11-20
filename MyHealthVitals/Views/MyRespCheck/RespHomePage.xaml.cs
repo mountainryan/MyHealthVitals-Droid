@@ -517,23 +517,42 @@ namespace MyHealthVitals
 					pefReading.Date = fevReading.Date;
 					logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, currReading.Pef, currReading.Fev1));
 
-					//await pefReading.PostReadingToService();
-					//await fevReading.PostReadingToService();
+                    //await pefReading.PostReadingToService();
+                    //await fevReading.PostReadingToService();
 
-					pefReading.PostReadingToService();
-					fevReading.PostReadingToService();
+                    if (pefReading.EnglishValue != -1 && fevReading.EnglishValue != -1)
+                    {
 
-					clearReadingDisplay();
+                        pefReading.PostReadingToService();
+                        fevReading.PostReadingToService();
 
-					//saved pop up
-					if (Device.Idiom == TargetIdiom.Tablet)
-					{
-						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", true, "OK", null);
-					}
-					else
-					{
-						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", false, "OK", null);
-					}
+                        clearReadingDisplay();
+
+                        //saved pop up
+                        if (Device.Idiom == TargetIdiom.Tablet)
+                        {
+                            var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", true, "OK", null);
+                        }
+                        else
+                        {
+                            var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", false, "OK", null);
+                        }
+
+                    }
+                    else
+                    {
+						clearReadingDisplay();
+
+						//saved pop up
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading Failure", "Unable to save reading.", true, "OK", null);
+						}
+						else
+						{
+							var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading Failure", "Unable to save reading.", false, "OK", null);
+						}
+                    }
 
 					//await DisplayAlert("Reading", "Reading saved.", "OK");
 				}

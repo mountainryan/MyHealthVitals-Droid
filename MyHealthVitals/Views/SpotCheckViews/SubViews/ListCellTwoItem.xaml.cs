@@ -70,6 +70,7 @@ namespace MyHealthVitals
 				var newPage = new EcgReport(fileName, Demographics.sharedInstance.FirstName, true);
 				newPage.Title = "ECG Report";
                 //Navigation.PushAsync(newPage);
+                Task_vars.comingfrom = "ListPage";
 				await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(newPage));
 			}
 			else if (secondItem.Text.Equals("Saved"))

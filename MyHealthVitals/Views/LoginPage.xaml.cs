@@ -20,6 +20,7 @@ namespace MyHealthVitals
         public static long ecgfilelength;
         public static string patient_name;
 		public static string gifpath;
+        public static string comingfrom;
 	}
 	public class BLEadapter
 	{

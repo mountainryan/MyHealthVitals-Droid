@@ -520,10 +520,37 @@ namespace MyHealthVitals
 				Reading fevReading = new Reading("FEV1", highestReading.Fev1, 9, false, null, null);
 				Reading pefReading = new Reading("PEF", highestReading.Pef, 9, false, null, null);
 
+                if (fevReading.EnglishValue != -1 && pefReading.EnglishValue != -1)
+                {
 
-				logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, highestReading.Pef, highestReading.Fev1));
-				await pefReading.PostReadingToService();
-				await fevReading.PostReadingToService();
+                    logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, highestReading.Pef, highestReading.Fev1));
+                    await pefReading.PostReadingToService();
+                    await fevReading.PostReadingToService();
+                    layoutLoading.IsVisible = false;
+                    //saved pop up
+                    if (Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading", "Calibrated readings saved.", true, "OK", null);
+                    }
+                    else
+                    {
+                        var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading", "Calibrated readings saved.", false, "OK", null);
+                    }
+                }
+                else
+                {
+					layoutLoading.IsVisible = false;
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading", "Unable to save calibrated readings.", true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading", "Unable to save calibrated readings.", false, "OK", null);
+					}
+					
+                }
+
 				await this.Navigation.PopAsync();
 			}
 			catch

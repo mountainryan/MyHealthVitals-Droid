@@ -55,7 +55,7 @@
 						<local:MyButton x:Name="btn100" FontSize="16" Clicked="btnPC100Clicked"  BackgroundColor = "Transparent" Font="Middle" TextColor="White"  Text="BP, Pulse, SpO2" />
 					</StackLayout>
 				</StackLayout>
-				<StackLayout Spacing="0" HorizontalOptions="Center">
+				<StackLayout Spacing="0" HorizontalOptions="Center" Margin="0,0,0,30">
 					<Button  x:Name = "weightScales" Clicked="btnScaleClicked"  BackgroundColor = "Transparent" Image="WeightScales.png"/>
 					<local:MyButton x:Name="btnweight" FontSize="16" Clicked="btnScaleClicked"  BackgroundColor = "Transparent" Font="Middle" TextColor="White" WidthRequest="150" Text="Weight, BMI Scale" />
 				</StackLayout>

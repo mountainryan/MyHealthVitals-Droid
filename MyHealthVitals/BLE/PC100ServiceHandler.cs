@@ -530,7 +530,7 @@ namespace MyHealthVitals
 			{
 				Debug.WriteLine("glucose");
 				// this is needed because device is reading same data more than once to we are tracking glucose reading stop and sending the last reading
-				if (glucoseResult == -1)
+				if (glucoseResult == -1 || glucoseResult == -100)
 				{
 					Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(5000), () =>
 					{

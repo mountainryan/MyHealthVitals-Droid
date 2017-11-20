@@ -330,10 +330,40 @@ namespace MyHealthVitals
 					var newPage = new ParameterItemDetailNew(10, ParametersPageLocal.allReadings);
 				}
 
-				//  await this.Navigation.PushModalAsync(newPage);
-				//  this.Navigation.RemovePage(this);
+				if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + "ECG.pdf"))
+                {
+                    if (Task_vars.comingfrom == "MainPage")
+                    {
+                        await Navigation.PopModalAsync();
+                    }else{
+                        await Navigation.PopAsync();
+                    }
+                }else{
+					if (Task_vars.comingfrom == "MainPage")
+					{
+                        await Navigation.PopAsync();
+					}else{
+						await Navigation.PopModalAsync();
+					}
+                }
 			}
-			await Navigation.PopModalAsync();
+            else
+            {
+				if (Task_vars.comingfrom == "MainPage")
+				{
+					await Navigation.PopAsync();
+				}
+				else
+				{
+					await Navigation.PopModalAsync();
+				}
+
+            }
+
+
+            //await Navigation.PopModalAsync();
+
+			
 		}
 
 		private void setGobackButton()

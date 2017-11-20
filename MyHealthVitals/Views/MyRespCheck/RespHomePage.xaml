@@ -78,7 +78,7 @@
 						<local:RoundedBox x:Name = "box2"  RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.06}" BackgroundColor="{StaticResource ColorLightGray}" HeightRequest="60" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.88}"/>
 						-->
 						<!--<Frame CornerRadius="10" Padding="0"></Frame>-->
-						<StackLayout x:Name ="layoutbox2"  BackgroundColor="Transparent" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Margin="15,0,15,20" Padding="0" Spacing="0" >
+						<StackLayout x:Name ="layoutbox2"  BackgroundColor="Transparent" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Margin="15,0,15,40" Padding="0" Spacing="0" >
 							<local:MyButton x:Name = "save" FontSize="14" Clicked="btnSaveClicked" Text="SAVE" HeightRequest="60" BorderRadius="50" TextColor="White" BackgroundColor="{StaticResource colorThemeBlue}" />
 						</StackLayout>
 							
@@ -119,7 +119,7 @@
 				<local:MyButton x:Name="btncancelread" Clicked="btnCancelTakeReadingClicked" Margin="0,2,5,0" BackgroundColor = "Transparent" Image="deleteicon.png" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1,Constant = -60}" HeightRequest="40" WidthRequest="40" />
 				<StackLayout Margin="20,20,20,0" Spacing="20" RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" Padding="10">
 					<Image x:Name="icupng" Aspect="AspectFit" Source="ISEEYOUCARE_logo.png" Margin="0,15,0,0" HeightRequest="120" WidthRequest="250" />
-					<Label x:Name="iculbl" HorizontalOptions="Center" WidthRequest="300" Text="ISeeYouCare‘s universally accessible patient-centered health data echo system is transforming healthcare and enabling people to live a healthier life, one patient at a time!" TextColor="White" FontSize="20" XAlign="Center" />
+					<Label x:Name="iculbl" HorizontalOptions="Center" WidthRequest="300" Text="ISeeYouCare‘s universally accessible patient-centered health data ecosystem is transforming healthcare and enabling people to live a healthier life, one patient at a time!" TextColor="White" FontSize="20" XAlign="Center" />
 					<!--					<ActivityIndicator Margin="50" Color="Green" Scale="2" IsVisible="true" IsRunning="true" />-->
 					<WebView IsEnabled="false"  HorizontalOptions="Center" BackgroundColor="{StaticResource colorBlackBg}" x:Name="gifWebView" HeightRequest="95" WidthRequest="95" />
 				</StackLayout>
