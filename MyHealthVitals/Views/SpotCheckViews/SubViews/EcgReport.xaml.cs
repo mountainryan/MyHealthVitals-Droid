@@ -604,7 +604,7 @@ namespace MyHealthVitals
 		}
 		public void FileUpload()
 		{
-			//var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+			//var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
 			FileData ecgfile = new FileData();
 
 			//ecgfile.Id = 2643;
@@ -626,10 +626,10 @@ namespace MyHealthVitals
 			ecgfile.Size = Task_vars.ecgfilelength;
 			ecgfile.UploadDate = DateTime.Now;
 
-			//var msg = PostFileToService(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
-			//var msg = PostFileToService(Credential.BASE_URL_TEST + $"Patient/574/File", ecgfile);
+			//var msg = PostFileToService(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
+			//var msg = PostFileToService(Credential.BASE_URL + $"Patient/574/File", ecgfile);
 
-			FPostAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile, 1);
+			FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile, 1);
 
 
 		}

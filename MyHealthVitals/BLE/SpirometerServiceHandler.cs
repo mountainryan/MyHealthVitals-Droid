@@ -298,7 +298,7 @@ namespace MyHealthVitals
             startPolling2();
         }
 
-		public async void discoverServices(IDevice device)
+		public async Task discoverServices(IDevice device)
 		{
 			//uiController = (BLEReadingUpdatableSpiroMeter)controller;
 			connectedDevice = device;

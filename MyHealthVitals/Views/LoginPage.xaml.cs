@@ -117,8 +117,10 @@ namespace MyHealthVitals
         {
             //DependencyService.Get<IFileHelper>().delBLEinfo();
 
-            var result = 142^1;
-            Debug.WriteLine("result ==== "+result);
+            //var result = 193^2;
+            //string hexval = result.ToString("X");
+            //Debug.WriteLine("result ==== "+result);
+            //Debug.WriteLine("hexval == "+hexval);
 
             base.OnAppearing();
 

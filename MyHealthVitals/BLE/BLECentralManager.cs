@@ -7,8 +7,10 @@ using Plugin.BLE.Abstractions.Contracts;
 using Plugin.BLE.Abstractions.Exceptions;
 using System.Threading;
 using System.Threading.Tasks;
+using nexus.core;
 using nexus.core.logging;
 using nexus.protocols.ble;
+using nexus.protocols.ble.connection;
 using Xamarin.Forms;
 
 namespace MyHealthVitals
@@ -16,7 +18,7 @@ namespace MyHealthVitals
 	public interface IBLEDeviceServiceHandler
 	{
 		void C_ValueUpdated(object sender, Plugin.BLE.Abstractions.EventArgs.CharacteristicUpdatedEventArgs e);
-		void discoverServices(IDevice device);
+		Task discoverServices(IDevice device);
 		void reconnectToDevice(IDevice device);
         void GetData(Byte[] bytes);
 
@@ -156,7 +158,7 @@ namespace MyHealthVitals
 						// do things with gattServer here... (see further examples...)
 						Debug.WriteLine("Successfully connected!!!!");
 						//show that we are connected
-						DeviceConnected(deviceName);
+						await DeviceConnected(deviceName);
 						
 
 						foreach (var guid in await gattServer.ListAllServices())
@@ -174,6 +176,17 @@ namespace MyHealthVitals
 							spiroServHandler.discoverServices2(deviceID);
 						}
 
+						gattServer.Subscribe(
+            			   c =>
+            			   {
+            				   if (c == ConnectionState.Disconnected)
+            				   {
+            					   //m_dialogManager.Toast("Device disconnected");
+
+            					   CloseConnection(deviceName);
+            				   }
+            				   //Connection = c.ToString();
+            			   });
 
 						NotifyChar(gattServer, deviceName);
 
@@ -193,6 +206,42 @@ namespace MyHealthVitals
             }
 
         }
+
+		public void CloseConnection(string deviceName)
+		{
+			if (BLEdata.gattserver != null)
+			{
+				//Log.Trace("Closing connection to GATT Server. state={0:g}", m_gattServer?.State);
+				BLEdata.gattserver.Dispose();
+			}
+
+			try
+			{
+				if (deviceName == "PC_300SNT")
+				{
+					spotServHandler.uiController.ShowConnection("PC-300 Connection Lost.", false);
+				}
+				else if (deviceName == "BLE-MSA")
+				{
+					spiroServHandler.stopPolling();
+					spiroServHandler.uiController.updateDeviceStateOnUI("Spirometer Connection Lost.", false);
+				}
+				else if (deviceName == "PC-100")
+				{
+					pc100ServHandler.uiController.ShowConnection("PC-100 Connection Lost.", false);
+				}
+				else if (deviceName == "eBody-Scale")
+				{
+					scaleServHandle.uiController.ShowConnection("Scale Connection Lost.", false);
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("Connection lost exception : " + ex.Message);
+			}
+			//Services.Clear();
+			//IsBusy = false;
+		}
 
         public void NotifyChar(nexus.protocols.ble.connection.IBleGattServer gattServer, string deviceName)
         {						
@@ -507,17 +556,17 @@ namespace MyHealthVitals
 					}
 				case "PC_300SNT":
 					{
-						spotServHandler.uiController.ShowConcetion("Failed to connect to PC-300.", false);
+						spotServHandler.uiController.ShowConnection("Failed to connect to PC-300.", false);
 						break;
 					}
 				case "PC-100":
 					{
-						pc100ServHandler.uiController.ShowConcetion("Failed to connect to PC-100.", false);
+						pc100ServHandler.uiController.ShowConnection("Failed to connect to PC-100.", false);
 						break;
 					}
 				case "eBody-Scale":
 					{
-						scaleServHandle.uiController.ShowConcetion("Failed to connect to eBody-Scale.", false);
+						scaleServHandle.uiController.ShowConnection("Failed to connect to eBody-Scale.", false);
 						break;
 					}
 				default: break;
@@ -573,7 +622,7 @@ namespace MyHealthVitals
 				// do things with gattServer here... (see further examples...)
 				Debug.WriteLine("Successfully connected!!!!");
 				//show that we are connected
-				DeviceConnected(deviceName);
+				await DeviceConnected(deviceName);
                 if (deviceName == "BLE-MSA")
                 {
                     //run discoverservices2
@@ -588,6 +637,18 @@ namespace MyHealthVitals
 						Debug.WriteLine($"  characteristic: {guid2}");
 					}
 				}
+
+				gattServer.Subscribe(
+				   c =>
+				   {
+					   if (c == ConnectionState.Disconnected)
+					   {
+						   //m_dialogManager.Toast("Device disconnected");
+
+						   CloseConnection(deviceName);
+					   }
+					   //Connection = c.ToString();
+				   });
 
 				NotifyChar(gattServer, deviceName);
 
@@ -681,7 +742,7 @@ namespace MyHealthVitals
             return connected;
         }
 
-        public void DeviceConnected(string deviceName)
+        public async Task DeviceConnected(string deviceName)
         {
 			switch (deviceName)
 			{
@@ -697,21 +758,23 @@ namespace MyHealthVitals
 						//Debug.WriteLine("PC_300SNT device id = " + e.Device.Id.ToString());
 
 						//spotServHandler.discoverServices(e.Device);
-						spotServHandler.uiController.ShowConcetion("Connected.", true);
+						await spotServHandler.uiController.ShowConnection("Connected.", true);
+                        //await spotServHandler.uiController.checkBattery();
 						break;
 					}
 				case "PC-100":
 					{
 						//Debug.WriteLine("PC-100 device id = " + e.Device.Id.ToString());
 						//pc100ServHandler.discoverServices(e.Device);
-						pc100ServHandler.uiController.ShowConcetion("Connected.", true);
+						await pc100ServHandler.uiController.ShowConnection("Connected.", true);
+                        //await pc100ServHandler.uiController.checkBattery();
 						break;
 					}
 				case "eBody-Scale":
 					{
 						//Debug.WriteLine("eBody-Scale device id = " + e.Device.Id.ToString());
 						//scaleServHandle.discoverServices(e.Device);
-						scaleServHandle.uiController.ShowConcetion("Connected.", true);
+						await scaleServHandle.uiController.ShowConnection("Connected.", true);
 						break;
 					}
 
@@ -720,7 +783,7 @@ namespace MyHealthVitals
 			}
         }
 
-		private void Adapter_DeviceConnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
+		private async void Adapter_DeviceConnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
 			Debug.WriteLine("Adapter_DeviceConnected: " + e.Device.Name);
 			//	connectedDevices.Add(e.Device);
@@ -732,7 +795,7 @@ namespace MyHealthVitals
 			{
 				case "BLE-MSA":
 					{
-						spiroServHandler.discoverServices(e.Device);
+						await spiroServHandler.discoverServices(e.Device);
 						break;
 					}
 
@@ -740,22 +803,24 @@ namespace MyHealthVitals
 					{
                         Debug.WriteLine("PC_300SNT device id = "+e.Device.Id.ToString());
                              
-						spotServHandler.discoverServices(e.Device);
-						spotServHandler.uiController.ShowConcetion("Connected.", true);
+						await spotServHandler.discoverServices(e.Device);
+						await spotServHandler.uiController.ShowConnection("Connected.", true);
+                        //await spotServHandler.uiController.checkBattery();
 						break;
 					}
 				case "PC-100":
 					{
                         Debug.WriteLine("PC-100 device id = " + e.Device.Id.ToString());
-						pc100ServHandler.discoverServices(e.Device);
-						pc100ServHandler.uiController.ShowConcetion("Connected.", true);
+						await pc100ServHandler.discoverServices(e.Device);
+						await pc100ServHandler.uiController.ShowConnection("Connected.", true);
+                        //await pc100ServHandler.uiController.checkBattery();
 						break;
 					}
 				case "eBody-Scale":
                     {
                         Debug.WriteLine("eBody-Scale device id = " + e.Device.Id.ToString());
-						scaleServHandle.discoverServices(e.Device);
-						scaleServHandle.uiController.ShowConcetion("Connected.", true);
+						await scaleServHandle.discoverServices(e.Device);
+						await scaleServHandle.uiController.ShowConnection("Connected.", true);
 						break;
                     }
 					
@@ -775,7 +840,7 @@ namespace MyHealthVitals
             {
 				if (e.Device.Name == "PC_300SNT")
 				{
-					spotServHandler.uiController.ShowConcetion("PC-300 Connection Lost.", false);
+					spotServHandler.uiController.ShowConnection("PC-300 Connection Lost.", false);
 				}
 				else if (e.Device.Name == "BLE-MSA")
 				{
@@ -784,11 +849,11 @@ namespace MyHealthVitals
 				}
 				else if (e.Device.Name == "PC-100")
 				{
-					pc100ServHandler.uiController.ShowConcetion("PC-100 Connection Lost.", false);
+					pc100ServHandler.uiController.ShowConnection("PC-100 Connection Lost.", false);
 				}
 				else if (e.Device.Name == "eBody-Scale")
 				{
-					scaleServHandle.uiController.ShowConcetion("Scale Connection Lost.", false);
+					scaleServHandle.uiController.ShowConnection("Scale Connection Lost.", false);
 				}
             }
             catch (Exception ex)
@@ -802,7 +867,7 @@ namespace MyHealthVitals
 		{
 			if (scanningDeviceName == "PC_300SNT")
 			{
-				spotServHandler.uiController.ShowConcetion("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
+				spotServHandler.uiController.ShowConnection("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
 			}
 
 			else if (scanningDeviceName == "BLE-MSA")
@@ -813,12 +878,12 @@ namespace MyHealthVitals
 
 			else if (scanningDeviceName == "PC-100")
 			{
-				pc100ServHandler.uiController.ShowConcetion("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
+				pc100ServHandler.uiController.ShowConnection("Scanning time out. Please, check if Spot Check Monitor is turned on.", false);
 			}
 
 			else if (scanningDeviceName == "eBody-Scale")
 			{
-				scaleServHandle.uiController.ShowConcetion("Scanning time out. Please check if Scale is turned on.", false);
+				scaleServHandle.uiController.ShowConnection("Scanning time out. Please check if Scale is turned on.", false);
 			}
 			Debug.WriteLine("Adapter_ScanTimeoutElapsed.");
 		}
@@ -829,7 +894,7 @@ namespace MyHealthVitals
 			Debug.WriteLine(e.Device.Name + "  Adapter_DisConnection");
 			if (e.Device.Name == "PC_300SNT")
 			{
-				spotServHandler.uiController.ShowConcetion("PC-300 DisConnection.", false);
+				spotServHandler.uiController.ShowConnection("PC-300 DisConnection.", false);
 			}
 			else if (e.Device.Name == "BLE-MSA")
 			{
@@ -838,11 +903,11 @@ namespace MyHealthVitals
 			}
 			else if (e.Device.Name == "PC-100")
 			{
-				pc100ServHandler.uiController.ShowConcetion("PC-100 DisConnection.", false);
+				pc100ServHandler.uiController.ShowConnection("PC-100 DisConnection.", false);
 			}
 			else if (e.Device.Name == "eBody-Scale")
 			{
-				scaleServHandle.uiController.ShowConcetion("Scale DisConnection.", false);
+				scaleServHandle.uiController.ShowConnection("Scale DisConnection.", false);
 			}
 		}
 		public async void disConnectAll(string exceptDevice = "")
@@ -900,17 +965,17 @@ namespace MyHealthVitals
 						}
 					case "PC_300SNT":
 						{
-							spotServHandler.uiController.ShowConcetion("Bluetooth is turned off.", false);
+							spotServHandler.uiController.ShowConnection("Bluetooth is turned off.", false);
 							break;
 						}
 					case "PC-100":
 						{
-							pc100ServHandler.uiController.ShowConcetion("Bluetooth is turned off.", false);
+							pc100ServHandler.uiController.ShowConnection("Bluetooth is turned off.", false);
 							break;
 						}
 					case "eBody-Scale":
 						{
-							scaleServHandle.uiController.ShowConcetion("Bluetooth is turned off.", false);
+							scaleServHandle.uiController.ShowConnection("Bluetooth is turned off.", false);
 							break;
 						}
 					default: break;

@@ -61,7 +61,7 @@ namespace MyHealthVitals
 			var content = new StringContent(JsonConvert.SerializeObject(this), Encoding.UTF8, "application/json");
             Debug.WriteLine("json stuff: "+ content.ToString());
 
-			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+			var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
             Debug.WriteLine("sent to :"+serviceUri.ToString());
 
 			var response = await client.PostAsync(serviceUri, content);
@@ -81,7 +81,7 @@ namespace MyHealthVitals
 			HttpClient client = new HttpClient();
 			//client.MaxResponseContentBufferSize = 256000;
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
-			var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+			var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
 	
 			Debug.WriteLine("serviceUri = " +serviceUri);
 

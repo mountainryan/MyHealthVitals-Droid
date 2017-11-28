@@ -299,7 +299,7 @@ namespace MyHealthVitals.iOS
 
         public byte[] FileRead(string filepath)
         {
-            //var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+            //var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
             //Category = "ECG";
             return File.ReadAllBytes(filepath);
 

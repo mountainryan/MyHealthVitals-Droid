@@ -111,7 +111,7 @@ namespace MyHealthVitals
 			}
 		}
 
-		public async void discoverServices(IDevice device)
+		public async Task discoverServices(IDevice device)
 		{
 			this.connectedDevice = device;
 			//this.uiController = (IBluetoothCallBackUpdatable)controller;

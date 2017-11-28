@@ -512,14 +512,15 @@ namespace MyHealthVitals
         }
 
 
-		public async void ShowConcetion(String message, Boolean isConnected)
+		public async Task ShowConnection(String message, Boolean isConnected)
 		{
 
-			Debug.WriteLine("ShowConcetion  mainpage  : "+message);
-			//Xamarin.Forms.Device.BeginInvokeOnMainThread();
+			Debug.WriteLine("ShowConnection  mainpage  : "+message);
+			
 			Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
 				layoutLoading.IsVisible = false;
+            
 			
 				if (isConnected)
 				{
@@ -530,7 +531,7 @@ namespace MyHealthVitals
 
 				if (!isConnected && this.deviceName == "eBody-Scale")
 				{
-					//getLatestWeight(message);
+					getLatestWeight(message);
 
 					/*
 					if (Device.Idiom == TargetIdiom.Tablet)
@@ -546,25 +547,46 @@ namespace MyHealthVitals
 				}
 				else
 				{
+                    Debug.WriteLine("made it to the display!");
+                    //await DisplayAlert(deviceName, message, "OK");
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
 						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
-					}
+                        //var ret = DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
+					    Debug.WriteLine("ret val = " + ret.ToString());
+                    }
 					else
 					{
 						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
-					}
+                        //var ret = DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
+					    Debug.WriteLine("ret val = " + ret.ToString());
+                    }
 
 				}
 
-					//if (this.deviceName != "eBody-Scale")
-					//{
-					//await DisplayAlert(deviceName, message, "OK");
-					//}
-
+                //if (this.deviceName != "eBody-Scale")
+                //{
+                //await DisplayAlert(deviceName, message, "OK");
+                //}
+                if (isConnected) {await checkBattery(); }
 				
 			}));
-			//}));
+
+
+			//});
+		}
+
+		public async Task checkBattery()
+		{
+			//then call getBatteryInfo()
+			if (deviceName == "PC_300SNT")
+			{
+				BLECentralManager.sharedInstance.spotServHandler.getBatteryInfo();
+			}
+			if (deviceName == "PC-100")
+			{
+				BLECentralManager.sharedInstance.pc100ServHandler.getBatteryInfo();
+			}
 		}
 
 		async public void ShowMessageOnUI(string message, Boolean isConnected, string title = null)
@@ -711,6 +733,22 @@ namespace MyHealthVitals
 						
 						isBPMeasuring = false;
 					}
+					else if (title.Equals("Poor Signal"))
+					{
+						countECGPacket = 0;
+						ecgTime = 0;
+						reportDataList.Clear();
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							ecgReportcBtnPad.IsEnabled = false;
+						}
+						else
+						{
+							ecgReportcBtn.IsEnabled = false;
+						}
+						lineSerie.Points.Clear();
+						graphModel.InvalidatePlot(true);
+					}
 				}));
 			}
 
@@ -721,7 +759,7 @@ namespace MyHealthVitals
 			//Conversion math mmol/L = mg/dL / 18
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
-				if (unit == "Mmol/L")
+				if (unit == "mmol/L")
 				{
 					vitalsData.glucose = new Reading(null, Math.Round((decimal)gluReading * 18, 1), 8, false, null, null);
 					vitalsData.glucose.MetricValue = Math.Round(gluReading, 1);
@@ -754,7 +792,7 @@ namespace MyHealthVitals
 			}));
 			Device.BeginInvokeOnMainThread(() =>
 			{
-				lblGlucose.Text = (unit == "Mmol/L") ? vitalsData.glucose.EnglishValue.ToString() : vitalsData.glucose.MetricValue.ToString();
+				lblGlucose.Text = (unit == "mmol/L") ? vitalsData.glucose.EnglishValue.ToString() : vitalsData.glucose.MetricValue.ToString();
 				lblUnitGlucose.Text = unit;
 			});
 		}
@@ -864,10 +902,9 @@ namespace MyHealthVitals
 
 		}
         bool setWeight = false;
-		public void updated_Weight(decimal weight)
+		public async void updated_Weight(decimal weight)
 		{
 			this.vitalsData.weight = new Reading(null, weight, 5, false, null, null);
-
 
 			Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
@@ -880,15 +917,16 @@ namespace MyHealthVitals
 				{
 					lblWeight.Text = ConvertLBToKG((double)weight).ToString();
 				}
-				if (!setWeight)
-				{
-					setWeight = true;
-
-					//wait 5 seconds
-					await Task.Delay(5000);
-					getLatestWeight("");
-				}
             }));
+			if (!setWeight)
+			{
+				setWeight = true;
+
+				//wait 5 seconds
+				//await Task.Delay(5000);
+				//getLatestWeight("");
+			}
+            
 
 
 		}
@@ -1476,12 +1514,12 @@ namespace MyHealthVitals
 		public static double ConvertKGToLB(double f)
 		{
 			//1 kg = 2.20462262185 lb
-			return Math.Round(f * 2.20462262185, 2);
+			return Math.Round(f * 2.20462262185, 1);
 		}
 		public static double ConvertLBToKG(double f)
 		{
 			//1 lb = 0.45359237 kg
-			return Math.Round(f * 0.45359237, 2);
+			return Math.Round(f * 0.45359237, 1);
 		}
 
 		public static double ConvertFahrenheitToCelsius(double f)
@@ -1504,61 +1542,63 @@ namespace MyHealthVitals
 
 		void btnNIBPStartClicked(object sender, System.EventArgs e)
 		{
-			if (BLECentralManager.sharedInstance.checkIfDeviceScanned(this.deviceName))
+			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
-				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
-				{
-					var btn = (Button)sender;
+    			if (BLECentralManager.sharedInstance.checkIfDeviceScanned(this.deviceName))
+    			{
+    				
+    					var btn = (Button)sender;
 
-					if (btn.Text == "NIBP Start")
-					{
+    					if (btn.Text == "NIBP Start")
+    					{
 
-						btn.Text = "NIBP Stop";
+    						btn.Text = "NIBP Stop";
 
-						switch (this.deviceName)
-						{
+    						switch (this.deviceName)
+    						{
 
-							case "PC_300SNT":
-								{
-									BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
-									break;
-								}
+    							case "PC_300SNT":
+    								{
+    									BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
+    									break;
+    								}
 
-							case "PC-100":
-								{
-									BLECentralManager.sharedInstance.pc100ServHandler.startMeasuringBP();
-									break;
-								}
-						}
-					}
-					else
-					{
+    							case "PC-100":
+    								{
+    									BLECentralManager.sharedInstance.pc100ServHandler.startMeasuringBP();
+    									break;
+    								}
+    						}
+    					}
+    					else
+    					{
 
-						btn.Text = "NIBP Start";
+    						btn.Text = "NIBP Start";
 
-						switch (this.deviceName)
-						{
+    						switch (this.deviceName)
+    						{
 
-							case "PC_300SNT":
-								{
-									BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
-									break;
-								}
+    							case "PC_300SNT":
+    								{
+    									BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
+    									break;
+    								}
 
-							case "PC-100":
-								{
-									BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
-									break;
-								}
-						}
-					}
-				}));
-			}
-			else
-			{
-				//device not connected error message
-				ShowConcetion("Device is not connected.", false);
-			}
+    							case "PC-100":
+    								{
+    									BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
+    									break;
+    								}
+    						}
+    					}
+    				
+    			}
+    			else
+    			{
+    				//device not connected error message
+    				await ShowConnection("Device is not connected.", false);
+    			}
+             }));                                                           
 
 			//bleManager.startMeasuringBP();
 			//DependencyService.Get<ICBCentralManager>().startMeasuringBP();
@@ -1689,115 +1729,153 @@ namespace MyHealthVitals
 		async void getLatestWeight(string m)
 		{
             Debug.WriteLine("latest weight msg:"+m);
-			string message = "Weight: " + (double)this.vitalsData.weight.EnglishValue + "Lbs / "
-							  + ConvertLBToKG((double)this.vitalsData.weight.EnglishValue) + "Kg";
-            bool ret;
-
-			if (Device.Idiom == TargetIdiom.Tablet)
-			{
-				ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?<br/> " + message, true, "Yes", "No");
-			}
-			else
-			{
-				ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?\n " + message, false, "Yes", "No");
-			}
-
-			//ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
-			if (!ret)
-			{
-				return;
-			}
-			double weightReading = 0;
-
-			if (logcalParameteritem.localhashmap.Count() > 0 && logcalParameteritem.localhashmap.ContainsKey(5))
-			{
-				var list = logcalParameteritem.localhashmap[5];
-				foreach (var val in logcalParameteritem.localhashmap[5])
-				{
-					string[] weights = val.firstItem.Split('/');
-					weightReading = Convert.ToDouble(weights[0]);
-					break;
-				};
-			}
-			else
-			{
-				if (ParametersPageLocal.allReadings == null)
-				{
-					int index = Task.WaitAny(Task_vars.tasks);
-					//ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
-				}
-				var allCategoryReading5 = (from reading in ParametersPageLocal.allReadings
-										   where reading.CategoryId == 5
-										   select reading).Take(1);
-
-
-				Debug.WriteLine("weightReading = " + allCategoryReading5);
-				foreach (var reading in allCategoryReading5)
-				{
-					weightReading = (double)Math.Round((decimal)reading.EnglishValue, 1);
-				}
-			}
-
-			//  var allReadings = await Reading.GetAllReadingsFromService();
-
-
-
-			double diff = Math.Abs((double)Math.Round((double)this.vitalsData.weight.EnglishValue - weightReading, 1));
-			if (diff < 1)
-			{
-				var myEmoji = "\U0001F60A";
-				if (Device.Idiom == TargetIdiom.Tablet)
-				{
-					var val = await DependencyService.Get<IFileHelper>().dispAlert("No Change", myEmoji + "Looking good.", true, "OK", null);
-				}
-				else
-				{
-					var val = await DependencyService.Get<IFileHelper>().dispAlert("No Change", myEmoji + "Looking good.", false, "OK", null);
-				}
-				//await DisplayAlert("No Change", myEmoji + "Looking good.", "OK");
-			}
-			else if (weightReading > (double)this.vitalsData.weight.EnglishValue)
-			{
-				var myEmoji = "\U0001F600";
-				if (Device.Idiom == TargetIdiom.Tablet)
-				{
-					var val = await DependencyService.Get<IFileHelper>().dispAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", true, "OK", null);
-				}
-				else
-				{
-					var val = await DependencyService.Get<IFileHelper>().dispAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", false, "OK", null);
-				}
-				//await DisplayAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", "OK");
-			}
-			else
-			{
-
-				var myEmoji = "\U0001F61F";
-				if (Device.Idiom == TargetIdiom.Tablet)
-				{
-					var val = await DependencyService.Get<IFileHelper>().dispAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", true, "OK", null);
-				}
-				else
-				{
-					var val = await DependencyService.Get<IFileHelper>().dispAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", false, "OK", null);
-				}
-				//await DisplayAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", "OK");
-
-			}
-			this.vitalsData.sendToServerWeight(userHeight);
-			if (m != "")
+            if (this.vitalsData.weight != null)
             {
-				if (Device.Idiom == TargetIdiom.Tablet)
+				string message = "Weight: " + (double)this.vitalsData.weight.EnglishValue + "Lbs / "
+							  + ConvertLBToKG((double)this.vitalsData.weight.EnglishValue) + "Kg";
+				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
-					var val = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, m, true, "OK", null);
-				}
-				else
-				{
-					var val = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, m, false, "OK", null);
-				}
-				//await DisplayAlert(deviceName, m, "OK");
-			}
-                
+					bool ret;
+
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?<br/> " + message, true, "Yes", "No");
+					}
+					else
+					{
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Result", "Do you want to save the result?\n " + message, false, "Yes", "No");
+					}
+
+					//ret = await DisplayAlert("Measuring Result", "Do you want to save the result?\n " + message, "Yes", "No");
+					if (!ret)
+					{
+						if (m != "")
+						{
+							if (Device.Idiom == TargetIdiom.Tablet)
+							{
+								var val = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, m, true, "OK", null);
+							}
+							else
+							{
+								var val = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, m, false, "OK", null);
+							}
+							//await DisplayAlert(deviceName, m, "OK");
+						}
+						return;
+					}
+
+					double weightReading = 0;
+
+					if (logcalParameteritem.localhashmap.Count() > 0 && logcalParameteritem.localhashmap.ContainsKey(5))
+					{
+						var list = logcalParameteritem.localhashmap[5];
+						foreach (var val in logcalParameteritem.localhashmap[5])
+						{
+							string[] weights = val.firstItem.Split('/');
+							weightReading = Convert.ToDouble(weights[0]);
+							break;
+						};
+					}
+					else
+					{
+						if (ParametersPageLocal.allReadings == null)
+						{
+							int index = Task.WaitAny(Task_vars.tasks);
+							//ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService();
+						}
+						var allCategoryReading5 = (from reading in ParametersPageLocal.allReadings
+												   where reading.CategoryId == 5
+												   select reading).Take(1);
+
+
+						Debug.WriteLine("weightReading = " + allCategoryReading5);
+						foreach (var reading in allCategoryReading5)
+						{
+							weightReading = (double)Math.Round((decimal)reading.EnglishValue, 1);
+						}
+					}
+
+					//  var allReadings = await Reading.GetAllReadingsFromService();
+
+
+
+					double diff = Math.Abs((double)Math.Round((double)this.vitalsData.weight.EnglishValue - weightReading, 1));
+					//Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+					//{
+
+					if (diff < 1)
+					{
+						var myEmoji = "\U0001F60A";
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							var val = await DependencyService.Get<IFileHelper>().dispAlert("No Change", myEmoji + "Looking good.", true, "OK", null);
+						}
+						else
+						{
+							var val = await DependencyService.Get<IFileHelper>().dispAlert("No Change", myEmoji + "Looking good.", false, "OK", null);
+						}
+						//await DisplayAlert("No Change", myEmoji + "Looking good.", "OK");
+					}
+					else if (weightReading > (double)this.vitalsData.weight.EnglishValue)
+					{
+						var myEmoji = "\U0001F600";
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							var val = await DependencyService.Get<IFileHelper>().dispAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", true, "OK", null);
+						}
+						else
+						{
+							var val = await DependencyService.Get<IFileHelper>().dispAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", false, "OK", null);
+						}
+						//await DisplayAlert("Lost Weight", myEmoji + " Good job! you lost " + diff + " pounds!", "OK");
+					}
+					else
+					{
+
+						var myEmoji = "\U0001F61F";
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							var val = await DependencyService.Get<IFileHelper>().dispAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", true, "OK", null);
+						}
+						else
+						{
+							var val = await DependencyService.Get<IFileHelper>().dispAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", false, "OK", null);
+						}
+						//await DisplayAlert("Gained Weight", myEmoji + " OOPS! You gained " + diff + " pounds!", "OK");
+
+					}
+					this.vitalsData.sendToServerWeight(userHeight);
+					if (m != "")
+					{
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							var val = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, m, true, "OK", null);
+						}
+						else
+						{
+							var val = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, m, false, "OK", null);
+						}
+						//await DisplayAlert(deviceName, m, "OK");
+					}
+				}));
+			}else{
+                //if it is null, then we disconnected before we ever got any data
+                Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+                {
+                    bool ret;
+
+                    if (Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        ret = await DependencyService.Get<IFileHelper>().dispAlert("Scale Connection Error", "Unable to get reading from scale. Please try to connect again.", true, "OK", null);
+                    }
+                    else
+                    {
+                        ret = await DependencyService.Get<IFileHelper>().dispAlert("Scale Connection Error", "Unable to get reading from scale. Please try to connect again.", false, "OK", null);
+                    }
+                }));
+            }
+
+			  
 		}
 
 		public async void startECGReportPage()

@@ -78,7 +78,7 @@ namespace MyHealthVitals
                 }
             }
         }
-        public async void discoverServices(IDevice device)
+        public async Task discoverServices(IDevice device)
         {
             this.connectedDevice = device;
             //this.uiController = (IBluetoothCallBackUpdatable)controller;
@@ -252,6 +252,34 @@ namespace MyHealthVitals
             }
         }
 
+		public async void getBatteryInfo()
+		{
+            Debug.WriteLine("Called getBatteryInfo()");
+			if (BLE_val.BLE_value == 1)
+			{
+				executeWriteCommand(new byte[] { 0xAA, 0x55, 0xFF, 0x02, 0x02, 0x28 });
+			}
+			else
+			{
+				try
+				{
+					Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+					Guid gchar = new Guid("0000fff2-0000-1000-8000-00805f9b34fb");
+					nexus.protocols.ble.connection.IBleGattServer GattServer = BLEdata.gattserver;
+					// The resulting value of the characteristic is returned. In nearly all cases this
+					// will be the same value that was provided to the write call (e.g. `byte[]{ 1, 2, 3 }`)
+					var value = await GattServer.WriteCharacteristicValue(
+					   gservice,
+					   gchar,
+					   new byte[] { 0xAA, 0x55, 0xFF, 0x02, 0x02, 0x28 });
+				}
+				catch (GattException ex)
+				{
+					Debug.WriteLine("getting battery info error msg: " + ex.Message);
+				}
+			}
+		}
+
 
 
         int pretoken = 0;
@@ -328,6 +356,21 @@ namespace MyHealthVitals
         }
         public void ManipData(int[] vals)
         {
+
+			//battery life check
+			if (vals.Length > 2)
+			{
+				if (vals[2] == 255 && vals[3] == 5)
+				{
+					//just check last 3 bits
+					int batteryLife = vals[7] & 7;
+					Debug.WriteLine("Battery Life = " + batteryLife);
+					if (batteryLife <= 1)
+					{
+						uiController.ShowMessageOnUI("You must plug in your PC-300 device.", true, "Low Battery");
+					}
+				}
+			}
 
             if (vals.Length > 0)
             {
@@ -1156,7 +1199,7 @@ namespace MyHealthVitals
                                 {
                                     int dataMmol = (int)vals[6] * 100 + (int)vals[7];
                                     glucoseReadingVal = (decimal)dataMmol / 10;
-                                    gluUnit = "Mmol/L";
+                                    gluUnit = "mmol/L";
                                 }
 
                                 Debug.WriteLine("D0_data1 = " + D0_data1);

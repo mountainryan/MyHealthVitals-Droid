@@ -79,8 +79,10 @@ namespace MyHealthVitals.Droid
 	
         public async Task<bool> dispAlert(String title, String message, bool tablet, String btn1, String btn2)
         {
+            //Debug.WriteLine("made it to dispAlert()");
             bool val = false;
             Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(Xamarin.Forms.Forms.Context as Activity);
+            //Debug.WriteLine("Initialized the dialog");
             AlertDialog alert = dialog.Create();
 
 			//alert.SetTitle(title);
@@ -101,6 +103,7 @@ namespace MyHealthVitals.Droid
 			{
 				alert.SetTitle(title);
 			}
+            //Debug.WriteLine("set the title");
 
             //Debug.WriteLine("Android Build # = " + Android.OS.Build.VERSION.Sdk);
 
@@ -120,8 +123,9 @@ namespace MyHealthVitals.Droid
             }else{
                 alert.SetMessage(message);
             }
+            //Debug.WriteLine("set the message");
 
-
+            //Debug.WriteLine("made it to Task.Run()");
             await Task.Run(() =>
 			{
 				var waitHandle = new AutoResetEvent(false);
@@ -181,7 +185,7 @@ namespace MyHealthVitals.Droid
 						});
 					}
                 }
-
+                //Debug.WriteLine("made it to alert.show()");
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
                     //alert.Window.SetLayout(1200, 1200);
@@ -190,10 +194,11 @@ namespace MyHealthVitals.Droid
                 }));
 				waitHandle.WaitOne();
 			});
+            //Debug.WriteLine("made it to alert.dispose()");
 			alert.Dispose();
 
-			//alert.Show();
-
+            //});
+            //Debug.WriteLine("made it to return");
             return val;
         }
 
@@ -578,7 +583,7 @@ namespace MyHealthVitals.Droid
 
 		public byte[] FileRead(string filepath)
 		{
-			//var serviceUri = Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
+			//var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
 			//Category = "ECG";
 			return File.ReadAllBytes(filepath);
 

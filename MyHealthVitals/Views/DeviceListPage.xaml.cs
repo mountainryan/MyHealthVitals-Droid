@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace MyHealthVitals
 {
@@ -289,11 +290,11 @@ namespace MyHealthVitals
 		public void updatingPressureMeanTime(int pressure) { }
 		public void updateTemperature(decimal temperature) { }
 
-
+        async public Task checkBattery() { }
 
 		//	public void Showupdata(String message, Boolean isConnected) { }
 
-		public void ShowConcetion(String message, Boolean isConnected) { }
+		async public Task ShowConnection(String message, Boolean isConnected) { }
 		
 		public void noticeEndOfReadingSpo2() { }
 		public void updateDeviceConnected(String deviceName, bool isConnected) { }

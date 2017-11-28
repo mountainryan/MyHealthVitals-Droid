@@ -26,7 +26,7 @@ namespace MyHealthVitals
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
-			var response = await client.GetAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Category");
+			var response = await client.GetAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Category");
 
 			if (response.IsSuccessStatusCode)
 			{

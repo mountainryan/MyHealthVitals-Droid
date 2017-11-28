@@ -163,7 +163,7 @@ namespace MyHealthVitals
 				case 8:
 				{
 					this.Title = "Glucose Data List";
-					headerContainer.Children.Add(new headerWithOneTitle("Glucose (MG/DL)"));
+					headerContainer.Children.Add(new headerWithOneTitle("Glucose (mg/dL)"));
 					break;
 				}
 				case 10:
@@ -435,7 +435,7 @@ namespace MyHealthVitals
 									count++;
 							//	}
 
-								val.firstItem = val.firstItem == "0" ? "Normal" : "Abnormal";
+								//val.firstItem = val.firstItem == "0" ? "Normal" : "Abnormal";
 								data.Add(val);
 							}
 						};
@@ -471,7 +471,7 @@ namespace MyHealthVitals
 							count++;
 						//	}
 
-							item.firstItem = reading.EnglishValue == 0 ? "Normal" : "Abnormal";
+							item.firstItem = reading.Abnormal==false ? "Normal" : "Abnormal";
 							item.categoryId = reading.CategoryId;
 							data.Add(item);
 						}

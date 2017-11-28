@@ -17,9 +17,9 @@ namespace MyHealthVitals
 		public static String BASE_URL_LIVE = "https://www.myemhr.com/api/v1/";
 		public static String BASE_URL_DEV = "http://testmyemhr.local/api/v1/";
 		public static String BASE_URL_DEMO = "https://demo.myemhr.com/api/v1/";
-		public static String BASE_URL_TESTR = "https://test.myemhr.com/api/v1/";
+		public static String BASE_URL_TEST = "https://test.myemhr.com/api/v1/";
 
-		public static String BASE_URL_TEST = BASE_URL_TESTR;//"https://test.myemhr.com/api/v1/";
+		public static String BASE_URL = BASE_URL_TEST;//"https://test.myemhr.com/api/v1/";
 
 		public static Credential sharedInstance = new Credential();
 
@@ -32,7 +32,7 @@ namespace MyHealthVitals
 		{
 			
 		//	var client = new HttpClient { BaseAddress = new Uri("https://myemhr.com") };
-			var client = new HttpClient { BaseAddress = new Uri(BASE_URL_TEST) };
+			var client = new HttpClient { BaseAddress = new Uri(BASE_URL) };
 			Debug.WriteLine("Client = " + client);
 			client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ':' + password)));
 			//issuer = Uri.EscapeUriString(issuer);

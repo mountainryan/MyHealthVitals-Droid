@@ -257,7 +257,7 @@ namespace MyHealthVitals
 				HttpClient client = new HttpClient();
 				client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
-				var response = await client.GetAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/Demographics");
+				var response = await client.GetAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/Demographics");
 				if (response.IsSuccessStatusCode)
 				{
 					try
@@ -305,7 +305,7 @@ namespace MyHealthVitals
 			//client.MaxResponseContentBufferSize = 256000;
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
-			var response = await client.GetAsync(Credential.BASE_URL_TEST + $"Patient/{Credential.sharedInstance.Mrn}/File/Photo");
+			var response = await client.GetAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File/Photo");
 	
 			if (response.IsSuccessStatusCode)
 			{

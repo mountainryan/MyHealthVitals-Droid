@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyHealthVitals
 {
@@ -7,13 +8,15 @@ namespace MyHealthVitals
 	{
 		void SaveEcgState(int state);
 		void ShowMessageOnUI(String message, Boolean isConnected, String title = null);
-		void ShowConcetion(String message, Boolean isConnected);
+		Task ShowConnection(String message, Boolean isConnected);
 		void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex);
 		void SYS_DIA_BPM_updated(int bpsys, int bpdia, int bpm);
 		void updatingPressureMeanTime(int pressure);
 		void updated_Weight(decimal weight);
 		void updateTemperature(decimal temperature);
         void FailedConn(String message, bool isConn, int camefrom);
+
+        Task checkBattery();
 
 		void noticeEndOfReadingSpo2();
 		void updateDeviceConnected(String deviceName, bool isConnected);

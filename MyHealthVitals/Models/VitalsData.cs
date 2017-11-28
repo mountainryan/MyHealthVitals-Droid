@@ -66,7 +66,7 @@ namespace MyHealthVitals
 					ParameterDetailItem pdi = new ParameterDetailItem();
 					pdi.categoryId = weight.CategoryId;
 					pdi.date = weight.Date.ToString("MM/dd/yyyy hh:mm tt");
-					pdi.firstItem = weight.EnglishValue.ToString() + "/"+ MainPage.ConvertLBToKG((double)weight.EnglishValue).ToString();
+                    pdi.firstItem = weight.EnglishValue.ToString() + "/"+ Math.Round(MainPage.ConvertLBToKG((double)weight.EnglishValue),1).ToString();
 					if (height > 1)
 					{
 						float bmivalue = calculateBMI((float)height, (float)weight.EnglishValue);
@@ -155,7 +155,7 @@ namespace MyHealthVitals
 				pdi.categoryId = ecg.CategoryId;
 				pdi.date =ecg.Date.ToString("MM/dd/yyyy hh:mm tt");
                 Task_vars.ecgdate = ecg.Date;
-				pdi.firstItem = ecg.EnglishValue.ToString();
+                pdi.firstItem = ecg.Abnormal == false ? "Normal" : "Abnormal";
 				addDataTolocal(pdi);
 
 				await ecg.PostReadingToService();

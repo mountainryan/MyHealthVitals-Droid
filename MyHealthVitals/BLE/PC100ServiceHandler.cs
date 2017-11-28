@@ -164,7 +164,35 @@ namespace MyHealthVitals
             }
 		}
 
-		public async void discoverServices(IDevice device)
+		public async void getBatteryInfo()
+		{
+            Debug.WriteLine("Called getBatteryInfo()");
+			if (BLE_val.BLE_value == 1)
+			{
+				executeWriteCommand(new byte[] { 0xAA, 0x55, 0x51, 0x02, 0x01, 0xC8 });
+			}
+			else
+			{
+				try
+				{
+					Guid gservice = new Guid("0000fff0-0000-1000-8000-00805f9b34fb");
+					Guid gchar = new Guid("0000fff2-0000-1000-8000-00805f9b34fb");
+					nexus.protocols.ble.connection.IBleGattServer GattServer = BLEdata.gattserver;
+					// The resulting value of the characteristic is returned. In nearly all cases this
+					// will be the same value that was provided to the write call (e.g. `byte[]{ 1, 2, 3 }`)
+					var value = await GattServer.WriteCharacteristicValue(
+					   gservice,
+					   gchar,
+					   new byte[] { 0xAA, 0x55, 0x51, 0x02, 0x01, 0xC8 });
+				}
+				catch (GattException ex)
+				{
+					Debug.WriteLine("stopping sp02 error msg: " + ex.Message);
+				}
+			}
+		}
+
+		public async Task discoverServices(IDevice device)
 		{
 			Debug.WriteLine("discoverServices");
 			this.connectedDevice = device;
@@ -266,6 +294,20 @@ namespace MyHealthVitals
 
 		public void ManipData(int[] vals)
 		{
+            //check battery level
+			if (vals.Length > 2)
+			{
+				if (vals[2] == 81 && vals[3] == 5)
+				{
+					//just need to compare with last 3 bits
+					int batteryLife = vals[7] & 7;
+					Debug.WriteLine("Battery Life = " + batteryLife);
+					if (batteryLife <= 1)
+					{
+						uiController.ShowMessageOnUI("You must plug in your PC-100 device.", true, "Low Battery");
+					}
+				}
+			}
 
 			if ((int)vals[2] == 66)
 			{
@@ -571,7 +613,7 @@ namespace MyHealthVitals
 					{
 						int dataMmol = (int)vals[6] * 100 + (int)vals[7];
 						glucoseReadingVal = (decimal)dataMmol / 10;
-						gluUnit = "Mmol/L";
+						gluUnit = "mmol/L";
 					}
 
 					Debug.WriteLine("D0_data1 = " + D0_data1);

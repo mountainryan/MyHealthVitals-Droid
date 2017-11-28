@@ -123,7 +123,7 @@
 							<StackLayout Orientation="Horizontal" Margin="10,0,10,0">
 								<StackLayout x:Name = "layout13" WidthRequest="90">
 									<Label x:Name = "lblGLU" Text="GLU" Style="{DynamicResource styleLblNumeric}" />
-									<Label x:Name="lblUnitGlucose" Text="Mmol/L" Style="{DynamicResource styleLblNumeric}" />
+									<Label x:Name="lblUnitGlucose" Text="mg/dL" Style="{DynamicResource styleLblNumeric}" />
 								</StackLayout>
 								<StackLayout x:Name = "layout14" WidthRequest="90" >
 									<Label Text=" " FontSize="13" Style="{DynamicResource styleLblReading}" />
