@@ -52,7 +52,7 @@ namespace MyHealthVitals
 					bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fn + ".txt");
 					if (ret)
 					{
-						e.secondItem = "No Report";
+						e.secondItem = "Saved";
 					}
 					else if (DependencyService.Get<IFileHelper>().checkFileExist(fn + "ECG.pdf"))
 					{
@@ -61,10 +61,11 @@ namespace MyHealthVitals
 					}
 					else
 					{
+                        //not sure what to do here, probably nothing though
                         //Debug.WriteLine("filename:" + fn + " e");
-						e.secondItem = "Emailed";
+						//e.secondItem = "Emailed";
 					}
-					//Debug.WriteLine("e.secondItem ="+ e.secondItem);
+					Debug.WriteLine("e.secondItem ="+ e.secondItem);
 					break;
 				}
 			}
@@ -72,7 +73,7 @@ namespace MyHealthVitals
             Debug.WriteLine("font size of Most Recent Readings = "+label.FontSize);
 		}
 
-		public ParameterItemDetailNew(int id, Reading[] allReadings)
+		public ParameterItemDetailNew(int catid, Reading[] allReadings)
 		{
             NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
@@ -119,9 +120,9 @@ namespace MyHealthVitals
 				label.FontSize = 30 * Screensize.heightfactor;
 				label.Margin = new Thickness(10 * Screensize.widthfactor);
 			}
-           	this.categoryId = id;
+           	this.categoryId = catid;
 			this.allReadings = allReadings;
-			setTitleAndData(id);
+			setTitleAndData(catid);
             titlebtn.Text = this.Title;
 			callApi();
 		}
@@ -418,21 +419,21 @@ namespace MyHealthVitals
                                 fileName = Regex.Replace(fileName, @"[/:]+", "");
 								//Debug.WriteLine("fileName = " + fileName);	
                                 bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
-									if (ret)
-									{
-										val.secondItem = "No Report";
-									}
-									else if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + "ECG.pdf"))
-									{
-										//count++;
-										val.secondItem = "Saved";
-									}
-									else
-									{
-                                        Debug.WriteLine("filename:" + fileName+ " val");
-										val.secondItem = "Emailed";
-									}
-									count++;
+								if (ret)
+								{
+									val.secondItem = "Saved";
+								}
+								else if (DependencyService.Get<IFileHelper>().checkFileExist(fileName + "ECG.pdf"))
+								{
+									//count++;
+									val.secondItem = "Saved";
+								}
+								else
+								{
+                                    //Debug.WriteLine("filename:" + fileName+ " val");
+									val.secondItem = "Saved";
+								}
+								count++;
 							//	}
 
 								//val.firstItem = val.firstItem == "0" ? "Normal" : "Abnormal";
@@ -451,9 +452,60 @@ namespace MyHealthVitals
 						//	{
 							var fileName = Regex.Replace(item.date_nosec, @"\s+", "");
 							fileName = Regex.Replace(fileName, @"[/:]+", "");
-                        //Debug.WriteLine("fileName = " + fileName);
+
+							//loop through filename list
+							bool found = false;
+							foreach (string strval in Task_vars.ecgfiles) // Loop through List with foreach
+							{
+								if (fileName == strval)
+								{
+									found = true;
+								}
+							}
 							bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
-                        //Debug.WriteLine("file exists? "+ret);
+							bool ret2 = DependencyService.Get<IFileHelper>().checkFileExist(fileName + "ECG.pdf");
+							if (ret || ret2)
+							{
+								item.secondItem = "Saved";
+							}
+							else
+							{
+								if (found)
+								{
+									item.secondItem = "Saved";
+									/*
+                                    if (ret)
+                                    {
+                                        //wasn't saved, but Bob says it should say so
+                                        item.secondItem = "Saved";
+                                    }
+                                    else if (ret2)
+                                    {
+                                        //it was actually saved
+                                        item.secondItem = "Saved";
+                                    }
+                                    else
+                                    {
+                                        //it was emailed
+                                        item.secondItem = "Saved";
+                                    }*/
+								}
+								else
+								{
+									if (reading.FileId != 0)// && reading.FileId != null)
+									{
+										item.secondItem = "Saved";
+									}
+									else
+									{
+										item.secondItem = "Unavailable";
+									}
+								}
+							}
+
+                            /*
+							bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
+                       
 							if (ret)
 							{
 								item.secondItem = "No Report";
@@ -468,10 +520,12 @@ namespace MyHealthVitals
                                 //Debug.WriteLine("filename:" + fileName + " item");
 								item.secondItem = "Emailed";
 							}
-							count++;
-						//	}
+							*/
 
+							count++;
+				
 							item.firstItem = reading.Abnormal==false ? "Normal" : "Abnormal";
+                            item.getID = reading.Id;
 							item.categoryId = reading.CategoryId;
 							data.Add(item);
 						}

@@ -21,6 +21,10 @@ namespace MyHealthVitals
         public static string patient_name;
 		public static string gifpath;
         public static string comingfrom;
+		public static bool emailsent;
+		public static long ecgreadingid;
+		public static Reading lastecgreading;
+		public static List<string> ecgfiles = new List<string>();
 	}
 	public class BLEadapter
 	{
@@ -116,6 +120,7 @@ namespace MyHealthVitals
         protected override void OnAppearing()
         {
             //DependencyService.Get<IFileHelper>().delBLEinfo();
+            //DependencyService.Get<IFileHelper>().getBLEinfo("PC_300SNT");
 
             //var result = 193^2;
             //string hexval = result.ToString("X");

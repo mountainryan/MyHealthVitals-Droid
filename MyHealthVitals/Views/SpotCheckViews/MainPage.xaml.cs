@@ -221,7 +221,7 @@ namespace MyHealthVitals
 			if (ret)
 			{
                 //DependencyService.Get<IFileHelper>().delBLEinfo();
-
+                Debug.WriteLine("   device Name ======  " + deviceName);
                 //check if the current android machine has connected to this device before.
                 List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
                 string BLEtype = "";
@@ -278,7 +278,6 @@ namespace MyHealthVitals
 					//somehow they've connected more than 1 guid of a device (2 PC-300s for example)
 					//or they've managed to connect the same device to both BLE managers
 
-					//not sure how to handle this one
                     initializePlotModel();
 					for (int i = 0; i < result.Count; i += 3)
 					{
@@ -520,7 +519,7 @@ namespace MyHealthVitals
 			Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
 				layoutLoading.IsVisible = false;
-            
+                lblLoadingMessage.Text = "Connecting with device...";
 			
 				if (isConnected)
 				{
@@ -569,7 +568,7 @@ namespace MyHealthVitals
                 //await DisplayAlert(deviceName, message, "OK");
                 //}
                 if (isConnected) {await checkBattery(); }
-				
+
 			}));
 
 
@@ -622,8 +621,8 @@ namespace MyHealthVitals
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
                     var message_pad = message;
-                    message_pad += "<br/> Do you want to Save ECG data?";
-					message += "\n Do you want to Save ECG data?";
+                    message_pad += "<br/> Do you want to save ECG data and create report?";
+					message += "\n Do you want to save ECG data and create report?";
                     bool ret;
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
@@ -639,13 +638,19 @@ namespace MyHealthVitals
 					{
 						if (title.Equals("Normal"))
 						{
-							vitalsData.ecg = new Reading(null, this.state, 10, false, Task_vars.ecgmessage, null);
+							vitalsData.ecg = new Reading(null, this.state, 10, false, Task_vars.ecgmessage, null, null, null);
 						}
 						else
 						{
 							//Abnormal
-							vitalsData.ecg = new Reading(null, this.state, 10, true, Task_vars.ecgmessage, null);
+							vitalsData.ecg = new Reading(null, this.state, 10, true, Task_vars.ecgmessage, null, null, null);
 						}
+                        lblLoadingMessage.Text = "Loading...";
+                        layoutLoading.IsVisible = true;
+
+                        await Task.Delay(100).ContinueWith(_ =>
+                        {
+                        });
 
 						vitalsData.sendEcgToServer();
 
@@ -663,7 +668,9 @@ namespace MyHealthVitals
 							ecgReportcBtn.IsEnabled = true;
 						}
 						//ecgReportcBtn.IsEnabled = true;
+                        Task_vars.comingfrom = "MainPage";
 
+                        startECGReportPage();
 					}
 					else
 					{
@@ -1873,9 +1880,7 @@ namespace MyHealthVitals
                         ret = await DependencyService.Get<IFileHelper>().dispAlert("Scale Connection Error", "Unable to get reading from scale. Please try to connect again.", false, "OK", null);
                     }
                 }));
-            }
-
-			  
+            }			  
 		}
 
 		public async void startECGReportPage()
@@ -1885,10 +1890,13 @@ namespace MyHealthVitals
 			//  creatReportTitle();
 			var newPage = new EcgReport(fileName, Demographics.sharedInstance.FirstName, false, this);
 			newPage.Title = "ECG Report";
+            layoutLoading.IsVisible = false;
+            lblLoadingMessage.Text = "Connecting with device...";
 			await this.Navigation.PushAsync(newPage);
 			//  lineSerie.Points.Clear();
 
 		}
+
 		private void writeToTxt()
 		{
 			Debug.WriteLine("Writ to txt");

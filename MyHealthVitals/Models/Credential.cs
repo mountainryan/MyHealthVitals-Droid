@@ -19,7 +19,7 @@ namespace MyHealthVitals
 		public static String BASE_URL_DEMO = "https://demo.myemhr.com/api/v1/";
 		public static String BASE_URL_TEST = "https://test.myemhr.com/api/v1/";
 
-		public static String BASE_URL = BASE_URL_TEST;//"https://test.myemhr.com/api/v1/";
+		public static String BASE_URL = BASE_URL_DEV;//"https://test.myemhr.com/api/v1/";
 
 		public static Credential sharedInstance = new Credential();
 

@@ -21,6 +21,8 @@ namespace MyHealthVitals
 		Task<bool> setEmailClient();
 		string retGif();
 		void copyAsset();
+		Task<bool> SaveFromBytes(byte[] filedata, string fname);
+		Task<byte[]> BytesFromFile(string fileName);
 	}
 
 	public interface IBaseUrl { string Get(); }

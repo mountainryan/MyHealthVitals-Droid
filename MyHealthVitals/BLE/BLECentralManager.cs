@@ -55,6 +55,8 @@ namespace MyHealthVitals
 		public PC100ServiceHandler pc100ServHandler;
 		public ScaleServiceHandler scaleServHandle;
 		string ScaleName = "eBody-Scale";
+        public Guid currdeviceId = new Guid("00000000-0000-0000-0000-000000000000");
+        public string currdeviceName = "";
 
         IBluetoothLowEnergyAdapter adapter = BLEadapter.adapter;
 
@@ -666,6 +668,8 @@ namespace MyHealthVitals
 
         public async Task<bool> ConnectKnownDevice(Guid deviceID, string deviceName, object controller)
         {
+            currdeviceId = deviceID;
+            currdeviceName = deviceName;
 			switch (deviceName)
 			{
 				case "BLE-MSA":
@@ -788,10 +792,21 @@ namespace MyHealthVitals
 			Debug.WriteLine("Adapter_DeviceConnected: " + e.Device.Name);
 			//	connectedDevices.Add(e.Device);
 			Guid deviceID = e.Device.Id;
+            Debug.WriteLine("curr device ID = " + currdeviceId.ToString());
+            Debug.WriteLine("curr device name = " + currdeviceName);
+            Debug.WriteLine("connected device ID = "+deviceID.ToString());
 			BLE_val.BLE_value = 1;
 			DependencyService.Get<IFileHelper>().saveBLEinfo(e.Device.Name, BLE_val.BLE_value, deviceID);
+            string currdevice = e.Device.Name;
 
-			switch (e.Device.Name)
+            if (e.Device.Id == currdeviceId)
+            {
+				Debug.WriteLine("Made it into if statement 2");
+				//hardset the device name to the current device name
+				currdevice = currdeviceName;
+            }
+
+			switch (currdevice)
 			{
 				case "BLE-MSA":
 					{
@@ -835,23 +850,34 @@ namespace MyHealthVitals
 		{
 			Debug.WriteLine(e.Device.Name + "  Adapter_DeviceConnectionLost");
 			//	if (!connectedDevices.Contains(e.Device)) return;
+
 			//	connectedDevices.Remove(e.Device);
+			Guid deviceID = e.Device.Id;
+			string currdevice = e.Device.Name;
+
+			if (deviceID == currdeviceId)
+			{
+				Debug.WriteLine("Made it into if statement 2");
+				//hardset the device name to the current device name
+				currdevice = currdeviceName;
+			}
+
             try
             {
-				if (e.Device.Name == "PC_300SNT")
+				if (currdevice == "PC_300SNT")
 				{
 					spotServHandler.uiController.ShowConnection("PC-300 Connection Lost.", false);
 				}
-				else if (e.Device.Name == "BLE-MSA")
+				else if (currdevice == "BLE-MSA")
 				{
 					spiroServHandler.stopPolling();
 					spiroServHandler.uiController.updateDeviceStateOnUI("Spirometer Connection Lost.", false);
 				}
-				else if (e.Device.Name == "PC-100")
+				else if (currdevice == "PC-100")
 				{
 					pc100ServHandler.uiController.ShowConnection("PC-100 Connection Lost.", false);
 				}
-				else if (e.Device.Name == "eBody-Scale")
+				else if (currdevice == "eBody-Scale")
 				{
 					scaleServHandle.uiController.ShowConnection("Scale Connection Lost.", false);
 				}
@@ -916,6 +942,7 @@ namespace MyHealthVitals
 			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices)
 			{
 				Debug.WriteLine(device.State);
+                Debug.WriteLine("device name: "+device.Name);
 
 				if (device.Name == "PC_300SNT")
 				{
@@ -934,8 +961,14 @@ namespace MyHealthVitals
 					await scaleServHandle.diconnectServices(device);
 				}
 
-				if (!device.Name.Equals(exceptDevice))
-					await CrossBluetoothLE.Current.Adapter.DisconnectDeviceAsync(device);
+                try{
+					if (!device.Name.Equals(exceptDevice))
+						await CrossBluetoothLE.Current.Adapter.DisconnectDeviceAsync(device);
+                }catch (Exception ex)
+                {
+                    Debug.WriteLine("disc err msg: "+ex.Message);
+                }
+				
 
 				Debug.WriteLine("after " + device.State);
 			}

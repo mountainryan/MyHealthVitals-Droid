@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -42,9 +43,10 @@ namespace MyHealthVitals
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
+
 			//Debug.WriteLine("ListCellTwoItem OnAppearing");
-			if (secondItem.Text != null && (secondItem.Text.Equals("No Report") || secondItem.Text.Equals("Saved")))
-			{
+			if (secondItem.Text != null && secondItem.Text.Equals("Saved"))
+            {
 				underline.IsVisible = true;
 			}
 			else
@@ -64,29 +66,90 @@ namespace MyHealthVitals
 			Debug.WriteLine("OnLabelClicked.fileName==" + fileName);
 			
             Task_vars.ecgdate = Convert.ToDateTime(itemdate.Text);
-			if (secondItem.Text.Equals("No Report"))
+			bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
+			bool ret2 = DependencyService.Get<IFileHelper>().checkFileExist(fileName + "ECG.pdf");
+
+			if (secondItem.Text.Equals("Saved") && ret)
 			{
-				//secondItem.TextColor = Color.Blue;
+				Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
 				var newPage = new EcgReport(fileName, Demographics.sharedInstance.FirstName, true);
 				newPage.Title = "ECG Report";
-                //Navigation.PushAsync(newPage);
-                Task_vars.comingfrom = "ListPage";
+				Task_vars.comingfrom = "ListPage";
 				await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(newPage));
-			}
-			else if (secondItem.Text.Equals("Saved"))
+		    }
+			else if (secondItem.Text.Equals("Saved") && ret2)
 			{
-			//	layoutLoading.IsVisible = true;
+				//actually saved, but pdf still exists so email they can email it
+				//don't actually need to change anything in the DB
+				LayoutLoading();
+				Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
+				var ecgread = Task_vars.lastecgreading;
+				if (ecgread.FileId == 0)
+				{
+					//somehow made it to the device but not to the server
+					//get the pdf in byte[]
+					FileData ecgfile = new FileData();
+					ecgfile.ServiceDate = ecgread.Date;
+					ecgfile.Content = await DependencyService.Get<IFileHelper>().BytesFromFile(fileName + "ECG.pdf");
+					Demographics demo = Demographics.sharedInstance;
+					string name = demo.FirstName + "_" + demo.MiddleName + "_" + demo.LastName;
+					string fdate = ecgread.Date.ToString("MMddyyyy_HHmm");
+					ecgfile.Name = name + "_ECGReport_" + fdate + ".pdf";
+					ecgfile.Category = "Cardiology (ECG, EKGs, Stress Test, etc.)";
+					ecgfile.Size = Task_vars.ecgfilelength;
+					ecgfile.UploadDate = DateTime.Now;
+
+					var fileId = await EcgReport.FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
+					Debug.WriteLine("fileID = " + fileId);
+					//now update the reading with the new FileId
+					ecgread.FileId = fileId;
+					var val = await ecgread.UpdateReadingToService();
+					Debug.WriteLine("val for update = " + val);
+				}
+				LayoutLoadingDone();
 				await Task.Run(() =>
 				{
 					DependencyService.Get<IFileHelper>().setEmailClient();
 				});
-		//		Device.BeginInvokeOnMainThread(() =>
-		//		{
-					//	await DependencyService.Get<IFileHelper>().setEmailClient();
-					Task<bool> ret = DependencyService.Get<IFileHelper>().sentToEmail(fileName + "ECG.pdf");
-				//	if (ret) layoutLoading.IsVisible = false;
-			//	});
+
+				var vals = await DependencyService.Get<IFileHelper>().sentToEmail(fileName + "ECG.pdf");
+
 			}
+			else if (secondItem.Text.Equals("Saved"))
+			{
+				//it's been saved to the DB, but hasn't yet been saved locally or has already been emailed
+
+				//call for a layout loading screen
+				layoutholder.HeightRequest *= 2;
+				LayoutLoading();
+
+				Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
+				var ecgfile = await Reading.GetFileFromService(Task_vars.lastecgreading.FileId);
+
+				Debug.WriteLine("filename = " + fileName + "ECG.pdf");
+
+				Task_vars.ecgfiles.Add(fileName);
+
+				//save byte[] to pdf on device and email it
+				var val = await DependencyService.Get<IFileHelper>().SaveFromBytes(ecgfile.Content, fileName + "ECG.pdf");
+
+				LayoutLoadingDone();
+				layoutholder.HeightRequest /= 2;
+				Debug.WriteLine("lastecgreading.Id = " + Task_vars.lastecgreading.Id);
+
+			}
+			else
+			{
+				//Unavailable so we can't do anything with it
+			}
+		}
+		public async void LayoutLoading()
+		{
+			layoutLoading.IsVisible = true;
+		}
+		public async void LayoutLoadingDone()
+		{
+			layoutLoading.IsVisible = false;
 		}
 	}
 }

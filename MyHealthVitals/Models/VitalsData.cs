@@ -143,7 +143,7 @@ namespace MyHealthVitals
 				pdi.date =bpm.Date.ToString("MM/dd/yyyy hh:mm tt");
 				pdi.firstItem = bpm.EnglishValue.ToString();
 				addDataTolocal(pdi);
-				await bpm.PostReadingToService();;
+				await bpm.PostReadingToService();
 			}
 		}
 		public async void sendEcgToServer()
@@ -156,9 +156,16 @@ namespace MyHealthVitals
 				pdi.date =ecg.Date.ToString("MM/dd/yyyy hh:mm tt");
                 Task_vars.ecgdate = ecg.Date;
                 pdi.firstItem = ecg.Abnormal == false ? "Normal" : "Abnormal";
+
+				var read = await ecg.PostReadingToService();
+				if (read != null)
+				{
+					Task_vars.lastecgreading = read;
+					Task_vars.ecgreadingid = read.Id;
+					pdi.getID = read.Id;
+				}
 				addDataTolocal(pdi);
 
-				await ecg.PostReadingToService();
 			}
 
 		}

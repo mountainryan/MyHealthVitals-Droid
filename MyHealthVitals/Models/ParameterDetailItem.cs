@@ -10,7 +10,7 @@ namespace MyHealthVitals
 		public string secondItem { get; set; }
 		public long categoryId;
         public string date_nosec { get; set; }
-
+        public long getID { get; set; }
 	}
 	public class logcalParameteritem { 
 		static public Dictionary<int, List<ParameterDetailItem>> localhashmap = new Dictionary<int , List<ParameterDetailItem>>();

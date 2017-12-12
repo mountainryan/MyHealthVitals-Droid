@@ -1,14 +1,6 @@
 ﻿<Properties StartupConfiguration="{D46CA70E-D643-4A29-9B54-FC25DAE9558A}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workbench ActiveDocument="Projects Status">
     <Files>
-      <File FileName="MyHealthVitals/Models/Credential.cs" Line="11" Column="6" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="1869" Column="111" />
-      <File FileName="MyHealthVitals/BLE/ScaleServiceHandler.cs" Line="63" Column="49" />
-      <File FileName="MyHealthVitals/BLE/BLECentralManager.cs" Line="215" Column="34" />
-      <File FileName="MyHealthVitals/BLE/SpotCheckServiceHandler.cs" Line="278" Column="71" />
-      <File FileName="MyHealthVitals/BLE/PC100ServiceHandler.cs" Line="593" Column="20" />
-      <File FileName="MyHealthVitals/Views/LoginPage.xaml.cs" Line="124" Column="13" />
-      <File FileName="Droid/Helpers/FileHelperAndroid.cs" Line="198" Column="20" />
       <File FileName="Projects Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
@@ -17,7 +9,7 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.Droid PreferredExecutionTarget="Android.a0162631" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.DFE6A3D2-C47A-40F1-8ED1-0ACA4512E395" />
+  <MonoDevelop.Ide.ItemProperties.MyHealthVitals.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.BA47DD10-2B05-46D3-8C5C-3AEAD505B375" />
 </Properties>

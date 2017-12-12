@@ -262,6 +262,12 @@ namespace MyHealthVitals.Droid
 
             }
 
+
+            //debugging
+            //foreach (var x in result)
+            //{
+            //    Debug.WriteLine(" result line = "+x);
+            //}
             return result;
         }
 
@@ -729,21 +735,10 @@ namespace MyHealthVitals.Droid
                         }
 
                     }));
-                    /*
-                    UIAlertView alert = new UIAlertView();
 
-                    alert.AddButton("OK");
-                    alert.Message = "The email client connection is unsuccessful, please check wifi or data connection.";
-                    alert.AlertViewStyle = UIAlertViewStyle.Default;// = UIAlertViewStyle.PlainTextInput;
-                    alert.Show();
-                    return false;
-                    */
-                    //Display an error message
                 }
-                //Toast Toast = makeText();
 
-
-                Toast toast = Toast.MakeText(Android.App.Application.Context, "Sending email...", ToastLength.Short);
+                Toast toast = Toast.MakeText(Android.App.Application.Context, "Sending email...", ToastLength.Long);
                 toast.SetGravity(Android.Views.GravityFlags.Center,0,0);
                 toast.Show();
                 /*
@@ -819,6 +814,52 @@ namespace MyHealthVitals.Droid
 
 			return true;
 		}
+		async public Task<byte[]> BytesFromFile(string fileName)
+		{
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			filePath = Path.Combine(documentsPath, fileName);
+			FileInfo ecg_file = new FileInfo(filePath);
+			Task_vars.ecgfilelength = ecg_file.Length;
+
+			return File.ReadAllBytes(filePath);
+		}
+
+		async public Task<bool> SaveFromBytes(byte[] filedata, string fname)
+		{
+			fileName = fname;
+			string newfilename = fname;
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			//filePath = Path.Combine(documentsPath, fname);
+			filePathNEW = Path.Combine(documentsPath, newfilename);
+			//string oldFile = filePath;// "oldFile.pdf";
+			string newFile = filePathNEW;// "newFile.pdf";
+
+			try
+			{
+				if (checkFileExist(newfilename))
+				{
+					//delete the file first
+					File.Delete(newFile);
+				}
+				File.WriteAllBytes(newFile, filedata);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("save file to pdf err msg = " + ex.Message);
+			}
+
+			//send the email
+			await Task.Run(() =>
+			{
+				setEmailClient();
+			});
+
+			await sentToEmail(newFile);
+
+			return true;
+		}
+
+
 	}
 
 
