@@ -21,8 +21,6 @@ namespace MyHealthVitals
     }
 	public partial class MainPage : ContentPage, IBluetoothCallBackUpdatable
 	{
-
-
 		private VitalsData vitalsData = new VitalsData();
 		public static bool isCOnnectedToSpotCheck = false;
 

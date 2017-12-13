@@ -572,28 +572,28 @@ namespace MyHealthVitals
 				if (fileId != 0)
 				{
 					//update the reading with the file id
+                    try
+                    {
+						Reading updateEcg = Task_vars.lastecgreading;
+						updateEcg.FileId = fileId;
+						Debug.WriteLine("fileId = " + fileId);
+						//updateEcg.Status = "Saved";
+						Task_vars.lastecgreading = updateEcg;
 
-					//this is assuming we're coming from creating a new ECG
-
-					//we need to account for coming from the reading list as well
-					Reading updateEcg = Task_vars.lastecgreading;
-					updateEcg.FileId = fileId;
-					Debug.WriteLine("fileId = " + fileId);
-					//updateEcg.Status = "Saved";
-					Task_vars.lastecgreading = updateEcg;
-
-					var ret = await updateEcg.UpdateReadingToService();
-					Debug.WriteLine("returned " + ret.ToString());
-					//Reading ecg = new Reading(null, )
+						var ret = await updateEcg.UpdateReadingToService();
+						Debug.WriteLine("returned " + ret.ToString());
+                    }
+					catch (Exception ex)
+                    {
+                        Debug.WriteLine("Unable to update ECG reading with FileId.");
+                    }
+					
 				}
 
 				if (retdata != null && retdata.Length > 0)
 				{
 					Debug.WriteLine("save to pdf ret = true");
 					reportButton.IsEnabled = false;
-					//  reportButton.Text = "Send email";
-					/*
-                    */
 				}
 				else
 				{
@@ -646,8 +646,17 @@ namespace MyHealthVitals
 			//var msg = PostFileToService(Credential.BASE_URL + $"Patient/574/File", ecgfile);
 
 			//FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile, 1);
-			var fileId = await FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
-			return fileId;
+            try
+            {
+				var fileId = await FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
+				return fileId;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Unable to post the file to the server.");
+                return 0;
+            }
+
 
 		}
 

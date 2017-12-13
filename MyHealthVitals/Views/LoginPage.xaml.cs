@@ -186,7 +186,15 @@ namespace MyHealthVitals
 					//th.Start();
                     //GetReadings();
 					//Debug.WriteLine("task Id = " + Task.CurrentId);
-					ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService(); Debug.WriteLine("sync data from website");
+                    try
+                    {
+                        ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService(); Debug.WriteLine("sync data from website");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("Unable to get all readings from server.");
+                    }
+					
                 });
 
             }

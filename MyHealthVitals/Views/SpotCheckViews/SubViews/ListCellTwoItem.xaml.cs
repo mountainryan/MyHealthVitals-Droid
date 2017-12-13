@@ -71,48 +71,81 @@ namespace MyHealthVitals
 
 			if (secondItem.Text.Equals("Saved") && ret)
 			{
-				Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
-				var newPage = new EcgReport(fileName, Demographics.sharedInstance.FirstName, true);
-				newPage.Title = "ECG Report";
-				Task_vars.comingfrom = "ListPage";
-				await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(newPage));
+                try
+                {
+					Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
+					var newPage = new EcgReport(fileName, Demographics.sharedInstance.FirstName, true);
+					newPage.Title = "ECG Report";
+					Task_vars.comingfrom = "ListPage";
+					await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(newPage));
+                }
+                catch (Exception ex)
+                {
+					Debug.WriteLine("error message: " + ex.Message);
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", true, "OK", null);
+					}
+					else
+					{
+						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", false, "OK", null);
+					}
+                }
+
 		    }
 			else if (secondItem.Text.Equals("Saved") && ret2)
 			{
 				//actually saved, but pdf still exists so email they can email it
 				//don't actually need to change anything in the DB
 				LayoutLoading();
-				Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
-				var ecgread = Task_vars.lastecgreading;
-				if (ecgread.FileId == 0)
-				{
-					//somehow made it to the device but not to the server
-					//get the pdf in byte[]
-					FileData ecgfile = new FileData();
-					ecgfile.ServiceDate = ecgread.Date;
-					ecgfile.Content = await DependencyService.Get<IFileHelper>().BytesFromFile(fileName + "ECG.pdf");
-					Demographics demo = Demographics.sharedInstance;
-					string name = demo.FirstName + "_" + demo.MiddleName + "_" + demo.LastName;
-					string fdate = ecgread.Date.ToString("MMddyyyy_HHmm");
-					ecgfile.Name = name + "_ECGReport_" + fdate + ".pdf";
-					ecgfile.Category = "Cardiology (ECG, EKGs, Stress Test, etc.)";
-					ecgfile.Size = Task_vars.ecgfilelength;
-					ecgfile.UploadDate = DateTime.Now;
+                try
+                {
+					Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
+					var ecgread = Task_vars.lastecgreading;
+					if (ecgread.FileId == 0)
+					{
+						//somehow made it to the device but not to the server
+						//get the pdf in byte[]
+						FileData ecgfile = new FileData();
+						ecgfile.ServiceDate = ecgread.Date;
+						ecgfile.Content = await DependencyService.Get<IFileHelper>().BytesFromFile(fileName + "ECG.pdf");
+						Demographics demo = Demographics.sharedInstance;
+						string name = demo.FirstName + "_" + demo.MiddleName + "_" + demo.LastName;
+						string fdate = ecgread.Date.ToString("MMddyyyy_HHmm");
+						ecgfile.Name = name + "_ECGReport_" + fdate + ".pdf";
+						ecgfile.Category = "Cardiology (ECG, EKGs, Stress Test, etc.)";
+						ecgfile.Size = Task_vars.ecgfilelength;
+						ecgfile.UploadDate = DateTime.Now;
 
-					var fileId = await EcgReport.FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
-					Debug.WriteLine("fileID = " + fileId);
-					//now update the reading with the new FileId
-					ecgread.FileId = fileId;
-					var val = await ecgread.UpdateReadingToService();
-					Debug.WriteLine("val for update = " + val);
-				}
-				LayoutLoadingDone();
-				await Task.Run(() =>
-				{
-					DependencyService.Get<IFileHelper>().setEmailClient();
-				});
+						var fileId = await EcgReport.FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
+						Debug.WriteLine("fileID = " + fileId);
+						//now update the reading with the new FileId
+						ecgread.FileId = fileId;
+						var val = await ecgread.UpdateReadingToService();
+						Debug.WriteLine("val for update = " + val);
+					}
+					LayoutLoadingDone();
+					await Task.Run(() =>
+					{
+						DependencyService.Get<IFileHelper>().setEmailClient();
+					});
 
-				var vals = await DependencyService.Get<IFileHelper>().sentToEmail(fileName + "ECG.pdf");
+					var vals = await DependencyService.Get<IFileHelper>().sentToEmail(fileName + "ECG.pdf");
+                }
+                catch (Exception ex)
+                {
+                    LayoutLoadingDone();
+					Debug.WriteLine("error message: " + ex.Message);
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", true, "OK", null);
+					}
+					else
+					{
+						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", false, "OK", null);
+					}
+                }
+				
 
 			}
 			else if (secondItem.Text.Equals("Saved"))
@@ -123,19 +156,35 @@ namespace MyHealthVitals
 				layoutholder.HeightRequest *= 2;
 				LayoutLoading();
 
-				Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
-				var ecgfile = await Reading.GetFileFromService(Task_vars.lastecgreading.FileId);
+                try
+                {
+					Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
+					var ecgfile = await Reading.GetFileFromService(Task_vars.lastecgreading.FileId);
 
-				Debug.WriteLine("filename = " + fileName + "ECG.pdf");
+					Debug.WriteLine("filename = " + fileName + "ECG.pdf");
 
-				Task_vars.ecgfiles.Add(fileName);
+					Task_vars.ecgfiles.Add(fileName);
 
-				//save byte[] to pdf on device and email it
-				var val = await DependencyService.Get<IFileHelper>().SaveFromBytes(ecgfile.Content, fileName + "ECG.pdf");
+					//save byte[] to pdf on device and email it
+					var val = await DependencyService.Get<IFileHelper>().SaveFromBytes(ecgfile.Content, fileName + "ECG.pdf");
 
-				LayoutLoadingDone();
-				layoutholder.HeightRequest /= 2;
-				Debug.WriteLine("lastecgreading.Id = " + Task_vars.lastecgreading.Id);
+					LayoutLoadingDone();
+					layoutholder.HeightRequest /= 2;
+					Debug.WriteLine("lastecgreading.Id = " + Task_vars.lastecgreading.Id);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("error message: "+ ex.Message);
+                    if (Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", true, "OK", null);
+                    }else{
+                        await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", false, "OK", null);
+                    }
+                    //var val = await DependencyService.Get<IFileHelper>().SaveFromBytes(ecgfile.Content, fileName + "ECG.pdf");
+                }
+
+				
 
 			}
 			else

@@ -522,21 +522,28 @@ namespace MyHealthVitals
 
                     if (pefReading.EnglishValue != -1 && fevReading.EnglishValue != -1)
                     {
-
-                        pefReading.PostReadingToService();
-                        fevReading.PostReadingToService();
-
-                        clearReadingDisplay();
-
-                        //saved pop up
-                        if (Device.Idiom == TargetIdiom.Tablet)
+                        try
                         {
-                            var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", true, "OK", null);
+							pefReading.PostReadingToService();
+							fevReading.PostReadingToService();
+
+							clearReadingDisplay();
+
+							//saved pop up
+							if (Device.Idiom == TargetIdiom.Tablet)
+							{
+								var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", true, "OK", null);
+							}
+							else
+							{
+								var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", false, "OK", null);
+							}
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading", "Reading saved.", false, "OK", null);
+                            Debug.WriteLine("exception on sending spirometer data to server.");
                         }
+
 
                     }
                     else

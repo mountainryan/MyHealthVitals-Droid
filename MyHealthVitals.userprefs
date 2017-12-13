@@ -1,6 +1,9 @@
 ﻿<Properties StartupConfiguration="{D46CA70E-D643-4A29-9B54-FC25DAE9558A}|Default" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workbench ActiveDocument="Projects Status">
     <Files>
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="407" Column="4" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/ListCellTwoItem.xaml.cs" Line="85" Column="45" />
+      <File FileName="Droid/Helpers/FileHelperAndroid.cs" Line="733" Column="31" />
       <File FileName="Projects Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>

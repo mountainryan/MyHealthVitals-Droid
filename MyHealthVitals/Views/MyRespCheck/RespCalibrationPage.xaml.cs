@@ -522,20 +522,27 @@ namespace MyHealthVitals
 
                 if (fevReading.EnglishValue != -1 && pefReading.EnglishValue != -1)
                 {
+                    try
+                    {
+						logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, highestReading.Pef, highestReading.Fev1));
+						await pefReading.PostReadingToService();
+						await fevReading.PostReadingToService();
+						layoutLoading.IsVisible = false;
+						//saved pop up
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading", "Calibrated readings saved.", true, "OK", null);
+						}
+						else
+						{
+							var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading", "Calibrated readings saved.", false, "OK", null);
+						}
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("exception on sending spirometer data to server.");
+                    }
 
-                    logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, highestReading.Pef, highestReading.Fev1));
-                    await pefReading.PostReadingToService();
-                    await fevReading.PostReadingToService();
-                    layoutLoading.IsVisible = false;
-                    //saved pop up
-                    if (Device.Idiom == TargetIdiom.Tablet)
-                    {
-                        var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading", "Calibrated readings saved.", true, "OK", null);
-                    }
-                    else
-                    {
-                        var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading", "Calibrated readings saved.", false, "OK", null);
-                    }
                 }
                 else
                 {

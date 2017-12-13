@@ -92,24 +92,38 @@ namespace MyHealthVitals
 		}
 		public async void sendToServer_SPO2_PI_BPM()
 		{
-			ParameterDetailItem pdi = new ParameterDetailItem();
-			if (spo2 != null && spo2.EnglishValue > 0)
-			{
-				pdi.categoryId = spo2.CategoryId;
-				pdi.date = spo2.Date.ToString("MM/dd/yyyy hh:mm tt");
-				pdi.firstItem = spo2.EnglishValue.ToString();
-			
-				await spo2.PostReadingToService();
-				//if (isServiceCallSuccess) spo2.EnglishValue = 0;
-			}
+            ParameterDetailItem pdi = new ParameterDetailItem();
+            try
+            {
+                if (spo2 != null && spo2.EnglishValue > 0)
+                {
+                    pdi.categoryId = spo2.CategoryId;
+                    pdi.date = spo2.Date.ToString("MM/dd/yyyy hh:mm tt");
+                    pdi.firstItem = spo2.EnglishValue.ToString();
 
-			if (bpm != null && bpm.EnglishValue > 0)
-			{
-				pdi.secondItem = bpm.EnglishValue.ToString();
-                addDataTolocal(pdi);
-				await bpm.PostReadingToService();
-				//if (isServiceCallSuccess) bpm.EnglishValue = 0;
-			}
+                    await spo2.PostReadingToService();
+                    //if (isServiceCallSuccess) spo2.EnglishValue = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("exception on sending spo2 to server.");
+            }
+            try
+            {
+                if (bpm != null && bpm.EnglishValue > 0)
+                {
+                    pdi.secondItem = bpm.EnglishValue.ToString();
+                    addDataTolocal(pdi);
+                    await bpm.PostReadingToService();
+                    //if (isServiceCallSuccess) bpm.EnglishValue = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("exception on sending bpm to server.");
+            }
+			
             spo2 = null;
             bpm = null;
 		}
@@ -136,15 +150,23 @@ namespace MyHealthVitals
 		}
 
 		public async void sendHeartRateToServer() { 
-			if (bpm.EnglishValue > 0)
-			{
-				ParameterDetailItem pdi = new ParameterDetailItem();
-				pdi.categoryId = bpm.CategoryId;
-				pdi.date =bpm.Date.ToString("MM/dd/yyyy hh:mm tt");
-				pdi.firstItem = bpm.EnglishValue.ToString();
-				addDataTolocal(pdi);
-				await bpm.PostReadingToService();
-			}
+            try
+            {
+				if (bpm.EnglishValue > 0)
+				{
+					ParameterDetailItem pdi = new ParameterDetailItem();
+					pdi.categoryId = bpm.CategoryId;
+					pdi.date = bpm.Date.ToString("MM/dd/yyyy hh:mm tt");
+					pdi.firstItem = bpm.EnglishValue.ToString();
+					addDataTolocal(pdi);
+					await bpm.PostReadingToService();
+				}
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception occured to the sending Heart rate reading to the server.");
+            }
+			
 		}
 		public async void sendEcgToServer()
 		{
@@ -157,13 +179,21 @@ namespace MyHealthVitals
                 Task_vars.ecgdate = ecg.Date;
                 pdi.firstItem = ecg.Abnormal == false ? "Normal" : "Abnormal";
 
-				var read = await ecg.PostReadingToService();
-				if (read != null)
-				{
-					Task_vars.lastecgreading = read;
-					Task_vars.ecgreadingid = read.Id;
-					pdi.getID = read.Id;
-				}
+                try
+                {
+					var read = await ecg.PostReadingToService();
+					if (read != null)
+					{
+						Task_vars.lastecgreading = read;
+						Task_vars.ecgreadingid = read.Id;
+						pdi.getID = read.Id;
+					}
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Exception occured to the sending ECG reading to the server.");
+                }
+				
 				addDataTolocal(pdi);
 
 			}
@@ -171,44 +201,60 @@ namespace MyHealthVitals
 		}
 		public async void sendToServer_SYS_DIA()
 		{
-			Debug.WriteLine("sendToServer_SYS_DIA  and bpm");
-			if (bpDia != null && bpDia.EnglishValue > 0 && bpSys != null && bpSys.EnglishValue > 0)
-			{
-				if (bpSys.EnglishValue < bpDia.EnglishValue) {
-					return;
+            try
+            {
+                Debug.WriteLine("sendToServer_SYS_DIA  and bpm");
+                if (bpDia != null && bpDia.EnglishValue > 0 && bpSys != null && bpSys.EnglishValue > 0)
+                {
+                    if (bpSys.EnglishValue < bpDia.EnglishValue)
+                    {
+                        return;
+                    }
+                    ParameterDetailItem pdi = new ParameterDetailItem();
+                    pdi.categoryId = bpDia.CategoryId;
+                    pdi.date = bpDia.Date.ToString("MM/dd/yyyy hh:mm tt");
+                    pdi.firstItem = bpSys.EnglishValue.ToString();
+                    pdi.secondItem = bpDia.EnglishValue.ToString();
+                    addDataTolocal(pdi);
+
+                    await bpDia.PostReadingToService();
+                    await bpSys.PostReadingToService();
+                    if (bpm != null)
+                        bpm.Date = bpDia.Date;
+
+                    //if (isServiceCallSuccess) bpDia.EnglishValue = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception occured to the sending BP reading to the server.");
+            }
+				/*
+				if (bpSys != null && bpSys.EnglishValue > 0)
+				{
+					await bpSys.PostReadingToService();
+					//if (isServiceCallSuccess) bpSys.EnglishValue = 0;
 				}
-				ParameterDetailItem pdi = new ParameterDetailItem();
-				pdi.categoryId = bpDia.CategoryId;
-				pdi.date =bpDia.Date.ToString("MM/dd/yyyy hh:mm tt");
-				pdi.firstItem = bpSys.EnglishValue.ToString();
-				pdi.secondItem = bpDia.EnglishValue.ToString();
-				addDataTolocal(pdi);
+	*/      
+            try
+            {
+				if (bpm != null && bpm.EnglishValue > 0)
+				{
+					ParameterDetailItem pdi = new ParameterDetailItem();
+					pdi.categoryId = bpm.CategoryId;
+					pdi.date = bpm.Date.ToString("MM/dd/yyyy hh:mm tt");
+					pdi.firstItem = bpm.EnglishValue.ToString();
+					addDataTolocal(pdi);
 
-				await bpDia.PostReadingToService();
-				await bpSys.PostReadingToService();
-				if(bpm!= null)
-					bpm.Date = bpDia.Date;
-
-				//if (isServiceCallSuccess) bpDia.EnglishValue = 0;
-			}
-			/*
-			if (bpSys != null && bpSys.EnglishValue > 0)
-			{
-				await bpSys.PostReadingToService();
-				//if (isServiceCallSuccess) bpSys.EnglishValue = 0;
-			}
-*/
-			if (bpm!= null && bpm.EnglishValue > 0)
-			{
-				ParameterDetailItem pdi = new ParameterDetailItem();
-				pdi.categoryId = bpm.CategoryId;
-				pdi.date = bpm.Date.ToString("MM/dd/yyyy hh:mm tt");
-				pdi.firstItem = bpm.EnglishValue.ToString();
-                addDataTolocal(pdi);
-
-				await bpm.PostReadingToService();
-				//if (isServiceCallSuccess) bpm.EnglishValue = 0;
-			}
+					await bpm.PostReadingToService();
+					//if (isServiceCallSuccess) bpm.EnglishValue = 0;
+				}
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception occured to the sending bpm reading to the server.");
+            }
+			
 		}
 	}
 }
