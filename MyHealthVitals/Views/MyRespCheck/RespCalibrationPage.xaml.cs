@@ -540,7 +540,16 @@ namespace MyHealthVitals
                     }
                     catch (Exception ex)
                     {
+						layoutLoading.IsVisible = false;
                         Debug.WriteLine("exception on sending spirometer data to server.");
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading Error", "Unable to save calibrated readings.", true, "OK", null);
+						}
+						else
+						{
+							var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading Error", "Unable to save calibrated readings.", false, "OK", null);
+						}
                     }
 
                 }

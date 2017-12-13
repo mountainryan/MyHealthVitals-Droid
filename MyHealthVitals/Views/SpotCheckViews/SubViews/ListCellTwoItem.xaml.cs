@@ -74,13 +74,9 @@ namespace MyHealthVitals
                 try
                 {
 					Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
-					var newPage = new EcgReport(fileName, Demographics.sharedInstance.FirstName, true);
-					newPage.Title = "ECG Report";
-					Task_vars.comingfrom = "ListPage";
-					await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(newPage));
-                }
-                catch (Exception ex)
-                {
+				}
+				catch (Exception ex)
+				{
 					Debug.WriteLine("error message: " + ex.Message);
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
@@ -90,7 +86,13 @@ namespace MyHealthVitals
 					{
 						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", false, "OK", null);
 					}
-                }
+				}
+
+				var newPage = new EcgReport(fileName, Demographics.sharedInstance.FirstName, true);
+				newPage.Title = "ECG Report";
+				Task_vars.comingfrom = "ListPage";
+				await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(newPage));
+            
 
 		    }
 			else if (secondItem.Text.Equals("Saved") && ret2)
@@ -125,17 +127,12 @@ namespace MyHealthVitals
 						Debug.WriteLine("val for update = " + val);
 					}
 					LayoutLoadingDone();
-					await Task.Run(() =>
-					{
-						DependencyService.Get<IFileHelper>().setEmailClient();
-					});
-
-					var vals = await DependencyService.Get<IFileHelper>().sentToEmail(fileName + "ECG.pdf");
-                }
-                catch (Exception ex)
-                {
-                    LayoutLoadingDone();
+				}
+				catch (Exception ex)
+				{
+					LayoutLoadingDone();
 					Debug.WriteLine("error message: " + ex.Message);
+					/*
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
 						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", true, "OK", null);
@@ -143,9 +140,16 @@ namespace MyHealthVitals
 					else
 					{
 						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", false, "OK", null);
-					}
-                }
-				
+					}*/
+				}
+
+				await Task.Run(() =>
+				{
+					DependencyService.Get<IFileHelper>().setEmailClient();
+				});
+
+				var vals = await DependencyService.Get<IFileHelper>().sentToEmail(fileName + "ECG.pdf");
+            
 
 			}
 			else if (secondItem.Text.Equals("Saved"))
@@ -167,26 +171,23 @@ namespace MyHealthVitals
 
 					//save byte[] to pdf on device and email it
 					var val = await DependencyService.Get<IFileHelper>().SaveFromBytes(ecgfile.Content, fileName + "ECG.pdf");
-
-					LayoutLoadingDone();
-					layoutholder.HeightRequest /= 2;
-					Debug.WriteLine("lastecgreading.Id = " + Task_vars.lastecgreading.Id);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("error message: "+ ex.Message);
-                    if (Device.Idiom == TargetIdiom.Tablet)
-                    {
-                        await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", true, "OK", null);
-                    }else{
-                        await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", false, "OK", null);
-                    }
-                    //var val = await DependencyService.Get<IFileHelper>().SaveFromBytes(ecgfile.Content, fileName + "ECG.pdf");
-                }
-
-				
-
-			}
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine("error message: " + ex.Message);
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", true, "OK", null);
+					}
+					else {
+						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", false, "OK", null);
+					}
+					//var val = await DependencyService.Get<IFileHelper>().SaveFromBytes(ecgfile.Content, fileName + "ECG.pdf");
+				}
+				LayoutLoadingDone();
+				layoutholder.HeightRequest /= 2;
+				Debug.WriteLine("lastecgreading.Id = " + Task_vars.lastecgreading.Id);
+            }
 			else
 			{
 				//Unavailable so we can't do anything with it

@@ -229,13 +229,7 @@ namespace MyHealthVitals
             {
                 Debug.WriteLine("Exception occured to the sending BP reading to the server.");
             }
-				/*
-				if (bpSys != null && bpSys.EnglishValue > 0)
-				{
-					await bpSys.PostReadingToService();
-					//if (isServiceCallSuccess) bpSys.EnglishValue = 0;
-				}
-	*/      
+				
             try
             {
 				if (bpm != null && bpm.EnglishValue > 0)

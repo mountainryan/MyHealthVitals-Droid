@@ -541,7 +541,16 @@ namespace MyHealthVitals
                         }
                         catch (Exception ex)
                         {
+							clearReadingDisplay();
                             Debug.WriteLine("exception on sending spirometer data to server.");
+							if (Device.Idiom == TargetIdiom.Tablet)
+							{
+								var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading Error", "Unable to save reading.", true, "OK", null);
+							}
+							else
+							{
+								var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading Error", "Unable to save reading.", false, "OK", null);
+							}
                         }
 
 
