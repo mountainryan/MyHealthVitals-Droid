@@ -648,7 +648,8 @@ namespace MyHealthVitals
 			//FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile, 1);
             try
             {
-				var fileId = await FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
+                var ecgid = (Task_vars.lastecgreading == null) ? 0 : Task_vars.lastecgreading.Id;
+				var fileId = await FPostAsync(ecgid, Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
 				return fileId;
             }
             catch (Exception ex)
@@ -660,7 +661,7 @@ namespace MyHealthVitals
 
 		}
 
-		public static async Task<long> FPostAsync(string url, object arg = null, int? timeout = null)
+		public static async Task<long> FPostAsync(long ecgid, string url, FileData arg = null, int? timeout = null)
 		{
 			var client = new HttpClient(); // { BaseAddress = new Uri(url) };
 			
@@ -671,21 +672,35 @@ namespace MyHealthVitals
 			var content = arg != null ? new StringContent(JsonConvert.SerializeObject(arg), Encoding.UTF8, "application/json") : null;
 			//var response = await DoWithRetryAsync(() => client.PostAsync(url, content));
 
-			var response = await DoWithRetryAsync(() => client.PostAsync(url, content));
-			if (response.IsSuccessStatusCode)
-			{
-				Debug.WriteLine("Successful file upload");
-				var fcontent = await response.Content.ReadAsStringAsync();
-				var val = JsonConvert.DeserializeObject<FileData>(fcontent);
-				return Convert.ToInt64(val.Id);
+			//testing***********************************************************
+			//var ret = await DependencyService.Get<IFileHelper>().offlineFileSave(arg, ecgid);
+			//return 0;                                                           
+			//testing***********************************************************
 
-			}
-			else
-			{
-				//what did it return
-				Debug.WriteLine("Response: " + response.StatusCode);
-				return 0;
-			}
+			try
+            {
+				var response = await DoWithRetryAsync(() => client.PostAsync(url, content));
+				if (response.IsSuccessStatusCode)
+				{
+					Debug.WriteLine("Successful file upload");
+					var fcontent = await response.Content.ReadAsStringAsync();
+					var val = JsonConvert.DeserializeObject<FileData>(fcontent);
+					return Convert.ToInt64(val.Id);
+
+				}
+				else
+				{
+					DependencyService.Get<IFileHelper>().offlineFileSave(arg, ecgid);
+					Debug.WriteLine("Response: " + response.StatusCode);
+					return 0;
+				}
+            }
+            catch (Exception ex)
+            {
+                DependencyService.Get<IFileHelper>().offlineFileSave(arg, ecgid);
+                return 0;
+            }
+			
 			//var message = await DoWithRetryAsync(() => response.Content.ReadAsStringAsync());
 			//var message = await response.Content.ReadAsStringAsync();
 			//Debug.WriteLine("file error message: " + message);

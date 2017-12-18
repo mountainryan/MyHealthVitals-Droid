@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using nexus.core.logging;
 using nexus.protocols.ble;
+using Plugin.Connectivity;
+using Plugin.Connectivity.Abstractions;
+
 
 namespace MyHealthVitals
 {
@@ -119,8 +122,15 @@ namespace MyHealthVitals
 
         protected override void OnAppearing()
         {
+            //var connval = DependencyService.Get<IFileHelper>().checkNetworkConn();
+
+			
+
             //DependencyService.Get<IFileHelper>().delBLEinfo();
             //DependencyService.Get<IFileHelper>().getBLEinfo("PC_300SNT");
+
+            //var res = DependencyService.Get<IFileHelper>().getFileName("Joy_Zhou_ECGReport_12122017_1635.pdf");
+            //Debug.WriteLine("filename result = " + res);
 
             //var result = 193^2;
             //string hexval = result.ToString("X");
@@ -167,16 +177,37 @@ namespace MyHealthVitals
 
                 Demographics.sharedInstance.updateDemographicsFromLocal();
 
-                Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                Xamarin.Forms.Device.BeginInvokeOnMainThread(async() =>
                 {
-                    Debug.WriteLine("Login succesfull.");
+					//DependencyService.Get<IFileHelper>().deleteOfflineFile();
+					Debug.WriteLine("Login succesfull.");
+
+					if (CrossConnectivity.Current.IsConnected)
+					{
+						Debug.WriteLine("Connected.");
+						try
+						{
+							var res = await DependencyService.Get<IFileHelper>().offlineRead();
+						}
+						catch (Exception ex)
+						{
+							Debug.WriteLine("err msg = " + ex.Message);
+						}
+					
+					}
+					else
+					{
+						Debug.WriteLine("Not connected.");
+	
+					}
+
                     var newScreen = new DeviceListPage();
                     //var newScreen = new RespHomePage();
                     newScreen.Title = "Device List";
                     NavigationPage.SetHasNavigationBar(this, false);
                     var nav = new NavigationPage(newScreen);
 
-                    this.Navigation.PushModalAsync(nav);
+                    await this.Navigation.PushModalAsync(nav);
                 });
 
 
@@ -196,6 +227,10 @@ namespace MyHealthVitals
                     }
 					
                 });
+
+                //attempt to save readings from the offline saved file
+
+
 
             }
 

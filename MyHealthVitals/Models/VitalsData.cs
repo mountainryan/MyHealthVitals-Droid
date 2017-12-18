@@ -47,10 +47,11 @@ namespace MyHealthVitals
 					pdi.firstItem = temperature.EnglishValue.ToString() + "/" +
 									MainPage.ConvertFahrenheitToCelsius((double)this.temperature.EnglishValue).ToString();;
 					addDataTolocal(pdi);
-					await temperature.PostReadingToService();
+					var retval = await temperature.PostReadingToService();
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
+                    Debug.WriteLine("error message = "+ex.Message);
 					Debug.WriteLine("exception on sending temperature to server.");
 				}
 				//if (isServiceCallSuccess) temperature.EnglishValue = 0;

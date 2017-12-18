@@ -74,7 +74,8 @@ namespace MyHealthVitals
                 try
                 {
 					Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
-				}
+
+                }
 				catch (Exception ex)
 				{
 					Debug.WriteLine("error message: " + ex.Message);
@@ -104,6 +105,7 @@ namespace MyHealthVitals
                 {
 					Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
 					var ecgread = Task_vars.lastecgreading;
+                    Debug.WriteLine("ecgread.FileId = "+ecgread.FileId.ToString());
 					if (ecgread.FileId == 0)
 					{
 						//somehow made it to the device but not to the server
@@ -112,14 +114,15 @@ namespace MyHealthVitals
 						ecgfile.ServiceDate = ecgread.Date;
 						ecgfile.Content = await DependencyService.Get<IFileHelper>().BytesFromFile(fileName + "ECG.pdf");
 						Demographics demo = Demographics.sharedInstance;
-						string name = demo.FirstName + "_" + demo.MiddleName + "_" + demo.LastName;
+						string name = demo.FirstName.Trim() + "_" + demo.MiddleName.Trim() + "_" + demo.LastName.Trim();
+                        name = name.Replace("__", "_");
 						string fdate = ecgread.Date.ToString("MMddyyyy_HHmm");
 						ecgfile.Name = name + "_ECGReport_" + fdate + ".pdf";
 						ecgfile.Category = "Cardiology (ECG, EKGs, Stress Test, etc.)";
 						ecgfile.Size = Task_vars.ecgfilelength;
 						ecgfile.UploadDate = DateTime.Now;
 
-						var fileId = await EcgReport.FPostAsync(Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
+						var fileId = await EcgReport.FPostAsync(ecgread.Id, Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
 						Debug.WriteLine("fileID = " + fileId);
 						//now update the reading with the new FileId
 						ecgread.FileId = fileId;

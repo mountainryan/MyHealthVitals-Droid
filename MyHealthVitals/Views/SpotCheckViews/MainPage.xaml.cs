@@ -12,6 +12,8 @@ using OxyPlot.Xamarin.Forms;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.Threading.Tasks;
+using Plugin.Connectivity;
+using Plugin.Connectivity.Abstractions;
 
 namespace MyHealthVitals
 {
@@ -218,6 +220,47 @@ namespace MyHealthVitals
 			//var ret = await DisplayAlert(deviceName, "Do you want to take a measurement?", "Yes", "No");
 			if (ret)
 			{
+                //check the internet connection
+                if (!CrossConnectivity.Current.IsConnected)
+                {
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						Debug.WriteLine("recognized tablet");
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Internet Connection", "No Service Available", true, "OK", null);
+					}
+					else
+					{
+						Debug.WriteLine("recognized phone");
+						ret = await DependencyService.Get<IFileHelper>().dispAlert("Internet Connection", "No Service Available", false, "OK", null);
+					}
+                }else{
+                    //check the connection to the server
+                    //display a message if it is down
+                    lblLoadingMessage.Text = "Checking connection to server...";
+                    layoutLoading.IsVisible = true;
+
+                    //var connval = await CrossConnectivity.Current.IsRemoteReachable("104.44.133.25"); //prod ip
+                    var connval = await CrossConnectivity.Current.IsRemoteReachable("13.84.153.187"); //test ip
+
+
+					Debug.WriteLine("connection to server = "+connval.ToString());
+                    if (!connval)
+                    {
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							Debug.WriteLine("recognized tablet");
+							ret = await DependencyService.Get<IFileHelper>().dispAlert("Internet Connection", "Unable to connect to server", true, "OK", null);
+						}
+						else
+						{
+							Debug.WriteLine("recognized phone");
+							ret = await DependencyService.Get<IFileHelper>().dispAlert("Internet Connection", "Unable to connect to server", false, "OK", null);
+						}
+                    }
+                    lblLoadingMessage.Text = "Connecting with device...";
+
+                }
+
                 //DependencyService.Get<IFileHelper>().delBLEinfo();
                 Debug.WriteLine("   device Name ======  " + deviceName);
                 //check if the current android machine has connected to this device before.

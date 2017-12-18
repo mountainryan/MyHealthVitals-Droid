@@ -10,6 +10,9 @@ namespace MyHealthVitals
         void delBLEinfo();
         List<string> getBLEinfo(string devicename);
         void saveBLEinfo(string devicename, int blenum, Guid deviceid);
+        Task<bool> offlineSave(Reading data, string method);
+        Task<bool> offlineFileSave(FileData data, long ecgid);
+        Task<bool> offlineRead();
         Task<bool> dispAlert(String Title, String message, bool tablet, String btn1, String btn2);
       	void setEcgInof(String Patient, String DOB, String Finding, String Recorded,
 		String FindingDetails, String HeartRate, String TestDuration = "30s");
@@ -23,6 +26,8 @@ namespace MyHealthVitals
 		void copyAsset();
 		Task<bool> SaveFromBytes(byte[] filedata, string fname);
 		Task<byte[]> BytesFromFile(string fileName);
+        string getFileName(string fname);
+        void deleteOfflineFile();
 	}
 
 	public interface IBaseUrl { string Get(); }

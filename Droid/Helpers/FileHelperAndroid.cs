@@ -2,53 +2,23 @@
 using System;
 using System.IO;
 using OxyPlot;
-
-using System.Net;
-using System.Net.Mail;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
 using MimeKit;
-using MailKit;
 using MailKit.Net.Smtp;
 using Android.Widget;
-
 using Xamarin.Forms;
-//using ToastIOS;
-//using Foundation;
-//using UIKit;
-//using MessageUI;
-//using SystemConfiguration;
-//using CoreFoundation;
-
 using System.Collections.Generic;
-
-using System.Diagnostics.Contracts;
-
-using System.Runtime.Serialization.Formatters.Binary;
-
-using System.Text;
-
-using iTextSharp;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using iTextSharp.text.html.simpleparser;
-
-//using Android.OS;
-//using Android.App;
 using Android.Content;
-//using Xamarin.Forms;
 using Android.App;
-using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-//using Android.OS;
-using Android.Support.V7.AppCompat;
 using Android.Text;
-using nexus.core.logging;
-using nexus.protocols.ble;
-using Android.Util;
+using System.Text.RegularExpressions;
+using Android.Net;
+using Plugin.Connectivity;
+using Plugin.Connectivity.Abstractions;
 
 [assembly: Xamarin.Forms.Dependency(typeof(BaseUrl_Android))]
 
@@ -56,6 +26,17 @@ using Android.Util;
 
 namespace MyHealthVitals.Droid
 {
+	public class EcgFileData
+	{
+		public long? Id { get; set; }
+		public string Category { get; set; }
+		public byte[] Content { get; set; }
+		public string Name { get; set; }
+		public DateTime? ServiceDate { get; set; }
+		public long Size { get; set; }
+		public DateTime? UploadDate { get; set; }
+        public long ecgid { get; set; }
+	}
 	public class FileHelperAndroid : IFileHelper
 	{
         String Patient;
@@ -75,8 +56,7 @@ namespace MyHealthVitals.Droid
 												  //        client.Connect("smtp.gmail.com", 587, false);
 
 		//  string emaiAddress,   
-
-	
+        	
         public async Task<bool> dispAlert(String title, String message, bool tablet, String btn1, String btn2)
         {
             //Debug.WriteLine("made it to dispAlert()");
@@ -328,6 +308,470 @@ namespace MyHealthVitals.Droid
 				sw.WriteLine(deviceid.ToString());
 				sw.Close();
             }
+        }
+
+        public string getFileName(string fname)
+        {
+            var ind = fname.LastIndexOf('_');
+            var ind2 = fname.Substring(0, ind).LastIndexOf('_');
+            var newdate = fname.Substring(ind2 + 1);
+            newdate = newdate.Substring(0, newdate.Length - 4); //removes the .pdf
+			DateTime iDate = DateTime.ParseExact(newdate, "MMddyyyy_HHmm", null);
+			String date_nosec = iDate.ToString("MM/dd/yyyy hh:mm tt");
+
+			var strfileName = Regex.Replace(date_nosec, @"\s+", "");//dateTime.Trim(' ')
+			strfileName = Regex.Replace(strfileName, @"[/:]+", "");
+            strfileName = strfileName + "ECG.pdf";
+            return strfileName;
+        }
+
+        public DateTime getDate(string fname)
+        {
+            var newdate = fname.Substring(0, fname.Length - 7);
+            DateTime iDate = DateTime.ParseExact(newdate, "MMddyyyyhhmmtt", null);
+
+
+            return iDate;
+        }
+
+        public async Task<bool> offlineFileSave(FileData data, long ecgid)
+        {
+			var filename = "SavedData.txt";
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			var txtpath = Path.Combine(documentsPath, filename);
+
+			if (checkFileExist(filename))
+			{
+				using (StreamWriter sw = File.AppendText(txtpath))
+				{
+					sw.WriteLine("file");
+                    if (data.Id == null){
+                        sw.WriteLine("");
+                    }else{
+                        sw.WriteLine(data.Id.ToString());
+                    }					
+					sw.WriteLine(data.Category);
+
+                    //content in the form of a filename on the device
+                    var strfileName = getFileName(data.Name);
+					sw.WriteLine(strfileName);
+
+					sw.WriteLine(data.Name);
+                    if (data.ServiceDate==null){
+                        sw.WriteLine("");
+                    }else{
+                        sw.WriteLine(data.ServiceDate.ToString());
+                    }					
+					sw.WriteLine(data.Size.ToString());
+					if (data.UploadDate == null)
+					{
+						sw.WriteLine("");
+					}
+					else
+					{
+						sw.WriteLine(data.UploadDate.ToString());
+					}
+                    sw.WriteLine(ecgid.ToString());
+				}
+
+			}
+			else
+			{
+                
+				//write initial lines to file
+				StreamWriter sw = new StreamWriter(txtpath);
+				sw.WriteLine("file");
+				if (data.Id == null)
+				{
+					sw.WriteLine("");
+				}
+				else
+				{
+					sw.WriteLine(data.Id.ToString());
+				}
+				sw.WriteLine(data.Category);
+
+				//content in the form of a filename on the device
+				var strfileName = getFileName(data.Name);
+				sw.WriteLine(strfileName);
+
+				sw.WriteLine(data.Name);
+				if (data.ServiceDate == null)
+				{
+					sw.WriteLine("");
+				}
+				else
+				{
+					sw.WriteLine(data.ServiceDate.ToString());
+				}
+				sw.WriteLine(data.Size.ToString());
+				if (data.UploadDate == null)
+				{
+					sw.WriteLine("");
+				}
+				else
+				{
+					sw.WriteLine(data.UploadDate.ToString());
+				}
+				sw.WriteLine(ecgid.ToString());
+				sw.Close();
+
+			}
+            return true;
+        }
+
+		public async Task<bool> offlineSave(Reading data, string method)
+		{
+			var filename = "SavedData.txt";
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			var txtpath = Path.Combine(documentsPath, filename);
+
+
+            //Debug.WriteLine("method = "+method);
+			//Debug.WriteLine(data.Id.ToString());
+			Debug.WriteLine("abnormal = "+data.Abnormal.ToString());
+			//Debug.WriteLine(data.CategoryId.ToString());
+			//Debug.WriteLine(data.Date.ToString());
+			//Debug.WriteLine(data.DeviceId.ToString());
+			//Debug.WriteLine(data.Source.ToString());
+			//Debug.WriteLine(data.EnglishValue.ToString());
+			//Debug.WriteLine(data.MetricValue.ToString());
+			//Debug.WriteLine(data.Narrative.ToString());
+			//Debug.WriteLine(data.FileId.ToString());
+			
+
+			if (File.Exists(txtpath))
+			{
+                Debug.WriteLine("file exists");
+				using (StreamWriter sw = File.AppendText(txtpath))
+				{
+                    sw.WriteLine(method);
+                    sw.WriteLine(data.Id.ToString());
+                    sw.WriteLine(data.Abnormal.ToString());
+					sw.WriteLine(data.CategoryId.ToString());
+					sw.WriteLine(data.Date.ToString());
+                    if (data.DeviceId==null)
+                    {
+                        sw.WriteLine("");
+                    }else{
+                        sw.WriteLine(data.DeviceId.ToString());
+                    }
+                    sw.WriteLine(data.Source);
+					if (data.EnglishValue == null)
+					{
+						sw.WriteLine("");
+					}
+					else
+					{
+						sw.WriteLine(data.EnglishValue.ToString());
+					}
+					if (data.MetricValue == null)
+					{
+						sw.WriteLine("");
+					}
+					else
+					{
+						sw.WriteLine(data.MetricValue.ToString());
+					}
+                    sw.WriteLine(data.Narrative);
+                    sw.WriteLine(data.FileId.ToString());
+				}
+			}
+			else
+			{
+                Debug.WriteLine("file doesn't exist");
+				//write initial lines to file
+				StreamWriter sw = new StreamWriter(txtpath);
+				sw.WriteLine(method);
+				sw.WriteLine(data.Id.ToString());
+				sw.WriteLine(data.Abnormal.ToString());
+				sw.WriteLine(data.CategoryId.ToString());
+				sw.WriteLine(data.Date.ToString());
+				if (data.DeviceId == null)
+				{
+					sw.WriteLine("");
+				}
+				else
+				{
+					sw.WriteLine(data.DeviceId.ToString());
+				}
+				sw.WriteLine(data.Source);
+				if (data.EnglishValue == null)
+				{
+					sw.WriteLine("");
+				}
+				else
+				{
+					sw.WriteLine(data.EnglishValue.ToString());
+				}
+				if (data.MetricValue == null)
+				{
+					sw.WriteLine("");
+				}
+				else
+				{
+					sw.WriteLine(data.MetricValue.ToString());
+				}
+				sw.WriteLine(data.Narrative);
+				sw.WriteLine(data.FileId.ToString());
+				sw.Close();
+			}
+            return true;
+		}
+
+		public async Task<bool> offlineRead()
+		{
+			var filename = "SavedData.txt";
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			var txtpath = Path.Combine(documentsPath, filename);
+            List<Reading> posts = new List<Reading>();
+            List<Reading> puts = new List<Reading>();
+            List<EcgFileData> files = new List<EcgFileData>();
+
+            //List<FileData> files = null;
+
+            int numposts = 0;
+            int numputs = 0;
+            int numfiles = 0;
+			if (checkFileExist(filename))
+			{
+                string line;
+				StreamReader sr1 = new System.IO.StreamReader(txtpath);
+                while ((line = sr1.ReadLine()) != null)
+                {
+                    Debug.WriteLine("line = " + line);
+                }
+
+                sr1.Close();
+                Debug.WriteLine("  file exists");
+				
+				StreamReader sr = new StreamReader(txtpath);
+				while ((line = sr.ReadLine()) != null)
+				{
+                    Debug.WriteLine("line = "+line);
+                    string method;
+                    Reading data = new Reading(null, 0, 0, false, null, null);
+                    EcgFileData filedat = new EcgFileData();
+                    //long ecgid;
+					//do stuff with line
+					if (line == "put" || line=="post")
+					{
+                        method = line;
+                        line = sr.ReadLine();
+                        data.Id = (line == "null" || line == "") ? 0 : Convert.ToInt64(line);
+                        Debug.WriteLine("data.Id = " + data.Id.ToString());
+                        line = sr.ReadLine();
+                        data.Abnormal = line == "False" ? false : true;
+                        Debug.WriteLine("data.Abnormal = " + data.Abnormal.ToString());
+                        line = sr.ReadLine();
+                        data.CategoryId = Convert.ToInt64(line);
+                        Debug.WriteLine("data.CategoryId = " + data.CategoryId.ToString());
+                        line = sr.ReadLine();
+                        data.Date = (line == "null" || line == "") ? DateTime.Now : Convert.ToDateTime(line);
+                        Debug.WriteLine("data.Date = " + data.Date.ToString());
+                        line = sr.ReadLine();
+                        if ((line == "null" || line == ""))
+                        {
+                            data.DeviceId = null;
+                            Debug.WriteLine("data.DeviceId = null");
+                        }else{
+                            Debug.WriteLine("line = " + line);
+                            data.DeviceId = new Guid(line);
+                            Debug.WriteLine("data.DeviceId = "+data.DeviceId.ToString());
+                        }
+                        line = sr.ReadLine();
+                        data.Source = (line == "null" || line == "") ? null : line;
+                        line = sr.ReadLine();
+						if ((line == "null" || line == ""))
+						{
+							data.EnglishValue = null;
+                            Debug.WriteLine("data.EnglishValue = null");
+						}
+						else
+						{
+                            Debug.WriteLine("line = " + line);
+							data.EnglishValue = Convert.ToDecimal(line);
+                            Debug.WriteLine("data.EnglishValue = " + data.EnglishValue.ToString());
+						}
+                        line = sr.ReadLine();
+                        if ((line == "null" || line == ""))
+                        {
+                            data.MetricValue = null;
+                            Debug.WriteLine("data.MetricValue = null");
+                        }
+						else
+						{
+                            Debug.WriteLine("line = " + line);
+							data.MetricValue = Convert.ToDecimal(line);
+                            Debug.WriteLine("data.MetricValue = " + data.MetricValue.ToString());
+						}
+                        line = sr.ReadLine();
+                        data.Narrative = (line == "null" || line == "") ? null : line;
+                        if ((line == "null" || line == ""))
+                        { 
+                            Debug.WriteLine("data.Narrative = null");
+                        }else{
+                            Debug.WriteLine("data.Narrative = " + data.Narrative);
+                        }
+                        line = sr.ReadLine();
+                        data.FileId = (line == "null" || line == "") ? 0 : Convert.ToInt64(line);
+                        Debug.WriteLine("data.FileId = " + data.FileId.ToString());
+
+                        if (method == "post")
+                        {
+                            Debug.WriteLine("method was post");
+                            posts.Add(data);
+                            Debug.WriteLine("added data to posts");
+                            numposts++;
+                        }else{
+                            puts.Add(data);
+                            numputs++;
+                        }
+
+                    }
+                    else if (line == "file")
+                    {
+						method = line;
+						line = sr.ReadLine();
+						if ((line == "null" || line == ""))
+						{
+                            filedat.Id = null;
+						}
+						else
+						{
+							filedat.Id = Convert.ToInt64(line);
+						}
+						line = sr.ReadLine();
+                        filedat.Category = (line == "null" || line == "") ? null : line;
+						line = sr.ReadLine();
+                        //this line is for the filename from the device
+                        if ((line == "null" || line == ""))
+                        {
+                            filedat.Content = null;
+                        }else{
+                            try{
+                                filedat.Content = File.ReadAllBytes(Path.Combine(documentsPath, line));
+                            }catch (Exception ex){
+                                filedat.Content = null;
+                            }
+                        }
+                        line = sr.ReadLine();
+                        filedat.Name = (line == "null" || line == "") ? null : line;
+						line = sr.ReadLine();
+						if ((line == "null" || line == ""))
+						{
+							filedat.ServiceDate = null;
+						}
+						else
+						{
+							filedat.ServiceDate = Convert.ToDateTime(line);
+						}
+                        line = sr.ReadLine();
+                        filedat.Size = (line == "null" || line == "") ? 0 : Convert.ToInt64(line);
+						line = sr.ReadLine();
+						if ((line == "null" || line == ""))
+						{
+							filedat.UploadDate = null;
+						}
+						else
+						{
+							filedat.UploadDate = Convert.ToDateTime(line);
+						}
+                        line = sr.ReadLine();
+                        filedat.ecgid = (line == "null" || line == "") ? 0 : Convert.ToInt64(line);
+                        //ecgids.Add(ecgid);
+                        files.Add(filedat);
+                        numfiles++;
+                    }
+                    else
+                    {
+						//wrong line, shouldn't ever hit this unless it's the last empty line
+					}
+                    Debug.WriteLine("looping...");
+				}
+				sr.Close();
+                //now we can delete the file, and if any of them fail again, it will recreate the file
+                File.Delete(txtpath);
+
+                Debug.WriteLine("num posts = "+numposts);
+                Debug.WriteLine("num puts = " + numputs);
+                Debug.WriteLine("num files = " + numfiles);
+
+				foreach (var filed in files)
+				{
+					FileData ecg = new FileData();
+					ecg.Id = filed.Id;
+					ecg.Category = filed.Category;
+					ecg.Content = filed.Content;
+					ecg.Name = filed.Name;
+					ecg.ServiceDate = filed.ServiceDate;
+					ecg.Size = filed.Size;
+					ecg.UploadDate = filed.UploadDate;
+					var fid = await EcgReport.FPostAsync(filed.ecgid, Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecg);
+					Debug.WriteLine("fid = " + fid.ToString());
+					if (fid != 0)
+					{
+						filed.ecgid = fid;
+
+						/*
+                        //update the reading with the file id
+                        try
+                        {
+                            Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(filed.ecgid);
+                            Reading updateEcg = Task_vars.lastecgreading;
+                            updateEcg.FileId = fid;
+                            Task_vars.lastecgreading = updateEcg;
+                            var ret = await updateEcg.UpdateReadingToService();
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("Unable to update ECG reading with FileId.");
+                        }*/
+
+					}
+				}
+
+
+                foreach (var reading in posts)
+                {
+                    if (reading.CategoryId==10)
+                    {
+						foreach (var filed in files)
+						{
+							if ((filed.ServiceDate == reading.Date))
+								reading.FileId = filed.ecgid;
+						}
+                    }
+
+
+                    var ret = await reading.PostReadingToService();
+                }
+
+
+
+				foreach (var reading in puts)
+				{
+					var ret = await reading.UpdateReadingToService();
+				}
+                Debug.WriteLine("finished with offline saving");
+
+                return true;
+			}
+			else
+			{
+                //no file there, so nothing to worry about
+                return false;
+			}
+
+		}
+
+        public void deleteOfflineFile()
+        {
+			var filename = "SavedData.txt";
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			var txtpath = Path.Combine(documentsPath, filename);
+
+            File.Delete(txtpath);
         }
 
 		public void saveTotxt(List<int> ecgList, string title, string subtitle, String fileName)

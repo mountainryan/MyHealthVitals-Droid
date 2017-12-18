@@ -65,7 +65,21 @@ namespace MyHealthVitals
 		{
 			base.OnAppearing();
 			isNavigated = false;
+
+            //check for connectivity
+            //getOfflineReadings();
+
 		}
+
+        public async void getOfflineReadings()
+        {
+            try{
+                var res = await DependencyService.Get<IFileHelper>().offlineRead();
+            }catch (Exception ex){
+                Debug.WriteLine("err msg = "+ex.Message);
+            }
+
+        }
 
 		void btnSpirometerClicked(object sender, System.EventArgs e)
 		{

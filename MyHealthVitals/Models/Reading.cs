@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Xamarin.Forms;
 
 namespace MyHealthVitals
 {
@@ -75,18 +76,28 @@ namespace MyHealthVitals
 
             var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading/{Id}";
 
-            var response = await client.PutAsync(serviceUri, content);
+            try
+            {
+				var response = await client.PutAsync(serviceUri, content);
 
-            if (response.ReasonPhrase == "OK")
-            {
-                Debug.WriteLine("successfully updated record.");
-                return true;
+				if (response.ReasonPhrase == "OK")
+				{
+					Debug.WriteLine("successfully updated record.");
+					return true;
+				}
+				else
+				{
+					Debug.WriteLine("unsuccessful record update.");
+                    DependencyService.Get<IFileHelper>().offlineSave(this, "put");
+					return false;
+				}
             }
-            else
+            catch (Exception ex)
             {
-                Debug.WriteLine("unsuccessful record update.");
+                DependencyService.Get<IFileHelper>().offlineSave(this, "put");
                 return false;
             }
+
         }
 
         public async Task<Reading> PostReadingToService()
@@ -100,16 +111,30 @@ namespace MyHealthVitals
 
             var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
 
-            var response = await client.PostAsync(serviceUri, content);
+			//testing***********************************************************
+			//var val = await DependencyService.Get<IFileHelper>().offlineSave(this, "post");
+            //return null;                                                   
+			//testing***********************************************************
 
-            if (response.ReasonPhrase == "OK")
+			try
             {
-                var json = await response.Content.ReadAsStringAsync();
-                var obj = JsonConvert.DeserializeObject<Reading>(json);
-                return obj;
+				var response = await client.PostAsync(serviceUri, content);
+
+				if (response.ReasonPhrase == "OK")
+				{
+					var json = await response.Content.ReadAsStringAsync();
+					var obj = JsonConvert.DeserializeObject<Reading>(json);
+					return obj;
+				}
+				else
+				{
+					await DependencyService.Get<IFileHelper>().offlineSave(this, "post");
+					return null;
+				}
             }
-            else
+            catch (Exception ex)
             {
+                await DependencyService.Get<IFileHelper>().offlineSave(this, "post");
                 return null;
             }
         }
@@ -250,6 +275,7 @@ namespace MyHealthVitals
                 return null;
             }
         }
+       
 
     }
     public class FileData
