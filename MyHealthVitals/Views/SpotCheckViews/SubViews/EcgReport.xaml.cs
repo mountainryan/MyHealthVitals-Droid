@@ -690,14 +690,14 @@ namespace MyHealthVitals
 				}
 				else
 				{
-					DependencyService.Get<IFileHelper>().offlineFileSave(arg, ecgid);
 					Debug.WriteLine("Response: " + response.StatusCode);
+                    await DependencyService.Get<IFileHelper>().offlineFileSave(arg, ecgid);
 					return 0;
 				}
             }
             catch (Exception ex)
             {
-                DependencyService.Get<IFileHelper>().offlineFileSave(arg, ecgid);
+                await DependencyService.Get<IFileHelper>().offlineFileSave(arg, ecgid);
                 return 0;
             }
 			

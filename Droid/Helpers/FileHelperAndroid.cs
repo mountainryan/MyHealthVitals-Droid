@@ -528,27 +528,19 @@ namespace MyHealthVitals.Droid
             List<Reading> puts = new List<Reading>();
             List<EcgFileData> files = new List<EcgFileData>();
 
-            //List<FileData> files = null;
-
             int numposts = 0;
             int numputs = 0;
             int numfiles = 0;
 			if (checkFileExist(filename))
 			{
                 string line;
-				StreamReader sr1 = new System.IO.StreamReader(txtpath);
-                while ((line = sr1.ReadLine()) != null)
-                {
-                    Debug.WriteLine("line = " + line);
-                }
-
-                sr1.Close();
+				
                 Debug.WriteLine("  file exists");
 				
 				StreamReader sr = new StreamReader(txtpath);
 				while ((line = sr.ReadLine()) != null)
 				{
-                    Debug.WriteLine("line = "+line);
+                    //Debug.WriteLine("line = "+line);
                     string method;
                     Reading data = new Reading(null, 0, 0, false, null, null);
                     EcgFileData filedat = new EcgFileData();
@@ -559,25 +551,25 @@ namespace MyHealthVitals.Droid
                         method = line;
                         line = sr.ReadLine();
                         data.Id = (line == "null" || line == "") ? 0 : Convert.ToInt64(line);
-                        Debug.WriteLine("data.Id = " + data.Id.ToString());
+                        //Debug.WriteLine("data.Id = " + data.Id.ToString());
                         line = sr.ReadLine();
                         data.Abnormal = line == "False" ? false : true;
-                        Debug.WriteLine("data.Abnormal = " + data.Abnormal.ToString());
+                        //Debug.WriteLine("data.Abnormal = " + data.Abnormal.ToString());
                         line = sr.ReadLine();
                         data.CategoryId = Convert.ToInt64(line);
-                        Debug.WriteLine("data.CategoryId = " + data.CategoryId.ToString());
+                        //Debug.WriteLine("data.CategoryId = " + data.CategoryId.ToString());
                         line = sr.ReadLine();
                         data.Date = (line == "null" || line == "") ? DateTime.Now : Convert.ToDateTime(line);
-                        Debug.WriteLine("data.Date = " + data.Date.ToString());
+                        //Debug.WriteLine("data.Date = " + data.Date.ToString());
                         line = sr.ReadLine();
                         if ((line == "null" || line == ""))
                         {
                             data.DeviceId = null;
-                            Debug.WriteLine("data.DeviceId = null");
+                            //Debug.WriteLine("data.DeviceId = null");
                         }else{
-                            Debug.WriteLine("line = " + line);
+                            //Debug.WriteLine("line = " + line);
                             data.DeviceId = new Guid(line);
-                            Debug.WriteLine("data.DeviceId = "+data.DeviceId.ToString());
+                            //Debug.WriteLine("data.DeviceId = "+data.DeviceId.ToString());
                         }
                         line = sr.ReadLine();
                         data.Source = (line == "null" || line == "") ? null : line;
@@ -585,43 +577,43 @@ namespace MyHealthVitals.Droid
 						if ((line == "null" || line == ""))
 						{
 							data.EnglishValue = null;
-                            Debug.WriteLine("data.EnglishValue = null");
+                            //Debug.WriteLine("data.EnglishValue = null");
 						}
 						else
 						{
-                            Debug.WriteLine("line = " + line);
+                            //Debug.WriteLine("line = " + line);
 							data.EnglishValue = Convert.ToDecimal(line);
-                            Debug.WriteLine("data.EnglishValue = " + data.EnglishValue.ToString());
+                            //Debug.WriteLine("data.EnglishValue = " + data.EnglishValue.ToString());
 						}
                         line = sr.ReadLine();
                         if ((line == "null" || line == ""))
                         {
                             data.MetricValue = null;
-                            Debug.WriteLine("data.MetricValue = null");
+                            //Debug.WriteLine("data.MetricValue = null");
                         }
 						else
 						{
-                            Debug.WriteLine("line = " + line);
+                            //Debug.WriteLine("line = " + line);
 							data.MetricValue = Convert.ToDecimal(line);
-                            Debug.WriteLine("data.MetricValue = " + data.MetricValue.ToString());
+                            //Debug.WriteLine("data.MetricValue = " + data.MetricValue.ToString());
 						}
                         line = sr.ReadLine();
                         data.Narrative = (line == "null" || line == "") ? null : line;
                         if ((line == "null" || line == ""))
                         { 
-                            Debug.WriteLine("data.Narrative = null");
+                            //Debug.WriteLine("data.Narrative = null");
                         }else{
-                            Debug.WriteLine("data.Narrative = " + data.Narrative);
+                            //Debug.WriteLine("data.Narrative = " + data.Narrative);
                         }
                         line = sr.ReadLine();
                         data.FileId = (line == "null" || line == "") ? 0 : Convert.ToInt64(line);
-                        Debug.WriteLine("data.FileId = " + data.FileId.ToString());
+                        //Debug.WriteLine("data.FileId = " + data.FileId.ToString());
 
                         if (method == "post")
                         {
-                            Debug.WriteLine("method was post");
+                            //Debug.WriteLine("method was post");
                             posts.Add(data);
-                            Debug.WriteLine("added data to posts");
+                            //Debug.WriteLine("added data to posts");
                             numposts++;
                         }else{
                             puts.Add(data);
@@ -687,7 +679,7 @@ namespace MyHealthVitals.Droid
                     {
 						//wrong line, shouldn't ever hit this unless it's the last empty line
 					}
-                    Debug.WriteLine("looping...");
+                    //Debug.WriteLine("looping...");
 				}
 				sr.Close();
                 //now we can delete the file, and if any of them fail again, it will recreate the file

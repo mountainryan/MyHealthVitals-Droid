@@ -3,8 +3,10 @@
     <Files>
       <File FileName="MyHealthVitals/Views/DeviceListPage.xaml.cs" Line="1" Column="1" />
       <File FileName="MyHealthVitals/Views/LoginPage.xaml.cs" Line="210" Column="63" />
-      <File FileName="MyHealthVitals/Views/SpotCheckViews/MainPage.xaml.cs" Line="1" Column="1" />
-      <File FileName="Droid/Helpers/FileHelperAndroid.cs" Line="18" Column="1" />
+      <File FileName="Droid/Helpers/FileHelperAndroid.cs" Line="532" Column="29" />
+      <File FileName="MyHealthVitals/Models/Credential.cs" Line="33" Column="4" />
+      <File FileName="MyHealthVitals/Models/Reading.cs" Line="93" Column="6" />
+      <File FileName="MyHealthVitals/Views/SpotCheckViews/SubViews/EcgReport.xaml.cs" Line="696" Column="6" />
       <File FileName="Projects Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>

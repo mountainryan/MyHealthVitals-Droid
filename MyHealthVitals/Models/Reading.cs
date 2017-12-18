@@ -88,13 +88,13 @@ namespace MyHealthVitals
 				else
 				{
 					Debug.WriteLine("unsuccessful record update.");
-                    DependencyService.Get<IFileHelper>().offlineSave(this, "put");
+                    await DependencyService.Get<IFileHelper>().offlineSave(this, "put");
 					return false;
 				}
             }
             catch (Exception ex)
             {
-                DependencyService.Get<IFileHelper>().offlineSave(this, "put");
+                await DependencyService.Get<IFileHelper>().offlineSave(this, "put");
                 return false;
             }
 
