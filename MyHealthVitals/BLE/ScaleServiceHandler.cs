@@ -46,18 +46,18 @@ namespace MyHealthVitals
 			//token in NIBP result in pc-100
 			if ((int)vals[0] == 0xFF)
 			{
-				Debug.WriteLine("vals[0] = " + vals[0]);
-				Debug.WriteLine("vals[1] = " + vals[1]);
-				Debug.WriteLine("vals[2] = " + vals[2]);
+				//Debug.WriteLine("vals[0] = " + vals[0]);
+				//Debug.WriteLine("vals[1] = " + vals[1]);
+				//Debug.WriteLine("vals[2] = " + vals[2]);
 				int type = (int)vals[1] >> 6;
 				//string hex = BitConverter.ToString(vals);
 				//Debug.WriteLine("hex = " + hex);
 				double weight_adj = (((vals[1] - 128) << 8) + vals[2]) * 2.20462262185 / 10;
-				Debug.WriteLine("weight adj = " + weight_adj);
+				//Debug.WriteLine("weight adj = " + weight_adj);
 				double weight = ((vals[1] & 0x3F) << 8) | vals[2];
-				Debug.WriteLine("weight = " + weight);
+				//Debug.WriteLine("weight = " + weight);
 				weight = Math.Round(weight * 2.20462262185 / 10, 1);
-				Debug.WriteLine("weight = " + weight);
+				//Debug.WriteLine("weight = " + weight);
 
 				//weight = Math.Round((weight / 10), 2);
                 this.uiController.updated_Weight((decimal)weight);
@@ -145,7 +145,7 @@ namespace MyHealthVitals
 
 			if (connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
 			{
-				Debug.WriteLine("Scales alrady in connected state.");
+				//Debug.WriteLine("Scales alrady in connected state.");
 			}
 			else
 			{

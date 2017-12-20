@@ -54,7 +54,7 @@ namespace MyHealthVitals
 				logcalParameteritem.localhashmap.Clear();
 				//allReadings = await Reading.GetAllReadingsFromService();
 			}
-			Debug.WriteLine("allReadings == " + allReadings);
+			//Debug.WriteLine("allReadings == " + allReadings);
 
 			categories_local.Add(new CategoryLocal(1, "Blood Pressure"));
 			categories_local.Add(new CategoryLocal(2, "SpO2"));

@@ -51,15 +51,15 @@ namespace MyHealthVitals
 				}
 				catch (Exception ex)
 				{
-                    Debug.WriteLine("error message = "+ex.Message);
-					Debug.WriteLine("exception on sending temperature to server.");
+                    //Debug.WriteLine("error message = "+ex.Message);
+					//Debug.WriteLine("exception on sending temperature to server.");
 				}
 				//if (isServiceCallSuccess) temperature.EnglishValue = 0;
 			}
 		}
 		public async void sendToServerWeight(float height)
 		{
-			Debug.WriteLine("send to server weight");
+			//Debug.WriteLine("send to server weight");
 			if (weight!= null && weight.EnglishValue > 0)
 			{
 				try
@@ -82,7 +82,7 @@ namespace MyHealthVitals
 				}
 				catch (Exception)
 				{
-					Debug.WriteLine("exception on sending weight to server.");
+					//Debug.WriteLine("exception on sending weight to server.");
 				}
 				//if (isServiceCallSuccess) temperature.EnglishValue = 0;
 			}
@@ -108,7 +108,7 @@ namespace MyHealthVitals
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("exception on sending spo2 to server.");
+                //Debug.WriteLine("exception on sending spo2 to server.");
             }
             try
             {
@@ -122,7 +122,7 @@ namespace MyHealthVitals
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("exception on sending bpm to server.");
+               // Debug.WriteLine("exception on sending bpm to server.");
             }
 			
             spo2 = null;
@@ -146,7 +146,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception)
 			{
-				Debug.WriteLine("Exception occured to the sending glucose reading to the server.");
+				//Debug.WriteLine("Exception occured to the sending glucose reading to the server.");
 			}
 		}
 
@@ -165,7 +165,7 @@ namespace MyHealthVitals
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception occured to the sending Heart rate reading to the server.");
+                //Debug.WriteLine("Exception occured to the sending Heart rate reading to the server.");
             }
 			
 		}
@@ -192,7 +192,7 @@ namespace MyHealthVitals
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Exception occured to the sending ECG reading to the server.");
+                   // Debug.WriteLine("Exception occured to the sending ECG reading to the server.");
                 }
 				
 				addDataTolocal(pdi);
@@ -204,7 +204,7 @@ namespace MyHealthVitals
 		{
             try
             {
-                Debug.WriteLine("sendToServer_SYS_DIA  and bpm");
+                //Debug.WriteLine("sendToServer_SYS_DIA  and bpm");
                 if (bpDia != null && bpDia.EnglishValue > 0 && bpSys != null && bpSys.EnglishValue > 0)
                 {
                     if (bpSys.EnglishValue < bpDia.EnglishValue)
@@ -228,7 +228,7 @@ namespace MyHealthVitals
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception occured to the sending BP reading to the server.");
+                //Debug.WriteLine("Exception occured to the sending BP reading to the server.");
             }
 				
             try
@@ -247,7 +247,7 @@ namespace MyHealthVitals
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception occured to the sending bpm reading to the server.");
+                //Debug.WriteLine("Exception occured to the sending bpm reading to the server.");
             }
 			
 		}

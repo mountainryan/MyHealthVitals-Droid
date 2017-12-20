@@ -132,7 +132,7 @@ namespace MyHealthVitals
 					}
 				}
 				catch {
-					System.Diagnostics.Debug.WriteLine("no established calibrated value.");
+					//System.Diagnostics.Debug.WriteLine("no established calibrated value.");
 				}
 
 				return color1;

@@ -43,10 +43,10 @@ namespace MyHealthVitals.Droid
 
             BluetoothLowEnergyAdapter.Init(this);
 
-            System.Diagnostics.Debug.WriteLine("Pixel Width = "+metrics.WidthPixels);
-            System.Diagnostics.Debug.WriteLine("Pixel Height = "+metrics.HeightPixels);
-            System.Diagnostics.Debug.WriteLine("DP Width = "+widthInDp);
-            System.Diagnostics.Debug.WriteLine("DP Height = "+heightInDp);
+            //System.Diagnostics.Debug.WriteLine("Pixel Width = "+metrics.WidthPixels);
+            //System.Diagnostics.Debug.WriteLine("Pixel Height = "+metrics.HeightPixels);
+            //System.Diagnostics.Debug.WriteLine("DP Width = "+widthInDp);
+            //System.Diagnostics.Debug.WriteLine("DP Height = "+heightInDp);
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 

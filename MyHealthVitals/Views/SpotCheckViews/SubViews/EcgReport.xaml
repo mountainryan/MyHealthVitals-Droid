@@ -37,7 +37,7 @@
 					              HeightRequest="450" HorizontalOptions="FillAndExpand" />	
 					
 				</Grid>	
-					<local:MyButton Margin="20" VerticalOptions = "LayoutOptions.End" x:Name ="reportButton" Clicked="btnSaveClicked" Text="Save ECG Report" FontSize="16" BackgroundColor="{StaticResource colorThemeBlue}" 
+					<local:MyButton Margin="20" IsVisible="false" VerticalOptions = "LayoutOptions.End" x:Name ="reportButton" Clicked="btnSaveClicked" Text="Save ECG Report" FontSize="16" BackgroundColor="{StaticResource colorThemeBlue}" 
 								TextColor="White" HeightRequest="40"/>
 
                 </StackLayout></ScrollView>

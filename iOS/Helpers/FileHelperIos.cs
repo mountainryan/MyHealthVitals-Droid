@@ -151,7 +151,7 @@ namespace MyHealthVitals.iOS
             this.fileNameECG = fileName + "ECG.pdf";
             var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             filePath = Path.Combine(documentsPath, fileName + ".pdf");
-            Debug.WriteLine("pdf filepath: " + filePath.ToString());
+            //Debug.WriteLine("pdf filepath: " + filePath.ToString());
             filePathNEW = Path.Combine(documentsPath, fileName + "ECG.pdf");
 
             using (var stream = File.Create(filePath))
@@ -271,7 +271,7 @@ namespace MyHealthVitals.iOS
             //Task_vars.ecgfilename = "test.txt";
             //return SendTest();
 
-            Debug.WriteLine("ECG pdf file path: " + filePathNEW);
+            //Debug.WriteLine("ECG pdf file path: " + filePathNEW);
 
             return FileRead(filePathNEW);
 
@@ -291,7 +291,7 @@ namespace MyHealthVitals.iOS
 
             Task_vars.ecgfilelength = testfilePath.Length;
 
-            Debug.WriteLine("Test file path: " + testfilePath);
+            //Debug.WriteLine("Test file path: " + testfilePath);
 
             return File.ReadAllBytes(testfilePath);
         }
@@ -335,13 +335,13 @@ namespace MyHealthVitals.iOS
 			alert.Show();
 			alert.Clicked += async (object s, UIButtonEventArgs ev) =>
 			{
-				System.Diagnostics.Debug.WriteLine("EV.BUTTON INDEX " + ev.ButtonIndex);
+				//System.Diagnostics.Debug.WriteLine("EV.BUTTON INDEX " + ev.ButtonIndex);
 
 				if (ev.ButtonIndex == 1)
 				{
 					var internetStatus = Reachability.IsNetworkAvailable();
 
-					System.Diagnostics.Debug.WriteLine("internetStatus" + internetStatus);
+					//System.Diagnostics.Debug.WriteLine("internetStatus" + internetStatus);
 					if (!internetStatus)
 					{
 						var alert1 = new UIAlertView()
@@ -361,7 +361,7 @@ namespace MyHealthVitals.iOS
 					if (input.Contains("@"))
 					{
 						await sentEmail(fileNameECG, input);
-						System.Diagnostics.Debug.WriteLine("Toast MakeText Sending email...");
+						//System.Diagnostics.Debug.WriteLine("Toast MakeText Sending email...");
 #if false
 						Toast.MakeText("Sending email...")
 								 .SetType(ToastType.Info)
@@ -410,12 +410,12 @@ namespace MyHealthVitals.iOS
 
 		async public Task<bool> sentEmail(string fileName, string addressEmail)
 		{
-			System.Diagnostics.Debug.WriteLine("SendMail fileName=    " + fileName);
+			//System.Diagnostics.Debug.WriteLine("SendMail fileName=    " + fileName);
 
 			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
 			filePathNEW = Path.Combine(documentsPath, fileName);
-			System.Diagnostics.Debug.WriteLine(" filePathNEW  = "+filePathNEW);
+			//System.Diagnostics.Debug.WriteLine(" filePathNEW  = "+filePathNEW);
 
 			message.From.Add(new MailboxAddress("ICUCare", "icucaredonotreplay@gmail.com"));
 			message.To.Add(new MailboxAddress("", addressEmail));
@@ -432,13 +432,13 @@ namespace MyHealthVitals.iOS
 			// Now we just need to set the message body and we're done
 			message.Body = builder.ToMessageBody();
 			String toastText = "Your ECG Report has been sent to " + addressEmail;
-			System.Diagnostics.Debug.WriteLine(" SendMail  SmtpClient ");
+			//System.Diagnostics.Debug.WriteLine(" SendMail  SmtpClient ");
 
 			using (client)//var client = new MailKit.Net.Smtp.SmtpClient())
 			{
 	
 			//	client.Connect("smtp.gmail.com", 587, false);
-				System.Diagnostics.Debug.WriteLine(" SendMail  Connect " + client.IsConnected);
+				//System.Diagnostics.Debug.WriteLine(" SendMail  Connect " + client.IsConnected);
 				// Note: since we don't have an OAuth2 token, disable
 				// the XOAUTH2 authentication mechanism.
 
@@ -467,13 +467,13 @@ namespace MyHealthVitals.iOS
 				client.Authenticate("icucaredonotreplay@gmail.com", "Start12345");
 				try
 				{
-					System.Diagnostics.Debug.WriteLine(" SendMail  SendAsync before ");
+					//System.Diagnostics.Debug.WriteLine(" SendMail  SendAsync before ");
 			//		System.Diagnostics.Debug.WriteLine("showDialog client.Verify(input);=    " + client.Verify(addressEmail));
 
 					//await client.SendAsync(message);
 					await client.SendAsync(message);
 
-					System.Diagnostics.Debug.WriteLine(" SendMail  SendAsync end ");
+					//System.Diagnostics.Debug.WriteLine(" SendMail  SendAsync end ");
 					File.Delete(filePathNEW);
 				}
 				catch (SmtpCommandException ex)
@@ -503,7 +503,7 @@ namespace MyHealthVitals.iOS
 					client.Disconnect(true);
 				}
 				finally { 
-					System.Diagnostics.Debug.WriteLine("Toast MakeText Sended " );
+					//System.Diagnostics.Debug.WriteLine("Toast MakeText Sended " );
 					Toast.MakeText(toastText)
 					     .SetType(ToastType.Notice)
 					     .SetDuration(5000)

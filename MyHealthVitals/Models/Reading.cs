@@ -67,7 +67,7 @@ namespace MyHealthVitals
 
         public async Task<bool> UpdateReadingToService()
         {
-            Debug.WriteLine("UpdateReadingToService");
+            //Debug.WriteLine("UpdateReadingToService");
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
@@ -82,12 +82,12 @@ namespace MyHealthVitals
 
 				if (response.ReasonPhrase == "OK")
 				{
-					Debug.WriteLine("successfully updated record.");
+					//Debug.WriteLine("successfully updated record.");
 					return true;
 				}
 				else
 				{
-					Debug.WriteLine("unsuccessful record update.");
+					//Debug.WriteLine("unsuccessful record update.");
                     await DependencyService.Get<IFileHelper>().offlineSave(this, "put");
 					return false;
 				}
@@ -102,7 +102,7 @@ namespace MyHealthVitals
 
         public async Task<Reading> PostReadingToService()
         {
-            Debug.WriteLine("PostReadingToService");
+            //Debug.WriteLine("PostReadingToService");
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
 
@@ -146,28 +146,28 @@ namespace MyHealthVitals
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
             var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading/Category/{catid}";
 
-            Debug.WriteLine("serviceUri = " + serviceUri);
+           // Debug.WriteLine("serviceUri = " + serviceUri);
 
             try
             {
                 var response = await client.GetAsync(serviceUri);
-                Debug.WriteLine("GetAllReadingsFromService response.IsSuccessStatusCode= " + response.IsSuccessStatusCode);
+                //Debug.WriteLine("GetAllReadingsFromService response.IsSuccessStatusCode= " + response.IsSuccessStatusCode);
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Got readings successfully.");
+                    //Debug.WriteLine("Got readings successfully.");
                     var content = await response.Content.ReadAsStringAsync();
-                    Debug.WriteLine(JsonConvert.DeserializeObject<Reading[]>(content));
+                    //Debug.WriteLine(JsonConvert.DeserializeObject<Reading[]>(content));
                     return JsonConvert.DeserializeObject<Reading[]>(content);
                 }
                 else
                 {
-                    Debug.WriteLine("Failed to get readings.");
+                    //Debug.WriteLine("Failed to get readings.");
                     return null; ;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("parse error: " + ex.Message);
+                //Debug.WriteLine("parse error: " + ex.Message);
                 return null;
             }
         }
@@ -180,28 +180,28 @@ namespace MyHealthVitals
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
             var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading";
 
-            Debug.WriteLine("serviceUri = " + serviceUri);
+            //Debug.WriteLine("serviceUri = " + serviceUri);
 
             try
             {
                 var response = await client.GetAsync(serviceUri);
-                Debug.WriteLine("GetAllReadingsFromService response.IsSuccessStatusCode= " + response.IsSuccessStatusCode);
+                //Debug.WriteLine("GetAllReadingsFromService response.IsSuccessStatusCode= " + response.IsSuccessStatusCode);
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Got readings successfully.");
+                    //Debug.WriteLine("Got readings successfully.");
                     var content = await response.Content.ReadAsStringAsync();
-                    Debug.WriteLine(JsonConvert.DeserializeObject<Reading[]>(content));
+                    //Debug.WriteLine(JsonConvert.DeserializeObject<Reading[]>(content));
                     return JsonConvert.DeserializeObject<Reading[]>(content);
                 }
                 else
                 {
-                    Debug.WriteLine("Failed to get readings.");
+                    //Debug.WriteLine("Failed to get readings.");
                     return null; ;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("parse error: " + ex.Message);
+                //Debug.WriteLine("parse error: " + ex.Message);
                 return null;
             }
         }
@@ -214,28 +214,28 @@ namespace MyHealthVitals
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
             var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/HomeHealth/Reading/{readId}";
 
-            Debug.WriteLine("serviceUri = " + serviceUri);
+            //Debug.WriteLine("serviceUri = " + serviceUri);
 
             try
             {
                 var response = await client.GetAsync(serviceUri);
-                Debug.WriteLine("GetSingleReadingFromService response.IsSuccessStatusCode= " + response.IsSuccessStatusCode);
+                //Debug.WriteLine("GetSingleReadingFromService response.IsSuccessStatusCode= " + response.IsSuccessStatusCode);
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Got reading successfully.");
+                    //Debug.WriteLine("Got reading successfully.");
                     var content = await response.Content.ReadAsStringAsync();
-                    Debug.WriteLine(JsonConvert.DeserializeObject<Reading>(content));
+                    //Debug.WriteLine(JsonConvert.DeserializeObject<Reading>(content));
                     return JsonConvert.DeserializeObject<Reading>(content);
                 }
                 else
                 {
-                    Debug.WriteLine("Failed to get readings.");
+                    //Debug.WriteLine("Failed to get readings.");
                     return null; ;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("parse error: " + ex.Message);
+                //Debug.WriteLine("parse error: " + ex.Message);
                 return null;
             }
         }
@@ -248,30 +248,30 @@ namespace MyHealthVitals
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Credential.sharedInstance.Token}");
             var serviceUri = Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File/{fileId}";
 
-            Debug.WriteLine("serviceUri = " + serviceUri);
+            //Debug.WriteLine("serviceUri = " + serviceUri);
 
             try
             {
                 var response = await client.GetAsync(serviceUri);
-                Debug.WriteLine("GetAllReadingsFromService response.IsSuccessStatusCode= " + response.IsSuccessStatusCode);
+                //Debug.WriteLine("GetAllReadingsFromService response.IsSuccessStatusCode= " + response.IsSuccessStatusCode);
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Got readings successfully.");
+                    //Debug.WriteLine("Got readings successfully.");
                     var content = await response.Content.ReadAsStringAsync();
-                    Debug.WriteLine(JsonConvert.DeserializeObject<FileData>(content));
+                    //Debug.WriteLine(JsonConvert.DeserializeObject<FileData>(content));
                     //return JsonConvert.DeserializeObject<Reading[]>(content);
                     var val = JsonConvert.DeserializeObject<FileData>(content);
                     return val;
                 }
                 else
                 {
-                    Debug.WriteLine("Failed to get readings.");
+                    //Debug.WriteLine("Failed to get readings.");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("parse error: " + ex.Message);
+                //Debug.WriteLine("parse error: " + ex.Message);
                 return null;
             }
         }

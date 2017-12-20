@@ -65,12 +65,12 @@ namespace MyHealthVitals
                         //Debug.WriteLine("filename:" + fn + " e");
 						//e.secondItem = "Emailed";
 					}
-					Debug.WriteLine("e.secondItem ="+ e.secondItem);
+					//Debug.WriteLine("e.secondItem ="+ e.secondItem);
 					break;
 				}
 			}
 			itemList.ItemsSource = data;
-            Debug.WriteLine("font size of Most Recent Readings = "+label.FontSize);
+            //Debug.WriteLine("font size of Most Recent Readings = "+label.FontSize);
 		}
 
 		public ParameterItemDetailNew(int catid, Reading[] allReadings)
@@ -233,7 +233,7 @@ namespace MyHealthVitals
 							}
 
 							itemList.ItemsSource = data;
-							Debug.WriteLine("END data= " + data.Count());
+							//Debug.WriteLine("END data= " + data.Count());
 
 							break;
 						}
@@ -330,7 +330,7 @@ namespace MyHealthVitals
 							{
 								foreach (var val in logcalParameteritem.localhashmap[5])
 								{
-									Debug.WriteLine("val.BMI"+val.secondItem +" WEIGHT "+ val.firstItem);
+									//Debug.WriteLine("val.BMI"+val.secondItem +" WEIGHT "+ val.firstItem);
 									data.Add(val);
 								};
 							}
@@ -541,7 +541,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception)
 			{
-				Debug.WriteLine("error in calling server or parsing");
+				//Debug.WriteLine("error in calling server or parsing");
 			}
 			finally
 			{

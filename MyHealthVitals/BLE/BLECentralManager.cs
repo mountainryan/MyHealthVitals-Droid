@@ -76,7 +76,7 @@ namespace MyHealthVitals
 		    
 			//connec
 
-			Debug.WriteLine("bluetooth adapter initialized.");
+			//Debug.WriteLine("bluetooth adapter initialized.");
 
 			spiroServHandler = new SpirometerServiceHandler();
 			spotServHandler = new SpotCheckServiceHandler();
@@ -88,7 +88,7 @@ namespace MyHealthVitals
 
         public async Task ConnectToDevice2(string deviceName, object controller)
         {
-            Debug.WriteLine("connectToDevice2");
+            //Debug.WriteLine("connectToDevice2");
 			scanningDeviceName = deviceName;
 
 			switch (deviceName)
@@ -123,7 +123,7 @@ namespace MyHealthVitals
             {
                 Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
 
-                Debug.WriteLine("result is null");
+                //Debug.WriteLine("result is null");
 
                 IBlePeripheral found = null;
 				//scan for the named device and attempt to connect to it
@@ -141,7 +141,7 @@ namespace MyHealthVitals
 
                 if (found != null)
                 {
-                    Debug.WriteLine("Device guid = " + found.DeviceId.ToString());
+                    //Debug.WriteLine("Device guid = " + found.DeviceId.ToString());
                     deviceID = found.DeviceId;
                 }
 
@@ -158,17 +158,17 @@ namespace MyHealthVitals
                         var gattServer = connection.GattServer;
                         BLEdata.gattserver = gattServer;
 						// do things with gattServer here... (see further examples...)
-						Debug.WriteLine("Successfully connected!!!!");
+						//Debug.WriteLine("Successfully connected!!!!");
 						//show that we are connected
 						await DeviceConnected(deviceName);
 						
 
 						foreach (var guid in await gattServer.ListAllServices())
 						{
-							Debug.WriteLine($"service: {guid}");
+							//Debug.WriteLine($"service: {guid}");
 							foreach (var guid2 in await gattServer.ListServiceCharacteristics(guid))
 							{
-								Debug.WriteLine($"  characteristic: {guid2}");
+								//Debug.WriteLine($"  characteristic: {guid2}");
 							}
 						}
 
@@ -196,14 +196,14 @@ namespace MyHealthVitals
 					else
 					{
 						// Do something to inform user or otherwise handle unsuccessful connection.
-						Debug.WriteLine("Error connecting to device. result={0:g}", connection.ConnectionResult);
+						//Debug.WriteLine("Error connecting to device. result={0:g}", connection.ConnectionResult);
 						// e.g., "Error connecting to device. result=ConnectionAttemptCancelled"
 						//send the error message to screen
 						SendConnError(deviceName, 2);//, connection.ConnectionResult.ToString());
 					}
                 }else{
                     //device not found
-                    Debug.WriteLine("Device not found");
+                    //Debug.WriteLine("Device not found");
                 }
             }
 
@@ -239,7 +239,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine("Connection lost exception : " + ex.Message);
+				//Debug.WriteLine("Connection lost exception : " + ex.Message);
 			}
 			//Services.Clear();
 			//IsBusy = false;
@@ -271,7 +271,7 @@ namespace MyHealthVitals
 						}
 						catch (GattException ex)
 						{
-							Debug.WriteLine(ex.ToString());
+							//Debug.WriteLine(ex.ToString());
 						}
 						break;
 					}
@@ -297,7 +297,7 @@ namespace MyHealthVitals
 						}
 						catch (GattException ex)
 						{
-							Debug.WriteLine(ex.ToString());
+							//Debug.WriteLine(ex.ToString());
 						}
 						break;
 					}
@@ -322,7 +322,7 @@ namespace MyHealthVitals
 						}
 						catch (GattException ex)
 						{
-							Debug.WriteLine(ex.ToString());
+							//Debug.WriteLine(ex.ToString());
 						}
 						break;
 					}
@@ -347,7 +347,7 @@ namespace MyHealthVitals
                         }
                         catch (GattException ex)
                         {
-                            Debug.WriteLine(ex.ToString());
+                            //Debug.WriteLine(ex.ToString());
                         }
                         break;
                     }
@@ -358,7 +358,7 @@ namespace MyHealthVitals
 
 		public void connectToDevice(String deviceName, object controller)
 		{	
-			Debug.WriteLine("connectToDevice");
+			//Debug.WriteLine("connectToDevice");
 			scanningDeviceName = deviceName;
              
 			switch (deviceName)
@@ -393,7 +393,7 @@ namespace MyHealthVitals
 				if (!checkIfDeviceScanned(deviceName))
 				{
 					// the device is not in the scanned list now scan to find the desired device and then connnect
-					Debug.WriteLine("StartScanningForDevicesAsync : " + deviceName);
+					//Debug.WriteLine("StartScanningForDevicesAsync : " + deviceName);
 					CrossBluetoothLE.Current.Adapter.StartScanningForDevicesAsync();
 
 					//if (deviceName == "PC_300SNT") spotServHandler.uiController.ShowMessageOnUI("Searching device...", false);
@@ -401,7 +401,7 @@ namespace MyHealthVitals
 				}
 				else
 				{
-					Debug.WriteLine("reconnectToDevice : " + deviceName);
+					//Debug.WriteLine("reconnectToDevice : " + deviceName);
 
 					switch (deviceName)
 					{
@@ -435,12 +435,12 @@ namespace MyHealthVitals
 
 		private IDevice getCurrentDevice(String deviceName)
 		{
-            Debug.WriteLine("calling getCurrentDevice()");
+            //Debug.WriteLine("calling getCurrentDevice()");
 			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices )
 			{
 				if (device.Name == deviceName)
 				{
-					Debug.WriteLine("getCurrentDevice = " + device.Name);
+					//Debug.WriteLine("getCurrentDevice = " + device.Name);
 					return device;
 				}
 			}
@@ -450,14 +450,14 @@ namespace MyHealthVitals
 
 		public bool checkIfDeviceScanned(string deviceName)
 		{
-			Debug.WriteLine("checkIfDeviceScanned  IN CONNECTED ARRAY :" + deviceName);
+			//Debug.WriteLine("checkIfDeviceScanned  IN CONNECTED ARRAY :" + deviceName);
 
 			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices)
 			{
 				if (device.Name == deviceName)
 				{
 					// already scanned device
-					Debug.WriteLine(deviceName + " is already connected");
+					//Debug.WriteLine(deviceName + " is already connected");
 					return true;
 				}
 			}
@@ -467,11 +467,11 @@ namespace MyHealthVitals
 
 		private void Adapter_DeviceDiscovered(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
-			Debug.WriteLine(string.Format("Device Found : {0}", e.Device.Name));
+			//Debug.WriteLine(string.Format("Device Found : {0}", e.Device.Name));
             //scan for devices
 			if (e.Device.Name == scanningDeviceName)
 			{
-				Debug.WriteLine(string.Format("StopScanningForDevicesAsync"));
+				//Debug.WriteLine(string.Format("StopScanningForDevicesAsync"));
 				
 				try
 				{
@@ -479,27 +479,27 @@ namespace MyHealthVitals
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine("BLE stop scanning ex msg: " + ex.Message);
+					//Debug.WriteLine("BLE stop scanning ex msg: " + ex.Message);
 				}
 
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
 					try
 					{
-						Debug.WriteLine("attempting to connect...");
+						//Debug.WriteLine("attempting to connect...");
                         await CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device);
 
 					}
 					catch (DeviceConnectionException ex)
 					{
-						Debug.WriteLine("BLE connect DCE ex msg: " + ex.Message);
-                        Debug.WriteLine("e.Device.Name = " + e.Device.Name);
+						//Debug.WriteLine("BLE connect DCE ex msg: " + ex.Message);
+                       // Debug.WriteLine("e.Device.Name = " + e.Device.Name);
                         //send error message to screen if callback error 133 = "GattCallback error: 133"
                         SendConnError(e.Device.Name, 1);
 					}
 					catch (Exception ex)
 					{
-						Debug.WriteLine("BLE connect basic ex msg: " + ex.Message);
+						//Debug.WriteLine("BLE connect basic ex msg: " + ex.Message);
 					}
 
 				}));			
@@ -509,7 +509,7 @@ namespace MyHealthVitals
 				//CrossBluetoothLE.Current.Adapter.fail
 				//CrossBluetoothLE.Current.Adapter.ConnectedDevices
             }else{
-                Debug.WriteLine("wrong device = "+e.Device.Name);
+                //Debug.WriteLine("wrong device = "+e.Device.Name);
             }
             //var BLE_status = CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(e.Device).Status;
             //Debug.WriteLine("BLE status : "+BLE_status.ToString());
@@ -609,7 +609,7 @@ namespace MyHealthVitals
 				BLEdata.gattserver.Dispose();
 			}
 
-            Debug.WriteLine("called ConnectKnownDevice2");
+            //Debug.WriteLine("called ConnectKnownDevice2");
 			var connection = await adapter.ConnectToDevice(deviceID, TimeSpan.FromSeconds(5));
             bool connected = false;
 			if (connection.IsSuccessful())
@@ -622,7 +622,7 @@ namespace MyHealthVitals
 				var gattServer = connection.GattServer;
                 BLEdata.gattserver = gattServer;
 				// do things with gattServer here... (see further examples...)
-				Debug.WriteLine("Successfully connected!!!!");
+				//Debug.WriteLine("Successfully connected!!!!");
 				//show that we are connected
 				await DeviceConnected(deviceName);
                 if (deviceName == "BLE-MSA")
@@ -633,10 +633,10 @@ namespace MyHealthVitals
 
 				foreach (var guid in await gattServer.ListAllServices())
 				{
-					Debug.WriteLine($"service: {guid}");
+					//Debug.WriteLine($"service: {guid}");
 					foreach (var guid2 in await gattServer.ListServiceCharacteristics(guid))
 					{
-						Debug.WriteLine($"  characteristic: {guid2}");
+						//Debug.WriteLine($"  characteristic: {guid2}");
 					}
 				}
 
@@ -658,7 +658,7 @@ namespace MyHealthVitals
 			else
 			{
 				// Do something to inform user or otherwise handle unsuccessful connection.
-				Debug.WriteLine("Error connecting to device. result={0:g}", connection.ConnectionResult);
+				//Debug.WriteLine("Error connecting to device. result={0:g}", connection.ConnectionResult);
 				// e.g., "Error connecting to device. result=ConnectionAttemptCancelled"
 				//send the error message to screen
 				//Conn_Error(deviceName);//, connection.ConnectionResult.ToString());
@@ -698,7 +698,7 @@ namespace MyHealthVitals
             bool connected = false;
             if (!checkIfDeviceScanned(deviceName))
             {
-                Debug.WriteLine("called ConnectKnownDevice");
+                //Debug.WriteLine("called ConnectKnownDevice");
 
                 try
                 {
@@ -710,11 +710,11 @@ namespace MyHealthVitals
                 }
                 catch (DeviceConnectionException e)
                 {
-                    Debug.WriteLine("connectToKnownDeviceAsync error msg: " + e.Message);
+                   // Debug.WriteLine("connectToKnownDeviceAsync error msg: " + e.Message);
                 }
             }else{
                 //Debug.WriteLine("skipped redundant scan!");
-				Debug.WriteLine("reconnectToDevice : " + deviceName);
+				//Debug.WriteLine("reconnectToDevice : " + deviceName);
 
 				switch (deviceName)
 				{
@@ -789,19 +789,19 @@ namespace MyHealthVitals
 
 		private async void Adapter_DeviceConnected(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
-			Debug.WriteLine("Adapter_DeviceConnected: " + e.Device.Name);
+			//Debug.WriteLine("Adapter_DeviceConnected: " + e.Device.Name);
 			//	connectedDevices.Add(e.Device);
 			Guid deviceID = e.Device.Id;
-            Debug.WriteLine("curr device ID = " + currdeviceId.ToString());
-            Debug.WriteLine("curr device name = " + currdeviceName);
-            Debug.WriteLine("connected device ID = "+deviceID.ToString());
+            //Debug.WriteLine("curr device ID = " + currdeviceId.ToString());
+           // Debug.WriteLine("curr device name = " + currdeviceName);
+            //Debug.WriteLine("connected device ID = "+deviceID.ToString());
 			BLE_val.BLE_value = 1;
 			DependencyService.Get<IFileHelper>().saveBLEinfo(e.Device.Name, BLE_val.BLE_value, deviceID);
             string currdevice = e.Device.Name;
 
             if (e.Device.Id == currdeviceId)
             {
-				Debug.WriteLine("Made it into if statement 2");
+				//Debug.WriteLine("Made it into if statement 2");
 				//hardset the device name to the current device name
 				currdevice = currdeviceName;
             }
@@ -816,7 +816,7 @@ namespace MyHealthVitals
 
 				case "PC_300SNT":
 					{
-                        Debug.WriteLine("PC_300SNT device id = "+e.Device.Id.ToString());
+                       // Debug.WriteLine("PC_300SNT device id = "+e.Device.Id.ToString());
                              
 						await spotServHandler.discoverServices(e.Device);
 						await spotServHandler.uiController.ShowConnection("Connected.", true);
@@ -825,7 +825,7 @@ namespace MyHealthVitals
 					}
 				case "PC-100":
 					{
-                        Debug.WriteLine("PC-100 device id = " + e.Device.Id.ToString());
+                        //Debug.WriteLine("PC-100 device id = " + e.Device.Id.ToString());
 						await pc100ServHandler.discoverServices(e.Device);
 						await pc100ServHandler.uiController.ShowConnection("Connected.", true);
                         //await pc100ServHandler.uiController.checkBattery();
@@ -833,7 +833,7 @@ namespace MyHealthVitals
 					}
 				case "eBody-Scale":
                     {
-                        Debug.WriteLine("eBody-Scale device id = " + e.Device.Id.ToString());
+                        //Debug.WriteLine("eBody-Scale device id = " + e.Device.Id.ToString());
 						await scaleServHandle.discoverServices(e.Device);
 						await scaleServHandle.uiController.ShowConnection("Connected.", true);
 						break;
@@ -848,7 +848,7 @@ namespace MyHealthVitals
 
 		void Adapter_DeviceConnectionLost(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceErrorEventArgs e)
 		{
-			Debug.WriteLine(e.Device.Name + "  Adapter_DeviceConnectionLost");
+			//Debug.WriteLine(e.Device.Name + "  Adapter_DeviceConnectionLost");
 			//	if (!connectedDevices.Contains(e.Device)) return;
 
 			//	connectedDevices.Remove(e.Device);
@@ -857,7 +857,7 @@ namespace MyHealthVitals
 
 			if (deviceID == currdeviceId)
 			{
-				Debug.WriteLine("Made it into if statement 2");
+				//Debug.WriteLine("Made it into if statement 2");
 				//hardset the device name to the current device name
 				currdevice = currdeviceName;
 			}
@@ -884,7 +884,7 @@ namespace MyHealthVitals
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Connection lost exception : "+ex.Message);
+                //Debug.WriteLine("Connection lost exception : "+ex.Message);
             }
 			
 		}
@@ -911,13 +911,13 @@ namespace MyHealthVitals
 			{
 				scaleServHandle.uiController.ShowConnection("Scanning time out. Please check if Scale is turned on.", false);
 			}
-			Debug.WriteLine("Adapter_ScanTimeoutElapsed.");
+			//Debug.WriteLine("Adapter_ScanTimeoutElapsed.");
 		}
 
 
 		void Adapter_DisConnection(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
-			Debug.WriteLine(e.Device.Name + "  Adapter_DisConnection");
+			//Debug.WriteLine(e.Device.Name + "  Adapter_DisConnection");
 			if (e.Device.Name == "PC_300SNT")
 			{
 				spotServHandler.uiController.ShowConnection("PC-300 DisConnection.", false);
@@ -938,11 +938,11 @@ namespace MyHealthVitals
 		}
 		public async void disConnectAll(string exceptDevice = "")
 		{
-			Debug.WriteLine("================DisconnectDeviceAsync=========================");
+			//Debug.WriteLine("================DisconnectDeviceAsync=========================");
 			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices)
 			{
-				Debug.WriteLine(device.State);
-                Debug.WriteLine("device name: "+device.Name);
+				//Debug.WriteLine(device.State);
+                //Debug.WriteLine("device name: "+device.Name);
 
 				if (device.Name == "PC_300SNT")
 				{
@@ -966,28 +966,28 @@ namespace MyHealthVitals
 						await CrossBluetoothLE.Current.Adapter.DisconnectDeviceAsync(device);
                 }catch (Exception ex)
                 {
-                    Debug.WriteLine("disc err msg: "+ex.Message);
+                   // Debug.WriteLine("disc err msg: "+ex.Message);
                 }
 				
 
-				Debug.WriteLine("after " + device.State);
+				//Debug.WriteLine("after " + device.State);
 			}
 			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices)
 			{
-				Debug.WriteLine(device.Name + "  " + device.State);
+				//Debug.WriteLine(device.Name + "  " + device.State);
 			}
 
 		}
 		public bool checkBLEState(string deviceName)
 		{
 			var ble_state = CrossBluetoothLE.Current.State;
-			Debug.WriteLine("BLE state : " + ble_state);
+			//Debug.WriteLine("BLE state : " + ble_state);
 			string BLEstate = ble_state.ToString();
 
 			if (BLEstate == "Off")
 			{
 				//throw a msg to turn on Bluetooth
-				Debug.WriteLine("Your Bluetooth is off!");
+				//Debug.WriteLine("Your Bluetooth is off!");
 				switch (deviceName)
 				{
 					case "BLE-MSA":

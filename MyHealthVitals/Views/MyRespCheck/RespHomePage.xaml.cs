@@ -282,7 +282,7 @@ namespace MyHealthVitals
 		public void updateCaller(SpirometerReading reading)
 		{
 			currReading = reading;
-            Debug.WriteLine("Normal reading.");
+            //Debug.WriteLine("Normal reading.");
 
 			if (reading !=null)
 			{
@@ -307,7 +307,7 @@ namespace MyHealthVitals
 
 		public async void FailedConn(String message, bool isConn, int camefrom)
 		{
-			Debug.WriteLine("FailedConn  mainpage  : " + message);
+			//Debug.WriteLine("FailedConn  mainpage  : " + message);
 			if (camefrom == 1)
 			{
 				bool ret;
@@ -330,7 +330,7 @@ namespace MyHealthVitals
 					}
 					catch (Exception ex)
 					{
-						Debug.WriteLine("conn error msg : " + ex.Message);
+						//Debug.WriteLine("conn error msg : " + ex.Message);
 					}
 
 				}
@@ -358,7 +358,7 @@ namespace MyHealthVitals
 					}
 					catch (Exception ex)
 					{
-						Debug.WriteLine("conn error msg : " + ex.Message);
+						//Debug.WriteLine("conn error msg : " + ex.Message);
 					}
 
 				}
@@ -401,13 +401,13 @@ namespace MyHealthVitals
 
 			if (result.Count == 3)
 			{
-				Debug.WriteLine("Found guid result in file");
+				//Debug.WriteLine("Found guid result in file");
 				BLEtype = result[1];
 				deviceID = new Guid(result[2]);
 				//initializePlotModel();
 				if (BLEtype == "1")
 				{
-					Debug.WriteLine("Type 1 connection");
+					//Debug.WriteLine("Type 1 connection");
 					conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
 				}
 				else
@@ -415,7 +415,7 @@ namespace MyHealthVitals
 					//BLEtype = 2
 					//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
 				}
-				Debug.WriteLine("conn_success = " + conn_success.ToString());
+				//Debug.WriteLine("conn_success = " + conn_success.ToString());
 				if (!conn_success)
 				{
 					//try the hard way
@@ -431,7 +431,7 @@ namespace MyHealthVitals
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+					//Debug.WriteLine("try to connect BLE failed: " + ex.Message);
 				}
 			}
 			else
@@ -542,7 +542,7 @@ namespace MyHealthVitals
                         catch (Exception ex)
                         {
 							clearReadingDisplay();
-                            Debug.WriteLine("exception on sending spirometer data to server.");
+                            //Debug.WriteLine("exception on sending spirometer data to server.");
 							if (Device.Idiom == TargetIdiom.Tablet)
 							{
 								var ret = await DependencyService.Get<IFileHelper>().dispAlert("Reading Error", "Unable to save reading.", true, "OK", null);
@@ -576,7 +576,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception ex)
 			{
-				System.Diagnostics.Debug.WriteLine("Exception on saving curr reading: " + ex.Message);
+				//System.Diagnostics.Debug.WriteLine("Exception on saving curr reading: " + ex.Message);
 			}
 			finally
 			{
@@ -605,7 +605,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception ex)
 			{
-				System.Diagnostics.Debug.WriteLine("Exception " + ex.Message);
+				//System.Diagnostics.Debug.WriteLine("Exception " + ex.Message);
 			}
 		}
 
@@ -622,7 +622,7 @@ namespace MyHealthVitals
 			{
 				var latestCalibratedReading = Demographics.sharedInstance.getLatestCalibratedReading();
 
-				System.Diagnostics.Debug.WriteLine(latestCalibratedReading.dateString);
+				//System.Diagnostics.Debug.WriteLine(latestCalibratedReading.dateString);
 
 				//latestCalibratedReading.Date.
 
@@ -635,14 +635,14 @@ namespace MyHealthVitals
 
 				//lblDate.Text = latestCalibratedReading.dateString +" AM";
 
-				System.Diagnostics.Debug.WriteLine("date:" + lblDate.Text);
+				//System.Diagnostics.Debug.WriteLine("date:" + lblDate.Text);
 			}
 			catch
 			{
 				lblDate.Text = "--";
 				lblFev1.Text = "--";
 				lblPef.Text = "--";
-				Debug.WriteLine("Exception in getting calibrated data");
+				//Debug.WriteLine("Exception in getting calibrated data");
 			}
 		}
 

@@ -149,17 +149,17 @@
 
 						<oxy:PlotView BackgroundColor="White" x:Name="plotView" Margin="5" HeightRequest="150" HorizontalOptions="FillAndExpand" Model="{Binding graphModel}"  />
 
-						<StackLayout x:Name="layoutButton" Orientation="Horizontal" Margin="10,0,10,0">
-							<local:MyButton x:Name = "NIBPButton" Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
+						<StackLayout x:Name="layoutButton" Orientation="Horizontal" HorizontalOptions="Center" Margin="10,0,10,0">
+							<local:MyButton x:Name = "NIBPButton" Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="Center" BackgroundColor="{StaticResource colorThemeBlue}">
 							</local:MyButton>
-							<local:MyButton Clicked="btnEcgReportClicked" x:Name="ecgReportcBtn" IsEnabled="false" Text="ECG Report" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
+							<local:MyButton IsVisible="false" Clicked="btnEcgReportClicked" x:Name="ecgReportcBtn" IsEnabled="false" Text="ECG Report" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}">
 							</local:MyButton>
 						</StackLayout>
                         
-                        <StackLayout  x:Name = "layoutButtonPad" IsVisible = "false" Margin="10,0,10,0" BackgroundColor="{StaticResource colorBlackBg}"  Orientation="Horizontal" Spacing ="20"  >
-                            <local:MyButton x:Name = "NIBPButtonPad" Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}" HeightRequest="100">
+                        <StackLayout  x:Name = "layoutButtonPad" IsVisible = "false" HorizontalOptions="Center" Margin="10,0,10,0" BackgroundColor="{StaticResource colorBlackBg}"  Orientation="Horizontal" Spacing ="20"  >
+                            <local:MyButton x:Name = "NIBPButtonPad" Clicked="btnNIBPStartClicked" TextColor="White" Text="NIBP Start" HorizontalOptions="Center" BackgroundColor="{StaticResource colorThemeBlue}" HeightRequest="100">
                             </local:MyButton>
-                            <local:MyButton Clicked="btnEcgReportClicked" x:Name="ecgReportcBtnPad"   IsEnabled="false" Text="ECG Report" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}" HeightRequest="100">
+                            <local:MyButton IsVisible="false" Clicked="btnEcgReportClicked" x:Name="ecgReportcBtnPad"   IsEnabled="false" Text="ECG Report" TextColor="White" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource colorThemeBlue}" HeightRequest="100">
                             </local:MyButton>
                         </StackLayout>
                         

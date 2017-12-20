@@ -180,24 +180,24 @@ namespace MyHealthVitals
                 Xamarin.Forms.Device.BeginInvokeOnMainThread(async() =>
                 {
 					//DependencyService.Get<IFileHelper>().deleteOfflineFile();
-					Debug.WriteLine("Login succesfull.");
+					//Debug.WriteLine("Login succesfull.");
 
 					if (CrossConnectivity.Current.IsConnected)
 					{
-						Debug.WriteLine("Connected.");
+						//Debug.WriteLine("Connected.");
 						try
 						{
 							var res = await DependencyService.Get<IFileHelper>().offlineRead();
 						}
 						catch (Exception ex)
 						{
-							Debug.WriteLine("err msg = " + ex.Message);
+							//Debug.WriteLine("err msg = " + ex.Message);
 						}
 					
 					}
 					else
 					{
-						Debug.WriteLine("Not connected.");
+						//Debug.WriteLine("Not connected.");
 	
 					}
 
@@ -219,11 +219,12 @@ namespace MyHealthVitals
 					//Debug.WriteLine("task Id = " + Task.CurrentId);
                     try
                     {
-                        ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService(); Debug.WriteLine("sync data from website");
+                        ParametersPageLocal.allReadings = await Reading.GetAllReadingsFromService(); 
+                        //Debug.WriteLine("sync data from website");
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine("Unable to get all readings from server.");
+                        //Debug.WriteLine("Unable to get all readings from server.");
                     }
 					
                 });
@@ -238,17 +239,20 @@ namespace MyHealthVitals
             {
                 if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    this.ShowAlertForLogin("Username Password Combination is incorrect.");
+                    this.ShowAlertForLogin("Username Password Combination is Incorrect.");
                 }
                 else
                 {
-                    this.ShowAlertForLogin("An Error has occurred. ex.StatusCode=" + ex.StatusCode);
+                    this.ShowAlertForLogin("An Error has occurred. StatusCode=" + ex.StatusCode);
+                    //Debug.WriteLine("ex message = "+ex.StatusCode);
+                    //Debug.WriteLine("ex stack = " + ex.StackTrace.ToString());
                 }
             }
 
             catch (Exception e)
             {
                 this.ShowAlertForLogin("An Error has occurred. Exception=" + e);
+                //Debug.WriteLine("e message = " + e.Message);
             }
             finally
             {

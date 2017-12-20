@@ -429,7 +429,7 @@ namespace MyHealthVitals.Droid
 
             //Debug.WriteLine("method = "+method);
 			//Debug.WriteLine(data.Id.ToString());
-			Debug.WriteLine("abnormal = "+data.Abnormal.ToString());
+			//Debug.WriteLine("abnormal = "+data.Abnormal.ToString());
 			//Debug.WriteLine(data.CategoryId.ToString());
 			//Debug.WriteLine(data.Date.ToString());
 			//Debug.WriteLine(data.DeviceId.ToString());
@@ -442,7 +442,7 @@ namespace MyHealthVitals.Droid
 
 			if (File.Exists(txtpath))
 			{
-                Debug.WriteLine("file exists");
+                //Debug.WriteLine("file exists");
 				using (StreamWriter sw = File.AppendText(txtpath))
 				{
                     sw.WriteLine(method);
@@ -479,7 +479,7 @@ namespace MyHealthVitals.Droid
 			}
 			else
 			{
-                Debug.WriteLine("file doesn't exist");
+                //Debug.WriteLine("file doesn't exist");
 				//write initial lines to file
 				StreamWriter sw = new StreamWriter(txtpath);
 				sw.WriteLine(method);
@@ -535,7 +535,7 @@ namespace MyHealthVitals.Droid
 			{
                 string line;
 				
-                Debug.WriteLine("  file exists");
+                //Debug.WriteLine("  file exists");
 				
 				StreamReader sr = new StreamReader(txtpath);
 				while ((line = sr.ReadLine()) != null)
@@ -685,9 +685,9 @@ namespace MyHealthVitals.Droid
                 //now we can delete the file, and if any of them fail again, it will recreate the file
                 File.Delete(txtpath);
 
-                Debug.WriteLine("num posts = "+numposts);
-                Debug.WriteLine("num puts = " + numputs);
-                Debug.WriteLine("num files = " + numfiles);
+                //Debug.WriteLine("num posts = "+numposts);
+                //Debug.WriteLine("num puts = " + numputs);
+                //Debug.WriteLine("num files = " + numfiles);
 
 				foreach (var filed in files)
 				{
@@ -700,7 +700,7 @@ namespace MyHealthVitals.Droid
 					ecg.Size = filed.Size;
 					ecg.UploadDate = filed.UploadDate;
 					var fid = await EcgReport.FPostAsync(filed.ecgid, Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecg);
-					Debug.WriteLine("fid = " + fid.ToString());
+					//Debug.WriteLine("fid = " + fid.ToString());
 					if (fid != 0)
 					{
 						filed.ecgid = fid;
@@ -745,7 +745,7 @@ namespace MyHealthVitals.Droid
 				{
 					var ret = await reading.UpdateReadingToService();
 				}
-                Debug.WriteLine("finished with offline saving");
+                //Debug.WriteLine("finished with offline saving");
 
                 return true;
 			}
@@ -835,7 +835,7 @@ namespace MyHealthVitals.Droid
 			this.fileNameECG = fileName + "ECG.pdf";
 			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 			filePath = Path.Combine(documentsPath, fileName + ".pdf");
-			Debug.WriteLine("pdf filepath: " + filePath.ToString());
+			//Debug.WriteLine("pdf filepath: " + filePath.ToString());
 			filePathNEW = Path.Combine(documentsPath, fileName + "ECG.pdf");
 
 			using (var stream = File.Create(filePath))
@@ -997,7 +997,7 @@ namespace MyHealthVitals.Droid
 			//Task_vars.ecgfilename = "test.txt";
 			//return SendTest();
 
-			Debug.WriteLine("ECG pdf file path: " + filePathNEW);
+			//Debug.WriteLine("ECG pdf file path: " + filePathNEW);
 
 			return FileRead(filePathNEW);
 
@@ -1017,7 +1017,7 @@ namespace MyHealthVitals.Droid
 
 			Task_vars.ecgfilelength = testfilePath.Length;
 
-			Debug.WriteLine("Test file path: " + testfilePath);
+			//Debug.WriteLine("Test file path: " + testfilePath);
 
 			return File.ReadAllBytes(testfilePath);
 		}
@@ -1063,7 +1063,7 @@ namespace MyHealthVitals.Droid
                 if (closedArgs.Button == "Yes")
                 {
                     //use it as closedArgs.Text
-                    Debug.WriteLine("my text: " + closedArgs.Text);
+                    //Debug.WriteLine("my text: " + closedArgs.Text);
                     var input = closedArgs.Text.Trim();
 					
                     if (input.Contains("@"))
@@ -1204,8 +1204,8 @@ namespace MyHealthVitals.Droid
                 }
                 catch (SmtpCommandException ex)
                 {
-                    Console.WriteLine("Error sending message: {0}", ex.Message);
-                    Console.WriteLine("\tStatusCode: {0}", ex.StatusCode);
+                    //Console.WriteLine("Error sending message: {0}", ex.Message);
+                    //Console.WriteLine("\tStatusCode: {0}", ex.StatusCode);
                     switch (ex.ErrorCode)
                     {
                         case SmtpErrorCode.RecipientNotAccepted:
@@ -1281,7 +1281,7 @@ namespace MyHealthVitals.Droid
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine("save file to pdf err msg = " + ex.Message);
+				//Debug.WriteLine("save file to pdf err msg = " + ex.Message);
 			}
 
 			//send the email

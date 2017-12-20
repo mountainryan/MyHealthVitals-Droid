@@ -123,13 +123,13 @@ namespace MyHealthVitals
 
 				if (result.Count == 3)
 				{
-					Debug.WriteLine("Found guid result in file");
+					//Debug.WriteLine("Found guid result in file");
 					BLEtype = result[1];
 					deviceID = new Guid(result[2]);
 					//initializePlotModel();
 					if (BLEtype == "1")
 					{
-						Debug.WriteLine("Type 1 connection");
+						//Debug.WriteLine("Type 1 connection");
 						conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
 					}
 					else
@@ -137,7 +137,7 @@ namespace MyHealthVitals
 						//BLEtype = 2
 						//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
 					}
-					Debug.WriteLine("conn_success = " + conn_success.ToString());
+					//Debug.WriteLine("conn_success = " + conn_success.ToString());
 					if (!conn_success)
 					{
 						//try the hard way
@@ -153,7 +153,7 @@ namespace MyHealthVitals
 					}
 					catch (Exception ex)
 					{
-						Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+						//Debug.WriteLine("try to connect BLE failed: " + ex.Message);
 					}
 				}
 				else
@@ -232,13 +232,13 @@ namespace MyHealthVitals
 
 			if (result.Count == 3)
 			{
-				Debug.WriteLine("Found guid result in file");
+				//Debug.WriteLine("Found guid result in file");
 				BLEtype = result[1];
 				deviceID = new Guid(result[2]);
 				//initializePlotModel();
 				if (BLEtype == "1")
 				{
-					Debug.WriteLine("Type 1 connection");
+					//Debug.WriteLine("Type 1 connection");
 					conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
 				}
 				else
@@ -246,7 +246,7 @@ namespace MyHealthVitals
 					//BLEtype = 2
 					//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
 				}
-				Debug.WriteLine("conn_success = " + conn_success.ToString());
+				//Debug.WriteLine("conn_success = " + conn_success.ToString());
 				if (!conn_success)
 				{
 					//try the hard way
@@ -262,7 +262,7 @@ namespace MyHealthVitals
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+					//Debug.WriteLine("try to connect BLE failed: " + ex.Message);
 				}
 			}
 			else
@@ -301,7 +301,7 @@ namespace MyHealthVitals
 		// call back methods
 		public void updateCaller(SpirometerReading currReading)
 		{
-            Debug.WriteLine("Calibration reading.");
+            //Debug.WriteLine("Calibration reading.");
 			//var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
 
 			
@@ -322,7 +322,7 @@ namespace MyHealthVitals
 			currReading.index = calibratedReadingList.Count;
 			calibratedReadingList.Add(currReading);
 
-			Debug.WriteLine("loaded spirometer reading:" + currReading.pefString);
+			//Debug.WriteLine("loaded spirometer reading:" + currReading.pefString);
 
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
@@ -342,13 +342,13 @@ namespace MyHealthVitals
 
 					if (result.Count == 3)
 					{
-						Debug.WriteLine("Found guid result in file");
+						//Debug.WriteLine("Found guid result in file");
 						BLEtype = result[1];
 						deviceID = new Guid(result[2]);
 						//initializePlotModel();
 						if (BLEtype == "1")
 						{
-							Debug.WriteLine("Type 1 connection");
+							//Debug.WriteLine("Type 1 connection");
 							conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
 						}
 						else
@@ -356,7 +356,7 @@ namespace MyHealthVitals
 							//BLEtype = 2
 							//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
 						}
-						Debug.WriteLine("conn_success = " + conn_success.ToString());
+						//Debug.WriteLine("conn_success = " + conn_success.ToString());
 						if (!conn_success)
 						{
 							//try the hard way
@@ -372,7 +372,7 @@ namespace MyHealthVitals
 						}
 						catch (Exception ex)
 						{
-							Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+							//Debug.WriteLine("try to connect BLE failed: " + ex.Message);
 						}
 					}
 					else
@@ -418,7 +418,7 @@ namespace MyHealthVitals
 
 		public async void FailedConn(String message, bool isConn, int camefrom)
 		{
-			Debug.WriteLine("FailedConn  mainpage  : " + message);
+			//Debug.WriteLine("FailedConn  mainpage  : " + message);
 			if (camefrom == 1)
 			{
 				bool ret;
@@ -441,7 +441,7 @@ namespace MyHealthVitals
 					}
 					catch (Exception ex)
 					{
-						Debug.WriteLine("conn error msg : " + ex.Message);
+						//Debug.WriteLine("conn error msg : " + ex.Message);
 					}
 
 				}
@@ -468,7 +468,7 @@ namespace MyHealthVitals
 					}
 					catch (Exception ex)
 					{
-						Debug.WriteLine("conn error msg : " + ex.Message);
+						//Debug.WriteLine("conn error msg : " + ex.Message);
 					}
 
 				}
@@ -541,7 +541,7 @@ namespace MyHealthVitals
                     catch (Exception ex)
                     {
 						layoutLoading.IsVisible = false;
-                        Debug.WriteLine("exception on sending spirometer data to server.");
+                        //Debug.WriteLine("exception on sending spirometer data to server.");
 						if (Device.Idiom == TargetIdiom.Tablet)
 						{
 							var ret = await DependencyService.Get<IFileHelper>().dispAlert("Calibration Reading Error", "Unable to save calibrated readings.", true, "OK", null);
@@ -571,7 +571,7 @@ namespace MyHealthVitals
 			}
 			catch
 			{
-				System.Diagnostics.Debug.WriteLine("Exception occured while savind the pef and fev to server");
+				//System.Diagnostics.Debug.WriteLine("Exception occured while savind the pef and fev to server");
 			}
 			finally
 			{
@@ -583,7 +583,7 @@ namespace MyHealthVitals
 		{
 			var btn = (Xamarin.Forms.Button)sender;
 
-			System.Diagnostics.Debug.WriteLine("Remove calibrated item "+(int)btn.CommandParameter);
+			//System.Diagnostics.Debug.WriteLine("Remove calibrated item "+(int)btn.CommandParameter);
 
 			calibratedReadingList.RemoveAt((int)btn.CommandParameter);
 
@@ -611,13 +611,13 @@ namespace MyHealthVitals
 
 				if (result.Count == 3)
 				{
-					Debug.WriteLine("Found guid result in file");
+					//Debug.WriteLine("Found guid result in file");
 					BLEtype = result[1];
 					deviceID = new Guid(result[2]);
 					//initializePlotModel();
 					if (BLEtype == "1")
 					{
-						Debug.WriteLine("Type 1 connection");
+						//Debug.WriteLine("Type 1 connection");
 						conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
 					}
 					else
@@ -625,7 +625,7 @@ namespace MyHealthVitals
 						//BLEtype = 2
 						//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
 					}
-					Debug.WriteLine("conn_success = " + conn_success.ToString());
+					//Debug.WriteLine("conn_success = " + conn_success.ToString());
 					if (!conn_success)
 					{
 						//try the hard way
@@ -641,7 +641,7 @@ namespace MyHealthVitals
 					}
 					catch (Exception ex)
 					{
-						Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+						//Debug.WriteLine("try to connect BLE failed: " + ex.Message);
 					}
 				}
 				else

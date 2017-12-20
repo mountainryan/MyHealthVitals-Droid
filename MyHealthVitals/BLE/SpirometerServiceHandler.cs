@@ -50,7 +50,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("writing 6 error: " + ex.Message);
+					//Debug.WriteLine("writing 6 error: " + ex.Message);
 				}
 			}
 
@@ -78,7 +78,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("writing 1 error: " + ex.Message);
+					//Debug.WriteLine("writing 1 error: " + ex.Message);
 				}
 			}
 
@@ -106,7 +106,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("writing data error: " + ex.Message);
+					//Debug.WriteLine("writing data error: " + ex.Message);
 				}
 			}
 
@@ -117,11 +117,11 @@ namespace MyHealthVitals
 			if (vals.Length > 1)
 			{
 				timespolled++;
-				Debug.WriteLine("Times polled: " + timespolled);
-				Debug.WriteLine("C_ValueUpdated  vals[0]=" + vals[0] + "   vals[1]=" + vals[1]);
+				//Debug.WriteLine("Times polled: " + timespolled);
+				//Debug.WriteLine("C_ValueUpdated  vals[0]=" + vals[0] + "   vals[1]=" + vals[1]);
 				if (vals[0] == 170 && vals[1] == 3 && isStatusAsked == false)
 				{
-					Debug.WriteLine("Got a 3, send a 6");
+					//Debug.WriteLine("Got a 3, send a 6");
 					//if (bmChar != null)
 					//{
 					//	Debug.WriteLine("bmchar is not null.");
@@ -139,8 +139,8 @@ namespace MyHealthVitals
 				}
 				if (vals[0] == 170 && vals[1] == 6)// && isStatusAsked == false)
 				{
-					Debug.WriteLine("Got a 6, send a 1");
-					Debug.WriteLine("bmchar = " + bmChar.ToString());
+					//Debug.WriteLine("Got a 6, send a 1");
+					//Debug.WriteLine("bmchar = " + bmChar.ToString());
 					isStopPolling = true;
 					isStatusAsked = true;
 
@@ -164,8 +164,8 @@ namespace MyHealthVitals
 
 				if (vals[0] == 170 && vals[1] == 1)// && isDataAsked == false)
 				{
-					Debug.WriteLine("Got a 1, send for data");
-					Debug.WriteLine("bmchar = " + bmChar.ToString());
+					//Debug.WriteLine("Got a 1, send for data");
+					//Debug.WriteLine("bmchar = " + bmChar.ToString());
 					isDataAsked = true;
 
 					//if (bmChar != null)
@@ -224,7 +224,7 @@ namespace MyHealthVitals
 
 					var fev1 = (double)((vals[valsIndex + 1] << 8) + vals[valsIndex]) / 100;
 					int pef = (vals[valsIndex + 3] << 8) + vals[valsIndex + 2];
-					Debug.WriteLine("fev1: " + fev1 + "  " + "pef: " + pef);
+					//Debug.WriteLine("fev1: " + fev1 + "  " + "pef: " + pef);
 
 					isDataAsked = false;
 					isStatusAsked = false;
@@ -259,7 +259,7 @@ namespace MyHealthVitals
 			else
 			{
 				//shouldn't have to do this, but maybe necessary!
-                Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice );
+                //Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice );
 
                 //CrossBluetoothLE.Current.Adapter.ConnectToKnownDeviceAsync(device.Id);
 
@@ -306,11 +306,11 @@ namespace MyHealthVitals
 			var services = await connectedDevice.GetServicesAsync();
 			foreach (var s in services)
 			{
-                Debug.WriteLine("service guid = " + s.Id.ToString());
+                //Debug.WriteLine("service guid = " + s.Id.ToString());
 				var characteristics = await s.GetCharacteristicsAsync();
 				foreach (var c in characteristics)
 				{
-					Debug.WriteLine(string.Format("Char UUID: {0}  Value: {1}", c.Uuid, c.Value));
+					//Debug.WriteLine(string.Format("Char UUID: {0}  Value: {1}", c.Uuid, c.Value));
 					//Debug.WriteLine("uuid: " + c.Uuid);
 
 					if (c.CanUpdate)
@@ -330,14 +330,14 @@ namespace MyHealthVitals
 		}
 
 		public void stopPolling() {
-			Debug.WriteLine("Stop polling!");
+			//Debug.WriteLine("Stop polling!");
 			this.isStopPolling = true;
 		}
 
 		private void startPolling2()
 		{
 			isStopPolling = false;
-			Debug.WriteLine("Start polling2!");
+			//Debug.WriteLine("Start polling2!");
 
 			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(25), () =>
 			{
@@ -358,7 +358,7 @@ namespace MyHealthVitals
 		private void startPolling()
 		{
 			isStopPolling = false;
-			Debug.WriteLine("Start polling!");
+			//Debug.WriteLine("Start polling!");
 
 			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(5), () =>
 			{
@@ -377,14 +377,14 @@ namespace MyHealthVitals
 
 		public void clearReadingOnDevice()
 		{
-            Debug.WriteLine("clearReadingOnDevice");
+            //Debug.WriteLine("clearReadingOnDevice");
             //Task.Delay(1).ContinueWith(_ =>
             //{
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
             {
                 //Debug.WriteLine("bmChar guid = " + bmChar.Id.ToString());
                 bmChar.WriteAsync(new byte[] { 0x55, 0x03 });
-                Debug.WriteLine("Spirometer reading cleared.");
+                //Debug.WriteLine("Spirometer reading cleared.");
             });
 			//});
 
@@ -444,7 +444,7 @@ namespace MyHealthVitals
             {
                 timespolled++;
                 //Debug.WriteLine("Times polled: "+timespolled);
-                Debug.WriteLine("C_ValueUpdated  data[0]=" + data[0] + "   data[1]=" + data[1]);
+                //Debug.WriteLine("C_ValueUpdated  data[0]=" + data[0] + "   data[1]=" + data[1]);
 				if (data[0] == 170 && data[1] == 3 && isStatusAsked == false)
 				{
                     //Debug.WriteLine("Got a 3, send a 6");
@@ -543,7 +543,7 @@ namespace MyHealthVitals
 
                     var fev1 = (double)((data[dataIndex + 1] << 8) + data[dataIndex]) / 100;
                     int pef = (data[dataIndex + 3] << 8) + data[dataIndex + 2];
-                    Debug.WriteLine("fev1: " + fev1 + "  " + "pef: " + pef);
+                    //Debug.WriteLine("fev1: " + fev1 + "  " + "pef: " + pef);
 
                     isDataAsked = false;
                     isStatusAsked = false;

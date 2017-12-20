@@ -37,7 +37,7 @@ namespace MyHealthVitals
             }
             else
             {
-                Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice);
+                //Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice);
                 CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(connectedDevice);
                 // after this it will call central manager and when device_connected event of the central manager fires then it will call again this class discoverServices()
             }
@@ -54,11 +54,11 @@ namespace MyHealthVitals
             //this.uiController = (IBluetoothCallBackUpdatable)controller;
 
             var services = await connectedDevice.GetServicesAsync();
-            Debug.WriteLine("services ==== " + services.Count);
+            //Debug.WriteLine("services ==== " + services.Count);
 
             foreach (var s in services)
             {
-                Debug.WriteLine("diconnect  Services====" + s);
+                //Debug.WriteLine("diconnect  Services====" + s);
                 var characteristics = await s.GetCharacteristicsAsync();
                 foreach (var c in characteristics)
                 {
@@ -82,15 +82,15 @@ namespace MyHealthVitals
         {
             this.connectedDevice = device;
             //this.uiController = (IBluetoothCallBackUpdatable)controller;
-            Debug.WriteLine("discoverServices====" + device.Name);
+            //Debug.WriteLine("discoverServices====" + device.Name);
             var services = await connectedDevice.GetServicesAsync();
             foreach (var s in services)
             {
-                Debug.WriteLine("service guid = " + s.Id.ToString());
+                //Debug.WriteLine("service guid = " + s.Id.ToString());
                 var characteristics = await s.GetCharacteristicsAsync();
                 foreach (var c in characteristics)
                 {
-                    Debug.WriteLine(string.Format("Char UUID: {0}  Value: {1}", c.Uuid, c.Value));
+                    //Debug.WriteLine(string.Format("Char UUID: {0}  Value: {1}", c.Uuid, c.Value));
                     //Debug.WriteLine("uuid: " + c.Uuid);
 
                     if (c.CanUpdate)
@@ -114,8 +114,8 @@ namespace MyHealthVitals
         {
             if (connectedDevice != null && connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
             {
-                Debug.WriteLine("guid of char = " + bmChar.Id.ToString());
-                Debug.WriteLine("guid (UUID) of char = " + bmChar.Uuid);
+                //Debug.WriteLine("guid of char = " + bmChar.Id.ToString());
+               // Debug.WriteLine("guid (UUID) of char = " + bmChar.Uuid);
                 bmChar.WriteAsync(byteCommand);
             }
             else
@@ -145,7 +145,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-                    Debug.WriteLine("starting BP error msg: "+ex.Message);
+                    //Debug.WriteLine("starting BP error msg: "+ex.Message);
 				}
             }
 
@@ -171,7 +171,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("stopping BP error msg: " + ex.Message);
+					//Debug.WriteLine("stopping BP error msg: " + ex.Message);
 				}
             }
         }
@@ -197,7 +197,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("starting ECG error msg: " + ex.Message);
+					//Debug.WriteLine("starting ECG error msg: " + ex.Message);
 				}
             }
         }
@@ -222,7 +222,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("stopping ECG error msg: " + ex.Message);
+					//Debug.WriteLine("stopping ECG error msg: " + ex.Message);
 				}
             }
         }
@@ -247,14 +247,14 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("stopping sp02 error msg: " + ex.Message);
+					//Debug.WriteLine("stopping sp02 error msg: " + ex.Message);
 				}
             }
         }
 
 		public async void getBatteryInfo()
 		{
-            Debug.WriteLine("Called getBatteryInfo()");
+            //Debug.WriteLine("Called getBatteryInfo()");
 			if (BLE_val.BLE_value == 1)
 			{
 				executeWriteCommand(new byte[] { 0xAA, 0x55, 0xFF, 0x02, 0x02, 0x28 });
@@ -275,7 +275,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("getting battery info error msg: " + ex.Message);
+					//Debug.WriteLine("getting battery info error msg: " + ex.Message);
 				}
 			}
 		}
@@ -364,7 +364,7 @@ namespace MyHealthVitals
 				{
 					//just check last 3 bits
 					int batteryLife = vals[7] & 7;
-					Debug.WriteLine("Battery Life = " + batteryLife);
+					//Debug.WriteLine("Battery Life = " + batteryLife);
 					if (batteryLife <= 1)
 					{
 						uiController.ShowMessageOnUI("You must plug in your PC-300 device.", true, "Low Battery");
@@ -789,11 +789,11 @@ namespace MyHealthVitals
                     }
                     else
                     {
-                        Debug.WriteLine("--vals.Length = " + vals.Length);
+                        //Debug.WriteLine("--vals.Length = " + vals.Length);
                         //loop through vals and print them out
                         for (int i = 0; i < vals.Length; i++)
                         {
-                            Debug.WriteLine("-vals[" + i + "] = " + (int)vals[i]);
+                            //Debug.WriteLine("-vals[" + i + "] = " + (int)vals[i]);
                         }
                     }
 
@@ -821,11 +821,11 @@ namespace MyHealthVitals
 
                                 if (d7_bit)
                                 {
-                                    Debug.WriteLine("measuring state");
+                                   // Debug.WriteLine("measuring state");
                                 }
                                 else
                                 {
-                                    Debug.WriteLine("standby");
+                                    //Debug.WriteLine("standby");
                                     // command to  start measuring the ecg;
                                     bmChar.WriteAsync(new byte[] { 0xAA, 0x55, 0x30, 0x02, 0x01, 0x29 });
                                 }
@@ -883,8 +883,8 @@ namespace MyHealthVitals
 
                             if (token == 48 && pretoken == 50)
                             {
-                                Debug.WriteLine("stop response may be token=" + token + "   pretoken " + pretoken);
-                                Debug.WriteLine("vals[3] :" + vals[3] + "vals[4] " + vals[4] + "vals[5] :" + vals[5]);
+                                //Debug.WriteLine("stop response may be token=" + token + "   pretoken " + pretoken);
+                                //Debug.WriteLine("vals[3] :" + vals[3] + "vals[4] " + vals[4] + "vals[5] :" + vals[5]);
                                 if (vals[4] == 2 && vals[5] == 36)
                                 {
                                     uiController.ShowMessageOnUI("You have not finished your ECG measure.", true, "Measure Interrupted");
@@ -1071,7 +1071,7 @@ namespace MyHealthVitals
                                 var status_bit1 = ((int)vals[9] & (1 << 1)) != 0;
                                 if (status_bit1)
                                 {
-                                    Debug.WriteLine("end of the spo2 reading preBMP=" + preBMP);
+                                    //Debug.WriteLine("end of the spo2 reading preBMP=" + preBMP);
                                     //display the error message on the screen
                                     int errshift = vals[9] >> 6;
                                     int errval = (int)vals[9] - (errshift * (int)Math.Pow(2, 6));
@@ -1133,7 +1133,7 @@ namespace MyHealthVitals
                                 if (vals[5] == 0 || vals[6] == 0)
                                 {
 
-                                    Debug.WriteLine("Invalid readings.");
+                                    //Debug.WriteLine("Invalid readings.");
                                 }
                                 else
                                 {
@@ -1156,7 +1156,7 @@ namespace MyHealthVitals
                         // this token is for glucose reading
                         if ((int)vals[2] == 115)
                         {
-                            Debug.WriteLine("glucose");
+                            //Debug.WriteLine("glucose");
                             // this is needed because device is reading same data more than once to we are tracking glucose reading stop and sending the last reading
                             if (glucoseResult == -1)
                             {
@@ -1184,7 +1184,7 @@ namespace MyHealthVitals
                             // status bit
 
                             glucoseResult = ((int)vals[5] >> 3) & 3;
-                            Debug.WriteLine("correctResult= " + glucoseResult);
+                            //Debug.WriteLine("correctResult= " + glucoseResult);
                             if (glucoseResult == 0)
                             {
                                 int D0_data1 = (int)vals[5];
@@ -1202,9 +1202,9 @@ namespace MyHealthVitals
                                     gluUnit = "mmol/L";
                                 }
 
-                                Debug.WriteLine("D0_data1 = " + D0_data1);
-                                Debug.WriteLine("glucoseReadingVal = " + glucoseReadingVal);
-                                Debug.WriteLine("gluUnit = " + gluUnit);
+                                //Debug.WriteLine("D0_data1 = " + D0_data1);
+                                //Debug.WriteLine("glucoseReadingVal = " + glucoseReadingVal);
+                               // Debug.WriteLine("gluUnit = " + gluUnit);
                             }
                         }
 
@@ -1212,7 +1212,7 @@ namespace MyHealthVitals
 
                         if ((int)vals[2] > 111 && (int)vals[2] < 115)
                         {
-                            Debug.WriteLine("Temperature related token.");
+                            //Debug.WriteLine("Temperature related token.");
 
                             // from document it is written that the 5 byte is status and D4 is temperature probe is connected
                             //Byte temperatureStatus = ;

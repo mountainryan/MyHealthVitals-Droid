@@ -162,14 +162,14 @@ namespace MyHealthVitals
 					this.calibratedReadingList.Add(new SpirometerReading(date, pef, fev1));
 				}
 
-				Debug.WriteLine("calibrated count: " + this.calibratedReadingList.Count);
+				//Debug.WriteLine("calibrated count: " + this.calibratedReadingList.Count);
 
 				//this.calibratedReading = new SpirometerReading(date, pef, fev);
 			}
 			catch (Exception ex)
 			{
 				//this.calibratedReading = new SpirometerReading(DateTime.Now, 0, 0);
-				Debug.WriteLine("Exception: " + ex.Message);
+				//Debug.WriteLine("Exception: " + ex.Message);
 			}
 		}
 
@@ -274,11 +274,11 @@ namespace MyHealthVitals
 
 						Demographics.sharedInstance = tempDemographics;
 
-						Debug.WriteLine(Demographics.sharedInstance.getFullName());
+						//Debug.WriteLine(Demographics.sharedInstance.getFullName());
 					}
 					catch (JsonSerializationException ex)
 					{
-						Debug.WriteLine("parse error: " + ex.Message);
+						//Debug.WriteLine("parse error: " + ex.Message);
 					}
 
 					return true;
@@ -293,7 +293,7 @@ namespace MyHealthVitals
 			}
 			catch(Exception ex) {
 
-				Debug.WriteLine("exception in calling the server." + ex.Message);
+				//Debug.WriteLine("exception in calling the server." + ex.Message);
 				return false;
 			}
 		}
@@ -320,7 +320,7 @@ namespace MyHealthVitals
 				}
 				catch (JsonSerializationException ex)
 				{
-					Debug.WriteLine("parse error image: " + ex.Message);
+					//Debug.WriteLine("parse error image: " + ex.Message);
 					return null;
 				}
 			}

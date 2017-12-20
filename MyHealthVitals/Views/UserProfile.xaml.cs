@@ -183,7 +183,7 @@ namespace MyHealthVitals
 				lblMobileNo.Text = officePhone3;
 			}
 			catch(Exception) {
-				Debug.WriteLine("exception User profile initial rendering data check on birthday calculation");
+				//Debug.WriteLine("exception User profile initial rendering data check on birthday calculation");
 			}
 
 			// calling async to download the image and setting in to the image

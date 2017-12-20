@@ -18,8 +18,9 @@ namespace MyHealthVitals
 		public static String BASE_URL_DEV = "http://testmyemhr.local/api/v1/";
 		public static String BASE_URL_DEMO = "https://demo.myemhr.com/api/v1/";
 		public static String BASE_URL_TEST = "https://test.myemhr.com/api/v1/";
+        public static String BASE_URL_newTEST = "https://newtest.myemhr.com/api/v1/";
 
-        public static String BASE_URL = BASE_URL_TEST;//"https://test.myemhr.com/api/v1/";
+        public static String BASE_URL = BASE_URL_newTEST;//"https://test.myemhr.com/api/v1/";
 
 		public static Credential sharedInstance = new Credential();
 
@@ -31,7 +32,7 @@ namespace MyHealthVitals
 		public async Task<Credential> CallApiForLogin(string username, string password)
 		{
 			var client = new HttpClient { BaseAddress = new Uri(BASE_URL) };
-			Debug.WriteLine("Client = " + client);
+			//Debug.WriteLine("Client = " + client);
 			client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ':' + password)));
 			
 			var response = await client.PostAsync($"Authorize?expiration={Credential.sharedInstance.Mrn}?issuer=Mobile", null);

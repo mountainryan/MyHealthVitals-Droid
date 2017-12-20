@@ -76,7 +76,7 @@ namespace MyHealthVitals
             try{
                 var res = await DependencyService.Get<IFileHelper>().offlineRead();
             }catch (Exception ex){
-                Debug.WriteLine("err msg = "+ex.Message);
+                //Debug.WriteLine("err msg = "+ex.Message);
             }
 
         }
@@ -179,7 +179,7 @@ namespace MyHealthVitals
 
         public void setLandscape()
         {
-            Debug.WriteLine("Called DeviceListPage setLandscape()");
+            //Debug.WriteLine("Called DeviceListPage setLandscape()");
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
 				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
@@ -219,7 +219,7 @@ namespace MyHealthVitals
 
         public void setPortrait()
         {
-            Debug.WriteLine("Called DeviceListPage setPortrait()");
+            //Debug.WriteLine("Called DeviceListPage setPortrait()");
 			if (Device.Idiom == TargetIdiom.Tablet)
 			{
 				FakeToolbar.HeightRequest = 75 * Screensize.heightfactor;
@@ -270,7 +270,7 @@ namespace MyHealthVitals
 		public void ShowMessageOnUI(String message, Boolean isConnected, String title = null ) {
 
 
-						Debug.WriteLine("ShowMessageOnUI  device list page  :"  );
+						//Debug.WriteLine("ShowMessageOnUI  device list page  :"  );
 
 			layoutLoadingDevice.IsVisible = false;
 

@@ -63,7 +63,7 @@ namespace MyHealthVitals
 
 			fileName = Regex.Replace(date_nosec, @"\s+", "");//dateTime.Trim(' ')
 			fileName = Regex.Replace(fileName, @"[/:]+", "");
-			Debug.WriteLine("OnLabelClicked.fileName==" + fileName);
+			//Debug.WriteLine("OnLabelClicked.fileName==" + fileName);
 			
             Task_vars.ecgdate = Convert.ToDateTime(itemdate.Text);
 			bool ret = DependencyService.Get<IFileHelper>().checkFileExist(fileName + ".txt");
@@ -78,7 +78,7 @@ namespace MyHealthVitals
                 }
 				catch (Exception ex)
 				{
-					Debug.WriteLine("error message: " + ex.Message);
+					//Debug.WriteLine("error message: " + ex.Message);
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
 						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", true, "OK", null);
@@ -105,7 +105,7 @@ namespace MyHealthVitals
                 {
 					Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
 					var ecgread = Task_vars.lastecgreading;
-                    Debug.WriteLine("ecgread.FileId = "+ecgread.FileId.ToString());
+                    //Debug.WriteLine("ecgread.FileId = "+ecgread.FileId.ToString());
 					if (ecgread.FileId == 0)
 					{
 						//somehow made it to the device but not to the server
@@ -123,18 +123,18 @@ namespace MyHealthVitals
 						ecgfile.UploadDate = DateTime.Now;
 
 						var fileId = await EcgReport.FPostAsync(ecgread.Id, Credential.BASE_URL + $"Patient/{Credential.sharedInstance.Mrn}/File", ecgfile);
-						Debug.WriteLine("fileID = " + fileId);
+						//Debug.WriteLine("fileID = " + fileId);
 						//now update the reading with the new FileId
 						ecgread.FileId = fileId;
 						var val = await ecgread.UpdateReadingToService();
-						Debug.WriteLine("val for update = " + val);
+						//Debug.WriteLine("val for update = " + val);
 					}
 					LayoutLoadingDone();
 				}
 				catch (Exception ex)
 				{
 					LayoutLoadingDone();
-					Debug.WriteLine("error message: " + ex.Message);
+					//Debug.WriteLine("error message: " + ex.Message);
 					/*
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
@@ -168,7 +168,7 @@ namespace MyHealthVitals
 					Task_vars.lastecgreading = await Reading.GetSingleReadingFromService(Convert.ToInt64(id.Text));
 					var ecgfile = await Reading.GetFileFromService(Task_vars.lastecgreading.FileId);
 
-					Debug.WriteLine("filename = " + fileName + "ECG.pdf");
+					//Debug.WriteLine("filename = " + fileName + "ECG.pdf");
 
 					Task_vars.ecgfiles.Add(fileName);
 
@@ -177,7 +177,7 @@ namespace MyHealthVitals
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine("error message: " + ex.Message);
+					//Debug.WriteLine("error message: " + ex.Message);
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
 						await DependencyService.Get<IFileHelper>().dispAlert("Error", "There was an error retrieving the data", true, "OK", null);
@@ -189,7 +189,7 @@ namespace MyHealthVitals
 				}
 				LayoutLoadingDone();
 				layoutholder.HeightRequest /= 2;
-				Debug.WriteLine("lastecgreading.Id = " + Task_vars.lastecgreading.Id);
+				//Debug.WriteLine("lastecgreading.Id = " + Task_vars.lastecgreading.Id);
             }
 			else
 			{

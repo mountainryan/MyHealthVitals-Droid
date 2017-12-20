@@ -153,19 +153,19 @@ namespace MyHealthVitals
 
 			graphModel.Series.Add(lineSerie);
 			graphModel.InvalidatePlot(true);
-			Debug.WriteLine("graphModel      143   :" + graphModel);
+			//Debug.WriteLine("graphModel      143   :" + graphModel);
 		}
 		protected async override void OnAppearing()
 		{
 			base.OnAppearing();
-			Debug.WriteLine("OnAppearing  :");
+			//Debug.WriteLine("OnAppearing  :");
 
 			if (graphModel == null) return;
-			Debug.WriteLine("graphModel.DefaultXAxis  :" + graphModel.DefaultXAxis);
+			//Debug.WriteLine("graphModel.DefaultXAxis  :" + graphModel.DefaultXAxis);
 
             if (countECGPacket == 0 && graphModel.DefaultXAxis != null)
 			{
-                Debug.WriteLine("Made it in to graph mod if statement");
+                //Debug.WriteLine("Made it in to graph mod if statement");
 				graphModel.DefaultXAxis.IsPanEnabled = false;
 				graphModel.DefaultYAxis.IsPanEnabled = false;
 
@@ -211,10 +211,10 @@ namespace MyHealthVitals
             bool ret;
             if (Device.Idiom == TargetIdiom.Tablet)
             {
-                Debug.WriteLine("recognized tablet");
+                //Debug.WriteLine("recognized tablet");
                 ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, "Do you want to take a measurement?", true, "Yes", "No");
             }else{
-                Debug.WriteLine("recognized phone");
+               //Debug.WriteLine("recognized phone");
                 ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, "Do you want to take a measurement?", false, "Yes", "No");
             }
 			//var ret = await DisplayAlert(deviceName, "Do you want to take a measurement?", "Yes", "No");
@@ -225,12 +225,12 @@ namespace MyHealthVitals
                 {
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
-						Debug.WriteLine("recognized tablet");
+						//Debug.WriteLine("recognized tablet");
 						ret = await DependencyService.Get<IFileHelper>().dispAlert("Internet Connection", "No Service Available", true, "OK", null);
 					}
 					else
 					{
-						Debug.WriteLine("recognized phone");
+						//Debug.WriteLine("recognized phone");
 						ret = await DependencyService.Get<IFileHelper>().dispAlert("Internet Connection", "No Service Available", false, "OK", null);
 					}
                 }else{
@@ -243,17 +243,17 @@ namespace MyHealthVitals
                     var connval = await CrossConnectivity.Current.IsRemoteReachable("13.84.153.187"); //test ip
 
 
-					Debug.WriteLine("connection to server = "+connval.ToString());
+					//Debug.WriteLine("connection to server = "+connval.ToString());
                     if (!connval)
                     {
 						if (Device.Idiom == TargetIdiom.Tablet)
 						{
-							Debug.WriteLine("recognized tablet");
+							//Debug.WriteLine("recognized tablet");
 							ret = await DependencyService.Get<IFileHelper>().dispAlert("Internet Connection", "Unable to connect to server", true, "OK", null);
 						}
 						else
 						{
-							Debug.WriteLine("recognized phone");
+							//Debug.WriteLine("recognized phone");
 							ret = await DependencyService.Get<IFileHelper>().dispAlert("Internet Connection", "Unable to connect to server", false, "OK", null);
 						}
                     }
@@ -262,7 +262,7 @@ namespace MyHealthVitals
                 }
 
                 //DependencyService.Get<IFileHelper>().delBLEinfo();
-                Debug.WriteLine("   device Name ======  " + deviceName);
+                //Debug.WriteLine("   device Name ======  " + deviceName);
                 //check if the current android machine has connected to this device before.
                 List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
                 string BLEtype = "";
@@ -270,13 +270,13 @@ namespace MyHealthVitals
                 bool conn_success = false;
 				if (result.Count == 3)
 				{
-                    Debug.WriteLine("Found guid result in file");
+                    //Debug.WriteLine("Found guid result in file");
                     BLEtype = result[1];
                     deviceID = new Guid(result[2]);
                     initializePlotModel();
                     if (BLEtype == "1")
                     {
-                        Debug.WriteLine("Type 1 connection");
+                        //Debug.WriteLine("Type 1 connection");
                         layoutLoading.IsVisible = true;
                         conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
                     }else{
@@ -284,7 +284,7 @@ namespace MyHealthVitals
                         layoutLoading.IsVisible = true;
                         conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
                     }
-                    Debug.WriteLine("conn_success = "+conn_success.ToString());
+                   // Debug.WriteLine("conn_success = "+conn_success.ToString());
                     if (!conn_success)
                     {
                         //try the hard way
@@ -309,7 +309,7 @@ namespace MyHealthVitals
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+                        //Debug.WriteLine("try to connect BLE failed: " + ex.Message);
                         layoutLoading.IsVisible = true;
                         BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
                         //BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
@@ -363,7 +363,7 @@ namespace MyHealthVitals
         {
 			if (countECGPacket == 0 && graphModel.DefaultXAxis != null)
 			{
-				Debug.WriteLine("Made it in to graph mod on initialize if statement");
+				//Debug.WriteLine("Made it in to graph mod on initialize if statement");
 				graphModel.DefaultXAxis.IsPanEnabled = false;
 				graphModel.DefaultYAxis.IsPanEnabled = false;
 
@@ -449,10 +449,10 @@ namespace MyHealthVitals
 		private async void callAPiToDisplayGetDemographics()
 		{
 			var isSuccess = await Demographics.sharedInstance.getDemographicFromApi();
-			Debug.WriteLine("Demographics.sharedInstance.Height  " + Demographics.sharedInstance.Height);
+			//Debug.WriteLine("Demographics.sharedInstance.Height  " + Demographics.sharedInstance.Height);
 			if (Demographics.sharedInstance.Height != null)
 				userHeight = float.Parse(Demographics.sharedInstance.Height.Split(' ')[0]);
-			Debug.WriteLine("userHeight  " + userHeight);
+			//Debug.WriteLine("userHeight  " + userHeight);
 			if (isSuccess)
 			{
 				this.lblName.Text = Demographics.sharedInstance.getFullName();
@@ -497,7 +497,7 @@ namespace MyHealthVitals
         public async void FailedConn(String message, bool isConn, int camefrom)
         {
             layoutLoading.IsVisible = false;
-            Debug.WriteLine("FailedConn  mainpage  : " + message);
+            //Debug.WriteLine("FailedConn  mainpage  : " + message);
             if (camefrom == 1)
             {
                 bool ret;
@@ -519,7 +519,7 @@ namespace MyHealthVitals
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine("conn error msg : "+ex.Message);
+                        //Debug.WriteLine("conn error msg : "+ex.Message);
                     }
 
                 }
@@ -544,7 +544,7 @@ namespace MyHealthVitals
 					}
 					catch (Exception ex)
 					{
-						Debug.WriteLine("conn error msg : " + ex.Message);
+						//Debug.WriteLine("conn error msg : " + ex.Message);
 					}
 
 				}
@@ -555,7 +555,7 @@ namespace MyHealthVitals
 		public async Task ShowConnection(String message, Boolean isConnected)
 		{
 
-			Debug.WriteLine("ShowConnection  mainpage  : "+message);
+			//Debug.WriteLine("ShowConnection  mainpage  : "+message);
 			
 			Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
@@ -587,19 +587,19 @@ namespace MyHealthVitals
 				}
 				else
 				{
-                    Debug.WriteLine("made it to the display!");
+                   // Debug.WriteLine("made it to the display!");
                     //await DisplayAlert(deviceName, message, "OK");
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
 						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
                         //var ret = DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
-					    Debug.WriteLine("ret val = " + ret.ToString());
+					    //Debug.WriteLine("ret val = " + ret.ToString());
                     }
 					else
 					{
 						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
                         //var ret = DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
-					    Debug.WriteLine("ret val = " + ret.ToString());
+					   // Debug.WriteLine("ret val = " + ret.ToString());
                     }
 
 				}
@@ -632,7 +632,7 @@ namespace MyHealthVitals
 		async public void ShowMessageOnUI(string message, Boolean isConnected, string title = null)
 		{
 
-            Debug.WriteLine("ShowMessageOnUI : "+ message);
+           // Debug.WriteLine("ShowMessageOnUI : "+ message);
 			if (title == null)
 			{
 				if (this.deviceName == "eBody-Scale")
@@ -674,7 +674,7 @@ namespace MyHealthVitals
 						ret = await DependencyService.Get<IFileHelper>().dispAlert(title, message, false, "Yes", "No");
 					}
                     //var ret = await DisplayAlert(title, message, "Yes", "No");
-					Debug.WriteLine("ret === " + ret);
+					//Debug.WriteLine("ret === " + ret);
 					if (ret)
 					{
 						if (title.Equals("Normal"))
@@ -746,7 +746,7 @@ namespace MyHealthVitals
 					//await DisplayAlert(title, message, "OK");
 					if (title.Equals("Measure Interrupted"))
 					{
-                        Debug.WriteLine("Measure Interrupted!");
+                        //Debug.WriteLine("Measure Interrupted!");
 						Measure_Interruped = true;
 						countECGPacket = 0;
 						ecgTime = 0;
@@ -847,7 +847,7 @@ namespace MyHealthVitals
 
 		public void updateDeviceConnected(String deviceName, bool isConnected)
 		{
-			System.Diagnostics.Debug.WriteLine("deviceName: " + deviceName);
+			//System.Diagnostics.Debug.WriteLine("deviceName: " + deviceName);
 		}
 
 		//new method to reset spo2 values when it starts
@@ -856,7 +856,7 @@ namespace MyHealthVitals
 		async public void noticeEndOfReadingSpo2()
 		{
 
-			Debug.WriteLine("noticeEndOfReadingSpo2");
+			//Debug.WriteLine("noticeEndOfReadingSpo2");
 			pulseTime = 0.0f;
 
 			initBpm = true;
@@ -934,7 +934,7 @@ namespace MyHealthVitals
 
 					Device.BeginInvokeOnMainThread(() =>
 					{
-						Debug.WriteLine("BeginInvokeOnMainThread  isCelcious = " + isCelcious);
+						//Debug.WriteLine("BeginInvokeOnMainThread  isCelcious = " + isCelcious);
 
 						if (isCelcious)
 						{
@@ -1087,12 +1087,12 @@ namespace MyHealthVitals
 		private void EcgcountdownCancle()
 		{
 			N = -1;
-			Debug.WriteLine("EcgcountdownCancle timer=" + timer);
+			//Debug.WriteLine("EcgcountdownCancle timer=" + timer);
 			if (timer != null && timer.running)
 			{
 				timer.Stop();
 				//  timer = null;
-				Debug.WriteLine("timer = " + timer);
+				//Debug.WriteLine("timer = " + timer);
 			}
 			if (progressBar != null && progressBar.AnimationIsRunning("SetProgress"))
 			{
@@ -1110,11 +1110,11 @@ namespace MyHealthVitals
 			{
 				if (timer == null)
 				{
-					Debug.WriteLine("timer   =============" + timer);
+					//Debug.WriteLine("timer   =============" + timer);
 
 					timer = new CommonMethod.MySystemDeviceTimer(TimeSpan.FromSeconds(8), async () =>
 					{
-						Debug.WriteLine("StartTsure_Interruped==" + Measure_Interruped);
+						//Debug.WriteLine("StartTsure_Interruped==" + Measure_Interruped);
 						if (!Measure_Interruped)
 						{
                             await ECGcountdown();
@@ -1136,7 +1136,7 @@ namespace MyHealthVitals
                 //Debug.WriteLine("countECGPacket = "+countECGPacket);
 				if (Measure_Interruped)
 				{
-                    Debug.WriteLine("Measure Interrupted.");
+                    //Debug.WriteLine("Measure Interrupted.");
 					Measure_Interruped = false;
 					countECGPacket = 0;
 					ecgTime = 0;
@@ -1150,7 +1150,7 @@ namespace MyHealthVitals
 				if (countECGPacket == 0)
 				{
 					N = 30;
-					Debug.WriteLine("countECGPacket   =============" + countECGPacket);
+					//Debug.WriteLine("countECGPacket   =============" + countECGPacket);
                     Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
                     {
 						if (Device.Idiom == TargetIdiom.Tablet)
@@ -1202,7 +1202,7 @@ namespace MyHealthVitals
                         //  graphModel.DefaultXAxis.IsPanEnabled = false;
                         graphModel.InvalidatePlot(true);
 
-                        Debug.WriteLine("countECGPacket   end =============" + countECGPacket);
+                        //Debug.WriteLine("countECGPacket   end =============" + countECGPacket);
                     }));
 
 
@@ -1248,7 +1248,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine("Exception :" + ex);
+				//Debug.WriteLine("Exception :" + ex);
 			}
 
 			//      updateECGPacket_Report(ecgPacket);
@@ -1262,12 +1262,12 @@ namespace MyHealthVitals
 		{
             Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
             {
-                Debug.WriteLine("initBpmWaveForm");
+                //Debug.WriteLine("initBpmWaveForm");
                 if (graphModel == null) return;
 
                 if (graphModel.DefaultXAxis != null)
                 {
-                    Debug.WriteLine("initBpmWaveForm ing");
+                    //Debug.WriteLine("initBpmWaveForm ing");
                     //initBpm = false;
                     pulseTime = 0.0f;
                     graphModel.DefaultXAxis.IsPanEnabled = false;
@@ -1313,7 +1313,7 @@ namespace MyHealthVitals
                 {
                     if (initBpm && graphModel.DefaultXAxis != null)
                     {
-                        Debug.WriteLine("updateBpmWaveform initBpmWaveForm ing");
+                        //Debug.WriteLine("updateBpmWaveform initBpmWaveForm ing");
 
                         initBpm = false;
                         pulseTime = 0.0f;
@@ -1379,7 +1379,7 @@ namespace MyHealthVitals
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Exception on updateting ui:" + ex.Message);
+                    //Debug.WriteLine("Exception on updateting ui:" + ex.Message);
                 }
             }));
 		}
@@ -1397,7 +1397,7 @@ namespace MyHealthVitals
 		}
 		public async void SPO2_readingCompleted(int sp02, int bpm, float perfusionIndex)
 		{
-			Debug.WriteLine("SPO2_readingCompleted");
+			//Debug.WriteLine("SPO2_readingCompleted");
 			if (isupLoadedSPO2) return;
 			this.vitalsData.spo2 = new Reading(null, sp02, 2, false, null, null);
 			this.vitalsData.bpm = new Reading(null, bpm, 3, false, null, null);
@@ -1577,7 +1577,7 @@ namespace MyHealthVitals
 
 		void btnLogOutClicked(object sender, System.EventArgs e)
 		{
-			Debug.WriteLine(" log out");
+			//Debug.WriteLine(" log out");
 			BLECentralManager.sharedInstance.disConnectAll();
 			Demographics.sharedInstance.calibratedReadingList.Clear();
 			this.Navigation.PopModalAsync(true);
@@ -1653,7 +1653,7 @@ namespace MyHealthVitals
 		}
 		void btnEcgReportClicked(object sender, System.EventArgs e)
 		{
-			Debug.WriteLine("vitalsData = " + vitalsData);
+			//Debug.WriteLine("vitalsData = " + vitalsData);
             //  bool ret = await DependencyService.Get<IFileHelper>().sentToEmail("" + ".pdf");
             //==================
             Task_vars.comingfrom = "MainPage";
@@ -1683,13 +1683,13 @@ namespace MyHealthVitals
            
             if (Device.Idiom == TargetIdiom.Tablet)
             {
-                Debug.WriteLine("Went to Pad page!");
+                //Debug.WriteLine("Went to Pad page!");
                 var newPage = new ParametersPageLocalPad();
 				//var newPage = new ParametersPage();
 				newPage.Title = "Parameter List Screen";
 				this.Navigation.PushAsync(newPage);
             }else{
-                Debug.WriteLine("Went to phone page!");
+                //Debug.WriteLine("Went to phone page!");
                 var newPage = new ParametersPageLocal();
 				//var newPage = new ParametersPage();
 				newPage.Title = "Parameter List Screen";
@@ -1718,7 +1718,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception)
 			{
-				Debug.WriteLine("exception nullpointer");
+				//Debug.WriteLine("exception nullpointer");
 			}
 		}
 		bool isCelcious = false;
@@ -1734,7 +1734,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception)
 			{
-				Debug.WriteLine("conversion exception");
+				//Debug.WriteLine("conversion exception");
 			}
 		}
 
@@ -1750,7 +1750,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception)
 			{
-				Debug.WriteLine("exception nullpointer");
+				//Debug.WriteLine("exception nullpointer");
 			}
 		}
 
@@ -1771,12 +1771,12 @@ namespace MyHealthVitals
 			}
 			catch (Exception)
 			{
-				Debug.WriteLine("exception nullpointer");
+				//Debug.WriteLine("exception nullpointer");
 			}
 		}
 		async void getLatestWeight(string m)
 		{
-            Debug.WriteLine("latest weight msg:"+m);
+            //Debug.WriteLine("latest weight msg:"+m);
             if (this.vitalsData.weight != null)
             {
 				string message = "Weight: " + (double)this.vitalsData.weight.EnglishValue + "Lbs / "
@@ -1836,7 +1836,7 @@ namespace MyHealthVitals
 												   select reading).Take(1);
 
 
-						Debug.WriteLine("weightReading = " + allCategoryReading5);
+						//Debug.WriteLine("weightReading = " + allCategoryReading5);
 						foreach (var reading in allCategoryReading5)
 						{
 							weightReading = (double)Math.Round((decimal)reading.EnglishValue, 1);
@@ -1940,7 +1940,7 @@ namespace MyHealthVitals
 
 		private void writeToTxt()
 		{
-			Debug.WriteLine("Writ to txt");
+			//Debug.WriteLine("Writ to txt");
 			Demographics demo = Demographics.sharedInstance;
 			if (vitalsData.ecg == null)
 			{
@@ -2020,6 +2020,11 @@ namespace MyHealthVitals
                 ecgReportcBtnPad.HeightRequest = 100 * Screensize.heightfactor;
 				layoutButton.IsVisible = false;
 				layoutButtonPad.IsVisible = true;
+
+                NIBPButtonPad.WidthRequest = (Screensize.dpwidth / 3);
+                //NIBPButtonPad.HorizontalOptions = "Center";
+                //layoutButtonPad.Margin = new Thickness(0, 0, 0, 0);
+
                 //layoutButtonPad.Margin = new Thickness(15, -200 * Screensize.heightfactor, 15, 0);
 				btnFareinheit.FontSize = 21 * Screensize.heightfactor;
 				btnCelcious.FontSize = 21 * Screensize.heightfactor;
@@ -2099,6 +2104,9 @@ namespace MyHealthVitals
 				layout16.WidthRequest = (180 * Screensize.widthfactor) / 2;
 				plotView.HeightRequest = 150 * Screensize.heightfactor;
 				NIBPButton.FontSize = 14 * Screensize.heightfactor;
+
+                NIBPButton.WidthRequest = (Screensize.dpwidth / 3);
+
 				ecgReportcBtn.FontSize = 14 * Screensize.heightfactor;
 				//layoutButton.IsVisible = false;
 				//layoutButtonPad.IsVisible = true;

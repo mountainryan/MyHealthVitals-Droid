@@ -68,11 +68,11 @@ namespace MyHealthVitals
 
         public void setLandscape()
         { 
-            Debug.WriteLine("Called ParamPageLocal setLandscape()");
+            //Debug.WriteLine("Called ParamPageLocal setLandscape()");
         }
         public void setPortrait()
         {
-            Debug.WriteLine("Called ParamPageLocal setPortrait()");
+            //Debug.WriteLine("Called ParamPageLocal setPortrait()");
         }
 
 		public async void sycnwithCloud()
@@ -83,7 +83,7 @@ namespace MyHealthVitals
 				logcalParameteritem.localhashmap.Clear();
 				//allReadings = await Reading.GetAllReadingsFromService();
 			}
-			Debug.WriteLine("allReadings == " + allReadings);
+			//Debug.WriteLine("allReadings == " + allReadings);
 
 			categories_local.Add(new CategoryLocal(1, "Blood Pressure"));
 			categories_local.Add(new CategoryLocal(2, "SpO2"));

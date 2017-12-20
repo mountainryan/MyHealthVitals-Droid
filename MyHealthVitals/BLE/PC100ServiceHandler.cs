@@ -33,14 +33,14 @@ namespace MyHealthVitals
 
 			if (connectedDevice.State == Plugin.BLE.Abstractions.DeviceState.Connected)
 			{
-				Debug.WriteLine("PC-100 already in connected state.");
+				//Debug.WriteLine("PC-100 already in connected state.");
 			}
 
 
 
 			else
 			{
-				Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice );
+				//Debug.WriteLine("reconnectToDevice connectedDevice = " + connectedDevice );
 
 				CrossBluetoothLE.Current.Adapter.ConnectToDeviceAsync(connectedDevice);
 			}
@@ -83,7 +83,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("starting BP error msg: " + ex.Message);
+					//Debug.WriteLine("starting BP error msg: " + ex.Message);
 				}
             }
 			
@@ -109,7 +109,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("stopping BP error msg: " + ex.Message);
+					//Debug.WriteLine("stopping BP error msg: " + ex.Message);
 				}
             }
 		}
@@ -133,7 +133,7 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("stopping sp02 error msg: " + ex.Message);
+					//Debug.WriteLine("stopping sp02 error msg: " + ex.Message);
 				}
             }
 		}
@@ -142,7 +142,7 @@ namespace MyHealthVitals
 		{
             if (BLE_val.BLE_value == 1)
             {
-                Debug.WriteLine("Executing write command!");
+                //Debug.WriteLine("Executing write command!");
                 executeWriteCommand(new byte[] { 0xAA, 0x55, 0x43, 0x02, 0x01, 0xCD });
             }else{
 				try
@@ -159,14 +159,14 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("get BP reading error msg: " + ex.Message);
+					//Debug.WriteLine("get BP reading error msg: " + ex.Message);
 				}
             }
 		}
 
 		public async void getBatteryInfo()
 		{
-            Debug.WriteLine("Called getBatteryInfo()");
+            //Debug.WriteLine("Called getBatteryInfo()");
 			if (BLE_val.BLE_value == 1)
 			{
 				executeWriteCommand(new byte[] { 0xAA, 0x55, 0x51, 0x02, 0x01, 0xC8 });
@@ -187,14 +187,14 @@ namespace MyHealthVitals
 				}
 				catch (GattException ex)
 				{
-					Debug.WriteLine("stopping sp02 error msg: " + ex.Message);
+					//Debug.WriteLine("stopping sp02 error msg: " + ex.Message);
 				}
 			}
 		}
 
 		public async Task discoverServices(IDevice device)
 		{
-			Debug.WriteLine("discoverServices");
+			//Debug.WriteLine("discoverServices");
 			this.connectedDevice = device;
 			//this.uiController = (IBluetoothCallBackUpdatable)controller;
 
@@ -222,7 +222,7 @@ namespace MyHealthVitals
 		}
 		public async Task diconnectServices(IDevice device)
 		{
-			Debug.WriteLine("discoverServices");
+			//Debug.WriteLine("discoverServices");
 			this.connectedDevice = device;
 			//this.uiController = (IBluetoothCallBackUpdatable)controller;
 
@@ -301,7 +301,7 @@ namespace MyHealthVitals
 				{
 					//just need to compare with last 3 bits
 					int batteryLife = vals[7] & 7;
-					Debug.WriteLine("Battery Life = " + batteryLife);
+					//Debug.WriteLine("Battery Life = " + batteryLife);
 					if (batteryLife <= 1)
 					{
 						uiController.ShowMessageOnUI("You must plug in your PC-100 device.", true, "Low Battery");
@@ -377,7 +377,7 @@ namespace MyHealthVitals
 					var bit0 = (vals[5] & (1 << 0));
 
 					var bit3_0 = ""+bit3+""+bit2+""+bit1+""+bit0;
-					Debug.WriteLine("vals[5] "+vals[5] );
+					//Debug.WriteLine("vals[5] "+vals[5] );
 					var message = "";
 
 					if (bit7==1)
@@ -407,8 +407,8 @@ namespace MyHealthVitals
 								break;
 						}
 
-						Debug.WriteLine("error type 1");
-						Debug.WriteLine(message);
+						//Debug.WriteLine("error type 1");
+						//Debug.WriteLine(message);
 					}
 					else {
 						
@@ -434,8 +434,8 @@ namespace MyHealthVitals
 								break;
 						}
 
-						Debug.WriteLine("error type 0");
-						Debug.WriteLine(message);
+						//Debug.WriteLine("error type 0");
+						//Debug.WriteLine(message);
 					}
 
 					this.uiController.ShowMessageOnUI(message, false, "Blood Pressure Measure Error");
@@ -570,7 +570,7 @@ namespace MyHealthVitals
 			// this token is for glucose reading
 			if ((int)vals[2] == 115) 
 			{
-				Debug.WriteLine("glucose");
+				//Debug.WriteLine("glucose");
 				// this is needed because device is reading same data more than once to we are tracking glucose reading stop and sending the last reading
 				if (glucoseResult == -1 || glucoseResult == -100)
 				{
@@ -597,12 +597,12 @@ namespace MyHealthVitals
 
 			
 				glucoseResult = ((int)vals[5] >> 3) & 3;
-				Debug.WriteLine("correctResult= " + glucoseResult);
+				//Debug.WriteLine("correctResult= " + glucoseResult);
 				if (glucoseResult == 0)
 				{
 					int D0_data1 = (int)vals[5];
-					Debug.WriteLine("((int)vals[6] << 8) + (int)vals[7] = " + ((int)vals[6] << 8) + (int)vals[7]);
-					Debug.WriteLine("(int)vals[6] * 100 + (int)vals[7] = " + (int)vals[6] * 100 + (int)vals[7]);
+					//Debug.WriteLine("((int)vals[6] << 8) + (int)vals[7] = " + ((int)vals[6] << 8) + (int)vals[7]);
+					//Debug.WriteLine("(int)vals[6] * 100 + (int)vals[7] = " + (int)vals[6] * 100 + (int)vals[7]);
 					if ((D0_data1 & 1) == 1)
 					{
 						int dataMgDl = ((int)vals[6] << 8) + (int)vals[7];
@@ -616,9 +616,9 @@ namespace MyHealthVitals
 						gluUnit = "mmol/L";
 					}
 
-					Debug.WriteLine("D0_data1 = " + D0_data1);
-					Debug.WriteLine("glucoseReadingVal = " + glucoseReadingVal);
-					Debug.WriteLine("gluUnit = " + gluUnit);
+					//Debug.WriteLine("D0_data1 = " + D0_data1);
+					//Debug.WriteLine("glucoseReadingVal = " + glucoseReadingVal);
+					//Debug.WriteLine("gluUnit = " + gluUnit);
 
 				}
 			}

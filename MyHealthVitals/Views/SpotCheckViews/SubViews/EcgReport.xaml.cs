@@ -53,11 +53,11 @@ namespace MyHealthVitals
 		public EcgReport(String filename, string patientName, bool rightButton = false, MainPage maincontrol = null)
 		{
 			NavigationPage.SetHasNavigationBar(this, false);
-			Debug.WriteLine("EcgReport()");
+			//Debug.WriteLine("EcgReport()");
 			this.fileName = filename;
             this.mainControl = maincontrol;
 			this.patientName = patientName;
-			Debug.WriteLine("this.fileName==" + this.fileName);
+			//Debug.WriteLine("this.fileName==" + this.fileName);
 			InitializeComponent();
 
 			FakeToolbar.Children.Add(
@@ -258,12 +258,12 @@ namespace MyHealthVitals
                 reportButton.FontSize = 16 * Screensize.heightfactor;
 			}
 
-            Debug.WriteLine("Defaultxaxis : " + graphModel_report.DefaultXAxis);
+            //Debug.WriteLine("Defaultxaxis : " + graphModel_report.DefaultXAxis);
             Task.Delay(1).ContinueWith(_ => {});
-            Debug.WriteLine("Defaultxaxis : " + graphModel_report.DefaultXAxis);
+            //Debug.WriteLine("Defaultxaxis : " + graphModel_report.DefaultXAxis);
 			if (countECGPacket_report == 0 && graphModel_report.DefaultXAxis != null)
 			{
-                Debug.WriteLine("Made it into ecgreport graph if statement.");
+                //Debug.WriteLine("Made it into ecgreport graph if statement.");
 				graphModel_report.DefaultXAxis.IsPanEnabled = false;
 				graphModel_report.DefaultYAxis.IsPanEnabled = false;
 
@@ -419,7 +419,7 @@ namespace MyHealthVitals
 			graphModel.DefaultXAxis.MajorGridlineThickness = 0.25f;
 			graphModel.DefaultXAxis.MinorGridlineThickness = 0.25f;
 
-			Debug.WriteLine("graphModel.DefaultXAxis.MinorGridlineThickness = " + graphModel.DefaultXAxis.MinorGridlineThickness);
+			//Debug.WriteLine("graphModel.DefaultXAxis.MinorGridlineThickness = " + graphModel.DefaultXAxis.MinorGridlineThickness);
 
 			graphModel.DefaultXAxis.MinorGridlineColor = OxyColors.LightGray;
 			graphModel.DefaultXAxis.MajorGridlineColor = OxyColors.LightGray;
@@ -440,7 +440,7 @@ namespace MyHealthVitals
 			try
 			{
 				ecgPacket = DependencyService.Get<IFileHelper>().readFromTxt(fileName);
-				Debug.WriteLine("count ============" + ecgPacket.Count);
+				//Debug.WriteLine("count ============" + ecgPacket.Count);
 				//Debug.WriteLine("graphModel_report.DefaultXAxis.Maximum = "+graphModel_report.DefaultXAxis.Maximum);
 				//Debug.WriteLine("ecgTime_report = "+ecgTime_report);
 				for (int i = 0; i < ecgPacket.Count; i++)
@@ -484,7 +484,7 @@ namespace MyHealthVitals
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine("report   Exception " + ex);
+				//Debug.WriteLine("report   Exception " + ex);
 			}
             Device.BeginInvokeOnMainThread(new Action(async () =>
             {
@@ -509,7 +509,7 @@ namespace MyHealthVitals
 
 			if (countECGPacket_report == 0 && graphModel_report.DefaultXAxis != null)
 			{
-				Debug.WriteLine("Made it into ecgreport graph if statement.");
+				//Debug.WriteLine("Made it into ecgreport graph if statement.");
 				graphModel_report.DefaultXAxis.IsPanEnabled = false;
 				graphModel_report.DefaultYAxis.IsPanEnabled = false;
 
@@ -537,15 +537,15 @@ namespace MyHealthVitals
 
 		async void btnSaveClicked(object sender, System.EventArgs e)
 		{
-			Debug.WriteLine("btn Save Clicked");
-			Debug.WriteLine("btn Save Clicked");
+			//Debug.WriteLine("btn Save Clicked");
+			//Debug.WriteLine("btn Save Clicked");
 			saveEcgReport();
 		}
 
 		public async void saveEcgReport()
 		{
 
-			Debug.WriteLine("saveEcgReport()");
+			//Debug.WriteLine("saveEcgReport()");
 			ReportSaving.IsVisible = true;
 			await Task.Delay(500).ContinueWith(_ =>
 			{
@@ -576,23 +576,23 @@ namespace MyHealthVitals
                     {
 						Reading updateEcg = Task_vars.lastecgreading;
 						updateEcg.FileId = fileId;
-						Debug.WriteLine("fileId = " + fileId);
+						//Debug.WriteLine("fileId = " + fileId);
 						//updateEcg.Status = "Saved";
 						Task_vars.lastecgreading = updateEcg;
 
 						var ret = await updateEcg.UpdateReadingToService();
-						Debug.WriteLine("returned " + ret.ToString());
+						//Debug.WriteLine("returned " + ret.ToString());
                     }
 					catch (Exception ex)
                     {
-                        Debug.WriteLine("Unable to update ECG reading with FileId.");
+                        //Debug.WriteLine("Unable to update ECG reading with FileId.");
                     }
 					
 				}
 
 				if (retdata != null && retdata.Length > 0)
 				{
-					Debug.WriteLine("save to pdf ret = true");
+					//Debug.WriteLine("save to pdf ret = true");
 					reportButton.IsEnabled = false;
 				}
 				else
@@ -630,9 +630,9 @@ namespace MyHealthVitals
 
 			//build the file name
 			String filedate = Task_vars.ecgdate.ToString("MMddyyyy_HHmm") + ".pdf";
-            Debug.WriteLine("filedate = "+filedate);
+            //Debug.WriteLine("filedate = "+filedate);
 			String file_name = Task_vars.patient_name + "_ECGReport_" + filedate;
-            Debug.WriteLine("file_name = " + file_name);
+            //Debug.WriteLine("file_name = " + file_name);
 
 			ecgfile.Category = "Cardiology (ECG, EKGs, Stress Test, etc.)";
 			ecgfile.Content = Task_vars.ecgcontent;
@@ -654,7 +654,7 @@ namespace MyHealthVitals
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Unable to post the file to the server.");
+               // Debug.WriteLine("Unable to post the file to the server.");
                 return 0;
             }
 
@@ -682,7 +682,7 @@ namespace MyHealthVitals
 				var response = await DoWithRetryAsync(() => client.PostAsync(url, content));
 				if (response.IsSuccessStatusCode)
 				{
-					Debug.WriteLine("Successful file upload");
+					//Debug.WriteLine("Successful file upload");
 					var fcontent = await response.Content.ReadAsStringAsync();
 					var val = JsonConvert.DeserializeObject<FileData>(fcontent);
 					return Convert.ToInt64(val.Id);
@@ -690,7 +690,7 @@ namespace MyHealthVitals
 				}
 				else
 				{
-					Debug.WriteLine("Response: " + response.StatusCode);
+					//Debug.WriteLine("Response: " + response.StatusCode);
                     await DependencyService.Get<IFileHelper>().offlineFileSave(arg, ecgid);
 					return 0;
 				}

@@ -120,7 +120,7 @@ namespace MyHealthVitals
 			}
 			catch
 			{
-				System.Diagnostics.Debug.WriteLine("exception occured in the api call or parsing result");
+				//System.Diagnostics.Debug.WriteLine("exception occured in the api call or parsing result");
 			}
 
 			finally
