@@ -24,8 +24,8 @@ namespace MyHealthVitals
 
 		public static Credential sharedInstance = new Credential();
 
-		private Credential() 
-		{ 
+		private Credential()
+		{
 
 		}
 

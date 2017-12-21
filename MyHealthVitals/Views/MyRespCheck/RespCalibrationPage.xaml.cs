@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MyHealthVitals
 {
@@ -115,6 +117,9 @@ namespace MyHealthVitals
                 //DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
 
                 string deviceName = "BLE-MSA";
+                BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+
+                /*
 				List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
 				string BLEtype = "";
 				Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
@@ -187,7 +192,7 @@ namespace MyHealthVitals
 						BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
 					}
 
-				}
+				}*/
 
 
 			}
@@ -299,121 +304,142 @@ namespace MyHealthVitals
 			}
 		}
 		// call back methods
-		public void updateCaller(SpirometerReading currReading)
+		public async Task<bool> updateCaller(SpirometerReading currReading)
 		{
             //Debug.WriteLine("Calibration reading.");
-			//var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
+            //var currReading = new SpirometerReading(DateTime.Now, pef, fev1);
 
-			
-
-			if (Device.Idiom == TargetIdiom.Tablet)
-			{
-				currReading.fontsize = 30 * Screensize.heightfactor;
-                currReading.spacing = 20 * Screensize.heightfactor;
-                currReading.stackheight = 120 * Screensize.heightfactor;
-                currReading.imagepng = "deleteicon_tab.png";
-            }else{
-				currReading.fontsize = 15 * Screensize.heightfactor;
-				currReading.spacing = 10 * Screensize.heightfactor;
-				currReading.stackheight = 80 * Screensize.heightfactor;
-				currReading.imagepng = "deleteicon.png";
+            decimal latestpef = 0;
+            decimal latestfev = 0;
+            DateTime latestdate = new DateTime();
+            foreach (var val in calibratedReadingList)
+            {
+                latestpef = val.Pef;
+                latestfev = val.Fev1;
+                latestdate = val.Date;
             }
+            if (latestpef == currReading.Pef && latestfev == currReading.Fev1)// && latestdate==currReading.Date)
+            {
+                //don't add the reading
+                //Debug.WriteLine("latest Date = " + latestdate.ToString());
+                //Debug.WriteLine("curr Date = " + currReading.Date.ToString());
+            }else{
+				//add the reading
 
-			currReading.index = calibratedReadingList.Count;
-			calibratedReadingList.Add(currReading);
-
-			//Debug.WriteLine("loaded spirometer reading:" + currReading.pefString);
-
-			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
-			{
-
-				if (this.calibratedReadingList.Count < 3)
+				if (Device.Idiom == TargetIdiom.Tablet)
 				{
-					lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
-					//bleManager.ScanToConnectToSpotCheck(this);
-					//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
-					//BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
-					string deviceName = "BLE-MSA";
-					List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
-					string BLEtype = "";
-					Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
-					bool conn_success = false;
+					currReading.fontsize = 30 * Screensize.heightfactor;
+					currReading.spacing = 20 * Screensize.heightfactor;
+					currReading.stackheight = 120 * Screensize.heightfactor;
+					currReading.imagepng = "deleteicon_tab.png";
+				}
+				else
+				{
+					currReading.fontsize = 15 * Screensize.heightfactor;
+					currReading.spacing = 10 * Screensize.heightfactor;
+					currReading.stackheight = 80 * Screensize.heightfactor;
+					currReading.imagepng = "deleteicon.png";
+				}
+
+				currReading.index = calibratedReadingList.Count;
+				calibratedReadingList.Add(currReading);
+
+				//Debug.WriteLine("loaded spirometer reading:" + currReading.pefString);
+
+				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+				{
+
+					if (this.calibratedReadingList.Count < 3)
+					{
+						lblLoadingMessage.Text = "Please, take " + (3 - calibratedReadingList.Count) + " more reading.";
+						//bleManager.ScanToConnectToSpotCheck(this);
+						//DependencyService.Get<ICBCentralManagerSpirometer>().connectToSpirometer((BLEReadingUpdatableSpiroMeter)this);
+						//BLECentralManager.sharedInstance.connectToDevice("BLE-MSA", this);
+						string deviceName = "BLE-MSA";
+						List<string> result = DependencyService.Get<IFileHelper>().getBLEinfo(deviceName);
+						string BLEtype = "";
+						Guid deviceID = new Guid("00000000-0000-0000-0000-000000000000");
+						bool conn_success = false;
 
 
-					if (result.Count == 3)
-					{
-						//Debug.WriteLine("Found guid result in file");
-						BLEtype = result[1];
-						deviceID = new Guid(result[2]);
-						//initializePlotModel();
-						if (BLEtype == "1")
+						if (result.Count == 3)
 						{
-							//Debug.WriteLine("Type 1 connection");
-							conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
-						}
-						else
-						{
-							//BLEtype = 2
-							//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
-						}
-						//Debug.WriteLine("conn_success = " + conn_success.ToString());
-						if (!conn_success)
-						{
-							//try the hard way
-							BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
-						}
-					}
-					else if (result.Count == 0)
-					{
-						//try first method
-						try
-						{
-							BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
-						}
-						catch (Exception ex)
-						{
-							//Debug.WriteLine("try to connect BLE failed: " + ex.Message);
-						}
-					}
-					else
-					{
-						//somehow they've connected more than 1 guid of a device (2 PC-300s for example)
-						//or they've managed to connect the same device to both BLE managers
-
-						for (int i = 0; i < result.Count; i += 3)
-						{
-							BLEtype = result[i + 1];
-							deviceID = new Guid(result[i + 2]);
-							//attempt to connect via this method
+							//Debug.WriteLine("Found guid result in file");
+							BLEtype = result[1];
+							deviceID = new Guid(result[2]);
+							//initializePlotModel();
 							if (BLEtype == "1")
 							{
-								//layoutLoading.IsVisible = true;
+								//Debug.WriteLine("Type 1 connection");
 								conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
 							}
 							else
 							{
 								//BLEtype = 2
-								//layoutLoading.IsVisible = true;
 								//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
 							}
-							if (conn_success) break;
+							//Debug.WriteLine("conn_success = " + conn_success.ToString());
+							if (!conn_success)
+							{
+								//try the hard way
+								BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+							}
 						}
-						if (!conn_success)
+						else if (result.Count == 0)
 						{
-							//send the error message
-							//BLECentralManager.sharedInstance.SendConnError(deviceName, 2);
-							//or just try to connect the hard way!
-							BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+							//try first method
+							try
+							{
+								BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+							}
+							catch (Exception ex)
+							{
+								//Debug.WriteLine("try to connect BLE failed: " + ex.Message);
+							}
 						}
+						else
+						{
+							//somehow they've connected more than 1 guid of a device (2 PC-300s for example)
+							//or they've managed to connect the same device to both BLE managers
 
+							for (int i = 0; i < result.Count; i += 3)
+							{
+								BLEtype = result[i + 1];
+								deviceID = new Guid(result[i + 2]);
+								//attempt to connect via this method
+								if (BLEtype == "1")
+								{
+									//layoutLoading.IsVisible = true;
+									conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice(deviceID, deviceName, this);
+								}
+								else
+								{
+									//BLEtype = 2
+									//layoutLoading.IsVisible = true;
+									//conn_success = await BLECentralManager.sharedInstance.ConnectKnownDevice2(deviceID, deviceName, this);
+								}
+								if (conn_success) break;
+							}
+							if (!conn_success)
+							{
+								//send the error message
+								//BLECentralManager.sharedInstance.SendConnError(deviceName, 2);
+								//or just try to connect the hard way!
+								BLECentralManager.sharedInstance.connectToDevice(deviceName, this);
+							}
+
+						}
 					}
-				}
-				else {
-					layoutLoading.IsVisible = false;
-				}
+					else
+					{
+						layoutLoading.IsVisible = false;
+					}
 
-				listView.ItemsSource = calibratedReadingList;
-			}));
+					listView.ItemsSource = calibratedReadingList;
+				}));
+
+            }
+            return true;
 		}
 
 		public async void FailedConn(String message, bool isConn, int camefrom)
@@ -525,8 +551,8 @@ namespace MyHealthVitals
                     try
                     {
 						logcalParameteritem.localspirometerList.Insert(0, new SpirometerReading(fevReading.Date, highestReading.Pef, highestReading.Fev1));
-						await pefReading.PostReadingToService();
-						await fevReading.PostReadingToService();
+						pefReading.PostReadingToService();
+						fevReading.PostReadingToService();
 						layoutLoading.IsVisible = false;
 						//saved pop up
 						if (Device.Idiom == TargetIdiom.Tablet)

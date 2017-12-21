@@ -55,8 +55,8 @@ namespace MyHealthVitals
 		public PC100ServiceHandler pc100ServHandler;
 		public ScaleServiceHandler scaleServHandle;
 		string ScaleName = "eBody-Scale";
-        public Guid currdeviceId = new Guid("00000000-0000-0000-0000-000000000000");
-        public string currdeviceName = "";
+        public static Guid currdeviceId = new Guid("00000000-0000-0000-0000-000000000000");
+        public static string currdeviceName = "";
 
         IBluetoothLowEnergyAdapter adapter = BLEadapter.adapter;
 
@@ -151,6 +151,9 @@ namespace MyHealthVitals
                     var connection = await adapter.ConnectToDevice(deviceID, TimeSpan.FromSeconds(15));
 					if (connection.IsSuccessful())
 					{
+
+						currdeviceId = deviceID;
+						currdeviceName = deviceName;
                         BLE_val.BLE_value = 2;
                         //write to BLElog.txt
                         DependencyService.Get<IFileHelper>().saveBLEinfo(deviceName, BLE_val.BLE_value, deviceID);
@@ -209,8 +212,9 @@ namespace MyHealthVitals
 
         }
 
-		public void CloseConnection(string deviceName)
+		public async void CloseConnection(string deviceName)
 		{
+            //Debug.WriteLine("CloseConnection()");
 			if (BLEdata.gattserver != null)
 			{
 				//Log.Trace("Closing connection to GATT Server. state={0:g}", m_gattServer?.State);
@@ -219,6 +223,7 @@ namespace MyHealthVitals
 
 			try
 			{
+                BLE_val.BLE_device = "";
 				if (deviceName == "PC_300SNT")
 				{
 					spotServHandler.uiController.ShowConnection("PC-300 Connection Lost.", false);
@@ -230,6 +235,45 @@ namespace MyHealthVitals
 				}
 				else if (deviceName == "PC-100")
 				{
+                    //check for device and see if it's still discoverable
+
+
+					/*
+					if (BLE_val.BLE_value == 2)
+					{
+						Guid devID = new Guid("00000000-0000-0000-0000-000000000000");
+
+						//Debug.WriteLine("result is null");
+
+						IBlePeripheral found = null;
+						//scan for the named device and attempt to connect to it
+
+						if (BLEdata.gattserver != null)
+						{
+							BLEdata.gattserver.Dispose();
+						}
+
+						//Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+						//{
+							await adapter.ScanForBroadcasts(
+								new ScanFilter.Factory()
+									.SetAdvertisedDeviceName(deviceName)
+                                    .SetIgnoreRepeatBroadcasts(true),
+								p => { found = p; });
+
+							if (found != null)
+							{
+								Debug.WriteLine("Device guid = " + found.DeviceId.ToString());
+								devID = found.DeviceId;
+							}
+                            else
+                            {
+                                Debug.WriteLine("Didn't find the device");
+                            }
+
+						//}));
+					}*/
+
 					pc100ServHandler.uiController.ShowConnection("PC-100 Connection Lost.", false);
 				}
 				else if (deviceName == "eBody-Scale")
@@ -467,7 +511,7 @@ namespace MyHealthVitals
 
 		private void Adapter_DeviceDiscovered(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
-			//Debug.WriteLine(string.Format("Device Found : {0}", e.Device.Name));
+            //Debug.WriteLine("Found device: "+e.Device.Name);
             //scan for devices
 			if (e.Device.Name == scanningDeviceName)
 			{
@@ -577,6 +621,11 @@ namespace MyHealthVitals
 
         public async Task<bool> ConnectKnownDevice2(Guid deviceID, string deviceName, object controller)
         {
+            //Debug.WriteLine("controller = "+controller.ToString());
+            //Debug.WriteLine("controller type = " + controller.GetType().ToString());
+			currdeviceId = deviceID;
+			currdeviceName = deviceName;
+
 			switch (deviceName)
 			{
 				case "BLE-MSA":
@@ -616,6 +665,7 @@ namespace MyHealthVitals
 			{
                 connected = true;
 				BLE_val.BLE_value = 2;
+                BLE_val.BLE_device = deviceName;
 				//write to BLElog.txt
 				DependencyService.Get<IFileHelper>().saveBLEinfo(deviceName, BLE_val.BLE_value, deviceID);
 
@@ -646,7 +696,7 @@ namespace MyHealthVitals
 					   if (c == ConnectionState.Disconnected)
 					   {
 						   //m_dialogManager.Toast("Device disconnected");
-
+                            //Debug.WriteLine("disconnected");
 						   CloseConnection(deviceName);
 					   }
 					   //Connection = c.ToString();
@@ -668,6 +718,7 @@ namespace MyHealthVitals
 
         public async Task<bool> ConnectKnownDevice(Guid deviceID, string deviceName, object controller)
         {
+            //Debug.WriteLine("Connect Known Device = "+ deviceName);
             currdeviceId = deviceID;
             currdeviceName = deviceName;
 			switch (deviceName)
@@ -710,7 +761,8 @@ namespace MyHealthVitals
                 }
                 catch (DeviceConnectionException e)
                 {
-                   // Debug.WriteLine("connectToKnownDeviceAsync error msg: " + e.Message);
+                    connected = false;
+                   //Debug.WriteLine("connectToKnownDeviceAsync error msg: " + e.Message);
                 }
             }else{
                 //Debug.WriteLine("skipped redundant scan!");
@@ -768,9 +820,17 @@ namespace MyHealthVitals
 					}
 				case "PC-100":
 					{
-						//Debug.WriteLine("PC-100 device id = " + e.Device.Id.ToString());
-						//pc100ServHandler.discoverServices(e.Device);
-						await pc100ServHandler.uiController.ShowConnection("Connected.", true);
+                        //Debug.WriteLine("PC-100 device id = " + e.Device.Id.ToString());
+                        //pc100ServHandler.discoverServices(e.Device);
+                        if (BLE_val.reconnecting)
+                        {
+                            BLE_val.reconnecting = false;
+                            await pc100ServHandler.uiController.ShowConnection("Reconnection successful.", true);
+                        }else{
+                            await pc100ServHandler.uiController.ShowConnection("Connected.", true);
+                        }
+
+						
                         //await pc100ServHandler.uiController.checkBattery();
 						break;
 					}
@@ -806,6 +866,11 @@ namespace MyHealthVitals
 				currdevice = currdeviceName;
             }
 
+            BLE_val.BLE_device = currdevice;
+
+			currdeviceId = e.Device.Id;
+			currdeviceName = currdevice;
+
 			switch (currdevice)
 			{
 				case "BLE-MSA":
@@ -827,7 +892,14 @@ namespace MyHealthVitals
 					{
                         //Debug.WriteLine("PC-100 device id = " + e.Device.Id.ToString());
 						await pc100ServHandler.discoverServices(e.Device);
-						await pc100ServHandler.uiController.ShowConnection("Connected.", true);
+                        if (BLE_val.reconnecting)
+                        {
+                            BLE_val.reconnecting = false;
+                            await pc100ServHandler.uiController.ShowConnection("Reconnection successful.", true);
+                        }else{
+                            await pc100ServHandler.uiController.ShowConnection("Connected.", true);    
+                        }
+						
                         //await pc100ServHandler.uiController.checkBattery();
 						break;
 					}
@@ -849,6 +921,8 @@ namespace MyHealthVitals
 		void Adapter_DeviceConnectionLost(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceErrorEventArgs e)
 		{
 			//Debug.WriteLine(e.Device.Name + "  Adapter_DeviceConnectionLost");
+
+            BLE_val.BLE_device = "";
 			//	if (!connectedDevices.Contains(e.Device)) return;
 
 			//	connectedDevices.Remove(e.Device);
@@ -875,6 +949,9 @@ namespace MyHealthVitals
 				}
 				else if (currdevice == "PC-100")
 				{
+                    //check if device is still on and discoverable. if so, reconnect to it
+                    //e.Device.Id
+
 					pc100ServHandler.uiController.ShowConnection("PC-100 Connection Lost.", false);
 				}
 				else if (currdevice == "eBody-Scale")
@@ -914,9 +991,9 @@ namespace MyHealthVitals
 			//Debug.WriteLine("Adapter_ScanTimeoutElapsed.");
 		}
 
-
 		void Adapter_DisConnection(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
 		{
+            BLE_val.BLE_device = "";
 			//Debug.WriteLine(e.Device.Name + "  Adapter_DisConnection");
 			if (e.Device.Name == "PC_300SNT")
 			{
@@ -929,7 +1006,7 @@ namespace MyHealthVitals
 			}
 			else if (e.Device.Name == "PC-100")
 			{
-				pc100ServHandler.uiController.ShowConnection("PC-100 DisConnection.", false);
+                pc100ServHandler.uiController.ShowConnection("PC-100 DisConnection.", false);
 			}
 			else if (e.Device.Name == "eBody-Scale")
 			{
@@ -938,6 +1015,7 @@ namespace MyHealthVitals
 		}
 		public async void disConnectAll(string exceptDevice = "")
 		{
+            BLE_val.BLE_device = "";
 			//Debug.WriteLine("================DisconnectDeviceAsync=========================");
 			foreach (var device in CrossBluetoothLE.Current.Adapter.ConnectedDevices)
 			{

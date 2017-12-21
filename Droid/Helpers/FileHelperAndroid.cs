@@ -61,61 +61,107 @@ namespace MyHealthVitals.Droid
         {
             //Debug.WriteLine("made it to dispAlert()");
             bool val = false;
+            //Debug.WriteLine("set val");
             Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(Xamarin.Forms.Forms.Context as Activity);
             //Debug.WriteLine("Initialized the dialog");
-            AlertDialog alert = dialog.Create();
 
-			//alert.SetTitle(title);
-			if (tablet)
-			{
-				//message.Replace("\n", "<br/>");
-				//Debug.WriteLine("message = "+message);
-				if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
-				{
-					alert.SetTitle(Html.FromHtml("<big><big><big>" + title + "</big></big></big>", 0));
-				}
-				else
-				{
-					alert.SetTitle(Html.FromHtml("<big><big><big>" + title + "</big></big></big>"));
-				}
-			}
-			else
-			{
-				alert.SetTitle(title);
-			}
-            //Debug.WriteLine("set the title");
-
-            //Debug.WriteLine("Android Build # = " + Android.OS.Build.VERSION.Sdk);
-
-            //need to check for Android version # and if 24 or higher add ,0
-            if (tablet)
+            try
             {
-                message.Replace("\n","<br/>");
-                //Debug.WriteLine("message = "+message);
-				if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
+				AlertDialog alert = dialog.Create();
+
+				//alert.SetTitle(title);
+				//Debug.WriteLine("setting the title");
+				if (tablet)
 				{
-					alert.SetMessage(Html.FromHtml("<big><big>" + message + "</big></big>", 0));
+					//message.Replace("\n", "<br/>");
+					//Debug.WriteLine("message = "+message);
+					if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
+					{
+						alert.SetTitle(Html.FromHtml("<big><big><big>" + title + "</big></big></big>", 0));
+					}
+					else
+					{
+						alert.SetTitle(Html.FromHtml("<big><big><big>" + title + "</big></big></big>"));
+					}
 				}
 				else
 				{
-					alert.SetMessage(Html.FromHtml("<big><big>" + message + "</big></big>"));
+					alert.SetTitle(title);
 				}
-            }else{
-                alert.SetMessage(message);
-            }
-            //Debug.WriteLine("set the message");
 
-            //Debug.WriteLine("made it to Task.Run()");
-            await Task.Run(() =>
-			{
-				var waitHandle = new AutoResetEvent(false);
 
-                if (tablet)
-                {
-                    //Debug.WriteLine("set tablet buttons");
-                    if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
-                    {
-                        alert.SetButton((int)(DialogButtonType.Positive), Html.FromHtml("<big><big>" + btn1 + "</big></big>",0), (sender, e) =>
+				//Debug.WriteLine("Android Build # = " + Android.OS.Build.VERSION.Sdk);
+
+				//need to check for Android version # and if 24 or higher add ,0
+				if (tablet)
+				{
+					message.Replace("\n", "<br/>");
+					//Debug.WriteLine("message = "+message);
+					if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
+					{
+						alert.SetMessage(Html.FromHtml("<big><big>" + message + "</big></big>", 0));
+					}
+					else
+					{
+						alert.SetMessage(Html.FromHtml("<big><big>" + message + "</big></big>"));
+					}
+				}
+				else
+				{
+					alert.SetMessage(message);
+				}
+				//Debug.WriteLine("set the message");
+
+				//Debug.WriteLine("made it to Task.Run()");
+				await Task.Run(() =>
+				{
+					var waitHandle = new AutoResetEvent(false);
+
+					if (tablet)
+					{
+						//Debug.WriteLine("set tablet buttons");
+						if (Convert.ToInt32(Android.OS.Build.VERSION.Sdk) >= 24)
+						{
+							alert.SetButton((int)(DialogButtonType.Positive), Html.FromHtml("<big><big>" + btn1 + "</big></big>", 0), (sender, e) =>
+							{
+								val = true;
+								waitHandle.Set();
+							});
+
+							if (btn2 != null)
+							{
+								alert.SetButton((int)DialogButtonType.Negative, Html.FromHtml("<big><big>" + btn2 + "</big></big>", 0), (sender, e) =>
+								{
+									val = false;
+									waitHandle.Set();
+								});
+							}
+						}
+						else
+						{
+
+							alert.SetButton((int)(DialogButtonType.Positive), Html.FromHtml("<big><big>" + btn1 + "</big></big>"), (sender, e) =>
+							{
+								val = true;
+								waitHandle.Set();
+							});
+							if (btn2 != null)
+							{
+								//Debug.WriteLine("message = <big><big>" + btn2 + "</big></big>");
+								alert.SetButton((int)DialogButtonType.Negative, Html.FromHtml("<big><big>" + btn2 + "</big></big>"), (sender, e) =>
+								{
+									val = false;
+									waitHandle.Set();
+								});
+							}
+
+
+						}
+					}
+					else
+					{
+						//Debug.WriteLine("set phone buttons");
+						alert.SetButton((int)(DialogButtonType.Positive), btn1, (sender, e) =>
 						{
 							val = true;
 							waitHandle.Set();
@@ -123,63 +169,37 @@ namespace MyHealthVitals.Droid
 
 						if (btn2 != null)
 						{
-							alert.SetButton((int)DialogButtonType.Negative, Html.FromHtml("<big><big>" + btn2 + "</big></big>",0), (sender, e) =>
+							alert.SetButton((int)DialogButtonType.Negative, btn2, (sender, e) =>
 							{
 								val = false;
 								waitHandle.Set();
-							});							
+							});
 						}
-                    }else{
-
-						alert.SetButton((int)(DialogButtonType.Positive), Html.FromHtml("<big><big>" + btn1 + "</big></big>"), (sender, e) =>
-						{
-							val = true;
-							waitHandle.Set();
-						});
-						if (btn2 != null)
-						{
-							//Debug.WriteLine("message = <big><big>" + btn2 + "</big></big>");
-							alert.SetButton((int)DialogButtonType.Negative, Html.FromHtml("<big><big>" + btn2 + "</big></big>"), (sender, e) =>
-							{
-							  val = false;
-							  waitHandle.Set();
-							});							
-						}
-
-						
-                    }
-                }else{
-                    //Debug.WriteLine("set phone buttons");
-					alert.SetButton((int)(DialogButtonType.Positive), btn1, (sender, e) =>
-					{
-						val = true;
-						waitHandle.Set();
-					});
-
-					if (btn2 != null)
-					{
-						alert.SetButton((int)DialogButtonType.Negative, btn2, (sender, e) =>
-						{
-							val = false;
-							waitHandle.Set();
-						});
 					}
-                }
-                //Debug.WriteLine("made it to alert.show()");
-				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
-				{
-                    //alert.Window.SetLayout(1200, 1200);
-					alert.Show();
-					
-                }));
-				waitHandle.WaitOne();
-			});
-            //Debug.WriteLine("made it to alert.dispose()");
-			alert.Dispose();
+					//Debug.WriteLine("made it to alert.show()");
+					Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+					{
+						//alert.Window.SetLayout(1200, 1200);
+						//Debug.WriteLine("showing alert");
+						alert.Show();
 
-            //});
-            //Debug.WriteLine("made it to return");
-            return val;
+					}));
+					waitHandle.WaitOne();
+				});
+				//Debug.WriteLine("made it to alert.dispose()");
+				alert.Dispose();
+
+				//});
+				//Debug.WriteLine("made it to return");
+				return val;
+            }
+            catch (Exception ex)
+            {
+               // Debug.WriteLine("alert error msg = "+ex.Message);
+                return val;
+            }
+
+
         }
 
         public void setEcgInof(String Patient, String DOB, String Finding, String Recorded,

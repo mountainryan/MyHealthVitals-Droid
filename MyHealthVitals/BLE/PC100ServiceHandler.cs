@@ -65,6 +65,7 @@ namespace MyHealthVitals
 		//NIBP commands
 		public async void startMeasuringBP()
 		{
+            glucoseResult = -100;
             if (BLE_val.BLE_value == 1)
             {
                 executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x01, 0x29 });
@@ -91,6 +92,7 @@ namespace MyHealthVitals
 
 		public async void stoptMeasuringBP()
 		{
+            glucoseResult = -1;
             if (BLE_val.BLE_value == 1)
             {
                 executeWriteCommand(new byte[] { 0xAA, 0x55, 0x40, 0x02, 0x02, 0xCB });
@@ -115,6 +117,7 @@ namespace MyHealthVitals
 		}
 		public async void stopMeasuringSpo2()
 		{
+            glucoseResult = -1;
             if (BLE_val.BLE_value == 1)
             {
                 executeWriteCommand(new byte[] { 0xAA, 0x55, 0x50, 0x02, 0x02, 0x85 });
@@ -140,6 +143,7 @@ namespace MyHealthVitals
 
 		public async void getBPreading()
 		{
+            glucoseResult = -1;
             if (BLE_val.BLE_value == 1)
             {
                 //Debug.WriteLine("Executing write command!");
@@ -294,6 +298,13 @@ namespace MyHealthVitals
 
 		public void ManipData(int[] vals)
 		{
+            
+            /*for (int i = 0; i < vals.Length;i++) 
+            {
+                Debug.WriteLine("vals["+i.ToString()+"]="+vals[i]);
+            }*/
+
+
             //check battery level
 			if (vals.Length > 2)
 			{
@@ -570,9 +581,18 @@ namespace MyHealthVitals
 			// this token is for glucose reading
 			if ((int)vals[2] == 115) 
 			{
+
+                //testings
+    			//for (int i = 0; i < vals.Length;i++) 
+                //{
+                //    Debug.WriteLine("vals["+i.ToString()+"]="+vals[i]);
+                //}
+
+
 				//Debug.WriteLine("glucose");
-				// this is needed because device is reading same data more than once to we are tracking glucose reading stop and sending the last reading
-				if (glucoseResult == -1 || glucoseResult == -100)
+				// this is needed because device is reading same data more than once 
+                // so we are tracking glucose reading stop and sending the last reading
+                if (glucoseResult == -1)// || glucoseResult == -100)
 				{
 					Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(5000), () =>
 					{

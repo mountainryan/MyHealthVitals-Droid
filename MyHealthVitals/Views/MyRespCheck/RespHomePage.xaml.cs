@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using Xamarin.Forms;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MyHealthVitals
 {
@@ -279,7 +281,7 @@ namespace MyHealthVitals
 		}
 
 		// call back methods
-		public void updateCaller(SpirometerReading reading)
+		public async Task<bool> updateCaller(SpirometerReading reading)
 		{
 			currReading = reading;
             //Debug.WriteLine("Normal reading.");
@@ -303,6 +305,7 @@ namespace MyHealthVitals
 					layoutLoadingTakeReading.IsVisible = false;
 				});
 			}
+            return true;
 		}
 
 		public async void FailedConn(String message, bool isConn, int camefrom)

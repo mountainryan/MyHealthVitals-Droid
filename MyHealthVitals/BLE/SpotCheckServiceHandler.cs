@@ -356,6 +356,11 @@ namespace MyHealthVitals
         }
         public void ManipData(int[] vals)
         {
+            /*
+			for (int i = 0; i < vals.Length; i++)
+			{
+				Debug.WriteLine("vals[" + i.ToString() + "]=" + vals[i]);
+			}*/
 
 			//battery life check
 			if (vals.Length > 2)

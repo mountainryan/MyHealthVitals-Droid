@@ -20,6 +20,8 @@ namespace MyHealthVitals
     public class BLE_val
     {
         public static int BLE_value=0;
+        public static string BLE_device = "";
+        public static bool reconnecting = false;
     }
 	public partial class MainPage : ContentPage, IBluetoothCallBackUpdatable
 	{
@@ -241,10 +243,10 @@ namespace MyHealthVitals
 
                     //var connval = await CrossConnectivity.Current.IsRemoteReachable("104.44.133.25"); //prod ip
                     var connval = await CrossConnectivity.Current.IsRemoteReachable("13.84.153.187"); //test ip
-
+                    //var connval = await CrossConnectivity.Current.IsRemoteReachable("52.170.46.174"); //prod ip
 
 					//Debug.WriteLine("connection to server = "+connval.ToString());
-                    if (!connval)
+					if (!connval)
                     {
 						if (Device.Idiom == TargetIdiom.Tablet)
 						{
@@ -501,53 +503,61 @@ namespace MyHealthVitals
             if (camefrom == 1)
             {
                 bool ret;
-				if (Device.Idiom == TargetIdiom.Tablet)
-				{
-					ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, true, "Yes", "No");
-				}
-				else
-				{
-					ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, false, "Yes", "No");
-				}
-                if (ret)
-                {
-                    //try to connect again, this time to the second BLE manager
-                    try
-                    {
-                        layoutLoading.IsVisible = true;
-                        await BLECentralManager.sharedInstance.ConnectToDevice2(this.deviceName, this);    
-                    }
-                    catch (Exception ex)
-                    {
-                        //Debug.WriteLine("conn error msg : "+ex.Message);
-                    }
 
-                }
+                Device.BeginInvokeOnMainThread(new Action(async () =>
+                {
+
+                    if (Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, true, "Yes", "No");
+                    }
+                    else
+                    {
+                        ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, false, "Yes", "No");
+                    }
+                    if (ret)
+                    {
+                        //try to connect again, this time to the second BLE manager
+                        try
+                        {
+                            layoutLoading.IsVisible = true;
+                            await BLECentralManager.sharedInstance.ConnectToDevice2(this.deviceName, this);
+                        }
+                        catch (Exception ex)
+                        {
+                            //Debug.WriteLine("conn error msg : "+ex.Message);
+                        }
+
+                    }
+                }));
             }else{
 				//camefrom BLE manager 2
 				bool ret;
-				if (Device.Idiom == TargetIdiom.Tablet)
-				{
-					ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, true, "Yes", "No");
-				}
-				else
-				{
-					ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, false, "Yes", "No");
-				}
-				if (ret)
-				{
-					//try to connect again, this time to the second BLE manager
-					try
-					{
-						layoutLoading.IsVisible = true;
-						BLECentralManager.sharedInstance.connectToDevice(this.deviceName, this);
-					}
-					catch (Exception ex)
-					{
-						//Debug.WriteLine("conn error msg : " + ex.Message);
-					}
+                Device.BeginInvokeOnMainThread(new Action(async () =>
+                {
+                    if (Device.Idiom == TargetIdiom.Tablet)
+                    {
+                        ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, true, "Yes", "No");
+                    }
+                    else
+                    {
+                        ret = await DependencyService.Get<IFileHelper>().dispAlert(this.deviceName, message, false, "Yes", "No");
+                    }
+                    if (ret)
+                    {
+                        //try to connect again, this time to the second BLE manager
+                        try
+                        {
+                            layoutLoading.IsVisible = true;
+                            BLECentralManager.sharedInstance.connectToDevice(this.deviceName, this);
+                        }
+                        catch (Exception ex)
+                        {
+                            //Debug.WriteLine("conn error msg : " + ex.Message);
+                        }
 
-				}
+                    }
+                }));
             }
         }
 
@@ -555,25 +565,76 @@ namespace MyHealthVitals
 		public async Task ShowConnection(String message, Boolean isConnected)
 		{
 
-			//Debug.WriteLine("ShowConnection  mainpage  : "+message);
-			
-			Device.BeginInvokeOnMainThread(new Action(async () =>
-			{
-				layoutLoading.IsVisible = false;
-                lblLoadingMessage.Text = "Connecting with device...";
-			
-				if (isConnected)
-				{
-					setWeight = false;
-					isNavigated = true;
-				}
+            //Debug.WriteLine("ShowConnection  mainpage  : "+message);
+
+            if (message == "PC-100 Connection Lost." && isConnected == false)
+            {
+                Device.BeginInvokeOnMainThread(new Action(async () =>
+                {
+                    lblLoadingMessage.Text = "Attempting to reconnect...";
+                    layoutLoading.IsVisible = true;
+                }));
+                BLE_val.reconnecting = true;
+
+                bool retval = false;
+                if (BLE_val.BLE_value == 2)
+                {
+                    retval = await BLECentralManager.sharedInstance.ConnectKnownDevice2(BLECentralManager.currdeviceId, BLECentralManager.currdeviceName, this);
+                }
+                else if (BLE_val.BLE_value == 1)
+                {
+                    retval = await BLECentralManager.sharedInstance.ConnectKnownDevice(BLECentralManager.currdeviceId, BLECentralManager.currdeviceName, this);
+                }
+                //Debug.WriteLine("retval = "+retval.ToString());
+
+                if (!retval)
+                {
+                    BLE_val.BLE_device = "";
+                    BLE_val.reconnecting = false;
+                    Device.BeginInvokeOnMainThread(new Action(async () =>
+                    {
+                        layoutLoading.IsVisible = false;
+                        lblLoadingMessage.Text = "Connecting with device...";
+
+                        if (Device.Idiom == TargetIdiom.Tablet)
+                        {
+                            var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
+                            //var ret = DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
+                            //Debug.WriteLine("ret val = " + ret.ToString());
+                        }
+                        else
+                        {
+                            var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
+                            //var ret = DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
+                            // Debug.WriteLine("ret val = " + ret.ToString());
+                        }
+                    }));
+                }
+            }
+            else
+            {
 
 
-				if (!isConnected && this.deviceName == "eBody-Scale")
-				{
-					getLatestWeight(message);
 
-					/*
+
+
+                Device.BeginInvokeOnMainThread(new Action(async () =>
+                {
+                    layoutLoading.IsVisible = false;
+                    lblLoadingMessage.Text = "Connecting with device...";
+
+                    if (isConnected)
+                    {
+                        setWeight = false;
+                        isNavigated = true;
+                    }
+
+
+                    if (!isConnected && this.deviceName == "eBody-Scale")
+                    {
+                        getLatestWeight(message);
+
+                    /*
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
 						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
@@ -583,36 +644,36 @@ namespace MyHealthVitals
 						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
 					}
 					*/
-					//await DisplayAlert(deviceName, message, "OK");
-				}
-				else
-				{
-                   // Debug.WriteLine("made it to the display!");
                     //await DisplayAlert(deviceName, message, "OK");
-					if (Device.Idiom == TargetIdiom.Tablet)
-					{
-						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
+                    }
+                    else
+                    {
+                        // Debug.WriteLine("made it to the display!");
+                        //await DisplayAlert(deviceName, message, "OK");
+                        if (Device.Idiom == TargetIdiom.Tablet)
+                        {
+                            var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
                         //var ret = DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
-					    //Debug.WriteLine("ret val = " + ret.ToString());
-                    }
-					else
-					{
-						var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
+                        //Debug.WriteLine("ret val = " + ret.ToString());
+                        }
+                        else
+                        {
+                            var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
                         //var ret = DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, false, "OK", null);
-					   // Debug.WriteLine("ret val = " + ret.ToString());
-                    }
+                        // Debug.WriteLine("ret val = " + ret.ToString());
+                        }
 
-				}
+                    }
 
                 //if (this.deviceName != "eBody-Scale")
                 //{
                 //await DisplayAlert(deviceName, message, "OK");
                 //}
-                if (isConnected) {await checkBattery(); }
+                if (isConnected) { await checkBattery(); }
 
-			}));
+                }));
 
-
+            }
 			//});
 		}
 
@@ -631,7 +692,6 @@ namespace MyHealthVitals
 
 		async public void ShowMessageOnUI(string message, Boolean isConnected, string title = null)
 		{
-
            // Debug.WriteLine("ShowMessageOnUI : "+ message);
 			if (title == null)
 			{
@@ -644,6 +704,14 @@ namespace MyHealthVitals
 				{
 					Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 					{
+						if (Device.Idiom == TargetIdiom.Tablet)
+						{
+							NIBPButtonPad.Text = "NIBP Start";
+						}
+						else
+						{
+							NIBPButton.Text = "NIBP Start";
+						}
 						if (Device.Idiom == TargetIdiom.Tablet)
 						{
 							var ret = await DependencyService.Get<IFileHelper>().dispAlert(deviceName, message, true, "OK", null);
@@ -1432,9 +1500,12 @@ namespace MyHealthVitals
 					lblPerfusionIndex.Text = "...";
 				}
             }));
+
+            //why is this even here?????\/
+
 			if (isBPMeasuring && !isupLoadedSPO2)
 			{
-
+				/*
 				if (this.deviceName.Equals("PC_300SNT"))
 				{
 					BLECentralManager.sharedInstance.spotServHandler.stopMeasuringSpo2();
@@ -1446,6 +1517,7 @@ namespace MyHealthVitals
 				isupLoadedSPO2 = true;
 				if (vitalsData != null && (vitalsData.spo2 != null || vitalsData.spo2 != null))
 				{
+                    
 					Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 					{
 						string message = (vitalsData.spo2 == null ? "" : "SpO2: " + vitalsData.spo2.EnglishValue) + (vitalsData.bpm == null ? "" : "  Bpm: " + vitalsData.bpm.EnglishValue);
@@ -1475,7 +1547,8 @@ namespace MyHealthVitals
 							});
 						}
 					}));
-				}
+
+				}*/
 			}
 		}
 
@@ -1510,11 +1583,19 @@ namespace MyHealthVitals
 				{
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
-						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Error", "Abnormal measurement results. bpsys= " + bpsys + "bpdia= " + bpdia, true, "OK", null);
+						NIBPButtonPad.Text = "NIBP Start";
 					}
 					else
 					{
-						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Error", "Abnormal measurement results. bpsys= " + bpsys + "bpdia= " + bpdia, false, "OK", null);
+						NIBPButton.Text = "NIBP Start";
+					}
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Error", "Abnormal measurement results. Sys= " + bpsys + "Dia= " + bpdia, true, "OK", null);
+					}
+					else
+					{
+						var ret = await DependencyService.Get<IFileHelper>().dispAlert("Measuring Error", "Abnormal measurement results. Sys= " + bpsys + "Sys= " + bpdia, false, "OK", null);
 					}
 					//await DisplayAlert("Measuring Error", "Abnormal measurement results. bpsys= " + bpsys + "bpdia=" + bpdia, "OK");
 					lblBpm.Text = "-";
@@ -1527,6 +1608,14 @@ namespace MyHealthVitals
 				string message = "SYS: " + bpsys + " DIA: " + bpdia + " Bpm: " + bpm;
 				Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 				{
+					if (Device.Idiom == TargetIdiom.Tablet)
+					{
+						NIBPButtonPad.Text = "NIBP Start";
+					}
+					else
+					{
+						NIBPButton.Text = "NIBP Start";
+					}
                     bool ret;
 					if (Device.Idiom == TargetIdiom.Tablet)
 					{
@@ -1553,10 +1642,19 @@ namespace MyHealthVitals
 				}));
 			}
 			isBPMeasuring = false;
+            /*
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
-				NIBPButton.Text = "NIBP Start";
+				if (Device.Idiom == TargetIdiom.Tablet)
+				{
+					NIBPButtonPad.Text = "NIBP Start";
+				}
+				else
+				{
+					NIBPButton.Text = "NIBP Start";
+				}
 			}));
+            */
 		}
 
 		public static double ConvertKGToLB(double f)
@@ -1590,62 +1688,133 @@ namespace MyHealthVitals
 
 		void btnNIBPStartClicked(object sender, System.EventArgs e)
 		{
+            
 			Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
 			{
-    			if (BLECentralManager.sharedInstance.checkIfDeviceScanned(this.deviceName))
-    			{
-    				
-    					var btn = (Button)sender;
+                if (BLE_val.BLE_value ==1)
+                {
+					if (BLE_val.BLE_device == "PC_300SNT" || BLE_val.BLE_device == "PC-100")
+					{
 
-    					if (btn.Text == "NIBP Start")
-    					{
+						var btn = (Button)sender;
 
-    						btn.Text = "NIBP Stop";
+						if (btn.Text == "NIBP Start")
+						{
 
-    						switch (this.deviceName)
-    						{
+							btn.Text = "NIBP Stop";
 
-    							case "PC_300SNT":
-    								{
-    									BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
-    									break;
-    								}
+							switch (this.deviceName)
+							{
 
-    							case "PC-100":
-    								{
-    									BLECentralManager.sharedInstance.pc100ServHandler.startMeasuringBP();
-    									break;
-    								}
-    						}
-    					}
-    					else
-    					{
+								case "PC_300SNT":
+									{
+										BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
+										break;
+									}
 
-    						btn.Text = "NIBP Start";
+								case "PC-100":
+									{
+										BLECentralManager.sharedInstance.pc100ServHandler.startMeasuringBP();
+										break;
+									}
+							}
+						}
+						else
+						{
 
-    						switch (this.deviceName)
-    						{
+							btn.Text = "NIBP Start";
+                            lblSys.Text = "-";
+                            lblDia.Text = "-";
+                            isBPMeasuring = false;
 
-    							case "PC_300SNT":
-    								{
-    									BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
-    									break;
-    								}
+							switch (this.deviceName)
+							{
 
-    							case "PC-100":
-    								{
-    									BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
-    									break;
-    								}
-    						}
-    					}
-    				
-    			}
-    			else
-    			{
-    				//device not connected error message
-    				await ShowConnection("Device is not connected.", false);
-    			}
+								case "PC_300SNT":
+									{
+										BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
+										break;
+									}
+
+								case "PC-100":
+									{
+										BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
+										break;
+									}
+							}
+						}
+
+					}
+					else
+					{
+						//device not connected error message
+						await ShowConnection("Device is not connected.", false);
+					}
+                }
+                else if (BLE_val.BLE_value==2)
+                {
+					if (BLE_val.BLE_device=="PC_300SNT" || BLE_val.BLE_device == "PC-100")
+					{
+
+						var btn = (Button)sender;
+
+						if (btn.Text == "NIBP Start")
+						{
+
+							btn.Text = "NIBP Stop";
+
+							switch (this.deviceName)
+							{
+
+								case "PC_300SNT":
+									{
+										BLECentralManager.sharedInstance.spotServHandler.startMeasuringBP();
+										break;
+									}
+
+								case "PC-100":
+									{
+										BLECentralManager.sharedInstance.pc100ServHandler.startMeasuringBP();
+										break;
+									}
+							}
+						}
+						else
+						{
+
+							btn.Text = "NIBP Start";
+							lblSys.Text = "-";
+							lblDia.Text = "-";
+							isBPMeasuring = false;
+
+							switch (this.deviceName)
+							{
+
+								case "PC_300SNT":
+									{
+										BLECentralManager.sharedInstance.spotServHandler.stoptMeasuringBP();
+										break;
+									}
+
+								case "PC-100":
+									{
+										BLECentralManager.sharedInstance.pc100ServHandler.stoptMeasuringBP();
+										break;
+									}
+							}
+						}
+					}
+					else
+					{
+						//device not connected error message
+						await ShowConnection("Device is not connected.", false);
+					}
+                }else{
+					//device not connected error message
+					await ShowConnection("Device is not connected.", false);
+                }
+
+    			
              }));                                                           
 
 			//bleManager.startMeasuringBP();

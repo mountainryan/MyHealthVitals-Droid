@@ -25,8 +25,10 @@ namespace MyHealthVitals.Droid
 
 			base.OnCreate(bundle);
 
-            //RequestWindowFeature(WindowFeatures.NoTitle);
-            //Window.RequestFeature(WindowFeatures.NoTitle);
+			//RequestWindowFeature(WindowFeatures.NoTitle);
+			//Window.RequestFeature(WindowFeatures.NoTitle);
+
+			this.Window.SetFlags(WindowManagerFlags.KeepScreenOn, WindowManagerFlags.KeepScreenOn);
 
 			var metrics = Resources.DisplayMetrics;
 			var widthInDp = ConvertPixelsToDp(metrics.WidthPixels);
@@ -39,7 +41,6 @@ namespace MyHealthVitals.Droid
                 widthInDp = heightInDp;
                 heightInDp = temp;
             }
-
 
             BluetoothLowEnergyAdapter.Init(this);
 

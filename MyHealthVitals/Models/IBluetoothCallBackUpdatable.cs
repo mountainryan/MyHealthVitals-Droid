@@ -32,7 +32,7 @@ namespace MyHealthVitals
 
 	public interface BLEReadingUpdatableSpiroMeter
 	{
-		void updateCaller(SpirometerReading currReading);
+		Task<bool> updateCaller(SpirometerReading currReading);
 		void updateDeviceStateOnUI(String message, bool isConnected);
         void FailedConn(String message, bool isConn, int camefrom);
 		void testAgainDialog();

@@ -241,7 +241,11 @@ namespace MyHealthVitals
 					{
 
 						var reading = new SpirometerReading(DateTime.Now, (decimal)pef, (decimal)fev1);
-						uiController.updateCaller(reading);
+						Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+						{
+							var retval = await uiController.updateCaller(reading);
+						}));
+						//uiController.updateCaller(reading);
 					}
 
 				}
@@ -300,6 +304,7 @@ namespace MyHealthVitals
 
 		public async Task discoverServices(IDevice device)
 		{
+            //Debug.WriteLine("Spirometer discoverServices");
 			//uiController = (BLEReadingUpdatableSpiroMeter)controller;
 			connectedDevice = device;
 
@@ -315,6 +320,7 @@ namespace MyHealthVitals
 
 					if (c.CanUpdate)
 					{
+                        c.ValueUpdated -= C_ValueUpdated;
 						c.ValueUpdated += C_ValueUpdated;
 						await c.StartUpdatesAsync();
 					}
@@ -339,7 +345,7 @@ namespace MyHealthVitals
 			isStopPolling = false;
 			//Debug.WriteLine("Start polling2!");
 
-			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(25), () =>
+			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(100), () =>
 			{
 				if (isStopPolling == false)
 				{
@@ -360,7 +366,7 @@ namespace MyHealthVitals
 			isStopPolling = false;
 			//Debug.WriteLine("Start polling!");
 
-			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(5), () =>
+			Xamarin.Forms.Device.StartTimer(TimeSpan.FromMilliseconds(50), () =>
 			{
 				if (isStopPolling == false)
 				{
@@ -560,7 +566,12 @@ namespace MyHealthVitals
                     {
 						
 						var reading = new SpirometerReading(DateTime.Now, (decimal)pef, (decimal)fev1);
-                        uiController.updateCaller(reading);
+                        Xamarin.Forms.Device.BeginInvokeOnMainThread(new Action(async () =>
+                        {
+                            var retval = await uiController.updateCaller(reading);
+                        }));
+
+
                     }
 
                 }
